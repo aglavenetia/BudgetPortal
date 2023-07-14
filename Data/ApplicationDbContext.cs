@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using BudgetPortal.Entities;
 
 namespace BudgetPortal.Data
 {
@@ -17,6 +19,10 @@ namespace BudgetPortal.Data
         [StringLength(100)]
         public String BranchName { get; set; }
 
+
+        [ForeignKey("DealingHandID")]
+        public int UserID { get; set; }
+
     }
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
@@ -24,5 +30,17 @@ namespace BudgetPortal.Data
             : base(options)
         {
         }
+
+        public DbSet<SectionDetails> SectionDetails { get; set; }
+
+        public  DbSet<SubSectionDetails> SubSectionDetails { get; set; }
+
+        public DbSet<HeadDetails> HeadDetails { get; set; }
+
+        public DbSet<SubHeadDetails> SubHeadDetails { get; set; }
+
+        public DbSet<BudgetDetails> BudgetDetails { get; set;}
+
+        public DbSet<Divisions> Divisions { get; set; }
     }
 }

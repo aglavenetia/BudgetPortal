@@ -14,6 +14,6 @@ namespace BudgetPortal.Entities
         public String SubSectionName { get; set; }
 
         [ForeignKey("SectionNo")]
-        public ICollection<SectionDetails> SectionDetails { get; set; }
+        public ICollection<SectionDetails> SectionNo { get; set; }
     }
 }
