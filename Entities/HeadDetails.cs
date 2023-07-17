@@ -13,7 +13,9 @@ namespace BudgetPortal.Entities
         [StringLength(200)]
         public String HeadName { get; set; }
 
-        [ForeignKey("SubSectionNo")]
+        public int SubSectionNumber { get; set; }
+
+        [ForeignKey("SubSectionNumber")]
         public ICollection<SubSectionDetails> SubSectionNo { get; set; }
     }
 }

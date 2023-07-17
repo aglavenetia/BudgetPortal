@@ -19,8 +19,7 @@ namespace BudgetPortal.Data
         [StringLength(100)]
         public String BranchName { get; set; }
 
-
-        [ForeignKey("DealingHandID")]
+        [Key, ForeignKey("DealingHandID")]
         public int UserID { get; set; }
 
     }

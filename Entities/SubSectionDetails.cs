@@ -7,13 +7,15 @@ namespace BudgetPortal.Entities
     {
         public int id { get; set; }
 
+        public int SectionNumber { get; set; }
+
         [Required]
         public int SubSectionNo { get; set; }
 
         [StringLength(200)]
         public String SubSectionName { get; set; }
 
-        [ForeignKey("SectionNo")]
+        [ForeignKey("SectionNumber")]
         public ICollection<SectionDetails> SectionNo { get; set; }
     }
 }

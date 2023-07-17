@@ -9,8 +9,10 @@ namespace BudgetPortal.Entities
         public int id { get; set; }
 
         [Required]
-        [ForeignKey("DivisionID")]
-        public ICollection<Divisions> DivID { get; set; }
+        public int DivID { get; set; }
+        
+        [ForeignKey("DivID")]
+        public ICollection<Divisions> DivisionID { get; set; }
 
         [Required]
         public int FinancialYear1 { get; set; }
@@ -19,30 +21,43 @@ namespace BudgetPortal.Entities
         public int FinancialYear2 { get; set; }
 
         [Required]
-        [ForeignKey("HeadNo")]
+        public int HeadNumber { get; set; }
+
+        [ForeignKey("HeadNumber")]
         public ICollection<HeadDetails> HeadNo { get; set; }
 
         [Required]
-        [ForeignKey("SubHeadNo")]
+        public int SubHeadNumber { get; set; }
+
+        [ForeignKey("SubHeadNumber")]
         public ICollection<SubHeadDetails> SubHeadNo { get; set; }
 
-        public SqlMoney BudEstCurrFin { get; set; }
+        [Column(TypeName = "money")]
+        public Decimal BudEstCurrFin { get; set; }
 
-        public SqlMoney ActPrevFin { get; set; }
+        [Column(TypeName = "money")]
+        public Decimal ActPrevFin { get; set; }
 
-        public SqlMoney ActCurrFinTill2ndQuart { get; set; }
+        [Column(TypeName = "money")]
+        public Decimal ActCurrFinTill2ndQuart { get; set; }
 
-        public SqlMoney RevEstCurrFin { get; set; }
+        [Column(TypeName = "money")]
+        public Decimal RevEstCurrFin { get; set; }
 
+        [Column(TypeName = "decimal(4,2)")]
         public Decimal PerVarRevEstOverBudgEstCurrFin { get; set; }
 
-        public SqlMoney ACAndBWPropRECurrFin { get; set;}
+        [Column(TypeName = "money")]
+        public Decimal ACAndBWPropRECurrFin { get; set;}
 
-        public SqlMoney BudgEstNexFin { get; set; }
+        [Column(TypeName = "money")]
+        public Decimal BudgEstNexFin { get; set; }
 
+        [Column(TypeName = "decimal(4,2)")]
         public Decimal PerVarRevEstOverBudgEstNxtFin { get; set; }
 
-        public SqlMoney ACAndBWPropRENxtFin { get; set; }
+        [Column(TypeName = "money")]
+        public Decimal ACAndBWPropRENxtFin { get; set; }
 
         public string Justification { get; set; }
 
