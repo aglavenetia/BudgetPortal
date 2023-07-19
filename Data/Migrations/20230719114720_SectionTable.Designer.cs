@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetPortal.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230712063136_ModifyLengthAspNetUsersCustomeFile")]
-    partial class ModifyLengthAspNetUsersCustomeFile
+    [Migration("20230719114720_SectionTable")]
+    partial class SectionTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

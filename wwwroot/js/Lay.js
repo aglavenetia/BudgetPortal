@@ -1,16 +1,20 @@
-﻿document.addEventListener("DOMContentLoaded", function (event) {
+﻿document.addEventListener("DOMContentLoaded",
 
-    Alert("Inside Javascript");
+function (event)
+{ 
     const showNavbar = (toggleId, navId, bodyId, headerId) =>
-    {
-        const toggle = document.getElementById(toggleId),
-            nav = document.getElementById(navId),
-            bodypd = document.getElementById(bodyId),
-            headerpd = document.getElementById(headerId)
+    {      
+        const toggle = document.getElementById(toggleId), nav = document.getElementById(navId),
+              bodypd = document.getElementById(bodyId), headerpd = document.getElementById(headerId)
+        alert('toggle' + toggle);
+        alert('nav' + nav);
+        alert('bodypd' + bodypd);
+        alert('headerpd' + headerpd);
 
         // Validate that all variables exist
         if (toggle && nav && bodypd && headerpd)
         {
+            
             toggle.addEventListener('click', () =>
             {
                 // show navbar

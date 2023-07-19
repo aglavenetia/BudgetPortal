@@ -18,10 +18,6 @@ namespace BudgetPortal.Data
 
         [StringLength(100)]
         public String BranchName { get; set; }
-
-        [Key, ForeignKey("DealingHandID")]
-        public int UserID { get; set; }
-
     }
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
@@ -29,17 +25,10 @@ namespace BudgetPortal.Data
             : base(options)
         {
         }
-
         public DbSet<SectionDetails> SectionDetails { get; set; }
+        public DbSet<GroupDetails> GroupDetails { get; set; }
 
-        public  DbSet<SubSectionDetails> SubSectionDetails { get; set; }
-
-        public DbSet<HeadDetails> HeadDetails { get; set; }
-
-        public DbSet<SubHeadDetails> SubHeadDetails { get; set; }
-
-        public DbSet<BudgetDetails> BudgetDetails { get; set;}
-
-        public DbSet<Divisions> Divisions { get; set; }
     }
+
+
 }
