@@ -6,10 +6,10 @@ function (event)
     {      
         const toggle = document.getElementById(toggleId), nav = document.getElementById(navId),
               bodypd = document.getElementById(bodyId), headerpd = document.getElementById(headerId)
-        alert('toggle' + toggle);
-        alert('nav' + nav);
-        alert('bodypd' + bodypd);
-        alert('headerpd' + headerpd);
+        //alert('toggle' + toggle);
+        //alert('nav' + nav);
+        //alert('bodypd' + bodypd);
+       // alert('headerpd' + headerpd);
 
         // Validate that all variables exist
         if (toggle && nav && bodypd && headerpd)

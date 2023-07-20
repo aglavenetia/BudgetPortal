@@ -13,6 +13,7 @@ namespace BudgetPortal.Entities
         [StringLength(200)]
         public String SectionName { get; set; }
 
+        public ICollection<GroupDetails> Groups { get; set; }
 
     }
 }

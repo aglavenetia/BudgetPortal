@@ -14,9 +14,9 @@ namespace BudgetPortal.Entities
         [StringLength(200)]
         public String GroupName { get; set; }
 
-        public int SectionNumber { get; set; }
+        public SectionDetails sections { get; set; }
 
-        [ForeignKey("SectionNo")]
-        public ICollection<SectionDetails> GroupSectionNo { get; set; }
+        public ICollection<SubGroupDetails> SubGroups { get; set; }
+
     }
 }

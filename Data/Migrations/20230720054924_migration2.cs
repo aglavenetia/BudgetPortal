@@ -4,12 +4,10 @@
 
 namespace BudgetPortal.Data.Migrations
 {
-    public partial class groupDets : Migration
+    public partial class migration2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            
-
             migrationBuilder.CreateTable(
                 name: "GroupDetails",
                 columns: table => new
@@ -17,32 +15,30 @@ namespace BudgetPortal.Data.Migrations
                     GroupNo = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     GroupName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    SectionNumber = table.Column<int>(type: "int", nullable: false)
+                    SectionNumber = table.Column<int>(type: "int", nullable: false),
+                    sectionsSectionNo = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GroupDetails", x => x.GroupNo);
+                    table.ForeignKey(
+                        name: "FK_GroupDetails_SectionDetails_sectionsSectionNo",
+                        column: x => x.sectionsSectionNo,
+                        principalTable: "SectionDetails",
+                        principalColumn: "SectionNo",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_SectionDetails_GroupDetails_SectionNo",
-                table: "SectionDetails",
-                column: "SectionNo",
-                principalTable: "GroupDetails",
-                principalColumn: "GroupNo",
-                onDelete: ReferentialAction.Cascade);
+            migrationBuilder.CreateIndex(
+                name: "IX_GroupDetails_sectionsSectionNo",
+                table: "GroupDetails",
+                column: "sectionsSectionNo");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_SectionDetails_GroupDetails_SectionNo",
-                table: "SectionDetails");
-
             migrationBuilder.DropTable(
                 name: "GroupDetails");
-
-            
         }
     }
 }

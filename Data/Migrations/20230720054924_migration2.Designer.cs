@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetPortal.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230719120348_groupDets")]
-    partial class groupDets
+    [Migration("20230720054924_migration2")]
+    partial class migration2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -120,7 +120,12 @@ namespace BudgetPortal.Data.Migrations
                     b.Property<int>("SectionNumber")
                         .HasColumnType("int");
 
+                    b.Property<int>("sectionsSectionNo")
+                        .HasColumnType("int");
+
                     b.HasKey("GroupNo");
+
+                    b.HasIndex("sectionsSectionNo");
 
                     b.ToTable("GroupDetails");
                 });
@@ -128,7 +133,10 @@ namespace BudgetPortal.Data.Migrations
             modelBuilder.Entity("BudgetPortal.Entities.SectionDetails", b =>
                 {
                     b.Property<int>("SectionNo")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SectionNo"), 1L, 1);
 
                     b.Property<string>("SectionName")
                         .IsRequired()
@@ -280,13 +288,15 @@ namespace BudgetPortal.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("BudgetPortal.Entities.SectionDetails", b =>
+            modelBuilder.Entity("BudgetPortal.Entities.GroupDetails", b =>
                 {
-                    b.HasOne("BudgetPortal.Entities.GroupDetails", null)
-                        .WithMany("GroupSectionNo")
-                        .HasForeignKey("SectionNo")
+                    b.HasOne("BudgetPortal.Entities.SectionDetails", "sections")
+                        .WithMany("Groups")
+                        .HasForeignKey("sectionsSectionNo")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("sections");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -340,9 +350,9 @@ namespace BudgetPortal.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BudgetPortal.Entities.GroupDetails", b =>
+            modelBuilder.Entity("BudgetPortal.Entities.SectionDetails", b =>
                 {
-                    b.Navigation("GroupSectionNo");
+                    b.Navigation("Groups");
                 });
 #pragma warning restore 612, 618
         }
