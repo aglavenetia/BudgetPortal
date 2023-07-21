@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<BudgetPortal.Entities.SectionDetails>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Sections";
 }
 
-<h1>Index</h1>
+<h1>Sections</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -17,6 +17,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.SectionName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDateTime)
             </th>
             <th></th>
         </tr>
@@ -31,10 +34,13 @@
                 @Html.DisplayFor(modelItem => item.SectionName)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.CreatedDateTime)
+            </td>
+            <td>
                 <a asp-action="Edit" asp-route-id="@item.SectionNo">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.SectionNo">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.SectionNo">Delete</a>
-                <a asp-controller="SectionDetail" asp-action="Index" asp-route-SectionNo="@item.SectionNo">Update Groups</a>
+                <a asp-action="Delete" asp-route-id="@item.SectionNo">Delete</a> |
+                <a asp-action="Delete"asp-route-id="@item.SectionNo">Add Group</a>
             </td>
         </tr>
 }

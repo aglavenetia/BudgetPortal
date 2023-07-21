@@ -16,6 +16,7 @@ namespace BudgetPortal.Entities
 
         public SectionDetails sections { get; set; }
 
+        public DateTime CreatedDateTime { get; set; }
         public ICollection<SubGroupDetails> SubGroups { get; set; }
 
     }

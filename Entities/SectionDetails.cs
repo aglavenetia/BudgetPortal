@@ -11,9 +11,10 @@ namespace BudgetPortal.Entities
         public int SectionNo { get; set; }
 
         [StringLength(200)]
-        public String SectionName { get; set; }
+        public String? SectionName { get; set; }
 
-        public ICollection<GroupDetails> Groups { get; set; }
+        public DateTime CreatedDateTime { get; set; }
+        public ICollection<GroupDetails>? Groups { get; set; }
 
     }
 }

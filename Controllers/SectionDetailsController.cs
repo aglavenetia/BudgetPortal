@@ -10,34 +10,24 @@ using BudgetPortal.Entities;
 
 namespace BudgetPortal.Controllers
 {
-    public class SectionDetailController : Controller
+    public class SectionDetailsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public SectionDetailController(ApplicationDbContext context)
+        public SectionDetailsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: SectionDetail
-        public async Task<IActionResult> Index(int SecNo)
+        // GET: SectionDetails
+        public async Task<IActionResult> Index()
         {
-
-
-            List<SectionDetails> list = await (from SecList in _context.SectionDetails where SecList.SectionNo == 
-                                               SecNo
-                                               select new SectionDetails
-                                               {
-                                                   id = SecList.id,
-                                                   SectionNo = SecList.SectionNo,
-                                                   SectionName = SecList.SectionName
-                                               }).ToListAsync();
               return _context.SectionDetails != null ? 
-                          View(list) :
+                          View(await _context.SectionDetails.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.SectionDetails'  is null.");
         }
 
-        // GET: SectionDetail/Details/5
+        // GET: SectionDetails/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.SectionDetails == null)
@@ -55,18 +45,18 @@ namespace BudgetPortal.Controllers
             return View(sectionDetails);
         }
 
-        // GET: SectionDetail/Create
+        // GET: SectionDetails/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: SectionDetail/Create
+        // POST: SectionDetails/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,SectionNo,SectionName")] SectionDetails sectionDetails)
+        public async Task<IActionResult> Create([Bind("id,SectionNo,SectionName,CreatedDateTime")] SectionDetails sectionDetails)
         {
             if (ModelState.IsValid)
             {
@@ -77,7 +67,7 @@ namespace BudgetPortal.Controllers
             return View(sectionDetails);
         }
 
-        // GET: SectionDetail/Edit/5
+        // GET: SectionDetails/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.SectionDetails == null)
@@ -93,12 +83,12 @@ namespace BudgetPortal.Controllers
             return View(sectionDetails);
         }
 
-        // POST: SectionDetail/Edit/5
+        // POST: SectionDetails/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,SectionNo,SectionName")] SectionDetails sectionDetails)
+        public async Task<IActionResult> Edit(int id, [Bind("id,SectionNo,SectionName,CreatedDateTime")] SectionDetails sectionDetails)
         {
             if (id != sectionDetails.SectionNo)
             {
@@ -128,7 +118,7 @@ namespace BudgetPortal.Controllers
             return View(sectionDetails);
         }
 
-        // GET: SectionDetail/Delete/5
+        // GET: SectionDetails/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.SectionDetails == null)
@@ -146,7 +136,7 @@ namespace BudgetPortal.Controllers
             return View(sectionDetails);
         }
 
-        // POST: SectionDetail/Delete/5
+        // POST: SectionDetails/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

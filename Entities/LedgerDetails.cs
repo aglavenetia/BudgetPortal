@@ -13,7 +13,8 @@ namespace BudgetPortal.Entities
 
         [StringLength(200)]
         public String LedgerName { get; set; }
- 
+        
+        public DateTime CreatedDateTime { get; set; }
         public SubGroupDetails subGroups { get; set; }
     }
 }

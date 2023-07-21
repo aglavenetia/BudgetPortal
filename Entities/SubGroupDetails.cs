@@ -12,12 +12,14 @@ namespace BudgetPortal.Entities
         public int SubGroupNo { get; set; }
 
         [StringLength(200)]
-        public String subGroupName { get; set; }
+        public String? subGroupName { get; set; }
 
-        public GroupDetails Groups { get; set; }
+        public GroupDetails? Groups { get; set; }
 
-        public ICollection<LedgerDetails> Ledgers { get; set; }
+        public DateTime? CreatedDateTime { get; set; }
 
-        public ICollection<BudgetDetails> Budgets { get; set; }
+        public ICollection<LedgerDetails>? Ledgers { get; set; }
+
+        public ICollection<BudgetDetails>? Budgets { get; set; }
     }
 }

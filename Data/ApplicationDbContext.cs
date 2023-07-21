@@ -19,12 +19,20 @@ namespace BudgetPortal.Data
         [StringLength(100)]
         public String BranchName { get; set; }
     }
+    
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
         {
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<SectionDetails>()
+                .Property(b => b.CreatedDateTime)
+                .HasDefaultValueSql("getdate()");
+        }
+
         public DbSet<SectionDetails> SectionDetails { get; set; }
         public DbSet<GroupDetails> GroupDetails { get; set; }
         public DbSet<SubGroupDetails> SubGroupDetails { get; set; }
