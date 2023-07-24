@@ -28,21 +28,53 @@ namespace BudgetPortal.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<SectionDetails>()
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Sections>()
                 .Property(b => b.CreatedDateTime)
-                .HasDefaultValueSql("getdate()");
+                .HasDefaultValueSql("GETDATE()");
+
+            modelBuilder.Entity<Sections>()
+                .HasIndex(Sections => new { Sections.SectionNo }).IsUnique();
+
+            modelBuilder.Entity<Groups>()
+                .Property(b => b.CreatedDateTime)
+                .HasDefaultValueSql("GETDATE()");
+
+            modelBuilder.Entity<Groups>()
+                .HasIndex(Groups => new { Groups.GroupNo }).IsUnique();
+
+            modelBuilder.Entity<SubGroups>()
+                .Property(b => b.CreatedDateTime)
+                .HasDefaultValueSql("GETDATE()");
+
+            modelBuilder.Entity<SubGroups>()
+                .HasIndex(SubGroups => new { SubGroups.SubGroupNo }).IsUnique();
+
+            modelBuilder.Entity<Ledgers>()
+                .Property(b => b.CreatedDateTime)
+                .HasDefaultValueSql("GETDATE()");
+
+            modelBuilder.Entity<Ledgers>()
+                .HasIndex(Ledgers => new { Ledgers.LedgerNo }).IsUnique();
+
+            modelBuilder.Entity<BudgetDetails>()
+                .Property(b => b.CreatedDateTime)
+                .HasDefaultValueSql("GETDATE()");
+
+            modelBuilder.Entity<Division>()
+                .Property(b => b.CreatedDateTime)
+                .HasDefaultValueSql("GETDATE()");
         }
 
-        public DbSet<SectionDetails> SectionDetails { get; set; }
-        public DbSet<GroupDetails> GroupDetails { get; set; }
-        public DbSet<SubGroupDetails> SubGroupDetails { get; set; }
+        public DbSet<Sections> Sections { get; set; }
 
-        public DbSet<LedgerDetails> LedgerDetails { get; set; }
+        public DbSet<Groups> Groups { get; set; }
+        public DbSet<SubGroups> SubGroups { get; set; }
+        public DbSet<Ledgers> Ledgers { get; set; }
+        public DbSet<Division> Division { get; set; }
 
         public DbSet<BudgetDetails> BudgetDetails { get; set; }
-
-        public DbSet<Divisions> Divisions { get; set; }
-
     }
 
 

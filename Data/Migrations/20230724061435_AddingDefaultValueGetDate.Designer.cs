@@ -4,6 +4,7 @@ using BudgetPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetPortal.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230724061435_AddingDefaultValueGetDate")]
+    partial class AddingDefaultValueGetDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,11 +107,11 @@ namespace BudgetPortal.Data.Migrations
 
             modelBuilder.Entity("BudgetPortal.Entities.BudgetDetails", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
                     b.Property<decimal>("ACAndBWPropRECurrFin")
                         .HasColumnType("money");
@@ -129,11 +132,9 @@ namespace BudgetPortal.Data.Migrations
                         .HasColumnType("money");
 
                     b.Property<DateTime>("CreatedDateTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("DivisionId")
+                    b.Property<int?>("DivisionID")
                         .HasColumnType("int");
 
                     b.Property<int>("FinancialYear1")
@@ -143,7 +144,6 @@ namespace BudgetPortal.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Justification")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("LedgerNo")
@@ -158,186 +158,183 @@ namespace BudgetPortal.Data.Migrations
                     b.Property<decimal>("RevEstCurrFin")
                         .HasColumnType("money");
 
-                    b.Property<int>("SubGroupNumberId")
+                    b.Property<int?>("SubGroupNumberSubGroupNo")
                         .HasColumnType("int");
 
-                    b.Property<string>("SupportingDocumentPath")
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("id");
 
-                    b.HasKey("Id");
+                    b.HasIndex("DivisionID");
 
-                    b.HasIndex("DivisionId");
-
-                    b.HasIndex("SubGroupNumberId");
+                    b.HasIndex("SubGroupNumberSubGroupNo");
 
                     b.ToTable("BudgetDetails");
                 });
 
-            modelBuilder.Entity("BudgetPortal.Entities.Division", b =>
+            modelBuilder.Entity("BudgetPortal.Entities.Divisions", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("DivisionID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DivisionID"));
 
                     b.Property<DateTime>("CreatedDateTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DealingHandID")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("DivisionID")
-                        .HasColumnType("int");
-
                     b.Property<string>("DivisionName")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("DivisionType")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.HasKey("Id");
+                    b.Property<int>("id")
+                        .HasColumnType("int");
 
-                    b.ToTable("Division");
+                    b.HasKey("DivisionID");
+
+                    b.ToTable("Divisions");
                 });
 
-            modelBuilder.Entity("BudgetPortal.Entities.Groups", b =>
+            modelBuilder.Entity("BudgetPortal.Entities.GroupDetails", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("GroupNo")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GroupNo"));
 
                     b.Property<DateTime>("CreatedDateTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("GroupName")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("GroupNo")
+                    b.Property<int?>("SectionDetailsSectionNo")
                         .HasColumnType("int");
 
-                    b.Property<int>("sectionsId")
+                    b.Property<int>("sectionsid")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("GroupNo");
 
-                    b.HasIndex("GroupNo")
-                        .IsUnique();
+                    b.HasIndex("SectionDetailsSectionNo");
 
-                    b.HasIndex("sectionsId");
+                    b.HasIndex("sectionsid");
 
-                    b.ToTable("Groups");
+                    b.ToTable("GroupDetails");
                 });
 
-            modelBuilder.Entity("BudgetPortal.Entities.Ledgers", b =>
+            modelBuilder.Entity("BudgetPortal.Entities.LedgerDetails", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("LedgerNo")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LedgerNo"));
 
                     b.Property<DateTime>("CreatedDateTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("LedgerName")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("LedgerNo")
+                    b.Property<int>("id")
                         .HasColumnType("int");
 
-                    b.Property<int>("subGroupsId")
+                    b.Property<int>("subGroupsSubGroupNo")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("LedgerNo");
 
-                    b.HasIndex("LedgerNo")
-                        .IsUnique();
+                    b.HasIndex("subGroupsSubGroupNo");
 
-                    b.HasIndex("subGroupsId");
+                    b.ToTable("LedgerDetails");
+                });
 
-                    b.ToTable("Ledgers");
+            modelBuilder.Entity("BudgetPortal.Entities.SectionDetails", b =>
+                {
+                    b.Property<int>("SectionNo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SectionNo"));
+
+                    b.Property<DateTime>("CreatedDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SectionName")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("id")
+                        .HasColumnType("int");
+
+                    b.HasKey("SectionNo");
+
+                    b.ToTable("SectionDetails");
                 });
 
             modelBuilder.Entity("BudgetPortal.Entities.Sections", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
                     b.Property<DateTime>("CreatedDateTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<string>("SectionName")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<int>("SectionNo")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("SectionNo")
-                        .IsUnique();
+                    b.HasKey("id");
 
                     b.ToTable("Sections");
                 });
 
-            modelBuilder.Entity("BudgetPortal.Entities.SubGroups", b =>
+            modelBuilder.Entity("BudgetPortal.Entities.SubGroupDetails", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedDateTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
                     b.Property<int>("SubGroupNo")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("groupsId")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SubGroupNo"));
+
+                    b.Property<DateTime?>("CreatedDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("GroupsGroupNo")
+                        .HasColumnType("int");
+
+                    b.Property<int>("id")
                         .HasColumnType("int");
 
                     b.Property<string>("subGroupName")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.HasKey("Id");
+                    b.HasKey("SubGroupNo");
 
-                    b.HasIndex("SubGroupNo")
-                        .IsUnique();
+                    b.HasIndex("GroupsGroupNo");
 
-                    b.HasIndex("groupsId");
-
-                    b.ToTable("SubGroups");
+                    b.ToTable("SubGroupDetails");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -479,54 +476,52 @@ namespace BudgetPortal.Data.Migrations
 
             modelBuilder.Entity("BudgetPortal.Entities.BudgetDetails", b =>
                 {
-                    b.HasOne("BudgetPortal.Entities.Division", "Division")
-                        .WithMany()
-                        .HasForeignKey("DivisionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("BudgetPortal.Entities.Divisions", "Division")
+                        .WithMany("Budgets")
+                        .HasForeignKey("DivisionID");
 
-                    b.HasOne("BudgetPortal.Entities.SubGroups", "SubGroupNumber")
-                        .WithMany()
-                        .HasForeignKey("SubGroupNumberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("BudgetPortal.Entities.SubGroupDetails", "SubGroupNumber")
+                        .WithMany("Budgets")
+                        .HasForeignKey("SubGroupNumberSubGroupNo");
 
                     b.Navigation("Division");
 
                     b.Navigation("SubGroupNumber");
                 });
 
-            modelBuilder.Entity("BudgetPortal.Entities.Groups", b =>
+            modelBuilder.Entity("BudgetPortal.Entities.GroupDetails", b =>
                 {
+                    b.HasOne("BudgetPortal.Entities.SectionDetails", null)
+                        .WithMany("Groups")
+                        .HasForeignKey("SectionDetailsSectionNo");
+
                     b.HasOne("BudgetPortal.Entities.Sections", "sections")
-                        .WithMany()
-                        .HasForeignKey("sectionsId")
+                        .WithMany("Groups")
+                        .HasForeignKey("sectionsid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("sections");
                 });
 
-            modelBuilder.Entity("BudgetPortal.Entities.Ledgers", b =>
+            modelBuilder.Entity("BudgetPortal.Entities.LedgerDetails", b =>
                 {
-                    b.HasOne("BudgetPortal.Entities.SubGroups", "subGroups")
-                        .WithMany()
-                        .HasForeignKey("subGroupsId")
+                    b.HasOne("BudgetPortal.Entities.SubGroupDetails", "subGroups")
+                        .WithMany("Ledgers")
+                        .HasForeignKey("subGroupsSubGroupNo")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("subGroups");
                 });
 
-            modelBuilder.Entity("BudgetPortal.Entities.SubGroups", b =>
+            modelBuilder.Entity("BudgetPortal.Entities.SubGroupDetails", b =>
                 {
-                    b.HasOne("BudgetPortal.Entities.Groups", "groups")
-                        .WithMany()
-                        .HasForeignKey("groupsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("BudgetPortal.Entities.GroupDetails", "Groups")
+                        .WithMany("SubGroups")
+                        .HasForeignKey("GroupsGroupNo");
 
-                    b.Navigation("groups");
+                    b.Navigation("Groups");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -578,6 +573,33 @@ namespace BudgetPortal.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("BudgetPortal.Entities.Divisions", b =>
+                {
+                    b.Navigation("Budgets");
+                });
+
+            modelBuilder.Entity("BudgetPortal.Entities.GroupDetails", b =>
+                {
+                    b.Navigation("SubGroups");
+                });
+
+            modelBuilder.Entity("BudgetPortal.Entities.SectionDetails", b =>
+                {
+                    b.Navigation("Groups");
+                });
+
+            modelBuilder.Entity("BudgetPortal.Entities.Sections", b =>
+                {
+                    b.Navigation("Groups");
+                });
+
+            modelBuilder.Entity("BudgetPortal.Entities.SubGroupDetails", b =>
+                {
+                    b.Navigation("Budgets");
+
+                    b.Navigation("Ledgers");
                 });
 #pragma warning restore 612, 618
         }

@@ -2,24 +2,24 @@
 
 namespace BudgetPortal.Entities
 {
-    public class Divisions
+    public class Division
     {
-        public int id { get; set; }
-
         [Key]
+        public int Id { get; set; }
+        
         [Required]
         public int DivisionID { get; set; }
 
         [StringLength(200)]
-        public String? DivisionName { get; set; }
+        public String DivisionName { get; set; }
 
         [StringLength(200)]
-        public String? DivisionType { get; set; }
+        public String DivisionType { get; set; }
 
         [StringLength(200)]
-        public String? DealingHandID { get; set; }
+        public String DealingHandID { get; set; }
 
         public DateTime CreatedDateTime { get; set; }
-        public ICollection<BudgetDetails>? Budgets { get; set; }
+        //public ICollection<BudgetDetails> Budgets { get; set; }
     }
 }

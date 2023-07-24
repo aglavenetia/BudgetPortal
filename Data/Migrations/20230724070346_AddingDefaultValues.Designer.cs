@@ -4,6 +4,7 @@ using BudgetPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetPortal.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230724070346_AddingDefaultValues")]
+    partial class AddingDefaultValues
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -131,7 +134,7 @@ namespace BudgetPortal.Data.Migrations
                     b.Property<DateTime>("CreatedDateTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<int>("DivisionId")
                         .HasColumnType("int");
@@ -184,7 +187,7 @@ namespace BudgetPortal.Data.Migrations
                     b.Property<DateTime>("CreatedDateTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<string>("DealingHandID")
                         .IsRequired()
@@ -220,7 +223,7 @@ namespace BudgetPortal.Data.Migrations
                     b.Property<DateTime>("CreatedDateTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<string>("GroupName")
                         .IsRequired()
@@ -254,7 +257,7 @@ namespace BudgetPortal.Data.Migrations
                     b.Property<DateTime>("CreatedDateTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<string>("LedgerName")
                         .IsRequired()
@@ -288,7 +291,7 @@ namespace BudgetPortal.Data.Migrations
                     b.Property<DateTime>("CreatedDateTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<string>("SectionName")
                         .IsRequired()
@@ -317,7 +320,7 @@ namespace BudgetPortal.Data.Migrations
                     b.Property<DateTime>("CreatedDateTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<int>("SubGroupNo")
                         .HasColumnType("int");
@@ -480,13 +483,13 @@ namespace BudgetPortal.Data.Migrations
             modelBuilder.Entity("BudgetPortal.Entities.BudgetDetails", b =>
                 {
                     b.HasOne("BudgetPortal.Entities.Division", "Division")
-                        .WithMany()
+                        .WithMany("Budgets")
                         .HasForeignKey("DivisionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BudgetPortal.Entities.SubGroups", "SubGroupNumber")
-                        .WithMany()
+                        .WithMany("Budgets")
                         .HasForeignKey("SubGroupNumberId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -499,7 +502,7 @@ namespace BudgetPortal.Data.Migrations
             modelBuilder.Entity("BudgetPortal.Entities.Groups", b =>
                 {
                     b.HasOne("BudgetPortal.Entities.Sections", "sections")
-                        .WithMany()
+                        .WithMany("Groups")
                         .HasForeignKey("sectionsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -510,7 +513,7 @@ namespace BudgetPortal.Data.Migrations
             modelBuilder.Entity("BudgetPortal.Entities.Ledgers", b =>
                 {
                     b.HasOne("BudgetPortal.Entities.SubGroups", "subGroups")
-                        .WithMany()
+                        .WithMany("Ledgers")
                         .HasForeignKey("subGroupsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -521,7 +524,7 @@ namespace BudgetPortal.Data.Migrations
             modelBuilder.Entity("BudgetPortal.Entities.SubGroups", b =>
                 {
                     b.HasOne("BudgetPortal.Entities.Groups", "groups")
-                        .WithMany()
+                        .WithMany("SubGroups")
                         .HasForeignKey("groupsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -578,6 +581,28 @@ namespace BudgetPortal.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("BudgetPortal.Entities.Division", b =>
+                {
+                    b.Navigation("Budgets");
+                });
+
+            modelBuilder.Entity("BudgetPortal.Entities.Groups", b =>
+                {
+                    b.Navigation("SubGroups");
+                });
+
+            modelBuilder.Entity("BudgetPortal.Entities.Sections", b =>
+                {
+                    b.Navigation("Groups");
+                });
+
+            modelBuilder.Entity("BudgetPortal.Entities.SubGroups", b =>
+                {
+                    b.Navigation("Budgets");
+
+                    b.Navigation("Ledgers");
                 });
 #pragma warning restore 612, 618
         }

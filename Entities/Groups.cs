@@ -1,23 +1,21 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BudgetPortal.Entities
 {
-    public class GroupDetails
+    public class Groups
     {
-        int Id { get; set; }
-
         [Key]
+        public int Id { get; set; }
+
         [Required]
         public int GroupNo { get; set; }
 
         [StringLength(200)]
         public String GroupName { get; set; }
 
-        public SectionDetails sections { get; set; }
+        public Sections sections { get; set; }
 
         public DateTime CreatedDateTime { get; set; }
-        public ICollection<SubGroupDetails> SubGroups { get; set; }
-
+        //public ICollection<SubGroups> SubGroups { get; set; }
     }
 }

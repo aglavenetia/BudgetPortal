@@ -1,20 +1,19 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BudgetPortal.Entities
 {
-    public class LedgerDetails
+    public class Ledgers
     {
-        public int id { get; set; }
-
         [Key]
+        public int Id { get; set; }
+
         [Required]
         public int LedgerNo { get; set; }
 
         [StringLength(200)]
         public String LedgerName { get; set; }
-        
+
         public DateTime CreatedDateTime { get; set; }
-        public SubGroupDetails subGroups { get; set; }
+        public SubGroups subGroups { get; set; }
     }
 }

@@ -10,87 +10,87 @@ using BudgetPortal.Entities;
 
 namespace BudgetPortal.Controllers
 {
-    public class SectionDetailsController : Controller
+    public class SectionsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public SectionDetailsController(ApplicationDbContext context)
+        public SectionsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: SectionDetails
+        // GET: Sections
         public async Task<IActionResult> Index()
         {
-              return _context.SectionDetails != null ? 
-                          View(await _context.SectionDetails.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.SectionDetails'  is null.");
+              return _context.Sections != null ? 
+                          View(await _context.Sections.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.Sections'  is null.");
         }
 
-        // GET: SectionDetails/Details/5
+        // GET: Sections/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.SectionDetails == null)
+            if (id == null || _context.Sections == null)
             {
                 return NotFound();
             }
 
-            var sectionDetails = await _context.SectionDetails
-                .FirstOrDefaultAsync(m => m.SectionNo == id);
-            if (sectionDetails == null)
+            var sections = await _context.Sections
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (sections == null)
             {
                 return NotFound();
             }
 
-            return View(sectionDetails);
+            return View(sections);
         }
 
-        // GET: SectionDetails/Create
+        // GET: Sections/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: SectionDetails/Create
+        // POST: Sections/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,SectionNo,SectionName,CreatedDateTime")] SectionDetails sectionDetails)
+        public async Task<IActionResult> Create([Bind("Id,SectionNo,SectionName,CreatedDateTime")] Sections sections)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(sectionDetails);
+                _context.Add(sections);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(sectionDetails);
+            return View(sections);
         }
 
-        // GET: SectionDetails/Edit/5
+        // GET: Sections/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.SectionDetails == null)
+            if (id == null || _context.Sections == null)
             {
                 return NotFound();
             }
 
-            var sectionDetails = await _context.SectionDetails.FindAsync(id);
-            if (sectionDetails == null)
+            var sections = await _context.Sections.FindAsync(id);
+            if (sections == null)
             {
                 return NotFound();
             }
-            return View(sectionDetails);
+            return View(sections);
         }
 
-        // POST: SectionDetails/Edit/5
+        // POST: Sections/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,SectionNo,SectionName,CreatedDateTime")] SectionDetails sectionDetails)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,SectionNo,SectionName,CreatedDateTime")] Sections sections)
         {
-            if (id != sectionDetails.SectionNo)
+            if (id != sections.Id)
             {
                 return NotFound();
             }
@@ -99,12 +99,12 @@ namespace BudgetPortal.Controllers
             {
                 try
                 {
-                    _context.Update(sectionDetails);
+                    _context.Update(sections);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SectionDetailsExists(sectionDetails.SectionNo))
+                    if (!SectionsExists(sections.Id))
                     {
                         return NotFound();
                     }
@@ -115,49 +115,49 @@ namespace BudgetPortal.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(sectionDetails);
+            return View(sections);
         }
 
-        // GET: SectionDetails/Delete/5
+        // GET: Sections/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.SectionDetails == null)
+            if (id == null || _context.Sections == null)
             {
                 return NotFound();
             }
 
-            var sectionDetails = await _context.SectionDetails
-                .FirstOrDefaultAsync(m => m.SectionNo == id);
-            if (sectionDetails == null)
+            var sections = await _context.Sections
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (sections == null)
             {
                 return NotFound();
             }
 
-            return View(sectionDetails);
+            return View(sections);
         }
 
-        // POST: SectionDetails/Delete/5
+        // POST: Sections/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.SectionDetails == null)
+            if (_context.Sections == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.SectionDetails'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Sections'  is null.");
             }
-            var sectionDetails = await _context.SectionDetails.FindAsync(id);
-            if (sectionDetails != null)
+            var sections = await _context.Sections.FindAsync(id);
+            if (sections != null)
             {
-                _context.SectionDetails.Remove(sectionDetails);
+                _context.Sections.Remove(sections);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SectionDetailsExists(int id)
+        private bool SectionsExists(int id)
         {
-          return (_context.SectionDetails?.Any(e => e.SectionNo == id)).GetValueOrDefault();
+          return (_context.Sections?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

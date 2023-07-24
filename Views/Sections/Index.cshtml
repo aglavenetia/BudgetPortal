@@ -1,10 +1,10 @@
-﻿@model IEnumerable<BudgetPortal.Entities.SectionDetails>
+﻿@model IEnumerable<BudgetPortal.Entities.Sections>
 
 @{
-    ViewData["Title"] = "Sections";
+    ViewData["Title"] = "Index";
 }
 
-<h1>Sections</h1>
+<h1>Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,7 +13,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.id)
+                @Html.DisplayNameFor(model => model.SectionNo)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.SectionName)
@@ -28,7 +28,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.id)
+                @Html.DisplayFor(modelItem => item.SectionNo)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.SectionName)
@@ -37,10 +37,10 @@
                 @Html.DisplayFor(modelItem => item.CreatedDateTime)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.SectionNo">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.SectionNo">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.SectionNo">Delete</a> |
-                <a asp-action="Delete"asp-route-id="@item.SectionNo">Add Group</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                    <a asp-controller="Groups" asp-action="Index" asp-route-SectionNumber="@item.SectionNo">Add Groups</a>
             </td>
         </tr>
 }

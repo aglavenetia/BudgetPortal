@@ -6,9 +6,9 @@ namespace BudgetPortal.Entities
 {
     public class BudgetDetails
     {
-        public int id { get; set; }
+        public int Id { get; set; }
 
-        public Divisions? Division { get; set; }
+        public Division Division { get; set; }
 
         [Required]
         public int FinancialYear1 { get; set; }
@@ -16,7 +16,7 @@ namespace BudgetPortal.Entities
         [Required]
         public int FinancialYear2 { get; set; }
 
-        public SubGroupDetails? SubGroupNumber { get; set; }
+        public SubGroups SubGroupNumber { get; set; }
 
         public int LedgerNo { get; set; }
 
@@ -48,7 +48,9 @@ namespace BudgetPortal.Entities
         public Decimal ACAndBWPropRENxtFin { get; set; }
 
         public DateTime CreatedDateTime { get; set; }
-        public string? Justification { get; set; }
+        public string Justification { get; set; }
+
+        public string? SupportingDocumentPath { get; set; }
 
     }
 }
