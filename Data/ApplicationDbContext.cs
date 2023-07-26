@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using BudgetPortal.Entities;
+using System.Reflection.Metadata;
 
 namespace BudgetPortal.Data
 {
@@ -30,33 +31,39 @@ namespace BudgetPortal.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Sections>()
+            modelBuilder.Entity<BudgetSections>()
+                .Property(b => b.CreatedDateTime)
+                .HasDefaultValueSql("GETDATE()");
+     
+            modelBuilder.Entity<BudgetSections>()
+                .HasMany(e => e.Groups)
+                .WithOne(e => e.Sections)
+                .HasForeignKey(e => e.SectionNo)
+                .IsRequired();
+
+            modelBuilder.Entity<BudgetGroups>()
                 .Property(b => b.CreatedDateTime)
                 .HasDefaultValueSql("GETDATE()");
 
-            modelBuilder.Entity<Sections>()
-                .HasIndex(Sections => new { Sections.SectionNo }).IsUnique();
+            modelBuilder.Entity<BudgetGroups>()
+                .HasMany(e => e.SubGroups)
+                .WithOne(e => e.groups)
+                .HasForeignKey(e => e.GroupNo)
+                .IsRequired();
 
-            modelBuilder.Entity<Groups>()
+            modelBuilder.Entity<BudgetSubGroups>()
                 .Property(b => b.CreatedDateTime)
                 .HasDefaultValueSql("GETDATE()");
 
-            modelBuilder.Entity<Groups>()
-                .HasIndex(Groups => new { Groups.GroupNo }).IsUnique();
+            modelBuilder.Entity<BudgetSubGroups>()
+                .HasMany(e => e.Ledgers)
+                .WithOne(e => e.subGroups)
+                .HasForeignKey(e => e.SubGroupNo)
+                .IsRequired();
 
-            modelBuilder.Entity<SubGroups>()
+            modelBuilder.Entity<BudgetLedgers>()
                 .Property(b => b.CreatedDateTime)
-                .HasDefaultValueSql("GETDATE()");
-
-            modelBuilder.Entity<SubGroups>()
-                .HasIndex(SubGroups => new { SubGroups.SubGroupNo }).IsUnique();
-
-            modelBuilder.Entity<Ledgers>()
-                .Property(b => b.CreatedDateTime)
-                .HasDefaultValueSql("GETDATE()");
-
-            modelBuilder.Entity<Ledgers>()
-                .HasIndex(Ledgers => new { Ledgers.LedgerNo }).IsUnique();
+                .HasDefaultValueSql("GETDATE()");   
 
             modelBuilder.Entity<BudgetDetails>()
                 .Property(b => b.CreatedDateTime)
@@ -67,13 +74,13 @@ namespace BudgetPortal.Data
                 .HasDefaultValueSql("GETDATE()");
         }
 
-        public DbSet<Sections> Sections { get; set; }
+ 
 
-        public DbSet<Groups> Groups { get; set; }
-        public DbSet<SubGroups> SubGroups { get; set; }
-        public DbSet<Ledgers> Ledgers { get; set; }
+        public DbSet<BudgetSections> BudgetSections { get; set; }
+        public DbSet<BudgetGroups> BudgetGroups { get; set; }
+        public DbSet<BudgetSubGroups> BudgetSubGroups { get; set; }
+        public DbSet<BudgetLedgers> BudgetLedgers { get; set; }
         public DbSet<Division> Division { get; set; }
-
         public DbSet<BudgetDetails> BudgetDetails { get; set; }
     }
 

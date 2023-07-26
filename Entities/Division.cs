@@ -20,6 +20,5 @@ namespace BudgetPortal.Entities
         public String DealingHandID { get; set; }
 
         public DateTime CreatedDateTime { get; set; }
-        //public ICollection<BudgetDetails> Budgets { get; set; }
     }
 }

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BudgetPortal.Data;
 using BudgetPortal.Entities;
-using WebGrease.Css.Ast.Selectors;
+using static System.Collections.Specialized.BitVector32;
 
 namespace BudgetPortal.Controllers
 {
@@ -21,44 +21,37 @@ namespace BudgetPortal.Controllers
         }
 
         // GET: Groups
-        public async Task<IActionResult> Index(int SectionNumber)
+        public async Task<IActionResult> Index(int Sectionid)
         {
-            List<Groups> list = await (from Group in _context.Groups
-                                         where Group.sections.SectionNo == SectionNumber
-                                       select new Groups
-                                         {
-                                           Id = Group.Id,
-                                           GroupNo = Group.GroupNo,
-                                           GroupName = Group.GroupName,
-                                           CreatedDateTime = Group.CreatedDateTime
-                                           //,sections.SectionNo = SectionNumber
-                                       }).ToListAsync();
-              return _context.Groups != null ? 
-                          View(list) :
-                          Problem("Entity set 'ApplicationDbContext.Groups'  is null.");
+
+            Console.Write("Section Number : " + Sectionid);
+            var applicationDbContext = _context.BudgetGroups.Where(b =>b.SectionNo == Sectionid).Include(b => b.Sections);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Groups/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
-            if (id == null || _context.Groups == null)
+            if (id == null || _context.BudgetGroups == null)
             {
                 return NotFound();
             }
 
-            var groups = await _context.Groups
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (groups == null)
+            var budgetGroups = await _context.BudgetGroups
+                .Include(b => b.Sections)
+                .FirstOrDefaultAsync(m => m.GroupNo == id);
+            if (budgetGroups == null)
             {
                 return NotFound();
             }
 
-            return View(groups);
+            return View(budgetGroups);
         }
 
         // GET: Groups/Create
         public IActionResult Create()
         {
+            ViewData["SectionNo"] = new SelectList(_context.BudgetSections, "SectionNo", "SectionNo");
             return View();
         }
 
@@ -67,31 +60,34 @@ namespace BudgetPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,GroupNo,GroupName,CreatedDateTime")] Groups groups)
+        public async Task<IActionResult> Create([Bind("GroupNo,GroupName,SectionNo,CreatedDateTime")] BudgetGroups budgetGroups)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(groups);
+                _context.Add(budgetGroups);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                Console.WriteLine("budgetGroups.SectionNo:" + budgetGroups.SectionNo);
+                return RedirectToAction(nameof(Index), "Groups",new { sectionid = budgetGroups.SectionNo });
             }
-            return View(groups);
+            ViewData["SectionNo"] = new SelectList(_context.BudgetSections, "SectionNo", "SectionNo", budgetGroups.SectionNo);
+            return View(budgetGroups);
         }
 
         // GET: Groups/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
-            if (id == null || _context.Groups == null)
+            if (id == null || _context.BudgetGroups == null)
             {
                 return NotFound();
             }
 
-            var groups = await _context.Groups.FindAsync(id);
-            if (groups == null)
+            var budgetGroups = await _context.BudgetGroups.FindAsync(id);
+            if (budgetGroups == null)
             {
                 return NotFound();
             }
-            return View(groups);
+            ViewData["SectionNo"] = new SelectList(_context.BudgetSections, "SectionNo", "SectionNo", budgetGroups.SectionNo);
+            return View(budgetGroups);
         }
 
         // POST: Groups/Edit/5
@@ -99,9 +95,9 @@ namespace BudgetPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,GroupNo,GroupName,CreatedDateTime")] Groups groups)
+        public async Task<IActionResult> Edit(string id, [Bind("GroupNo,GroupName,SectionNo,CreatedDateTime")] BudgetGroups budgetGroups)
         {
-            if (id != groups.Id)
+            if (id != budgetGroups.GroupNo)
             {
                 return NotFound();
             }
@@ -110,12 +106,12 @@ namespace BudgetPortal.Controllers
             {
                 try
                 {
-                    _context.Update(groups);
+                    _context.Update(budgetGroups);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!GroupsExists(groups.Id))
+                    if (!BudgetGroupsExists(budgetGroups.GroupNo))
                     {
                         return NotFound();
                     }
@@ -126,49 +122,51 @@ namespace BudgetPortal.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(groups);
+            ViewData["SectionNo"] = new SelectList(_context.BudgetSections, "SectionNo", "SectionNo", budgetGroups.SectionNo);
+            return View(budgetGroups);
         }
 
         // GET: Groups/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
-            if (id == null || _context.Groups == null)
+            if (id == null || _context.BudgetGroups == null)
             {
                 return NotFound();
             }
 
-            var groups = await _context.Groups
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (groups == null)
+            var budgetGroups = await _context.BudgetGroups
+                .Include(b => b.Sections)
+                .FirstOrDefaultAsync(m => m.GroupNo == id);
+            if (budgetGroups == null)
             {
                 return NotFound();
             }
 
-            return View(groups);
+            return View(budgetGroups);
         }
 
         // POST: Groups/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            if (_context.Groups == null)
+            if (_context.BudgetGroups == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Groups'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.BudgetGroups'  is null.");
             }
-            var groups = await _context.Groups.FindAsync(id);
-            if (groups != null)
+            var budgetGroups = await _context.BudgetGroups.FindAsync(id);
+            if (budgetGroups != null)
             {
-                _context.Groups.Remove(groups);
+                _context.BudgetGroups.Remove(budgetGroups);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool GroupsExists(int id)
+        private bool BudgetGroupsExists(string id)
         {
-          return (_context.Groups?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.BudgetGroups?.Any(e => e.GroupNo == id)).GetValueOrDefault();
         }
     }
 }

@@ -4,6 +4,7 @@ using BudgetPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetPortal.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230726071848_UPdatingTableRelationsGroupAndSubGroup")]
+    partial class UPdatingTableRelationsGroupAndSubGroup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -207,34 +210,6 @@ namespace BudgetPortal.Data.Migrations
                     b.ToTable("BudgetGroups");
                 });
 
-            modelBuilder.Entity("BudgetPortal.Entities.BudgetLedgers", b =>
-                {
-                    b.Property<string>("LedgerNo")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<DateTime>("CreatedDateTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<string>("LedgerName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("SubGroupNo")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.HasKey("LedgerNo");
-
-                    b.HasIndex("SubGroupNo");
-
-                    b.ToTable("BudgetLedgers");
-                });
-
             modelBuilder.Entity("BudgetPortal.Entities.BudgetSections", b =>
                 {
                     b.Property<int>("SectionNo")
@@ -316,6 +291,47 @@ namespace BudgetPortal.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Division");
+                });
+
+            modelBuilder.Entity("BudgetPortal.Entities.Ledgers", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BudgetSubGroupsSubGroupNo")
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<DateTime>("CreatedDateTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("LedgerName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("LedgerNo")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("SubGroupNo")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BudgetSubGroupsSubGroupNo");
+
+                    b.HasIndex("LedgerNo")
+                        .IsUnique();
+
+                    b.ToTable("Ledgers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -466,17 +482,6 @@ namespace BudgetPortal.Data.Migrations
                     b.Navigation("Sections");
                 });
 
-            modelBuilder.Entity("BudgetPortal.Entities.BudgetLedgers", b =>
-                {
-                    b.HasOne("BudgetPortal.Entities.BudgetSubGroups", "subGroups")
-                        .WithMany("Ledgers")
-                        .HasForeignKey("SubGroupNo")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("subGroups");
-                });
-
             modelBuilder.Entity("BudgetPortal.Entities.BudgetSubGroups", b =>
                 {
                     b.HasOne("BudgetPortal.Entities.BudgetGroups", "groups")
@@ -486,6 +491,13 @@ namespace BudgetPortal.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("groups");
+                });
+
+            modelBuilder.Entity("BudgetPortal.Entities.Ledgers", b =>
+                {
+                    b.HasOne("BudgetPortal.Entities.BudgetSubGroups", null)
+                        .WithMany("Ledgers")
+                        .HasForeignKey("BudgetSubGroupsSubGroupNo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

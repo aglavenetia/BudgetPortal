@@ -2,18 +2,18 @@
 
 namespace BudgetPortal.Entities
 {
-    public class Ledgers
+    public class BudgetLedgers
     {
         [Key]
-        public int Id { get; set; }
-
-        [Required]
-        public int LedgerNo { get; set; }
+        [StringLength(10)]
+        public String LedgerNo { get; set; }
 
         [StringLength(200)]
         public String LedgerName { get; set; }
 
+        [StringLength(10)]
+        public String SubGroupNo { get; set; }
+        public BudgetSubGroups? subGroups { get; set; }
         public DateTime CreatedDateTime { get; set; }
-        public SubGroups subGroups { get; set; }
     }
 }

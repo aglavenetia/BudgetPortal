@@ -1,22 +1,22 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.Extensions.Hosting;
 
 namespace BudgetPortal.Entities
 {
-    public class Sections
+    public class BudgetSections
     {
         [Key]
-        public int Id { get; set; }
-
-        [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int SectionNo { get; set; }
 
         [StringLength(200)]
         public String SectionName { get; set; }
 
         public DateTime CreatedDateTime { get; set; }
-        //public ICollection<Groups> Groups { get; set; }
 
-        
+
+        public virtual ICollection<BudgetGroups>? Groups { get; } = new List<BudgetGroups>();
+       
     }
 }

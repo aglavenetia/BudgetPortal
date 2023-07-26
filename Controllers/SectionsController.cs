@@ -22,27 +22,27 @@ namespace BudgetPortal.Controllers
         // GET: Sections
         public async Task<IActionResult> Index()
         {
-              return _context.Sections != null ? 
-                          View(await _context.Sections.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Sections'  is null.");
+              return _context.BudgetSections != null ? 
+                          View(await _context.BudgetSections.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.BudgetSections'  is null.");
         }
 
         // GET: Sections/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Sections == null)
+            if (id == null || _context.BudgetSections == null)
             {
                 return NotFound();
             }
 
-            var sections = await _context.Sections
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (sections == null)
+            var budgetSections = await _context.BudgetSections
+                .FirstOrDefaultAsync(m => m.SectionNo == id);
+            if (budgetSections == null)
             {
                 return NotFound();
             }
 
-            return View(sections);
+            return View(budgetSections);
         }
 
         // GET: Sections/Create
@@ -56,31 +56,31 @@ namespace BudgetPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,SectionNo,SectionName,CreatedDateTime")] Sections sections)
+        public async Task<IActionResult> Create([Bind("SectionNo,SectionName,CreatedDateTime")] BudgetSections budgetSections)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(sections);
+                _context.Add(budgetSections);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(sections);
+            return View(budgetSections);
         }
 
         // GET: Sections/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Sections == null)
+            if (id == null || _context.BudgetSections == null)
             {
                 return NotFound();
             }
 
-            var sections = await _context.Sections.FindAsync(id);
-            if (sections == null)
+            var budgetSections = await _context.BudgetSections.FindAsync(id);
+            if (budgetSections == null)
             {
                 return NotFound();
             }
-            return View(sections);
+            return View(budgetSections);
         }
 
         // POST: Sections/Edit/5
@@ -88,9 +88,9 @@ namespace BudgetPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,SectionNo,SectionName,CreatedDateTime")] Sections sections)
+        public async Task<IActionResult> Edit(int id, [Bind("SectionNo,SectionName,CreatedDateTime")] BudgetSections budgetSections)
         {
-            if (id != sections.Id)
+            if (id != budgetSections.SectionNo)
             {
                 return NotFound();
             }
@@ -99,12 +99,12 @@ namespace BudgetPortal.Controllers
             {
                 try
                 {
-                    _context.Update(sections);
+                    _context.Update(budgetSections);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SectionsExists(sections.Id))
+                    if (!BudgetSectionsExists(budgetSections.SectionNo))
                     {
                         return NotFound();
                     }
@@ -115,25 +115,25 @@ namespace BudgetPortal.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(sections);
+            return View(budgetSections);
         }
 
         // GET: Sections/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Sections == null)
+            if (id == null || _context.BudgetSections == null)
             {
                 return NotFound();
             }
 
-            var sections = await _context.Sections
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (sections == null)
+            var budgetSections = await _context.BudgetSections
+                .FirstOrDefaultAsync(m => m.SectionNo == id);
+            if (budgetSections == null)
             {
                 return NotFound();
             }
 
-            return View(sections);
+            return View(budgetSections);
         }
 
         // POST: Sections/Delete/5
@@ -141,23 +141,23 @@ namespace BudgetPortal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Sections == null)
+            if (_context.BudgetSections == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Sections'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.BudgetSections'  is null.");
             }
-            var sections = await _context.Sections.FindAsync(id);
-            if (sections != null)
+            var budgetSections = await _context.BudgetSections.FindAsync(id);
+            if (budgetSections != null)
             {
-                _context.Sections.Remove(sections);
+                _context.BudgetSections.Remove(budgetSections);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SectionsExists(int id)
+        private bool BudgetSectionsExists(int id)
         {
-          return (_context.Sections?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.BudgetSections?.Any(e => e.SectionNo == id)).GetValueOrDefault();
         }
     }
 }

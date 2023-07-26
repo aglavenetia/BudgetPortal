@@ -1,0 +1,49 @@
+﻿@model IEnumerable<BudgetPortal.Entities.BudgetSubGroups>
+
+@{
+    ViewData["Title"] = "SubGroups";
+}
+
+<h1>SubGroups</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.subGroupName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.groups)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDateTime)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.subGroupName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.groups.GroupNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDateTime)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.SubGroupNo">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.SubGroupNo">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.SubGroupNo">Delete</a> |
+                <a asp-controller="Ledgers" asp-action="Index" asp-route-SubGroupid="@item.SubGroupNo">Add Ledgers</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<a asp-action="Index" asp-controller="Groups" asp-route-Groupid="model => model.groups.sections.SectionNo">Back to Groups</a>

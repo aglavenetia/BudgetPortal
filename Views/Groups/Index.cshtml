@@ -1,10 +1,10 @@
-﻿@model IEnumerable<BudgetPortal.Entities.Groups>
+﻿@model IEnumerable<BudgetPortal.Entities.BudgetGroups>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Groups";
 }
 
-<h1>Index</h1>
+<h1>Groups</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,10 +13,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.GroupNo)
+                @Html.DisplayNameFor(model => model.GroupName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.GroupName)
+                @Html.DisplayNameFor(model => model.Sections)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CreatedDateTime)
@@ -25,23 +25,26 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+      @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.GroupNo)
+                @Html.DisplayFor(modelItem => item.GroupName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.GroupName)
+                @Html.DisplayFor(modelItem => item.Sections.SectionNo)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedDateTime)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.GroupNo">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.GroupNo">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.GroupNo">Delete</a> |
+                <a asp-controller="SubGroups" asp-action="Index" asp-route-Groupid="@item.GroupNo">Add SubGroups</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+<a asp-action="Index" asp-controller="Sections">Back to Sections</a>

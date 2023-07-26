@@ -1,0 +1,47 @@
+﻿@model IEnumerable<BudgetPortal.Entities.BudgetLedgers>
+
+@{
+    ViewData["Title"] = "Ledgers";
+}
+
+<h1>Ledgers</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LedgerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.subGroups)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDateTime)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LedgerName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.subGroups.SubGroupNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDateTime)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.LedgerNo">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.LedgerNo">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.LedgerNo">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
