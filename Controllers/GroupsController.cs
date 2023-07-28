@@ -13,6 +13,7 @@ namespace BudgetPortal.Controllers
 {
     public class GroupsController : Controller
     {
+        private int SelectedSectionNo = 0;
         private readonly ApplicationDbContext _context;
         public GroupsController(ApplicationDbContext context)
         {
@@ -23,6 +24,7 @@ namespace BudgetPortal.Controllers
         public async Task<IActionResult> Index(int Sectionid)
         {   
              Console.Write("Section Number : " + Sectionid);
+             SelectedSectionNo= Sectionid;
              var applicationDbContext = _context.BudgetGroups.Where(b =>b.SectionNo == Sectionid).Include(b => b.Sections);
             return View(await applicationDbContext.ToListAsync());
         }
@@ -50,7 +52,7 @@ namespace BudgetPortal.Controllers
         public IActionResult Create()
         {
             ViewData["SectionNo"] = new SelectList(_context.BudgetSections, "SectionNo", "SectionNo");
-            return View();
+            return View();                     
         }
 
         // POST: Groups/Create

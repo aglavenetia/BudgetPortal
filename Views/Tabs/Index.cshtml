@@ -1,0 +1,57 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model IEnumerable<BudgetPortal.Entities.BudgetGroups>
+
+@{
+    ViewBag.Title = "BudgetForm";
+    int CountHeader = 0;
+    int CounterBody = 0;
+}
+<br/>
+
+
+<br/><br/>
+<ul id="myTab"  class="nav nav-tabs" role="tablist">
+@foreach(var item in Model)
+{
+        if (CountHeader==0)
+        {
+            <li class="nav-item active" role="presentation">
+                <button class="nav-link active" id="@item.GroupNo-tab" data-bs-toggle="tab" data-bs-target="#@item.GroupNo" type="button" role="tab" aria-controls="@item.GroupNo" aria-selected="true">@item.GroupName</button>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="@item.GroupNo-tab" data-bs-toggle="tab" data-bs-target="#@item.GroupNo" type="button" role="tab" aria-controls="@item.GroupNo" aria-selected="false">@item.GroupName</button>
+            </li>
+        }
+        
+        CountHeader++;
+ }
+</ul>
+
+<div id="myTab"  class="tab-content">
+@foreach(var item in Model)
+{
+    if(CounterBody==0)
+    {
+            <div id="@item.GroupNo" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@item.GroupNo">
+                <h3>@item.GroupName</h3>
+                <p>@item.SectionNo</p>
+            </div>
+    }
+    else
+    {
+            <div id="@item.GroupNo" class="tab-pane fade" role="tabpanel" aria-labelledby="@item.GroupNo">
+                <h3>@item.GroupName</h3>
+                <p>@item.SectionNo</p>
+            </div>
+    }
+    CounterBody++;
+}
+</div>
+
+    

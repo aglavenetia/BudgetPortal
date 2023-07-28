@@ -1,0 +1,95 @@
+﻿using BudgetPortal.Data;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace BudgetPortal.Controllers
+{
+    public class TabsController : Controller
+    {
+        private readonly ApplicationDbContext _context;
+
+        public TabsController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        // GET: TabsController
+        public async Task<IActionResult> Index()
+        {
+            return _context.BudgetGroups != null ?
+                         View(await _context.BudgetGroups.ToListAsync()) :
+                         Problem("Entity set 'ApplicationDbContext.BudgetGroups'  is null.");
+            //return View();
+        }
+
+        // GET: TabsController/Details/5
+        public ActionResult Details(int id)
+        {
+            return View();
+        }
+
+        // GET: TabsController/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: TabsController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(IFormCollection collection)
+        {
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: TabsController/Edit/5
+        public ActionResult Edit(int id)
+        {
+            return View();
+        }
+
+        // POST: TabsController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, IFormCollection collection)
+        {
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: TabsController/Delete/5
+        public ActionResult Delete(int id)
+        {
+            return View();
+        }
+
+        // POST: TabsController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, IFormCollection collection)
+        {
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+    }
+}
