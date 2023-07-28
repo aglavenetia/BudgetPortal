@@ -14,7 +14,6 @@ namespace BudgetPortal.Controllers
     public class GroupsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
         public GroupsController(ApplicationDbContext context)
         {
             _context = context;
@@ -22,10 +21,9 @@ namespace BudgetPortal.Controllers
 
         // GET: Groups
         public async Task<IActionResult> Index(int Sectionid)
-        {
-
-            Console.Write("Section Number : " + Sectionid);
-            var applicationDbContext = _context.BudgetGroups.Where(b =>b.SectionNo == Sectionid).Include(b => b.Sections);
+        {   
+             Console.Write("Section Number : " + Sectionid);
+             var applicationDbContext = _context.BudgetGroups.Where(b =>b.SectionNo == Sectionid).Include(b => b.Sections);
             return View(await applicationDbContext.ToListAsync());
         }
 
