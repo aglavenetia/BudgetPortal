@@ -1,7 +1,9 @@
 ﻿using BudgetPortal.Data;
+using BudgetPortal.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using BudgetPortal.Models;
 
 namespace BudgetPortal.Controllers
 {
@@ -15,12 +17,25 @@ namespace BudgetPortal.Controllers
         }
 
         // GET: TabsController
-        public async Task<IActionResult> Index()
+
+        public ActionResult Index()
+       //public async Task<IActionResult> Index()
         {
-            return _context.BudgetGroups != null ?
-                         View(await _context.BudgetGroups.ToListAsync()) :
-                         Problem("Entity set 'ApplicationDbContext.BudgetGroups'  is null.");
-            //return View();
+            var JoinedTable = from BS in _context.BudgetSections
+                               join BG in _context.BudgetGroups
+                               on BS.SectionNo equals BG.SectionNo into BG1
+                               from BG in BG1.DefaultIfEmpty()
+                              select new JoinedModel
+                               {
+                                  section = BS,
+                                  group = BG
+                               };
+            
+            //Problem("Entity set 'ApplicationDbContext.BudgetGroups'  is null.");
+            //return _context.BudgetGroups != null ?
+            //View(await _context.BudgetGroups.ToListAsync()) :
+            //Problem("Entity set 'ApplicationDbContext.BudgetGroups'  is null.");
+            return View(JoinedTable);
         }
 
         // GET: TabsController/Details/5

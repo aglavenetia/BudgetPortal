@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BudgetPortal.Entities.BudgetGroups>
+﻿@model IEnumerable<BudgetPortal.Entities.BudgetGroups.JoinedTable>
 
 @{
     ViewBag.Title = "BudgetForm";
@@ -17,17 +17,18 @@
     @foreach (var item in Model.Select(c => c.SectionNo).Distinct())
     {
         var inneridenti = String.Concat("Budget", @item.ToString());
+        var SectionName in Model.Where(d => d.SectionNo == @item);
 
         if (OuterHeaderCount == 0)
         {
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="@inneridenti-nav" data-bs-toggle="tab" data-bs-target="#@inneridenti" type="button" role="tab" aria-controls="@inneridenti" aria-selected="true">@item</button>
+                <button class="nav-link active" id="@inneridenti-nav" data-bs-toggle="tab" data-bs-target="#@inneridenti" type="button" role="tab" aria-controls="@inneridenti" aria-selected="true">@SectionName</button>
             </li>
         }
         else
         {
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="@inneridenti-nav" data-bs-toggle="tab" data-bs-target="#@inneridenti" type="button" role="tab" aria-controls="@inneridenti" aria-selected="false">@item</button>
+                <button class="nav-link" id="@inneridenti-nav" data-bs-toggle="tab" data-bs-target="#@inneridenti" type="button" role="tab" aria-controls="@inneridenti" aria-selected="false">@SectionName</button>
             </li>
         }
 
@@ -80,6 +81,7 @@
                           <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
                                <h3>@item.GroupName</h3>
                                <p>@item.SectionNo</p>
+                                
                           </div>
                        }
                        else
