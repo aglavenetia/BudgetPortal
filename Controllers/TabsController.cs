@@ -1,9 +1,11 @@
 ﻿using BudgetPortal.Data;
 using BudgetPortal.Entities;
-using Microsoft.AspNetCore.Http;
+using BudgetPortal.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using BudgetPortal.Models;
+using NuGet.DependencyResolver;
+using System.Collections.Generic;
+using static System.Collections.Specialized.BitVector32;
 
 namespace BudgetPortal.Controllers
 {
@@ -15,96 +17,32 @@ namespace BudgetPortal.Controllers
         {
             _context = context;
         }
-
-        // GET: TabsController
-
         public ActionResult Index()
-       //public async Task<IActionResult> Index()
         {
-            var JoinedTable = from BS in _context.BudgetSections
-                               join BG in _context.BudgetGroups
-                               on BS.SectionNo equals BG.SectionNo into BG1
-                               from BG in BG1.DefaultIfEmpty()
-                              select new JoinedModel
-                               {
-                                  section = BS,
-                                  group = BG
-                               };
-            
-            //Problem("Entity set 'ApplicationDbContext.BudgetGroups'  is null.");
-            //return _context.BudgetGroups != null ?
-            //View(await _context.BudgetGroups.ToListAsync()) :
-            //Problem("Entity set 'ApplicationDbContext.BudgetGroups'  is null.");
-            return View(JoinedTable);
-        }
 
-        // GET: TabsController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+            var mymodel = new MultipleData();
+            mymodel.Sectionss = _context.BudgetSections.ToList();
+            mymodel.Groupss = _context.BudgetGroups.ToList();
+            return View(mymodel);
 
-        // GET: TabsController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+            /* var JoinedTable = new List<JoinedModel>();
+              JoinedTable = (from BS in _context.BudgetSections.ToList()
+                                join BG in _context.BudgetGroups.ToList()
+                                on BS.SectionNo equals BG.SectionNo
+                                select new JoinedModel
+                                {
+                                    SectionNo = BS.SectionNo,
+                                    SectionName = BS.SectionName,
+                                    GroupNo = BG.GroupNo,
+                                    GroupName = BG.GroupName
+                                }).ToList();
 
-        // POST: TabsController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: TabsController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: TabsController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: TabsController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: TabsController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+             //Problem("Entity set 'ApplicationDbContext.BudgetGroups'  is null.");
+             //return _context.BudgetGroups != null ?
+             //View(await _context.BudgetGroups.ToListAsync()) :
+             //Problem("Entity set 'ApplicationDbContext.BudgetGroups'  is null.");
+             return View(JoinedTable);
+             //return View();*/
+        }    
     }
 }

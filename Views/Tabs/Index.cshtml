@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BudgetPortal.Entities.BudgetGroups.JoinedTable>
+﻿@model BudgetPortal.ViewModel.MultipleData
 
 @{
     ViewBag.Title = "BudgetForm";
@@ -7,28 +7,30 @@
     int CountHeader = 0;
     int CounterBody = 0;
 }
-<br/>
+<br />
 
 
-<br/><br/>
+<br />
+<br />
 
 <ul id="outerTab" class="nav nav-tabs" role="tablist">
 
-    @foreach (var item in Model.Select(c => c.SectionNo).Distinct())
+    @foreach (var item in Model.Groupss.Select(d => d.SectionNo).Distinct())
     {
+
         var inneridenti = String.Concat("Budget", @item.ToString());
-        var SectionName in Model.Where(d => d.SectionNo == @item);
+
 
         if (OuterHeaderCount == 0)
         {
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="@inneridenti-nav" data-bs-toggle="tab" data-bs-target="#@inneridenti" type="button" role="tab" aria-controls="@inneridenti" aria-selected="true">@SectionName</button>
+                <button class="nav-link active" id="@inneridenti-nav" data-bs-toggle="tab" data-bs-target="#@inneridenti" type="button" role="tab" aria-controls="@inneridenti" aria-selected="true">@Sectionname</button>
             </li>
         }
         else
         {
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="@inneridenti-nav" data-bs-toggle="tab" data-bs-target="#@inneridenti" type="button" role="tab" aria-controls="@inneridenti" aria-selected="false">@SectionName</button>
+                <button class="nav-link" id="@inneridenti-nav" data-bs-toggle="tab" data-bs-target="#@inneridenti" type="button" role="tab" aria-controls="@inneridenti" aria-selected="false">@Sectionname</button>
             </li>
         }
 
@@ -37,73 +39,20 @@
 </ul>
 
 <div id="outerTabContent" class="tab-content">
-<br/><br/>
-   @foreach(var inner in Model.Select(c => c.SectionNo).Distinct())
-   {
-       var inneridenti = String.Concat("Budget", @inner.ToString());
+    <br /><br />
+    @foreach (var inner in Model.Sectionss)
+    {
+        var inneridenti = String.Concat("Budget", @inner.SectionNo.ToString());
         CountHeader = 0;
         CounterBody = 0;
 
-        if (OuterBodyCount==0)
+        if (OuterBodyCount == 0)
         {
-           <div id="@inneridenti" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="true">
+            <div id="@inneridenti" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="true">
 
                 <ul id="innertab" class="nav nav-tabs" role="tablist">
 
-                @foreach (var item in Model.Where(d => d.SectionNo == @inner))
-                {
-                    var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
-                    if (CountHeader==0)
-                    {
-            
-                       <li class="nav-item" role="presentation">
-                          <button class="nav-link active" id="@identi-nav" data-bs-toggle="tab" data-bs-target="#@identi" type="button" role="tab" aria-controls="@identi" aria-selected="true">@item.GroupName</button>
-                       </li>
-                    }
-                    else
-                    {
-                       <li class="nav-item" role="presentation">
-                           <button class="nav-link" id="@identi-nav" data-bs-toggle="tab" data-bs-target="#@identi" type="button" role="tab" aria-controls="@identi" aria-selected="false">@item.GroupName</button>
-                       </li>
-                     }
-        
-                     CountHeader++ ;
-                }
-              </ul>
-
-              <div id="myTab" class="tab-content">
-
-                  @foreach(var item in Model.Where(d=>d.SectionNo==@inner))
-                  {
-                      var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
-                       if(CounterBody==0)
-                       {
-                          <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
-                               <h3>@item.GroupName</h3>
-                               <p>@item.SectionNo</p>
-                                
-                          </div>
-                       }
-                       else
-                       {
-                          <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
-                               <h3>@item.GroupName</h3>
-                               <p>@item.SectionNo</p>
-                          </div>
-                       }
-                        CounterBody++;
-                  }
-              </div>
-            </div>
-       }
-
-      else
-        {
-            <div id="@inneridenti" class="tab-pane fade" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="false">
-
-                <ul id="innertab" class="nav nav-tabs" role="tablist">
-
-                    @foreach (var item in Model.Where(d => d.SectionNo == @inner))
+                    @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
                         if (CountHeader == 0)
@@ -125,7 +74,60 @@
                 </ul>
 
                 <div id="myTab" class="tab-content">
-                    @foreach (var item in Model.Where(d => d.SectionNo == @inner))
+
+                    @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
+                    {
+                        var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
+                        if (CounterBody == 0)
+                        {
+                            <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
+                                <h3>@item.GroupName</h3>
+                                <p>@item.SectionNo</p>
+
+                            </div>
+                        }
+                        else
+                        {
+                            <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
+                                <h3>@item.GroupName</h3>
+                                <p>@item.SectionNo</p>
+                            </div>
+                        }
+                        CounterBody++;
+                    }
+                </div>
+            </div>
+        }
+
+        else
+        {
+            <div id="@inneridenti" class="tab-pane fade" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="false">
+
+                <ul id="innertab" class="nav nav-tabs" role="tablist">
+
+                    @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
+                    {
+                        var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
+                        if (CountHeader == 0)
+                        {
+
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="@identi-nav" data-bs-toggle="tab" data-bs-target="#@identi" type="button" role="tab" aria-controls="@identi" aria-selected="true">@item.GroupName</button>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="@identi-nav" data-bs-toggle="tab" data-bs-target="#@identi" type="button" role="tab" aria-controls="@identi" aria-selected="false">@item.GroupName</button>
+                            </li>
+                        }
+
+                        CountHeader++;
+                    }
+                </ul>
+
+                <div id="myTab" class="tab-content">
+                    @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
                         if (CounterBody == 0)
@@ -150,4 +152,4 @@
 
         OuterBodyCount++;
     }
-  </div>
+</div>
