@@ -1,4 +1,9 @@
-﻿@model BudgetPortal.ViewModel.MultipleData
+﻿
+@model BudgetPortal.ViewModel.MultipleData
+
+@using System.Web.Helpers;
+@using WebGridMvc;
+@using System.Web;
 
 @{
     ViewBag.Title = "BudgetForm";
@@ -6,7 +11,11 @@
     int OuterBodyCount = 0;
     int CountHeader = 0;
     int CounterBody = 0;
+    Layout = null;
+    var webGrid = new System.Web.Helpers.WebGrid(source: Model.SubGroupss, canSort: false, canPage: false);
 }
+
+
 <br />
 
 
@@ -15,22 +24,21 @@
 
 <ul id="outerTab" class="nav nav-tabs" role="tablist">
 
-    @foreach (var item in Model.Groupss.Select(d => d.SectionNo).Distinct())
+    @foreach (var item in Model.Sectionss)
     {
 
-        var inneridenti = String.Concat("Budget", @item.ToString());
-        var sectionname in Model.Sectionss.Where(m => m.SectionNo == @item).Select(m => m.SectionName);
+        var inneridenti = String.Concat("Budget", @item.SectionNo.ToString());
 
         if (OuterHeaderCount == 0)
         {
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="@inneridenti-nav" data-bs-toggle="tab" data-bs-target="#@inneridenti" type="button" role="tab" aria-controls="@inneridenti" aria-selected="true">@sectionname</button>
+                <button class="nav-link active" id="@inneridenti-nav" data-bs-toggle="tab" data-bs-target="#@inneridenti" type="button" role="tab" aria-controls="@inneridenti" aria-selected="true">@item.SectionName</button>
             </li>
         }
         else
         {
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="@inneridenti-nav" data-bs-toggle="tab" data-bs-target="#@inneridenti" type="button" role="tab" aria-controls="@inneridenti" aria-selected="false">@sectionname</button>
+                <button class="nav-link" id="@inneridenti-nav" data-bs-toggle="tab" data-bs-target="#@inneridenti" type="button" role="tab" aria-controls="@inneridenti" aria-selected="false">@item.SectionName</button>
             </li>
         }
 
@@ -136,6 +144,7 @@
                                 <h3>@item.GroupName</h3>
                                 <p>@item.SectionNo</p>
                             </div>
+                            
                         }
                         else
                         {
@@ -153,3 +162,12 @@
         OuterBodyCount++;
     }
 </div>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+@section styles{
+    <link href="@Url.Content("~/Views/Tabs/webGrid.css")" rel="stylesheet" type="text/css" />
+
+}
+@section scripts{
+    <script src=" @Url.Content("~/Views/Tabs/webGrid.js")"></script>
+}

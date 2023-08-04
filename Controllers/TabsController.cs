@@ -23,6 +23,8 @@ namespace BudgetPortal.Controllers
             var mymodel = new MultipleData();
             mymodel.Sectionss = _context.BudgetSections.ToList();
             mymodel.Groupss = _context.BudgetGroups.ToList();
+            mymodel.SubGroupss = _context.BudgetSubGroups.ToList();
+            mymodel.Ledgerss = _context.BudgetLedgers.ToList();
             return View(mymodel);
 
             /* var JoinedTable = new List<JoinedModel>();
