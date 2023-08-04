@@ -19,18 +19,18 @@
     {
 
         var inneridenti = String.Concat("Budget", @item.ToString());
-
+        var sectionname in Model.Sectionss.Where(m => m.SectionNo == @item).Select(m => m.SectionName);
 
         if (OuterHeaderCount == 0)
         {
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="@inneridenti-nav" data-bs-toggle="tab" data-bs-target="#@inneridenti" type="button" role="tab" aria-controls="@inneridenti" aria-selected="true">@Sectionname</button>
+                <button class="nav-link active" id="@inneridenti-nav" data-bs-toggle="tab" data-bs-target="#@inneridenti" type="button" role="tab" aria-controls="@inneridenti" aria-selected="true">@sectionname</button>
             </li>
         }
         else
         {
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="@inneridenti-nav" data-bs-toggle="tab" data-bs-target="#@inneridenti" type="button" role="tab" aria-controls="@inneridenti" aria-selected="false">@Sectionname</button>
+                <button class="nav-link" id="@inneridenti-nav" data-bs-toggle="tab" data-bs-target="#@inneridenti" type="button" role="tab" aria-controls="@inneridenti" aria-selected="false">@sectionname</button>
             </li>
         }
 
