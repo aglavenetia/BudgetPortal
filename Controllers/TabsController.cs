@@ -2,9 +2,12 @@
 using BudgetPortal.Entities;
 using BudgetPortal.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using NuGet.DependencyResolver;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using static System.Collections.Specialized.BitVector32;
 
 namespace BudgetPortal.Controllers
@@ -45,6 +48,7 @@ namespace BudgetPortal.Controllers
              //Problem("Entity set 'ApplicationDbContext.BudgetGroups'  is null.");
              return View(JoinedTable);
              //return View();*/
-        }    
+        }
+        
     }
 }

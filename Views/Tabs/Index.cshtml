@@ -1,18 +1,12 @@
 ﻿
 @model BudgetPortal.ViewModel.MultipleData
 
-@using System.Web.Helpers;
-@using WebGridMvc;
-@using System.Web;
-
 @{
-    ViewBag.Title = "BudgetForm";
+    ViewData["Title"] = "BudgetForm";
     int OuterHeaderCount = 0;
     int OuterBodyCount = 0;
     int CountHeader = 0;
-    int CounterBody = 0;
-    Layout = null;
-    var webGrid = new System.Web.Helpers.WebGrid(source: Model.SubGroupss, canSort: false, canPage: false);
+    int CounterBody = 0;   
 }
 
 
@@ -93,6 +87,32 @@
                                 <p>@item.SectionNo</p>
 
                             </div>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            SubGroupNumber
+                                        </th>
+                                        <th>
+                                            SubGroupName
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Subs.SubGroupNo
+                                            </td>
+                                            <td>
+                                                @Subs.subGroupName
+                                            </td>
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
                         }
                         else
                         {
@@ -100,6 +120,32 @@
                                 <h3>@item.GroupName</h3>
                                 <p>@item.SectionNo</p>
                             </div>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            SubGroupNumber
+                                        </th>
+                                        <th>
+                                            SubGroupName
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Subs.SubGroupNo
+                                            </td>
+                                            <td>
+                                                @Subs.subGroupName
+                                            </td>
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
                         }
                         CounterBody++;
                     }
@@ -144,6 +190,32 @@
                                 <h3>@item.GroupName</h3>
                                 <p>@item.SectionNo</p>
                             </div>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            SubGroupNumber
+                                        </th>
+                                        <th>
+                                            SubGroupName
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals( @item.GroupNo)))
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Subs.SubGroupNo
+                                            </td>
+                                            <td>
+                                                @Subs.subGroupName
+                                            </td>
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
                             
                         }
                         else
@@ -152,6 +224,32 @@
                                 <h3>@item.GroupName</h3>
                                 <p>@item.SectionNo</p>
                             </div>
+                            <table class=”table”>
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            SubGroupNumber
+                                        </th>
+                                        <th>
+                                            SubGroupName
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Subs.SubGroupNo
+                                            </td>
+                                            <td>
+                                                @Subs.subGroupName
+                                            </td>
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
                         }
                         CounterBody++;
                     }
@@ -162,12 +260,3 @@
         OuterBodyCount++;
     }
 </div>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-
-@section styles{
-    <link href="@Url.Content("~/Views/Tabs/webGrid.css")" rel="stylesheet" type="text/css" />
-
-}
-@section scripts{
-    <script src=" @Url.Content("~/Views/Tabs/webGrid.js")"></script>
-}
