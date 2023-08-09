@@ -28,5 +28,7 @@ namespace BudgetPortal.ViewModel
 
         public IEnumerable<BudgetLedgers> Ledgerss { get; set; }
 
+        public IEnumerable<Division> Divisionss { get; set; }
+
     }
 }

@@ -6,14 +6,20 @@
     int OuterHeaderCount = 0;
     int OuterBodyCount = 0;
     int CountHeader = 0;
-    int CounterBody = 0;   
+    int CounterBody = 0;
+    int TableCount = 0;
 }
 
 
-<br />
+<br /><br />
+<div class="form-group">
+Region
+<div class="col-md-10">
+    
+</div>
 
+</div>
 
-<br />
 <br />
 
 <ul id="outerTab" class="nav nav-tabs" role="tablist">
@@ -52,7 +58,7 @@
         {
             <div id="@inneridenti" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="true">
 
-                <ul id="innertab" class="nav nav-tabs" role="tablist">
+                <ul id="innertab1" class="nav nav-tabs" role="tablist">
 
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
@@ -75,21 +81,19 @@
                     }
                 </ul>
 
-                <div id="myTab" class="tab-content">
-
+                <div id="innertabcontent1" class="tab-content">
+                    <br/><br/><br/>
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
                         if (CounterBody == 0)
                         {
                             <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
-                                <h3>@item.GroupName</h3>
-                                <p>@item.SectionNo</p>
-
-                            </div>
+                       
                             <table class="table">
                                 <thead>
                                     <tr>
+                                        <th></th>
                                         <th>
                                             SubGroupNumber
                                         </th>
@@ -102,6 +106,24 @@
                                     @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                     {
                                         <tr>
+                                             <td>
+                                                    <img src="~/Images/plus.png" />
+                                                    <div id="NestedTable" style="display:none">
+                                                        <table class="table ChildGrid">
+                                                            <tr>
+                                                                <th>Ledger Number</th>
+                                                                <th>Ledger Name</th>
+                                                            </tr>
+                                                            @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
+                                                            {
+                                                                <tr>
+                                                                    <td>@Ledgers.LedgerNo</td>
+                                                                    <td>@Ledgers.LedgerName</td>
+                                                                </tr>
+                                                            }
+                                                        </table>
+                                                    </div>
+                                             </td>
                                             <td>
                                                 @Subs.SubGroupNo
                                             </td>
@@ -110,19 +132,20 @@
                                             </td>
 
                                         </tr>
+                                        TableCount++;
                                     }
                                 </tbody>
                             </table>
+                           </div>
                         }
                         else
                         {
                             <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
-                                <h3>@item.GroupName</h3>
-                                <p>@item.SectionNo</p>
-                            </div>
+                                <br /><br /><br />
                             <table class="table">
                                 <thead>
                                     <tr>
+                                        <th></th>
                                         <th>
                                             SubGroupNumber
                                         </th>
@@ -135,6 +158,24 @@
                                     @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                     {
                                         <tr>
+                                                <td>
+                                                    <img src="~/Images/plus.png" />
+                                                    <div id="NestedTable" style="display:none">
+                                                        <table class="table ChildGrid">
+                                                            <tr>
+                                                                <th>Ledger Number</th>
+                                                                <th>Ledger Name</th>
+                                                            </tr>
+                                                            @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
+                                                            {
+                                                                <tr>
+                                                                    <td>@Ledgers.LedgerNo</td>
+                                                                    <td>@Ledgers.LedgerName</td>
+                                                                </tr>
+                                                            }
+                                                        </table>
+                                                    </div>
+                                                </td>
                                             <td>
                                                 @Subs.SubGroupNo
                                             </td>
@@ -143,9 +184,11 @@
                                             </td>
 
                                         </tr>
+                                        TableCount++;
                                     }
                                 </tbody>
                             </table>
+                            </div>
                         }
                         CounterBody++;
                     }
@@ -157,7 +200,7 @@
         {
             <div id="@inneridenti" class="tab-pane fade" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="false">
 
-                <ul id="innertab" class="nav nav-tabs" role="tablist">
+                <ul id="innertab2" class="nav nav-tabs" role="tablist">
 
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
@@ -180,19 +223,19 @@
                     }
                 </ul>
 
-                <div id="myTab" class="tab-content">
+                <div id="innertabcontent2" class="tab-content">
+                    <br /><br /><br />
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
                         if (CounterBody == 0)
                         {
                             <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
-                                <h3>@item.GroupName</h3>
-                                <p>@item.SectionNo</p>
-                            </div>
-                            <table class="table">
+                            
+                             <table class="table">
                                 <thead>
                                     <tr>
+                                        <th></th>
                                         <th>
                                             SubGroupNumber
                                         </th>
@@ -206,6 +249,24 @@
                                     {
                                         <tr>
                                             <td>
+                                                <img src="~/Images/plus.png" />
+                                                <div id="NestedTable"style="display:none">
+                                                    <table class="table ChildGrid">
+                                                        <tr>
+                                                            <th>Ledger Number</th>
+                                                            <th>Ledger Name</th>
+                                                        </tr>
+                                                        @foreach (var Ledgers in Model.Ledgerss.Where(d =>d.SubGroupNo.Equals(@Subs.SubGroupNo)))
+                                                        {
+                                                            <tr>
+                                                                    <td>@Ledgers.LedgerNo</td>
+                                                                    <td>@Ledgers.LedgerName</td>
+                                                            </tr>
+                                                        }
+                                                    </table>
+                                                </div>
+                                            </td>
+                                            <td>
                                                 @Subs.SubGroupNo
                                             </td>
                                             <td>
@@ -213,20 +274,21 @@
                                             </td>
 
                                         </tr>
+
+                                        TableCount++;
                                     }
                                 </tbody>
-                            </table>
-                            
+                             </table>
+                           </div> 
                         }
                         else
                         {
                             <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
-                                <h3>@item.GroupName</h3>
-                                <p>@item.SectionNo</p>
-                            </div>
-                            <table class=”table”>
+                                <br /><br /><br />
+                            <table class="table">
                                 <thead>
                                     <tr>
+                                        <th></th>
                                         <th>
                                             SubGroupNumber
                                         </th>
@@ -240,6 +302,24 @@
                                     {
                                         <tr>
                                             <td>
+                                                    <img src="~/Images/plus.png" />
+                                                    <div id="NestedTable" style="display:none">
+                                                        <table class="table ChildGrid">
+                                                            <tr>
+                                                                <th>Ledger Number</th>
+                                                                <th>Ledger Name</th>
+                                                            </tr>
+                                                            @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
+                                                            {
+                                                                <tr>
+                                                                    <td>@Ledgers.LedgerNo</td>
+                                                                    <td>@Ledgers.LedgerName</td>
+                                                                </tr>
+                                                            }
+                                                        </table>
+                                                    </div>
+                                            </td>
+                                            <td>
                                                 @Subs.SubGroupNo
                                             </td>
                                             <td>
@@ -247,9 +327,11 @@
                                             </td>
 
                                         </tr>
+                                        TableCount++;
                                     }
                                 </tbody>
                             </table>
+                            </div>
                         }
                         CounterBody++;
                     }
@@ -260,3 +342,5 @@
         OuterBodyCount++;
     }
 </div>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="~/js/nestedtable.js"></script>

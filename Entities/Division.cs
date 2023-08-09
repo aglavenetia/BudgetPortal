@@ -19,6 +19,9 @@ namespace BudgetPortal.Entities
         [StringLength(200)]
         public String DealingHandID { get; set; }
 
+        [StringLength(200)]
+        public String State { get; set; }
+
         public DateTime CreatedDateTime { get; set; }
     }
 }
