@@ -1,7 +1,9 @@
 ﻿using BudgetPortal.Entities;
 using Microsoft.EntityFrameworkCore;
 using NuGet.DependencyResolver;
+using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
+using System.Web.Mvc;
 using static System.Collections.Specialized.BitVector32;
 
 namespace BudgetPortal.ViewModel
@@ -29,6 +31,10 @@ namespace BudgetPortal.ViewModel
         public IEnumerable<BudgetLedgers> Ledgerss { get; set; }
 
         public IEnumerable<Division> Divisionss { get; set; }
+
+        public IEnumerable<SelectListItem> DivisionNames { get; set; }
+       
+
 
     }
 }
