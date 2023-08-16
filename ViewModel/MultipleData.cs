@@ -3,26 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using NuGet.DependencyResolver;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
-using System.Web.Mvc;
+//using System.Web.Mvc;
 using static System.Collections.Specialized.BitVector32;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BudgetPortal.ViewModel
 {
     public class MultipleData
     {
-        /* public int SectionNo { get; set; }
-         public String SectionName { get; set; }
-         public String GroupNo { get; set; }
-         public String GroupName { get; set; }
-
-         public String SubGroupNo { get; set; }
-
-         public String SubGroupName { get; set; }
-
-         public String LedgerNumber { get; set; }
-
-         public String LedgerName { get; set; }*/
-
         public IEnumerable<BudgetSections> Sectionss { get; set; }
         public IEnumerable<BudgetGroups> Groupss { get; set; }
 
@@ -30,10 +19,16 @@ namespace BudgetPortal.ViewModel
 
         public IEnumerable<BudgetLedgers> Ledgerss { get; set; }
 
+        public IEnumerable<BudgetDetails> Detailss { get; set; }
+
+
         public IEnumerable<Division> Divisionss { get; set; }
 
         public IEnumerable<SelectListItem> DivisionNames { get; set; }
-       
+
+        public IEnumerable<AcademicYears> AcademicYearss { get; set; }
+        public IEnumerable<SelectListItem> AcademicYears { get; set; }
+
 
 
     }

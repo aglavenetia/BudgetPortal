@@ -1,8 +1,7 @@
-﻿
-@model BudgetPortal.ViewModel.MultipleData
+﻿@model BudgetPortal.ViewModel.MultipleData
 
 @{
-    ViewData["Title"] = "BudgetForm";
+    ViewData["Title"] = "View";
     int OuterHeaderCount = 0;
     int OuterBodyCount = 0;
     int CountHeader = 0;
@@ -10,11 +9,23 @@
     int TableCount = 0;
 }
 
-
-<br /><br />
 <br />
-
-
+@using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
+{
+<div style = "float:right">
+  <table border="0" cellpadding="5" cellspacing="0" >
+    <tr>
+      <td>     
+           @Html.DropDownList("DivisionNames", Model.DivisionNames)      
+      </td>
+      <td>
+           @Html.DropDownList("AcademicYears", Model.AcademicYears)
+      </td>       
+    </tr>
+  </table>
+</div>
+<br />
+<br />
 <ul id="outerTab" class="nav nav-tabs" role="tablist">
 
     @foreach (var item in Model.Sectionss)
@@ -40,12 +51,13 @@
 </ul>
 
 <div id="outerTabContent" class="tab-content">
-    <br /><br />
+    <br />
     @foreach (var inner in Model.Sectionss)
     {
         var inneridenti = String.Concat("Budget", @inner.SectionNo.ToString());
         CountHeader = 0;
         CounterBody = 0;
+        TableCount = 0;
 
         if (OuterBodyCount == 0)
         {
@@ -75,82 +87,73 @@
                 </ul>
 
                 <div id="innertabcontent1" class="tab-content">
-                    <br/><br/><br/>
+                    <br />
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
-                        var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
-                        if (CounterBody == 0)
+                        var Submit = String.Concat("Submit", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                           var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
+                           if (CounterBody == 0)
                         {
                             <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
-                       
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>
-                                            SubGroupNumber
-                                        </th>
-                                        <th>
-                                            SubGroupName
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
-                                    {
-                                        <tr>
-                                             <td>
-                                                    <img src="~/Images/plus.png" />
-                                                    <div id="NestedTable" style="display:none">
-                                                        <table class="table ChildGrid">
-                                                            <tr>
-                                                                <th>Ledger Number</th>
-                                                                <th>Ledger Name</th>
-                                                            </tr>
-                                                            @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
-                                                            {
-                                                                <tr>
-                                                                    <td>@Ledgers.LedgerNo</td>
-                                                                    <td>@Ledgers.LedgerName</td>
-                                                                </tr>
-                                                            }
-                                                        </table>
-                                                    </div>
-                                             </td>
-                                            <td>
-                                                @Subs.SubGroupNo
-                                            </td>
-                                            <td>
-                                                @Subs.subGroupName
-                                            </td>
 
-                                        </tr>
-                                        TableCount++;
-                                    }
-                                </tbody>
-                            </table>
-                           </div>
-                        }
-                        else
-                        {
-                            <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
-                                <br /><br /><br />
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>
-                                            SubGroupNumber
-                                        </th>
-                                        <th>
-                                            SubGroupName
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
-                                    {
+                                <table class="table">
+                                    <thead>
                                         <tr>
+                                            <th></th>
+                                            <th>
+                                                SubGroupNumber
+                                            </th>
+                                            <th>
+                                                SubGroupName
+                                            </th>
+                                            <th>
+                                                Budget Estimates 2022-23
+                                            </th>
+                                            <th>
+                                                Actal 2021-2022
+                                            </th>
+                                            <th>
+                                                Actual upto 30.09.2022
+                                            </th>
+                                            <th>
+                                                Revised Estimates 2022-23
+                                            </th>
+                                            <th>
+                                                % Variation in RE over the BE 2022-2023
+                                            </th>
+                                            <th>
+                                                AC & BW Proposal for RE 2022-2023
+                                            </th>
+                                            <th>
+                                                Budget Estimates 2023-24
+                                            </th>
+                                            <th>
+                                                % Variation in BE 2023-2024 over the RE 2022-2023
+                                            </th>
+                                            <th>
+                                                AC & BW Proposal for BE 2023-2024
+                                            </th>
+                                            <th>
+                                                Comments / Justification
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                        @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
+                                        {
+                                            var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name3 = String.Concat("ActCurrFinTill2ndQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name4 = String.Concat("RevEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name5 = String.Concat("PerVarRevEstOverBudgEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name6 = String.Concat("ACAndBWPropRECurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name7 = String.Concat("BudgEstNexFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name8 = String.Concat("PerVarRevEstOverBudgEstNxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo,@TableCount);
+                                            
+                                            <tr>
                                                 <td>
                                                     <img src="~/Images/plus.png" />
                                                     <div id="NestedTable" style="display:none">
@@ -169,21 +172,194 @@
                                                         </table>
                                                     </div>
                                                 </td>
-                                            <td>
-                                                @Subs.SubGroupNo
-                                            </td>
-                                            <td>
-                                                @Subs.subGroupName
-                                            </td>
+                                                <td>
+                                                    @Subs.SubGroupNo
+                                                </td>
+                                                <td>
+                                                    @Subs.subGroupName
+                                                </td>
+                                                <td>
+                                                    <input id="@name1" type="text">
+                                                </td>
+                                                <td>
+                                                    <input id="@name2" type="text">
 
-                                        </tr>
-                                        TableCount++;
-                                    }
-                                </tbody>
-                            </table>
+                                                </td>
+                                                <td>
+                                                    <input id="@name3" type="text">
+
+                                                </td>
+                                                <td>
+                                                    <input id="@name4" type="text">
+
+                                                </td>
+                                                <td>
+                                                    <input id="@name5" type="text">
+
+                                                </td>
+                                                <td>
+                                                    <input id="@name6" type="text">
+
+                                                </td>
+                                                <td>
+                                                    <input id="@name7" type="text">
+
+                                                </td>
+                                                <td>
+                                                    <input id="@name8" type="text">
+
+                                                </td>
+                                                <td>
+                                                    <input id="@name9" type="text">
+
+                                                </td>
+                                                <td>
+                                                    <input id="@name10" type="text">
+
+                                                </td>
+
+                                            </tr>
+
+                                            TableCount++;
+                                        }
+                                        
+                                    </tbody>
+                                </table>
+                                <input id="@Submit" type="submit" style="align-self:center">
                             </div>
                         }
-                        CounterBody++;
+                           else
+                           {
+                            <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
+                                <br />
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>
+                                                SubGroupNumber
+                                            </th>
+                                            <th>
+                                                SubGroupName
+                                            </th>
+                                            <th>
+                                                Budget Estimates 2022-23
+                                            </th>
+                                            <th>
+                                                Actal 2021-2022
+                                            </th>
+                                            <th>
+                                                Actual upto 30.09.2022
+                                            </th>
+                                            <th>
+                                                Revised Estimates 2022-23
+                                            </th>
+                                            <th>
+                                                % Variation in RE over the BE 2022-2023
+                                            </th>
+                                            <th>
+                                                AC & BW Proposal for RE 2022-2023
+                                            </th>
+                                            <th>
+                                                Budget Estimates 2023-24
+                                            </th>
+                                            <th>
+                                                % Variation in BE 2023-2024 over the RE 2022-2023
+                                            </th>
+                                            <th>
+                                                AC & BW Proposal for BE 2023-2024
+                                            </th>
+                                            <th>
+                                                Comments / Justification
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
+                                        {
+                                            var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name3 = String.Concat("ActCurrFinTill2ndQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name4 = String.Concat("RevEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name5 = String.Concat("PerVarRevEstOverBudgEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name6 = String.Concat("ACAndBWPropRECurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name7 = String.Concat("BudgEstNexFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name8 = String.Concat("PerVarRevEstOverBudgEstNxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+
+                                            <tr>
+                                                <td>
+                                                    <img src="~/Images/plus.png" />
+                                                    <div id="NestedTable" style="display:none">
+                                                        <table class="table ChildGrid">
+                                                            <tr>
+                                                                <th>Ledger Number</th>
+                                                                <th>Ledger Name</th>
+                                                            </tr>
+                                                            @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
+                                                            {
+                                                                <tr>
+                                                                    <td>@Ledgers.LedgerNo</td>
+                                                                    <td>@Ledgers.LedgerName</td>
+                                                                </tr>
+                                                            }
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    @Subs.SubGroupNo
+                                                </td>
+                                                <td>
+                                                    @Subs.subGroupName
+                                                </td>
+                                                <td>                                                  
+                                                    <input name="@name1" type="text">
+                                                </td>
+                                                <td>
+                                                    <input name="@name2" type="text">
+                                                  
+                                                </td>
+                                                <td>
+                                                    <input name="@name3" type="text">
+                                                    
+                                                </td>
+                                                <td>
+                                                    <input name="@name4" type="text">
+                                                    
+                                                </td>
+                                                <td>
+                                                    <input name="@name5" type="text">
+                                                 
+                                                </td>
+                                                <td>
+                                                    <input name="@name6" type="text">
+                                                  
+                                                </td>
+                                                <td>
+                                                    <input name="@name7" type="text">
+                                                   
+                                                </td>
+                                                <td>
+                                                    <input name="@name8" type="text">
+                                                  
+                                                </td>
+                                                <td>
+                                                    <input name="@name9" type="text">
+                                                   
+                                                </td>
+                                                <td>
+                                                    <input name="@name10" type="text">
+                                                  
+                                                </td>
+                                            </tr>
+                                            TableCount++;
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                           CounterBody++;
                     }
                 </div>
             </div>
@@ -197,6 +373,7 @@
 
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
+                        
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
                         if (CountHeader == 0)
                         {
@@ -217,84 +394,73 @@
                 </ul>
 
                 <div id="innertabcontent2" class="tab-content">
-                    <br /><br /><br />
+                    <br />
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
-                        var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
-                        if (CounterBody == 0)
-                        {
+                          var Submit = String.Concat("Submit", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                          var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
+                          if (CounterBody == 0)
+                         {
                             <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
-                            
-                             <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>
-                                            SubGroupNumber
-                                        </th>
-                                        <th>
-                                            SubGroupName
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals( @item.GroupNo)))
-                                    {
-                                        <tr>
-                                            <td>
-                                                <img src="~/Images/plus.png" />
-                                                <div id="NestedTable"style="display:none">
-                                                    <table class="table ChildGrid">
-                                                        <tr>
-                                                            <th>Ledger Number</th>
-                                                            <th>Ledger Name</th>
-                                                        </tr>
-                                                        @foreach (var Ledgers in Model.Ledgerss.Where(d =>d.SubGroupNo.Equals(@Subs.SubGroupNo)))
-                                                        {
-                                                            <tr>
-                                                                    <td>@Ledgers.LedgerNo</td>
-                                                                    <td>@Ledgers.LedgerName</td>
-                                                            </tr>
-                                                        }
-                                                    </table>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                @Subs.SubGroupNo
-                                            </td>
-                                            <td>
-                                                @Subs.subGroupName
-                                            </td>
 
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>
+                                                SubGroupNumber
+                                            </th>
+                                            <th>
+                                                SubGroupName
+                                            </th>
+                                            <th>
+                                                Budget Estimates 2022-23
+                                            </th>
+                                            <th>
+                                                Actal 2021-2022
+                                            </th>
+                                            <th>
+                                                Actual upto 30.09.2022
+                                            </th>
+                                            <th>
+                                                Revised Estimates 2022-23
+                                            </th>
+                                            <th>
+                                                % Variation in RE over the BE 2022-2023
+                                            </th>
+                                            <th>
+                                                AC & BW Proposal for RE 2022-2023
+                                            </th>
+                                            <th>
+                                                Budget Estimates 2023-24
+                                            </th>
+                                            <th>
+                                                % Variation in BE 2023-2024 over the RE 2022-2023
+                                            </th>
+                                            <th>
+                                                AC & BW Proposal for BE 2023-2024
+                                            </th>
+                                            <th>
+                                                Comments / Justification
+                                            </th>
                                         </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
+                                        {
+                                            var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo,@TableCount);
+                                            var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name3 = String.Concat("ActCurrFinTill2ndQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name4 = String.Concat("RevEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name5 = String.Concat("PerVarRevEstOverBudgEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name6 = String.Concat("ACAndBWPropRECurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name7 = String.Concat("BudgEstNexFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name8 = String.Concat("PerVarRevEstOverBudgEstNxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
-                                        TableCount++;
-                                    }
-                                </tbody>
-                             </table>
-                           </div> 
-                        }
-                        else
-                        {
-                            <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
-                                <br /><br /><br />
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>
-                                            SubGroupNumber
-                                        </th>
-                                        <th>
-                                            SubGroupName
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
-                                    {
-                                        <tr>
-                                            <td>
+                                            <tr>
+                                                <td>
                                                     <img src="~/Images/plus.png" />
                                                     <div id="NestedTable" style="display:none">
                                                         <table class="table ChildGrid">
@@ -311,22 +477,195 @@
                                                             }
                                                         </table>
                                                     </div>
-                                            </td>
-                                            <td>
-                                                @Subs.SubGroupNo
-                                            </td>
-                                            <td>
-                                                @Subs.subGroupName
-                                            </td>
+                                                </td>
+                                                <td>
+                                                    @Subs.SubGroupNo
+                                                </td>
+                                                <td>
+                                                    @Subs.subGroupName
+                                                </td>
+                                                <td>
+                                                    <input name="@name1" type="text">
+                                                </td>
+                                                <td>
+                                                    <input name="@name2" type="text">
 
-                                        </tr>
-                                        TableCount++;
-                                    }
-                                </tbody>
-                            </table>
+                                                </td>
+                                                <td>
+                                                    <input name="@name3" type="text">
+
+                                                </td>
+                                                <td>
+                                                    <input name="@name4" type="text">
+
+                                                </td>
+                                                <td>
+                                                    <input name="@name5" type="text">
+
+                                                </td>
+                                                <td>
+                                                    <input name="@name6" type="text">
+
+                                                </td>
+                                                <td>
+                                                    <input name="@name7" type="text">
+
+                                                </td>
+                                                <td>
+                                                    <input name="@name8" type="text">
+
+                                                </td>
+                                                <td>
+                                                    <input name="@name9" type="text">
+
+                                                </td>
+                                                <td>
+                                                    <input name="@name10" type="text">
+
+                                                </td>
+                                            </tr>
+
+                                            TableCount++;
+                                        }
+                                    </tbody>
+                                </table>
+                                <input id="@Submit" type="submit" style="align-self:center">
                             </div>
                         }
-                        CounterBody++;
+                          else
+                        {
+
+                            <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
+                                <br />
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>
+                                                SubGroupNumber
+                                            </th>
+                                            <th>
+                                                SubGroupName
+                                            </th>
+                                            <th>
+                                                Budget Estimates 2022-23
+                                            </th>
+                                            <th>
+                                                Actal 2021-2022
+                                            </th>
+                                            <th>
+                                                Actual upto 30.09.2022
+                                            </th>
+                                            <th>
+                                                Revised Estimates 2022-23
+                                            </th>
+                                            <th>
+                                                % Variation in RE over the BE 2022-2023
+                                            </th>
+                                            <th>
+                                                AC & BW Proposal for RE 2022-2023
+                                            </th>
+                                            <th>
+                                                Budget Estimates 2023-24
+                                            </th>
+                                            <th>
+                                                % Variation in BE 2023-2024 over the RE 2022-2023
+                                            </th>
+                                            <th>
+                                                AC & BW Proposal for BE 2023-2024
+                                            </th>
+                                            <th>
+                                                Comments / Justification
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
+                                        {
+                                            var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name3 = String.Concat("ActCurrFinTill2ndQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name4 = String.Concat("RevEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name5 = String.Concat("PerVarRevEstOverBudgEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name6 = String.Concat("ACAndBWPropRECurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name7 = String.Concat("BudgEstNexFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name8 = String.Concat("PerVarRevEstOverBudgEstNxtFin", @inner.SectionNo.ToString(), @item.GroupNo,@TableCount);
+                                            var name9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                            var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+
+                                            <tr>
+                                                <td>
+                                                    <img src="~/Images/plus.png" />
+                                                    <div id="NestedTable" style="display:none">
+                                                        <table class="table ChildGrid">
+                                                            <tr>
+                                                                <th>Ledger Number</th>
+                                                                <th>Ledger Name</th>
+                                                            </tr>
+                                                            @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
+                                                            {
+                                                                <tr>
+                                                                    <td>@Ledgers.LedgerNo</td>
+                                                                    <td>@Ledgers.LedgerName</td>
+                                                                </tr>
+                                                            }
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    @Subs.SubGroupNo
+                                                </td>
+                                                <td>
+                                                    @Subs.subGroupName
+                                                </td>
+                                                <td>
+                                                    <input name="@name1" type="text">
+                                                </td>
+                                                <td>
+                                                    <input name="@name2" type="text">
+
+                                                </td>
+                                                <td>
+                                                    <input name="@name3" type="text">
+
+                                                </td>
+                                                <td>
+                                                    <input name="@name4" type="text">
+
+                                                </td>
+                                                <td>
+                                                    <input name="@name5" type="text">
+
+                                                </td>
+                                                <td>
+                                                    <input name="@name6" type="text">
+
+                                                </td>
+                                                <td>
+                                                    <input name="@name7" type="text">
+
+                                                </td>
+                                                <td>
+                                                    <input name="@name8" type="text">
+
+                                                </td>
+                                                <td>
+                                                    <input name="@name9" type="text">
+
+                                                </td>
+                                                <td>
+                                                    <input name="@name10" type="text">
+
+                                                </td>
+                                            </tr>
+                                            TableCount++;
+                                        }
+                                    </tbody>
+                                </table>
+                                <input id="@Submit" type="submit" style="align-self:center">
+                            </div>
+                        }
+                          CounterBody++;
                     }
                 </div>
             </div>
@@ -335,5 +674,7 @@
         OuterBodyCount++;
     }
 </div>
+}
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="~/js/nestedtable.js"></script>
+

@@ -1,15 +1,8 @@
-﻿using BudgetPortal.Data;
-using BudgetPortal.Entities; 
+﻿using Microsoft.AspNetCore.Mvc;
+using BudgetPortal.Data;
+using BudgetPortal.Entities;
 using BudgetPortal.ViewModel;
-using Microsoft.Ajax.Utilities;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using NuGet.DependencyResolver;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Web.Mvc;
-using static System.Collections.Specialized.BitVector32;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BudgetPortal.Controllers
 {
@@ -21,19 +14,34 @@ namespace BudgetPortal.Controllers
         {
             _context = context;
         }
-        public ActionResult Index()
+
+        public IActionResult Index()
         {
             var mymodel = new MultipleData();
             mymodel.Sectionss = _context.BudgetSections.ToList();
             mymodel.Groupss = _context.BudgetGroups.ToList();
             mymodel.SubGroupss = _context.BudgetSubGroups.ToList();
             mymodel.Ledgerss = _context.BudgetLedgers.ToList();
-            mymodel.Divisionss = _context.Division.ToList();
+            mymodel.Detailss = _context.BudgetDetails.ToList();
+            mymodel.DivisionNames = _context.Division.AsEnumerable().Select(x =>
+                    new SelectListItem()
+                    {
+                        Selected = false,
+                        Text = x.DivisionName,
+                        Value = x.DivisionID.ToString()
+                        
+                    }).ToList();
+            mymodel.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
+                    new SelectListItem()
+                    {
+                        Selected = false,
+                        Text = x.Year1+"-"+x.Year2,
+                        Value = x.Id.ToString()
+
+                    }).ToList();
+
+
             return View(mymodel);
-         
         }
-
-
-        
     }
 }

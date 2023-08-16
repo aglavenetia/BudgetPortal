@@ -82,6 +82,7 @@ namespace BudgetPortal.Data
         public DbSet<BudgetLedgers> BudgetLedgers { get; set; }
         public DbSet<Division> Division { get; set; }
         public DbSet<BudgetDetails> BudgetDetails { get; set; }
+        public DbSet<AcademicYears> AcademicYears { get; set; }
     }
 
 
