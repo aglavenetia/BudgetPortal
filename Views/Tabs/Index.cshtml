@@ -1,12 +1,23 @@
 ﻿@model BudgetPortal.ViewModel.MultipleData
+@using System.Web;
+
+@using Microsoft.AspNetCore.Mvc
+
+@using Microsoft.AspNetCore.Identity
+@using BudgetPortal.Data
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
 @{
+    Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "View";
     int OuterHeaderCount = 0;
     int OuterBodyCount = 0;
     int CountHeader = 0;
     int CounterBody = 0;
     int TableCount = 0;
+    
 }
 
 <br />
@@ -15,9 +26,12 @@
 <div style = "float:right">
   <table border="0" cellpadding="5" cellspacing="0" >
     <tr>
-      <td>     
-           @Html.DropDownList("DivisionNames", Model.DivisionNames)      
-      </td>
+       @if (User.IsInRole("Admin"))
+       {
+          <td>     
+              @Html.DropDownList("DivisionNames", Model.DivisionNames)      
+          </td>
+       }
       <td>
            @Html.DropDownList("AcademicYears", Model.AcademicYears)
       </td>       
@@ -562,19 +576,25 @@
                                             <th>
                                                 % Variation in RE over the BE 2022-2023
                                             </th>
-                                            <th>
-                                                AC & BW Proposal for RE 2022-2023
-                                            </th>
-                                            <th>
+                                            @if (User.IsInRole("Admin"))
+                                                {
+                                                    <th>
+                                                        AC & BW Proposal for RE 2022-2023
+                                                    </th>
+                                                }
+                                                <th>
                                                 Budget Estimates 2023-24
                                             </th>
                                             <th>
                                                 % Variation in BE 2023-2024 over the RE 2022-2023
                                             </th>
-                                            <th>
-                                                AC & BW Proposal for BE 2023-2024
-                                            </th>
-                                            <th>
+                                            @if (User.IsInRole("Admin"))
+                                            {
+                                                    <th>
+                                                        AC & BW Proposal for BE 2023-2024
+                                                    </th>
+                                             }
+                                                <th>
                                                 Comments / Justification
                                             </th>
                                         </tr>
