@@ -15,6 +15,7 @@ namespace BudgetPortal.Controllers
             _context = context;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             var mymodel = new MultipleData();
@@ -43,5 +44,7 @@ namespace BudgetPortal.Controllers
 
             return View(mymodel);
         }
+
+        
     }
 }
