@@ -30,13 +30,13 @@ namespace BudgetPortal.Controllers
                         Selected = false,
                         Text = x.DivisionName,
                         Value = x.DivisionID.ToString()
-                        
+
                     }).ToList();
             mymodel.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
                     new SelectListItem()
                     {
                         Selected = false,
-                        Text = x.Year1+"-"+x.Year2,
+                        Text = x.Year1 + "-" + x.Year2,
                         Value = x.Id.ToString()
 
                     }).ToList();
@@ -45,6 +45,13 @@ namespace BudgetPortal.Controllers
             return View(mymodel);
         }
 
-        
+        [HttpPost]
+        public IActionResult Index(MultipleData MD)
+        {
+            var AcademicYear = MD.SelectedAcademicYear;
+            var splitAcdYear = AcademicYear.Split("-");
+            var Division = MD.SelectedDivision;
+            return View(MD);
+        }
     }
 }
