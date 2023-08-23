@@ -46,12 +46,35 @@ namespace BudgetPortal.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(MultipleData MD)
-        {
-            var AcademicYear = MD.SelectedAcademicYear;
-            var splitAcdYear = AcademicYear.Split("-");
-            var Division = MD.SelectedDivision;
+         public IActionResult Index(MultipleData MD)
+         {
+            var mymodel = new MultipleData();
+            var SelectedDivisionID = MD.SelectedDivisionID;
+            String SelectedDivisionName = MD.SelectedDivisionName;
+
+            var SelectedAcademicYearID = MD.SelectedAcademicYearID;
+            String SelectedAcademicYear = MD.SelectedAcademicYear;
+
+            String[] splitAcademicYear = SelectedAcademicYear.Split("-");
+
             return View(MD);
+    }
+
+    public IEnumerable<SelectListItem> GetDeptNames()
+        {
+            // Get data from Database.
+            var mymodel = new MultipleData();
+            mymodel.DivisionNames = _context.Division.AsEnumerable().Select(x =>
+                    new SelectListItem()
+                    {
+                        Selected = false,
+                        Text = x.DivisionName,
+                        Value = x.DivisionID.ToString()
+
+                    }).ToList();
+
+            return (mymodel.DivisionNames);
         }
+
     }
 }
