@@ -32,33 +32,33 @@ namespace BudgetPortal.ViewModel
         public int SectionNumber { get; set; }
 
         [Column(TypeName = "money")]
-        public Decimal BudEstCurrFin { get; set; }
+        public List<Decimal> BudEstCurrFin { get; set; }
 
         [Column(TypeName = "money")]
-        public Decimal ActPrevFin { get; set; }
+        public List<Decimal> ActPrevFin { get; set; }
 
         [Column(TypeName = "money")]
-        public Decimal ActCurrFinTill2ndQuart { get; set; }
+        public List<Decimal> ActCurrFinTill2ndQuart { get; set; }
 
         [Column(TypeName = "money")]
-        public Decimal RevEstCurrFin { get; set; }
+        public List<Decimal> RevEstCurrFin { get; set; }
 
         [Column(TypeName = "decimal(4,2)")]
-        public Decimal PerVarRevEstOverBudgEstCurrFin { get; set; }
+        public List<Decimal> PerVarRevEstOverBudgEstCurrFin { get; set; }
 
         [Column(TypeName = "money")]
-        public Decimal ACAndBWPropRECurrFin { get; set; }
+        public List<Decimal> ACAndBWPropRECurrFin { get; set; }
 
         [Column(TypeName = "money")]
-        public Decimal BudgEstNexFin { get; set; }
+        public List<Decimal> BudgEstNexFin { get; set; }
 
         [Column(TypeName = "decimal(4,2)")]
-        public Decimal PerVarRevEstOverBudgEstNxtFin { get; set; }
+        public List<Decimal> PerVarRevEstOverBudgEstNxtFin { get; set; }
 
         [Column(TypeName = "money")]
-        public Decimal ACAndBWPropRENxtFin { get; set; }
+        public List<Decimal> ACAndBWPropRENxtFin { get; set; }
 
-        public string Justification { get; set; }
+        public List<string> Justification { get; set; }
         public IEnumerable<Division> Divisionss { get; set; }
 
         public IEnumerable<SelectListItem> DivisionNames { get; set; }

@@ -1,10 +1,10 @@
 ﻿@model BudgetPortal.ViewModel.MultipleData
 @using System.Web;
 
-@using Microsoft.AspNetCore.Mvc
+@using Microsoft.AspNetCore.Mvc;
 
-@using Microsoft.AspNetCore.Identity
-@using BudgetPortal.Data
+@using Microsoft.AspNetCore.Identity;
+@using BudgetPortal.Data;
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
@@ -19,40 +19,38 @@
     int TableCount = 0;
     
 }
-
 <br />
 @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
 {
-<div style = "float:right">
-  <table border="0" cellpadding="5" cellspacing="0" >
-    <tr>
-       @if (User.IsInRole("Admin"))
-       {
-          <td>
+    <div style = "float:right">
+        <table border="0" cellpadding="5" cellspacing="0" >
+          <tr>
+           @if (User.IsInRole("Admin"))
+           {
+             <td>
               @Html.DropDownListFor(m => m.SelectedDivisionID, Model.DivisionNames,"--Please select any Division--", htmlAttributes : new { @class = "form-control", @id="Division" })
               @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName )
               @Html.ValidationMessageFor(Model => Model.DivisionNames, "", new { @class = "text-danger" })
-          </td>
-                    
-       }
-          <td>
+             </td>
+           }       
+             <td>
               @Html.DropDownListFor(m => m.SelectedAcademicYearID, Model.AcademicYears,"--Please select any Financial Year--", htmlAttributes : new { @class = "form-control", @id="AcademicYear" })
               @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear)
               @Html.ValidationMessageFor(Model => Model.AcademicYears, "", new { @class = "text-danger" })
-          </td>
+             </td>
                 
-    </tr>
-  </table>
-</div>
-<br />
-<br />
-<ul id="outerTab" class="nav nav-tabs" role="tablist">
+          </tr>
+        </table>
+    </div>
+    <br />
+    <br />
+    <ul id="outerTab" class="nav nav-tabs" role="tablist">
 
-    @foreach (var item in Model.Sectionss)
-    {
-
+      @foreach (var item in Model.Sectionss)
+      {
+            @Html.HiddenFor(model => model.SectionNumber)
         var inneridenti = String.Concat("Budget", @item.SectionNo.ToString());
-
+            
         if (OuterHeaderCount == 0)
         {
             <li class="nav-item" role="presentation">
@@ -67,17 +65,17 @@
         }
 
         OuterHeaderCount++;
-    }
-</ul>
+      }
+    </ul>
 
-<div id="outerTabContent" class="tab-content">
-    <br />
-    @foreach (var inner in Model.Sectionss)
-    {
-        var inneridenti = String.Concat("Budget", @inner.SectionNo.ToString());
-        CountHeader = 0;
-        CounterBody = 0;
-        TableCount = 0;
+    <div id="outerTabContent" class="tab-content">
+       <br />
+       @foreach (var inner in Model.Sectionss)
+       {
+           var inneridenti = String.Concat("Budget", @inner.SectionNo.ToString());
+           CountHeader = 0;
+           CounterBody = 0;
+           TableCount = 0;
 
         if (OuterBodyCount == 0)
         {
@@ -87,7 +85,9 @@
 
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
+                        @Html.HiddenFor(model => model.GroupNumber)
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
+                        
                         if (CountHeader == 0)
                         {
 
@@ -111,8 +111,9 @@
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
                         var Submit = String.Concat("Submit", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                           var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
-                           if (CounterBody == 0)
+                        var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());                        
+                           
+                        if (CounterBody == 0)
                         {
                             <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
 
@@ -141,18 +142,24 @@
                                             <th>
                                                 % Variation in RE over the BE 2022-2023
                                             </th>
-                                            <th>
-                                                AC & BW Proposal for RE 2022-2023
-                                            </th>
+                                            @if (User.IsInRole("Admin"))
+                                             {
+                                               <th>
+                                                  AC & BW Proposal for RE 2022-2023
+                                               </th>
+                                             }
                                             <th>
                                                 Budget Estimates 2023-24
                                             </th>
                                             <th>
                                                 % Variation in BE 2023-2024 over the RE 2022-2023
                                             </th>
-                                            <th>
-                                                AC & BW Proposal for BE 2023-2024
-                                            </th>
+                                            @if (User.IsInRole("Admin"))
+                                             {
+                                                <th>
+                                                   AC & BW Proposal for BE 2023-2024
+                                                </th>
+                                             }
                                             <th>
                                                 Comments / Justification
                                             </th>
@@ -162,6 +169,8 @@
                                         
                                         @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                         {
+                                                @Html.HiddenFor(model => model.SubGroupNumber)
+
                                             var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                             var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                             var name3 = String.Concat("ActCurrFinTill2ndQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -203,80 +212,86 @@
                                                     <div class="form-group">
                                                         <!-- <input id="@name1" type="text" value="">-->
                                                          @*Html.TextBox(@name1, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.BudEstCurrFin, new {htmlAttributes = new { @class = "form-control", @id = @name1 }})
-                                                        @Html.ValidationMessageFor(model => model.BudEstCurrFin, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.BudEstCurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name1 }})
+                                                            @Html.ValidationMessageFor(model => model.BudEstCurrFin[TableCount], "",new {@class = "text-danger"})
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="form-group">
                                                         <!-- <input id="@name2" type="text" value="">-->
                                                         @*@Html.TextBox(@name2, null, new { @class = "form-control" })*@
-                                                            @Html.EditorFor(model => model.ActPrevFin, new {htmlAttributes = new { @class = "form-control", @id = @name2 }})
-                                                        @Html.ValidationMessageFor(model => model.ActPrevFin, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.ActPrevFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name2 }})
+                                                        @Html.ValidationMessageFor(model => model.ActPrevFin[TableCount], "",new {@class = "text-danger"})
                                                    </div>
                                                 </td>
                                                 <td>
                                                    <div class="form-group">
                                                         <!-- <input id="@name3" type="text" value="">-->
                                                         @* @Html.TextBox(@name3, null, new { @class = "form-control" }) *@
-                                                        @Html.EditorFor(model => model.ActCurrFinTill2ndQuart, new {htmlAttributes = new { @class = "form-control", @id = @name3 }})
-                                                        @Html.ValidationMessageFor(model => model.ActCurrFinTill2ndQuart, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.ActCurrFinTill2ndQuart[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name3 }})
+                                                            @Html.ValidationMessageFor(model => model.ActCurrFinTill2ndQuart[TableCount], "",new {@class = "text-danger"})
                                                    </div>
                                                 </td>
                                                 <td>
                                                     <div class="form-group">
                                                         <!-- <input id="@name4" type="text" value="">-->
                                                         @* Html.TextBox(@name4, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.RevEstCurrFin, new {htmlAttributes = new { @class = "form-control", @id = @name4 }})
-                                                        @Html.ValidationMessageFor(model => model.RevEstCurrFin, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.RevEstCurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name4 }})
+                                                            @Html.ValidationMessageFor(model => model.RevEstCurrFin[TableCount], "",new {@class = "text-danger"})
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="form-group">
                                                         <!-- <input id="@name5" type="text" value="">-->
                                                         @*Html.TextBox(@name5, null, new { @class = "form-control" }) *@
-                                                        @Html.EditorFor(model => model.PerVarRevEstOverBudgEstCurrFin, new {htmlAttributes = new { @class = "form-control", @id = @name5 }})
-                                                        @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin, "",new {@class = "text-danger"})
+                                                        @Html.EditorFor(model => model.PerVarRevEstOverBudgEstCurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name5 }})
+                                                            @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[TableCount], "",new {@class = "text-danger"})
                                                     </div>
                                                 </td>
-                                                <td>
-                                                     <div class="form-group">
-                                                        <!-- <input id="@name6" type="text" value="">-->
-                                                        @* Html.TextBox(@name6, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.ACAndBWPropRECurrFin, new {htmlAttributes = new { @class = "form-control", @id = @name6 }})
-                                                        @Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin, "",new {@class = "text-danger"})
-                                                    </div>
-                                                </td>
-                                                <td>
+                                                @if (User.IsInRole("Admin"))
+                                                    {
+                                                        <td>
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name6" type="text" value="">-->
+                                                                @* Html.TextBox(@name6, null, new { @class = "form-control" }) *@
+                                                                @Html.EditorFor(model => model.ACAndBWPropRECurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name6 }})
+                                                                @Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin[TableCount], "",new {@class = "text-danger"})
+                                                            </div>
+                                                        </td>
+                                                    }
+                                                    <td>
                                                     <div class="form-group">
                                                         <!-- <input id="@name7" type="text" value="">-->
                                                         @*Html.TextBox(@name7, null, new { @class = "form-control" }) *@
-                                                        @Html.EditorFor(model => model.BudgEstNexFin, new {htmlAttributes = new { @class = "form-control", @id = @name7 }})
-                                                        @Html.ValidationMessageFor(model => model.BudgEstNexFin, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.BudgEstNexFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name7 }})
+                                                            @Html.ValidationMessageFor(model => model.BudgEstNexFin[TableCount], "",new {@class = "text-danger"})
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="form-group">
                                                         <!-- <input id="@name8" type="text" value="">-->
                                                             @* @Html.TextBox(@name8, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.PerVarRevEstOverBudgEstNxtFin, new {htmlAttributes = new { @class = "form-control", @id = @name8 }})
-                                                            @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.PerVarRevEstOverBudgEstNxtFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name8 }})
+                                                            @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[TableCount], "",new {@class = "text-danger"})
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <!-- <input id="@name9" type="text" value="">-->
-                                                        @* Html.TextBox(@name9, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.PerVarRevEstOverBudgEstNxtFin, new {htmlAttributes = new { @class = "form-control", @id = @name9 }})
-                                                        @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin, "",new {@class = "text-danger"})
-                                                    </div>
-                                                </td>
-                                                <td>
+                                                @if (User.IsInRole("Admin"))
+                                                    {
+                                                        <td>
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name9" type="text" value="">-->
+                                                                @* Html.TextBox(@name9, null, new { @class = "form-control" }) *@
+                                                                @Html.EditorFor(model => model.ACAndBWPropRENxtFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name9 }})
+                                                                @Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin[TableCount], "",new {@class = "text-danger"})
+                                                            </div>
+                                                        </td>
+                                                    }
+                                                    <td>
                                                     <div class="form-group">
                                                         <!-- <input id="@name10" type="text" value="">-->
                                                         @* Html.TextBox(@name10, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.Justification, new {htmlAttributes = new { @class = "form-control", @id = @name10 }})
-                                                            @Html.ValidationMessageFor(model => model.Justification, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.Justification[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name10 }})
+                                                            @Html.ValidationMessageFor(model => model.Justification[TableCount], "",new {@class = "text-danger"})
                                                     </div>
                                                 </td>
 
@@ -290,8 +305,8 @@
                                 <input id="@Submit" type="submit" style="align-self:center">
                             </div>
                         }
-                           else
-                           {
+                        else
+                        {
                             <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
                                 <br />
                                 <table class="table">
@@ -319,18 +334,24 @@
                                             <th>
                                                 % Variation in RE over the BE 2022-2023
                                             </th>
+                                            @if (User.IsInRole("Admin"))
+                                             {
                                             <th>
                                                 AC & BW Proposal for RE 2022-2023
                                             </th>
+                                             }
                                             <th>
                                                 Budget Estimates 2023-24
                                             </th>
                                             <th>
                                                 % Variation in BE 2023-2024 over the RE 2022-2023
                                             </th>
+                                            @if (User.IsInRole("Admin"))
+                                             {
                                             <th>
                                                 AC & BW Proposal for BE 2023-2024
                                             </th>
+                                             }
                                             <th>
                                                 Comments / Justification
                                             </th>
@@ -339,6 +360,8 @@
                                     <tbody>
                                         @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                         {
+                                                @Html.HiddenFor(model => model.GroupNumber)
+
                                             var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                             var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                             var name3 = String.Concat("ActCurrFinTill2ndQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -379,80 +402,86 @@
                                                         <div class="form-group">
                                                             <!-- <input id="@name1" type="text" value="">-->
                                                             @*Html.TextBox(@name1, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.BudEstCurrFin, new {htmlAttributes = new { @class = "form-control", @id = @name1 }})
-                                                            @Html.ValidationMessageFor(model => model.BudEstCurrFin, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.BudEstCurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name1 }})
+                                                            @Html.ValidationMessageFor(model => model.BudEstCurrFin[TableCount], "",new {@class = "text-danger"})
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="form-group">
                                                             <!-- <input id="@name2" type="text" value="">-->
                                                             @*@Html.TextBox(@name2, null, new { @class = "form-control" })*@
-                                                            @Html.EditorFor(model => model.ActPrevFin, new {htmlAttributes = new { @class = "form-control", @id = @name2 }})
-                                                            @Html.ValidationMessageFor(model => model.ActPrevFin, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.ActPrevFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name2 }})
+                                                            @Html.ValidationMessageFor(model => model.ActPrevFin[TableCount], "",new {@class = "text-danger"})
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="form-group">
                                                             <!-- <input id="@name3" type="text" value="">-->
                                                             @* @Html.TextBox(@name3, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.ActCurrFinTill2ndQuart, new {htmlAttributes = new { @class = "form-control", @id = @name3 }})
-                                                            @Html.ValidationMessageFor(model => model.ActCurrFinTill2ndQuart, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.ActCurrFinTill2ndQuart[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name3 }})
+                                                            @Html.ValidationMessageFor(model => model.ActCurrFinTill2ndQuart[TableCount], "",new {@class = "text-danger"})
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="form-group">
                                                             <!-- <input id="@name4" type="text" value="">-->
                                                             @* Html.TextBox(@name4, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.RevEstCurrFin, new {htmlAttributes = new { @class = "form-control", @id = @name4 }})
-                                                            @Html.ValidationMessageFor(model => model.RevEstCurrFin, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.RevEstCurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name4 }})
+                                                            @Html.ValidationMessageFor(model => model.RevEstCurrFin[TableCount], "",new {@class = "text-danger"})
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="form-group">
                                                             <!-- <input id="@name5" type="text" value="">-->
                                                             @*Html.TextBox(@name5, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.PerVarRevEstOverBudgEstCurrFin, new {htmlAttributes = new { @class = "form-control", @id = @name5 }})
-                                                            @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.PerVarRevEstOverBudgEstCurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name5 }})
+                                                            @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[TableCount], "",new {@class = "text-danger"})
                                                         </div>
                                                     </td>
-                                                    <td>
-                                                        <div class="form-group">
-                                                            <!-- <input id="@name6" type="text" value="">-->
-                                                            @* Html.TextBox(@name6, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.ACAndBWPropRECurrFin, new {htmlAttributes = new { @class = "form-control", @id = @name6 }})
-                                                            @Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin, "",new {@class = "text-danger"})
-                                                        </div>
-                                                    </td>
+                                                    @if (User.IsInRole("Admin"))
+                                                    {
+                                                        <td>
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name6" type="text" value="">-->
+                                                                @* Html.TextBox(@name6, null, new { @class = "form-control" }) *@
+                                                                @Html.EditorFor(model => model.ACAndBWPropRECurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name6 }})
+                                                                @Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin[TableCount], "",new {@class = "text-danger"})
+                                                            </div>
+                                                        </td>
+                                                    }
                                                     <td>
                                                         <div class="form-group">
                                                             <!-- <input id="@name7" type="text" value="">-->
                                                             @*Html.TextBox(@name7, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.BudgEstNexFin, new {htmlAttributes = new { @class = "form-control", @id = @name7 }})
-                                                            @Html.ValidationMessageFor(model => model.BudgEstNexFin, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.BudgEstNexFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name7 }})
+                                                            @Html.ValidationMessageFor(model => model.BudgEstNexFin[TableCount], "",new {@class = "text-danger"})
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="form-group">
                                                             <!-- <input id="@name8" type="text" value="">-->
                                                             @* @Html.TextBox(@name8, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.PerVarRevEstOverBudgEstNxtFin, new {htmlAttributes = new { @class = "form-control", @id = @name8 }})
-                                                            @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.PerVarRevEstOverBudgEstNxtFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name8 }})
+                                                            @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[TableCount], "",new {@class = "text-danger"})
                                                         </div>
                                                     </td>
-                                                    <td>
-                                                        <div class="form-group">
-                                                            <!-- <input id="@name9" type="text" value="">-->
-                                                            @* Html.TextBox(@name9, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.PerVarRevEstOverBudgEstNxtFin, new {htmlAttributes = new { @class = "form-control", @id = @name9 }})
-                                                            @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin, "",new {@class = "text-danger"})
-                                                        </div>
-                                                    </td>
+                                                    @if (User.IsInRole("Admin"))
+                                                    {
+                                                        <td>
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name9" type="text" value="">-->
+                                                                @* Html.TextBox(@name9, null, new { @class = "form-control" }) *@
+                                                                @Html.EditorFor(model => model.ACAndBWPropRENxtFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name9 }})
+                                                                @Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin[TableCount], "",new {@class = "text-danger"})
+                                                            </div>
+                                                        </td>
+                                                    }
                                                     <td>
                                                         <div class="form-group">
                                                             <!-- <input id="@name10" type="text" value="">-->
                                                             @* Html.TextBox(@name10, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.Justification, new {htmlAttributes = new { @class = "form-control", @id = @name10 }})
-                                                            @Html.ValidationMessageFor(model => model.Justification, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.Justification[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name10 }})
+                                                            @Html.ValidationMessageFor(model => model.Justification[TableCount], "",new {@class = "text-danger"})
                                                         </div>
                                                     </td>
                                             </tr>
@@ -462,13 +491,13 @@
                                 </table>
                             </div>
                         }
-                           CounterBody++;
+                       CounterBody++;
                     }
                 </div>
             </div>
         }
 
-        else
+           else
         {
             <div id="@inneridenti" class="tab-pane fade" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="false">
 
@@ -476,7 +505,7 @@
 
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
-                        
+                        @Html.HiddenFor(model => model.GroupNumber)
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
                         if (CountHeader == 0)
                         {
@@ -531,18 +560,24 @@
                                             <th>
                                                 % Variation in RE over the BE 2022-2023
                                             </th>
+                                            @if (User.IsInRole("Admin"))
+                                             {
                                             <th>
                                                 AC & BW Proposal for RE 2022-2023
                                             </th>
+                                             }
                                             <th>
                                                 Budget Estimates 2023-24
                                             </th>
                                             <th>
                                                 % Variation in BE 2023-2024 over the RE 2022-2023
                                             </th>
+                                            @if (User.IsInRole("Admin"))
+                                             {
                                             <th>
                                                 AC & BW Proposal for BE 2023-2024
                                             </th>
+                                             }
                                             <th>
                                                 Comments / Justification
                                             </th>
@@ -551,6 +586,8 @@
                                     <tbody>
                                         @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                         {
+                                                @Html.HiddenFor(model => model.SubGroupNumber)
+
                                             var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo,@TableCount);
                                             var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                             var name3 = String.Concat("ActCurrFinTill2ndQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -591,80 +628,86 @@
                                                         <div class="form-group">
                                                             <!-- <input id="@name1" type="text" value="">-->
                                                             @*Html.TextBox(@name1, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.BudEstCurrFin, new {htmlAttributes = new { @class = "form-control", @id = @name1 }})
-                                                            @Html.ValidationMessageFor(model => model.BudEstCurrFin, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.BudEstCurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name1 }})
+                                                            @Html.ValidationMessageFor(model => model.BudEstCurrFin[TableCount], "",new {@class = "text-danger"})
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="form-group">
                                                             <!-- <input id="@name2" type="text" value="">-->
                                                             @*@Html.TextBox(@name2, null, new { @class = "form-control" })*@
-                                                            @Html.EditorFor(model => model.ActPrevFin, new {htmlAttributes = new { @class = "form-control", @id = @name2 }})
-                                                            @Html.ValidationMessageFor(model => model.ActPrevFin, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.ActPrevFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name2 }})
+                                                            @Html.ValidationMessageFor(model => model.ActPrevFin[TableCount], "",new {@class = "text-danger"})
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="form-group">
                                                             <!-- <input id="@name3" type="text" value="">-->
                                                             @* @Html.TextBox(@name3, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.ActCurrFinTill2ndQuart, new {htmlAttributes = new { @class = "form-control", @id = @name3 }})
-                                                            @Html.ValidationMessageFor(model => model.ActCurrFinTill2ndQuart, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.ActCurrFinTill2ndQuart[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name3 }})
+                                                            @Html.ValidationMessageFor(model => model.ActCurrFinTill2ndQuart[TableCount], "",new {@class = "text-danger"})
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="form-group">
                                                             <!-- <input id="@name4" type="text" value="">-->
                                                             @* Html.TextBox(@name4, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.RevEstCurrFin, new {htmlAttributes = new { @class = "form-control", @id = @name4 }})
-                                                            @Html.ValidationMessageFor(model => model.RevEstCurrFin, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.RevEstCurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name4 }})
+                                                            @Html.ValidationMessageFor(model => model.RevEstCurrFin[TableCount], "",new {@class = "text-danger"})
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="form-group">
                                                             <!-- <input id="@name5" type="text" value="">-->
                                                             @*Html.TextBox(@name5, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.PerVarRevEstOverBudgEstCurrFin, new {htmlAttributes = new { @class = "form-control", @id = @name5 }})
-                                                            @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.PerVarRevEstOverBudgEstCurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name5 }})
+                                                            @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[TableCount], "",new {@class = "text-danger"})
                                                         </div>
                                                     </td>
-                                                    <td>
-                                                        <div class="form-group">
-                                                            <!-- <input id="@name6" type="text" value="">-->
-                                                            @* Html.TextBox(@name6, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.ACAndBWPropRECurrFin, new {htmlAttributes = new { @class = "form-control", @id = @name6 }})
-                                                            @Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin, "",new {@class = "text-danger"})
-                                                        </div>
-                                                    </td>
+                                                    @if (User.IsInRole("Admin"))
+                                                    {
+                                                        <td>
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name6" type="text" value="">-->
+                                                                @* Html.TextBox(@name6, null, new { @class = "form-control" }) *@
+                                                                @Html.EditorFor(model => model.ACAndBWPropRECurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name6 }})
+                                                                @Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin[TableCount], "",new {@class = "text-danger"})
+                                                            </div>
+                                                        </td>
+                                                    }
                                                     <td>
                                                         <div class="form-group">
                                                             <!-- <input id="@name7" type="text" value="">-->
                                                             @*Html.TextBox(@name7, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.BudgEstNexFin, new {htmlAttributes = new { @class = "form-control", @id = @name7 }})
-                                                            @Html.ValidationMessageFor(model => model.BudgEstNexFin, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.BudgEstNexFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name7 }})
+                                                            @Html.ValidationMessageFor(model => model.BudgEstNexFin[TableCount], "",new {@class = "text-danger"})
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="form-group">
                                                             <!-- <input id="@name8" type="text" value="">-->
                                                             @* @Html.TextBox(@name8, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.PerVarRevEstOverBudgEstNxtFin, new {htmlAttributes = new { @class = "form-control", @id = @name8 }})
-                                                            @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.PerVarRevEstOverBudgEstNxtFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name8 }})
+                                                            @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[TableCount], "",new {@class = "text-danger"})
                                                         </div>
                                                     </td>
-                                                    <td>
-                                                        <div class="form-group">
-                                                            <!-- <input id="@name9" type="text" value="">-->
-                                                            @* Html.TextBox(@name9, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.PerVarRevEstOverBudgEstNxtFin, new {htmlAttributes = new { @class = "form-control", @id = @name9 }})
-                                                            @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin, "",new {@class = "text-danger"})
-                                                        </div>
-                                                    </td>
+                                                    @if (User.IsInRole("Admin"))
+                                                    {
+                                                        <td>
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name9" type="text" value="">-->
+                                                                @* Html.TextBox(@name9, null, new { @class = "form-control" }) *@
+                                                                @Html.EditorFor(model => model.ACAndBWPropRENxtFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name9 }})
+                                                                @Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin[TableCount], "",new {@class = "text-danger"})
+                                                            </div>
+                                                        </td>
+                                                    }
                                                     <td>
                                                         <div class="form-group">
                                                             <!-- <input id="@name10" type="text" value="">-->
                                                             @* Html.TextBox(@name10, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.Justification, new {htmlAttributes = new { @class = "form-control", @id = @name10 }})
-                                                            @Html.ValidationMessageFor(model => model.Justification, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.Justification[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name10 }})
+                                                            @Html.ValidationMessageFor(model => model.Justification[TableCount], "",new {@class = "text-danger"})
                                                         </div>
                                                     </td>
                                             </tr>
@@ -707,11 +750,11 @@
                                                 % Variation in RE over the BE 2022-2023
                                             </th>
                                             @if (User.IsInRole("Admin"))
-                                                {
+                                             {
                                                     <th>
                                                         AC & BW Proposal for RE 2022-2023
                                                     </th>
-                                                }
+                                            }
                                                 <th>
                                                 Budget Estimates 2023-24
                                             </th>
@@ -732,6 +775,8 @@
                                     <tbody>
                                         @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                         {
+                                                @Html.HiddenFor(model => model.SubGroupNumber)
+
                                             var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                             var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                             var name3 = String.Concat("ActCurrFinTill2ndQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -772,80 +817,86 @@
                                                         <div class="form-group">
                                                             <!-- <input id="@name1" type="text" value="">-->
                                                             @*Html.TextBox(@name1, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.BudEstCurrFin, new {htmlAttributes = new { @class = "form-control", @id = @name1 }})
-                                                            @Html.ValidationMessageFor(model => model.BudEstCurrFin, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.BudEstCurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name1 }})
+                                                            @Html.ValidationMessageFor(model => model.BudEstCurrFin[TableCount], "",new {@class = "text-danger"})
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="form-group">
                                                             <!-- <input id="@name2" type="text" value="">-->
                                                             @*@Html.TextBox(@name2, null, new { @class = "form-control" })*@
-                                                            @Html.EditorFor(model => model.ActPrevFin, new {htmlAttributes = new { @class = "form-control", @id = @name2 }})
-                                                            @Html.ValidationMessageFor(model => model.ActPrevFin, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.ActPrevFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name2 }})
+                                                            @Html.ValidationMessageFor(model => model.ActPrevFin[TableCount], "",new {@class = "text-danger"})
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="form-group">
                                                             <!-- <input id="@name3" type="text" value="">-->
                                                             @* @Html.TextBox(@name3, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.ActCurrFinTill2ndQuart, new {htmlAttributes = new { @class = "form-control", @id = @name3 }})
-                                                            @Html.ValidationMessageFor(model => model.ActCurrFinTill2ndQuart, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.ActCurrFinTill2ndQuart[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name3 }})
+                                                            @Html.ValidationMessageFor(model => model.ActCurrFinTill2ndQuart[TableCount], "",new {@class = "text-danger"})
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="form-group">
                                                             <!-- <input id="@name4" type="text" value="">-->
                                                             @* Html.TextBox(@name4, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.RevEstCurrFin, new {htmlAttributes = new { @class = "form-control", @id = @name4 }})
-                                                            @Html.ValidationMessageFor(model => model.RevEstCurrFin, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.RevEstCurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name4 }})
+                                                            @Html.ValidationMessageFor(model => model.RevEstCurrFin[TableCount], "",new {@class = "text-danger"})
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="form-group">
                                                             <!-- <input id="@name5" type="text" value="">-->
                                                             @*Html.TextBox(@name5, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.PerVarRevEstOverBudgEstCurrFin, new {htmlAttributes = new { @class = "form-control", @id = @name5 }})
-                                                            @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.PerVarRevEstOverBudgEstCurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name5 }})
+                                                            @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[TableCount], "",new {@class = "text-danger"})
                                                         </div>
                                                     </td>
-                                                    <td>
-                                                        <div class="form-group">
-                                                            <!-- <input id="@name6" type="text" value="">-->
-                                                            @* Html.TextBox(@name6, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.ACAndBWPropRECurrFin, new {htmlAttributes = new { @class = "form-control", @id = @name6 }})
-                                                            @Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin, "",new {@class = "text-danger"})
-                                                        </div>
-                                                    </td>
+                                                    @if (User.IsInRole("Admin"))
+                                                    {
+                                                        <td>
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name6" type="text" value="">-->
+                                                                @* Html.TextBox(@name6, null, new { @class = "form-control" }) *@
+                                                                @Html.EditorFor(model => model.ACAndBWPropRECurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name6 }})
+                                                                @Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin[TableCount], "",new {@class = "text-danger"})
+                                                            </div>
+                                                        </td>
+                                                    }
                                                     <td>
                                                         <div class="form-group">
                                                             <!-- <input id="@name7" type="text" value="">-->
                                                             @*Html.TextBox(@name7, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.BudgEstNexFin, new {htmlAttributes = new { @class = "form-control", @id = @name7 }})
-                                                            @Html.ValidationMessageFor(model => model.BudgEstNexFin, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.BudgEstNexFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name7 }})
+                                                            @Html.ValidationMessageFor(model => model.BudgEstNexFin[TableCount], "",new {@class = "text-danger"})
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="form-group">
                                                             <!-- <input id="@name8" type="text" value="">-->
                                                             @* @Html.TextBox(@name8, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.PerVarRevEstOverBudgEstNxtFin, new {htmlAttributes = new { @class = "form-control", @id = @name8 }})
-                                                            @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.PerVarRevEstOverBudgEstNxtFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name8 }})
+                                                            @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[TableCount], "",new {@class = "text-danger"})
                                                         </div>
                                                     </td>
-                                                    <td>
-                                                        <div class="form-group">
-                                                            <!-- <input id="@name9" type="text" value="">-->
-                                                            @* Html.TextBox(@name9, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.PerVarRevEstOverBudgEstNxtFin, new {htmlAttributes = new { @class = "form-control", @id = @name9 }})
-                                                            @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin, "",new {@class = "text-danger"})
-                                                        </div>
-                                                    </td>
+                                                    @if (User.IsInRole("Admin"))
+                                                    {
+                                                        <td>
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name9" type="text" value="">-->
+                                                                @* Html.TextBox(@name9, null, new { @class = "form-control" }) *@
+                                                                @Html.EditorFor(model => model.ACAndBWPropRENxtFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name9 }})
+                                                                @Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin[TableCount], "",new {@class = "text-danger"})
+                                                            </div>
+                                                        </td>
+                                                    }
                                                     <td>
                                                         <div class="form-group">
                                                             <!-- <input id="@name10" type="text" value="">-->
                                                             @* Html.TextBox(@name10, null, new { @class = "form-control" }) *@
-                                                            @Html.EditorFor(model => model.Justification, new {htmlAttributes = new { @class = "form-control", @id = @name10 }})
-                                                            @Html.ValidationMessageFor(model => model.Justification, "",new {@class = "text-danger"})
+                                                            @Html.EditorFor(model => model.Justification[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name10 }})
+                                                            @Html.ValidationMessageFor(model => model.Justification[TableCount], "",new {@class = "text-danger"})
                                                         </div>
                                                     </td>
                                             </tr>
@@ -860,11 +911,11 @@
                     }
                 </div>
             </div>
-        }
+          }
 
-        OuterBodyCount++;
-    }
-</div>
+           OuterBodyCount++;
+       }
+    </div>
 }
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="~/js/nestedtable.js"></script>
@@ -874,12 +925,30 @@
         $(document).ready(function() {
             $("#Division").change(function(evt){
                 $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
-            });
-        });
+             });
+          });
 
         $(document).ready(function () {
             $("#AcademicYear").change(function (evt) {
                 $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
+            });
+        });
+
+         $(document).ready(function () {
+            $("#AcademicYear").change(function (val) {
+                $("#SectionNumber").val(val);
+            });
+        });
+
+         $(document).ready(function () {
+            $("#AcademicYear").change(function (val) {
+                $("#GroupNumber").val(val);
+            });
+        });
+
+         $(document).ready(function () {
+            $("#AcademicYear").change(function (val) {
+                $("#SubGroupNumber").val(val);
             });
         });
     
