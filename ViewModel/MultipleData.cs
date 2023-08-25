@@ -22,14 +22,15 @@ namespace BudgetPortal.ViewModel
         public IEnumerable<BudgetLedgers> Ledgerss { get; set; }
 
         public IEnumerable<BudgetDetails> Detailss { get; set; }
+
         public String SubGroupNumber { get; set; }
 
         [StringLength(10)]
-        public String GroupNumber { get; set; }
+        public List<String> GroupNumber { get; set; }
 
         [StringLength(10)]
         public String LedgerNumber { get; set; }
-        public int SectionNumber { get; set; }
+        public List<int> SectionNumber { get; set; }
 
         [Column(TypeName = "money")]
         public List<Decimal> BudEstCurrFin { get; set; }

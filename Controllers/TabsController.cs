@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 using BudgetPortal.Data;
 using BudgetPortal.Entities;
 using BudgetPortal.ViewModel;
@@ -51,30 +52,13 @@ namespace BudgetPortal.Controllers
             var mymodel = new MultipleData();
             var SelectedDivisionID = MD.SelectedDivisionID;
             String SelectedDivisionName = MD.SelectedDivisionName;
-
-            var SelectedAcademicYearID = MD.SelectedAcademicYearID;
+            var DivisionName = User.Identity.Name;
             String SelectedAcademicYear = MD.SelectedAcademicYear;
 
             String[] splitAcademicYear = SelectedAcademicYear.Split("-");
 
             return View(MD);
     }
-
-    public IEnumerable<SelectListItem> GetDeptNames()
-        {
-            // Get data from Database.
-            var mymodel = new MultipleData();
-            mymodel.DivisionNames = _context.Division.AsEnumerable().Select(x =>
-                    new SelectListItem()
-                    {
-                        Selected = false,
-                        Text = x.DivisionName,
-                        Value = x.DivisionID.ToString()
-
-                    }).ToList();
-
-            return (mymodel.DivisionNames);
-        }
 
     }
 }

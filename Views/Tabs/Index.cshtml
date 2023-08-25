@@ -29,7 +29,7 @@
            {
              <td>
               @Html.DropDownListFor(m => m.SelectedDivisionID, Model.DivisionNames,"--Please select any Division--", htmlAttributes : new { @class = "form-control", @id="Division" })
-              @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName )
+              @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName)
               @Html.ValidationMessageFor(Model => Model.DivisionNames, "", new { @class = "text-danger" })
              </td>
            }       
@@ -44,15 +44,17 @@
     </div>
     <br />
     <br />
-    <ul id="outerTab" class="nav nav-tabs" role="tablist">
+    <ul id="outerTab" class="nav nav-tabs" role="tablist" >
 
       @foreach (var item in Model.Sectionss)
       {
-            @Html.HiddenFor(model => model.SectionNumber)
-        var inneridenti = String.Concat("Budget", @item.SectionNo.ToString());
+
+            @Html.HiddenFor(model => model.SectionNumber[OuterHeaderCount], new { Value = Convert.ToInt32(@item.SectionNo.ToString())})
+            var inneridenti = String.Concat("Budget", @item.SectionNo.ToString());
             
         if (OuterHeaderCount == 0)
         {
+               
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="@inneridenti-nav" data-bs-toggle="tab" data-bs-target="#@inneridenti" type="button" role="tab" aria-controls="@inneridenti" aria-selected="true">@item.SectionName</button>
             </li>
@@ -60,7 +62,7 @@
         else
         {
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="@inneridenti-nav" data-bs-toggle="tab" data-bs-target="#@inneridenti" type="button" role="tab" aria-controls="@inneridenti" aria-selected="false">@item.SectionName</button>
+                    <button class="nav-link" id="@inneridenti-nav"  data-bs-toggle="tab" data-bs-target="#@inneridenti" type="button" role="tab" aria-controls="@inneridenti" aria-selected="false">@item.SectionName</button>
             </li>
         }
 
@@ -68,7 +70,7 @@
       }
     </ul>
 
-    <div id="outerTabContent" class="tab-content">
+    <div id="outerTabContent" class="tab-content" onclick="">
        <br />
        @foreach (var inner in Model.Sectionss)
        {
@@ -83,22 +85,22 @@
 
                 <ul id="innertab1" class="nav nav-tabs" role="tablist">
 
+
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
-                        @Html.HiddenFor(model => model.GroupNumber)
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
                         
                         if (CountHeader == 0)
                         {
 
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="@identi-nav" data-bs-toggle="tab" data-bs-target="#@identi" type="button" role="tab" aria-controls="@identi" aria-selected="true">@item.GroupName</button>
+                                    <button class="nav-link active" id="@identi-nav" data-bs-toggle="tab" data-bs-target="#@identi" type="button" role="tab" aria-controls="@identi" aria-selected="true">@item.GroupName</button>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="@identi-nav" data-bs-toggle="tab" data-bs-target="#@identi" type="button" role="tab" aria-controls="@identi" aria-selected="false">@item.GroupName</button>
+                                    <button class="nav-link" id="@identi-nav" data-bs-toggle="tab" data-bs-target="#@identi" type="button" role="tab" aria-controls="@identi" aria-selected="false">@item.GroupName</button>
                             </li>
                         }
 
@@ -109,7 +111,7 @@
                 <div id="innertabcontent1" class="tab-content">
                     <br />
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
-                    {
+                    {       
                         var Submit = String.Concat("Submit", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());                        
                            
@@ -169,8 +171,6 @@
                                         
                                         @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                         {
-                                                @Html.HiddenFor(model => model.SubGroupNumber)
-
                                             var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                             var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                             var name3 = String.Concat("ActCurrFinTill2ndQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -360,7 +360,6 @@
                                     <tbody>
                                         @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                         {
-                                                @Html.HiddenFor(model => model.GroupNumber)
 
                                             var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                             var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -505,7 +504,6 @@
 
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
-                        @Html.HiddenFor(model => model.GroupNumber)
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
                         if (CountHeader == 0)
                         {
@@ -517,7 +515,7 @@
                         else
                         {
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="@identi-nav" data-bs-toggle="tab" data-bs-target="#@identi" type="button" role="tab" aria-controls="@identi" aria-selected="false">@item.GroupName</button>
+                                    <button class="nav-link" id="@identi-nav" data-bs-toggle="tab" data-bs-target="#@identi" type="button" role="tab" aria-controls="@identi" aria-selected="false">@item.GroupName</button>
                             </li>
                         }
 
@@ -586,7 +584,6 @@
                                     <tbody>
                                         @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                         {
-                                                @Html.HiddenFor(model => model.SubGroupNumber)
 
                                             var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo,@TableCount);
                                             var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -775,8 +772,6 @@
                                     <tbody>
                                         @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                         {
-                                                @Html.HiddenFor(model => model.SubGroupNumber)
-
                                             var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                             var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                             var name3 = String.Concat("ActCurrFinTill2ndQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -922,6 +917,7 @@
 @section Scripts
 {
     <script type="text/javascript">
+
         $(document).ready(function() {
             $("#Division").change(function(evt){
                 $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
@@ -931,24 +927,6 @@
         $(document).ready(function () {
             $("#AcademicYear").change(function (evt) {
                 $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
-            });
-        });
-
-         $(document).ready(function () {
-            $("#AcademicYear").change(function (val) {
-                $("#SectionNumber").val(val);
-            });
-        });
-
-         $(document).ready(function () {
-            $("#AcademicYear").change(function (val) {
-                $("#GroupNumber").val(val);
-            });
-        });
-
-         $(document).ready(function () {
-            $("#AcademicYear").change(function (val) {
-                $("#SubGroupNumber").val(val);
             });
         });
     
