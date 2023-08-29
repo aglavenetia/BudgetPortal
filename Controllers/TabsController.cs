@@ -54,7 +54,6 @@ namespace BudgetPortal.Controllers
             String SelectedDivisionName = MD.SelectedDivisionName;
             var DivisionName = User.Identity.Name;
             String SelectedAcademicYear = MD.SelectedAcademicYear;
-
             String[] splitAcademicYear = SelectedAcademicYear.Split("-");
 
             return View(MD);
