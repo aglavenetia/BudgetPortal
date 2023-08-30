@@ -4,6 +4,7 @@ using BudgetPortal.Data;
 using BudgetPortal.Entities;
 using BudgetPortal.ViewModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace BudgetPortal.Controllers
 {
@@ -47,17 +48,28 @@ namespace BudgetPortal.Controllers
         }
 
         [HttpPost]
-         public IActionResult Index(MultipleData MD)
+         public async Task<IActionResult> IndexAsync(MultipleData MD)
          {
-            var mymodel = new MultipleData();
-            var SelectedDivisionID = MD.SelectedDivisionID;
-            String SelectedDivisionName = MD.SelectedDivisionName;
-            var DivisionName = User.Identity.Name;
-            String SelectedAcademicYear = MD.SelectedAcademicYear;
-            String[] splitAcademicYear = SelectedAcademicYear.Split("-");
 
+            var username = User.Identity.Name;
+            var pubNameQuery = from n in _context.Users.AsNoTracking()
+                               where n.UserName == username
+                               select n.BranchName;
+            string DivisionName = await pubNameQuery.SingleAsync();
+            String DivisionID = from n in _context.Division
+                                where n.DivisionName == DivisionName
+                                select n.DivisionID;
+            String[] splitAcademicYear = MD.SelectedAcademicYear.Split("-");
+
+                BudgetDetails dataModel = _context.BudgetDetails.Where(x => x.Id == MD.Id).First();
+
+                dataModel.DivisionID = DivisionID;
+                dataModel.FinancialYear1 = splitAcademicYear[0];
+                dataModel.FinancialYear2 = splitAcademicYear[1];
+                _context.SaveChanges();
             return View(MD);
+        }
+   
     }
 
-    }
 }
