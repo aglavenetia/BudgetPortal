@@ -48,28 +48,37 @@ namespace BudgetPortal.Controllers
         }
 
         [HttpPost]
-         public async Task<IActionResult> IndexAsync(MultipleData MD)
-         {
+          public async Task<IActionResult> Index(MultipleData MD)
+          {
+            for (int i = 0;i<MD.BudEstCurrFin.Count();i++)
+            { 
+                BudgetDetails dataModel = _context.BudgetDetails.Where(x => x.DivisionId == MD.Id);
 
-            var username = User.Identity.Name;
-            var pubNameQuery = from n in _context.Users.AsNoTracking()
-                               where n.UserName == username
-                               select n.BranchName;
-            string DivisionName = await pubNameQuery.SingleAsync();
-            String DivisionID = from n in _context.Division
-                                where n.DivisionName == DivisionName
-                                select n.DivisionID;
-            String[] splitAcademicYear = MD.SelectedAcademicYear.Split("-");
+                dataModel.SectionNumber = MD.SectionNumber;
+                dataModel.GroupNumber = MD.GroupNumber;
+                dataModel.ActCurrFinTill2ndQuart = MD.ActCurrFinTill2ndQuart[i];
 
-                BudgetDetails dataModel = _context.BudgetDetails.Where(x => x.Id == MD.Id).First();
-
-                dataModel.DivisionID = DivisionID;
-                dataModel.FinancialYear1 = splitAcademicYear[0];
-                dataModel.FinancialYear2 = splitAcademicYear[1];
                 _context.SaveChanges();
+            }
+            /*var username = User.Identity.Name;
+             var pubNameQuery = from n in _context.Users.AsNoTracking()
+                                where n.UserName == username
+                                select n.BranchName;
+             string DivisionName = await pubNameQuery.SingleAsync();
+             String DivisionID = from n in _context.Division
+                                 where n.DivisionName == DivisionName
+                                 select n.DivisionID;
+             String[] splitAcademicYear = MD.SelectedAcademicYear.Split("-");
+
+                 BudgetDetails dataModel = _context.BudgetDetails.Where(x => x.Id == MD.Id).First();
+
+                 dataModel.DivisionID = DivisionID;
+                 dataModel.FinancialYear1 = splitAcademicYear[0];
+                 dataModel.FinancialYear2 = splitAcademicYear[1];
+                 _context.SaveChanges();*/
             return View(MD);
-        }
-   
+          }
+
     }
 
 }
