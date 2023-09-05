@@ -6,6 +6,7 @@ using BudgetPortal.ViewModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace BudgetPortal.Controllers
 {
     public class TabsController : Controller
@@ -48,17 +49,33 @@ namespace BudgetPortal.Controllers
         }
 
         [HttpPost]
-          public async Task<IActionResult> Index(MultipleData MD)
-          {
-            for (int i = 0;i<MD.BudEstCurrFin.Count();i++)
-            { 
-                BudgetDetails dataModel = _context.BudgetDetails.Where(x => x.DivisionId == MD.Id);
+        public IActionResult Index(MultipleData MD)
+        {
 
+            var username = User.Identity.Name;
+            /*var splitAcademicYear = MD.SelectedAcademicYear.ToString().Split("-");
+            var DivName = _context.Users.Where(x => x.UserName.Equals(username))
+                           .Select(x => x.BranchName);
+            var SelectedDivisionID = _context.Division.Where(x => x.DivisionName.Equals(DivName))
+                                    .Select(x => x.DivisionID);
+
+            for (int i = 0; i < MD.BudEstCurrFin.Count(); i++)
+            {
+                var dataModel = _context.BudgetDetails;
+
+                dataModel.DivisionID = SelectedDivisionID;
+                dataModel.FinancialYear1 = splitAcademicYear[0];
+                dataModel.FinancialYear2 = splitAcademicYear[1];
+                dataModel.BudEstCurrFin = MD.BudEstCurrFin[i];
+                dataModel.ActPrevFin = MD.ActPrevFin[i];
+                dataModel.ActCurrFinTill2ndQuart = MD.ActCurrFinTill2ndQuart[i];
+                dataModel.RevEstCurrFin = MD.RevEstCurrFin[i];
+                dataModel.BudgEstNexFin = MD.BudgEstNexFin[i];
+                dataModel.Justification = MD.Justification[i];
                 dataModel.SectionNumber = MD.SectionNumber;
                 dataModel.GroupNumber = MD.GroupNumber;
-                dataModel.ActCurrFinTill2ndQuart = MD.ActCurrFinTill2ndQuart[i];
 
-                _context.SaveChanges();
+                dataModel.SaveChanges();
             }
             /*var username = User.Identity.Name;
              var pubNameQuery = from n in _context.Users.AsNoTracking()
@@ -75,10 +92,13 @@ namespace BudgetPortal.Controllers
                  dataModel.DivisionID = DivisionID;
                  dataModel.FinancialYear1 = splitAcademicYear[0];
                  dataModel.FinancialYear2 = splitAcademicYear[1];
-                 _context.SaveChanges();*/
+                 _context.SaveChanges();
             return View(MD);
-          }
+          }*/
 
+
+
+
+        }
     }
-
 }
