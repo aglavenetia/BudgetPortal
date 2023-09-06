@@ -28,13 +28,13 @@
            @if (User.IsInRole("Admin"))
            {
              <td>
-              @Html.DropDownListFor(m => m.SelectedDivisionID, Model.DivisionNames,"--Please select any Division--", htmlAttributes : new { @class = "form-control", @id="Division" })
+              @Html.DropDownListFor(m => m.DivisionNames, Model.DivisionNames,"--Please select any Division--", htmlAttributes : new { @class = "form-control", @id="Division" })
               @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName)
               @Html.ValidationMessageFor(Model => Model.DivisionNames, "", new { @class = "text-danger" })
              </td>
            }       
              <td>
-              @Html.DropDownListFor(m => m.SelectedAcademicYearID, Model.AcademicYears,"--Please select any Financial Year--", htmlAttributes : new { @class = "form-control", @id="AcademicYear" })
+              @Html.DropDownListFor(m => m.AcademicYears, Model.AcademicYears,"--Please select any Financial Year--", htmlAttributes : new { @class = "form-control", @id="AcademicYear" })
               @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear)
               @Html.ValidationMessageFor(Model => Model.AcademicYears, "", new { @class = "text-danger" })
              </td>
@@ -51,7 +51,7 @@
             
         if (OuterHeaderCount == 0)
         {
-                @Html.Hidden("SectionNumber",Model.SectionNumber,new {Value = @item.SectionNo })
+                @Html.Hidden("SectionName",Model.SectionName,new {Value = @item.SectionNo })
                 <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="@inneridenti-nav" data-bs-toggle="tab" data-bs-target="#@inneridenti" type="button" role="tab" aria-controls="@inneridenti" aria-selected="true">@item.SectionName</button>
             </li>
@@ -302,8 +302,8 @@
                                         
                                     </tbody>
                                 </table>
-                                @Html.Hidden("SectionNumber",Model.SectionNumber)
-                                @Html.Hidden("GroupNumber",Model.GroupNumber)
+                                @Html.Hidden("SectionName",Model.SectionName)
+                                @Html.Hidden("GroupName",Model.GroupName)
                                 <input id="@Submit" class="Submit" type="submit" style="align-self:center">
                             </div>
                         }
@@ -489,8 +489,8 @@
                                             }
                                     </tbody>
                                 </table>
-                                    @Html.Hidden("SectionNumber",Model.SectionNumber)
-                                    @Html.Hidden("GroupNumber",Model.GroupNumber)
+                                    @Html.Hidden("SectionName",Model.SectionName)
+                                    @Html.Hidden("GroupName",Model.GroupName)
                                     <input id="@Submit" class="Submit" type="submit" style="align-self:center">
                             </div>
                         }
@@ -720,8 +720,8 @@
                                             }          
                                     </tbody>
                                 </table>
-                                    @Html.Hidden("SectionNumber",Model.SectionNumber)
-                                    @Html.Hidden("GroupNumber",Model.GroupNumber)
+                                    @Html.Hidden("SectionName",Model.SectionName)
+                                    @Html.Hidden("GroupName",Model.GroupName)
                                     <input id="@Submit" class="Submit" type="submit" style="align-self:center">
                                 </div>
                             
@@ -909,8 +909,8 @@
                                             }
                                     </tbody>
                                 </table>
-                                 @Html.Hidden("SectionNumber",Model.SectionNumber)
-                                 @Html.Hidden("GroupNumber",Model.GroupNumber)
+                                 @Html.Hidden("SectionName",Model.SectionName)
+                                 @Html.Hidden("GroupName",Model.GroupName)
                                  <input id="@Submit" class="Submit" type="submit" style="align-self:center">
                             </div>
                         }
@@ -949,24 +949,24 @@
            $(".Submit").on('click',function () 
            {
                 var sectionnoid = $('#outerTab li button.active').attr('id');
-                alert(sectionnoid);
+                //alert(sectionnoid);
                 var section = sectionnoid.split('-');
-                alert(section[0]);
-                $('#SectionNumber').val($('#'+sectionnoid).text());
+                //alert(section[0]);
+                $('#SectionName').val($('#'+sectionnoid).text());
 
                 var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
-                alert(groupnoid);
+                //alert(groupnoid);
                 var group = groupnoid.split('-');
-                alert(group[0]);
-                $('#GroupNumber').val($('#' + groupnoid).text());
+                //alert(group[0]);
+                $('#GroupName').val($('#' + groupnoid).text());
 
                 var subgroupcount = $('#' + group[0] + ' #outertable tbody').closest('tr').length;
-                alert(subgroupcount);
+                //alert(subgroupcount);
 
                 for(i=0; i<subgroupcount; i++)
                 {
                     var subgroupnorow = $('#' + group[0] + ' #outertable tbody').closest('tr').text();
-                       alert(subgroupnorow);
+                       //alert(subgroupnorow);
                     //var subgroupno = subgroupnorow.eq(2).text();
                     //alert(subgroupno);
                 }

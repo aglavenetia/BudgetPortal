@@ -23,7 +23,7 @@ namespace BudgetPortal.Entities
         public String GroupNumber { get; set; }
 
         [StringLength(10)]
-        public String LedgerNumber { get; set; }
+        public String? LedgerNumber { get; set; }
         public int SectionNumber { get; set; }
 
         [Column(TypeName = "money")]

@@ -23,9 +23,9 @@ namespace BudgetPortal.ViewModel
 
         public IEnumerable<BudgetDetails> Detailss { get; set; }
 
-        public String SectionNumber { get; set; }
+        public String SectionName { get; set; }
 
-        public String GroupNumber { get; set; }
+        public String GroupName { get; set; }
 
         [Column(TypeName = "money")]
         public List<Decimal> BudEstCurrFin { get; set; }
@@ -58,13 +58,13 @@ namespace BudgetPortal.ViewModel
         public IEnumerable<Division> Divisionss { get; set; }
 
         public IEnumerable<SelectListItem> DivisionNames { get; set; }
-        public int SelectedDivisionID { get; set; }
+        public String SelectedDivisionID { get; set; }
         public String SelectedDivisionName { get; set; }
 
         public IEnumerable<AcademicYears> AcademicYearss { get; set; }
         public IEnumerable<SelectListItem> AcademicYears { get; set; }
         public String SelectedAcademicYear { get; set; }
-        public int SelectedAcademicYearID { get; set; }
+        public String SelectedAcademicYearID { get; set; }
 
 
 
