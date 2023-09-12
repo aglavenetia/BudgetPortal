@@ -21,12 +21,28 @@ namespace BudgetPortal.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            var username = User.Identity.Name;
+            var DivName = _context.Users
+                          .Where(x => x.UserName.Equals(username))
+                          .Select(x => x.BranchName).First();
+            var LoggedInDivisionID = _context.Division
+                                   .Where(d => d.DivisionName == DivName)
+                                   .Select(x => x.DivisionID).FirstOrDefault();
+            var Year = DateTime.Now.Year;
+            var Month = DateTime.Now.Month;
+
+            if(Month > 0 && Month < 4)
+            {
+                Year = DateTime.Now.Year - 1;
+            }
+            Year = 2021;
             var mymodel = new MultipleData();
             mymodel.Sectionss = _context.BudgetSections.ToList();
             mymodel.Groupss = _context.BudgetGroups.ToList();
             mymodel.SubGroupss = _context.BudgetSubGroups.ToList();
             mymodel.Ledgerss = _context.BudgetLedgers.ToList();
-            mymodel.Detailss = _context.BudgetDetails.ToList();
+            mymodel.Detailss = _context.BudgetDetails.Where(x => x.DivisionID==LoggedInDivisionID)
+                                .Where(x => x.FinancialYear1 == Year).ToList();
             mymodel.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                     new SelectListItem()
                     {
