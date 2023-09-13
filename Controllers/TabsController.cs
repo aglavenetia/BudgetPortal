@@ -112,8 +112,8 @@ namespace BudgetPortal.Controllers
                 _context.BudgetDetails.Add(dataModel);
                 _context.SaveChanges();
              }
-       
-            return View(MD);
+            return RedirectToAction("Index");
+            //return View(MD);
          }
 
     }
