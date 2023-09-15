@@ -22,19 +22,21 @@
 <br />
 @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
 {
+    @Html.AntiForgeryToken()
+
     <div style = "float:right">
         <table border="0" cellpadding="5" cellspacing="0" >
           <tr>
            @if (User.IsInRole("Admin"))
            {
              <td>
-              @Html.DropDownListFor(m => m.DivisionNames, Model.DivisionNames,"--Please select any Division--", htmlAttributes : new { @class = "form-control", @id="Division" })
+              @Html.DropDownListFor(m => m.DivisionNames, Model.DivisionNames,"--Please select any Division--", new { @class = "form-control", @id="Division" })
               @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName)
               @Html.ValidationMessageFor(Model => Model.DivisionNames, "", new { @class = "text-danger" })
              </td>
            }       
              <td>
-              @Html.DropDownListFor(m => m.AcademicYears, Model.AcademicYears,"--Please select any Financial Year--", htmlAttributes : new { @class = "form-control", @id="AcademicYear" })
+              @Html.DropDownListFor(m => m.AcademicYears, Model.AcademicYears,"--Please select any Financial Year--", new { @class = "form-control", @id="AcademicYear" })
               @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear)
               @Html.ValidationMessageFor(Model => Model.AcademicYears, "", new { @class = "text-danger" })
              </td>
@@ -169,10 +171,10 @@
                                         
                                         @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                         {
-                                              // @foreach(var details in Model.Detailss.Where(x => x.SubGroupNumber.Equals(@Subs.SubGroupNo)))
-                                              // {
-
-                                                var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
+                                             // @foreach(var details in Model.Detailss.Where(x => x.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                             // {
+                                                    var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
+                                                                                                 
                                                     var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name3 = String.Concat("ActCurrFinTill2ndQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -211,96 +213,194 @@
                                                             @Subs.subGroupName
                                                         </td>
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name1" type="text" value="">-->
-                                                                @*Html.TextBox(@name1, null, new { @class = "form-control" }) *@
-                                                            @Html.TextBoxFor(Model=> Model.BudEstCurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name1 , @Value= @details!=null ? Convert.ToString(@details.BudEstCurrFin) : "" }})
+                                                                @Html.TextBox(@name1, details!=null ? Convert.ToString(details.BudEstCurrFin) : "", new { @class = "form-control", @id = @name1, @readonly = "readonly" })
+                                                                @*Html.TextBoxFor(Model=> Model.BudEstCurrFin[TableCount],new { @class = "form-control", @id = @name1, @readonly = "readonly",@value = details!=null ? Convert.ToString(details.BudEstCurrFin) : ""})*@
                                                                 @Html.ValidationMessageFor(Model=> Model.BudEstCurrFin[TableCount], "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name1" type="text" value="">-->
+                                                                @Html.TextBox(@name1, details!=null ? Convert.ToString(details.BudEstCurrFin) : "", new { @class = "form-control", @id = @name1})
+                                                                @*Html.TextBoxFor(Model=> Model.BudEstCurrFin[TableCount],new { @class = "form-control", @id = @name1, @value = details!=null ? Convert.ToString(details.BudEstCurrFin) : ""})*@
+                                                                @Html.ValidationMessageFor(Model=> Model.BudEstCurrFin[TableCount], "",new {@class = "text-danger"})
+                                                            </div>
+                                                        }
                                                         </td>
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name2" type="text" value="">-->
-                                                                @*@Html.TextBox(@name2, null, new { @class = "form-control" })*@
-                                                            @Html.TextBoxFor(Model=> Model.ActPrevFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name2 @*, @Value= @details!=null ? Convert.ToString(@details.ActPrevFin) : ""*@ }})
+                                                                @Html.TextBox(@name2, details!=null ? Convert.ToString(details.ActPrevFin) : "", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
+                                                                @*Html.TextBoxFor(Model=> Model.ActPrevFin[TableCount], new { @class = "form-control", @id = @name2, @readonly = "readonly", @Value = details!=null ? Convert.ToString(details.ActPrevFin) : ""})*@
+                                                                @Html.ValidationMessage(@name2, "",new {@class = "text-danger"})
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name2" type="text" value="">-->
+                                                                @Html.TextBox(@name2, details!=null ? Convert.ToString(details.ActPrevFin) : "", new { @class = "form-control", @id = @name2})
+                                                                @*Html.TextBoxFor(Model=> Model.ActPrevFin[TableCount], new { @class = "form-control", @id = @name2,@Value = details!=null ? Convert.ToString(details.ActPrevFin) : ""})*@
                                                                 @Html.ValidationMessageFor(Model=> Model.ActPrevFin[TableCount], "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
                                                         </td>
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
+                                                             <div class="form-group">
+                                                                <!-- <input id="@name3" type="text" value="">-->
+                                                                @Html.TextBox(@name3, details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : "", new { @class = "form-control", @id = @name3, @readonly = "readonly"})
+                                                                @*Html.TextBoxFor(Model=> Model.ActCurrFinTill2ndQuart[TableCount], new { @class = "form-control", @id = @name3,  @readonly = "readonly", @Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : ""})*@
+                                                                @Html.ValidationMessageFor(Model=> Model.ActCurrFinTill2ndQuart[TableCount], "",new {@class = "text-danger"})
+                                                            </div>                                                            
+                                                        }
+                                                        else
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name3" type="text" value="">-->
-                                                                @* @Html.TextBox(@name3, null, new { @class = "form-control" }) *@
-                                                            @Html.TextBoxFor(Model=> Model.ActCurrFinTill2ndQuart[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name3 @*, @Value= @details!=null ? Convert.ToString(@details.ActCurrFinTill2ndQuart) : ""*@ }})
-                                                                @Html.ValidationMessageFor(Model=> Model.ActCurrFinTill2ndQuart[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextBox(@name3, details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : "", new { @class = "form-control", @id = @name3})
+                                                                @*Html.TextBoxFor(Model=> Model.ActCurrFinTill2ndQuart[TableCount], new { @class = "form-control", @id = @name3, @Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : ""})*@
+                                                                @Html.ValidationMessage(@name3, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
                                                         </td>
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name4" type="text" value="">-->
-                                                                @* Html.TextBox(@name4, null, new { @class = "form-control" }) *@
-                                    @Html.TextBoxFor(Model=> Model.RevEstCurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name4 @*, @Value= @details!=null ? Convert.ToString(@details.RevEstCurrFin) : ""*@ }})
-                                                                @Html.ValidationMessageFor(Model=> Model.RevEstCurrFin[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextBox(@name4, details!=null ? Convert.ToString(details.RevEstCurrFin) : "", new { @class = "form-control", @id = @name4, @readonly = "readonly"})
+                                                                @*Html.TextBoxFor(Model=> Model.RevEstCurrFin[TableCount], new { @class = "form-control", @id = @name4,  @readonly = "readonly",@Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : ""})*@
+                                                                @Html.ValidationMessage(@name4, "",new {@class = "text-danger"})
+                                                            </div>                                                            
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name4" type="text" value="">-->
+                                                                @Html.TextBox(@name4, details!=null ? Convert.ToString(details.RevEstCurrFin) : "", new { @class = "form-control", @id = @name4})
+                                                                @*Html.TextBoxFor(Model=> Model.RevEstCurrFin[TableCount], new { @class = "form-control", @id = @name4, @Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : ""})*@
+                                                                @Html.ValidationMessage(@name4, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
                                                         </td>
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name5" type="text" value="">-->
-                                                                @*Html.TextBox(@name5, null, new { @class = "form-control" }) *@
-                                    @Html.TextBoxFor(Model=> Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name5 @*, @Value= @details!=null ? Convert.ToString(@details.PerVarRevEstOverBudgEstCurrFin) : ""*@ }})
-                                                                @Html.ValidationMessageFor(Model=> Model.PerVarRevEstOverBudgEstCurrFin[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextBox(@name5, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
+                                                                @*Html.TextBoxFor(Model=> Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new { @class = "form-control", @id = @name5, @readonly = "readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : ""})*@
+                                                                @Html.ValidationMessage(@name5, "",new {@class = "text-danger"})
+                                                            </div>                                                            
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name5" type="text" value="">-->
+                                    @Html.TextBox(@name5, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "", new { @class = "form-control", @id = @name5})
+                                                                @*Html.TextBoxFor(Model=> Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new { @class = "form-control", @id = @name5, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : ""})*@
+                                                                @Html.ValidationMessage(@name5, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
                                                         </td>
                                                         @if (User.IsInRole("Admin"))
                                                         {
                                                             <td>
                                                                 <div class="form-group">
                                                                     <!-- <input id="@name6" type="text" value="">-->
-                                                                    @* Html.TextBox(@name6, null, new { @class = "form-control" }) *@
-                                                                @Html.TextBoxFor(Model=> Model.ACAndBWPropRECurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name6 @*, @Value= @details!=null ? Convert.ToString(@details.ACAndBWPropRECurrFin) : ""*@ }})
-                                                                    @Html.ValidationMessageFor(Model=> Model.ACAndBWPropRECurrFin[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextBox(@name6, details!=null ? Convert.ToString(details.ACAndBWPropRECurrFin) : "", new { @class = "form-control", @id = @name6})
+                                                                @*Html.TextBoxFor(Model=> Model.ACAndBWPropRECurrFin[TableCount], new { @class = "form-control", @id = @name6, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRECurrFin) : ""})*@
+                                                                @Html.ValidationMessage(@name6, "",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
                                                         }
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name7" type="text" value="">-->
-                                                                @*Html.TextBox(@name7, null, new { @class = "form-control" }) *@
-                                                            @Html.TextBoxFor(Model=> Model.BudgEstNexFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name7 @*, @Value= @details!=null ? Convert.ToString(@details.BudgEstNexFin) : ""*@}})
-                                                                @Html.ValidationMessageFor(Model=> Model.BudgEstNexFin[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextBox(@name7, details!=null ? Convert.ToString(details.BudgEstNexFin) : "", new { @class = "form-control", @id = @name7, @readonly = "readonly"})
+                                                                @*Html.TextBoxFor(Model=> Model.BudgEstNexFin[TableCount],new { @class = "form-control", @id = @name7, @readonly = "readonly",@Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : ""})*@
+                                                                @Html.ValidationMessage(@name7, "",new {@class = "text-danger"})
+                                                            </div>                                                            
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name7" type="text" value="">-->
+                                    @Html.TextBox(@name7, details!=null ? Convert.ToString(details.BudgEstNexFin) : "", new { @class = "form-control", @id = @name7})
+                                                                @*Html.TextBoxFor(Model=> Model.BudgEstNexFin[TableCount],new { @class = "form-control", @id = @name7, @Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : ""})*@
+                                                                @Html.ValidationMessage(@name7, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
                                                         </td>
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name8" type="text" value="">-->
-                                                                @* @Html.TextBox(@name8, null, new { @class = "form-control" }) *@
-                                                            @Html.TextBoxFor(Model=> Model.PerVarRevEstOverBudgEstNxtFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name8 @*, @Value= @details!=null ? Convert.ToString(@details.PerVarRevEstOverBudgEstNxtFin) : ""*@}})
-                                                                @Html.ValidationMessageFor(Model=> Model.PerVarRevEstOverBudgEstNxtFin[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextBox(@name8, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : "", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
+                                                                @*Html.TextBoxFor(Model=> Model.PerVarRevEstOverBudgEstNxtFin[TableCount],new { @class = "form-control", @id = @name8, @readonly = "readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : ""})*@
+                                                                @Html.ValidationMessage(@name8, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name8" type="text" value="">-->
+                                    @Html.TextBox(@name8, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : "", new { @class = "form-control", @id = @name8})
+                                                                @*Html.TextBoxFor(Model=> Model.PerVarRevEstOverBudgEstNxtFin[TableCount],new { @class = "form-control", @id = @name8, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : ""})*@
+                                                                @Html.ValidationMessage(@name8, "",new {@class = "text-danger"})
+                                                            </div>
+                                                        }
                                                         </td>
                                                         @if (User.IsInRole("Admin"))
                                                         {
                                                             <td>
                                                                 <div class="form-group">
                                                                     <!-- <input id="@name9" type="text" value="">-->
-                                                                    @* Html.TextBox(@name9, null, new { @class = "form-control" }) *@
-                                                                @Html.TextBoxFor(Model=> Model.ACAndBWPropRENxtFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name9 @*, @Value= @details!=null ? Convert.ToString(@details.ACAndBWPropRENxtFin) : ""*@ }})
-                                                                    @Html.ValidationMessageFor(Model=> Model.ACAndBWPropRENxtFin[TableCount], "",new {@class = "text-danger"})
+                                                                    @Html.TextBox(@name9, details!=null ? Convert.ToString(details.ACAndBWPropRENxtFin) : "", new { @class = "form-control", @id = @name9})
+                                                                    @*Html.TextBoxFor(Model=> Model.ACAndBWPropRENxtFin[TableCount],new { @class = "form-control", @id = @name9, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRENxtFin) : ""})*@
+                                                                    @Html.ValidationMessage(@name9, "",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
                                                         }
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name10" type="text" value="">-->
-                                                                @* Html.TextBox(@name10, null, new { @class = "form-control" }) *@
-                                                            @Html.TextAreaFor(Model=> Model.Justification[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name10 @*, @Value=@details!=null ? Convert.ToString(@details.Justification) : ""*@ }})
-                                                                @Html.ValidationMessageFor(Model=> Model.Justification[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextArea(@name10, details!=null ? Convert.ToString(details.Justification) : "", new { @class = "form-control", @id = @name10, @readonly = "readonly"})
+                                                                @*Html.TextAreaFor(Model=> Model.Justification[TableCount], new { @class = "form-control", @id = @name10, @readonly = "readonly",@Value = details!=null ? Convert.ToString(details.Justification) : ""})*@
+                                                                @Html.ValidationMessage(@name10, "",new {@class = "text-danger"})
+                                                            </div>                                                            
+                                                        }
+                                                        else
+                                                        {
+                                                            
+                                                        
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name10" type="text" value="">-->
+                                                                @Html.TextArea(@name10, details!=null ? Convert.ToString(details.Justification) : "", new { @class = "form-control", @id = @name10})
+                                                                @*Html.TextAreaFor(Model=> Model.Justification[TableCount], new { @class = "form-control", @id = @name10, @Value = details!=null ? Convert.ToString(details.Justification) : ""})*@
+                                                                @Html.ValidationMessage(@name10, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
                                                         </td>
 
                                                     </tr>
                                                 
                                                     TableCount++;
-                                               // }
+                                             // }
                                         }
                                         
                                     </tbody>
@@ -365,9 +465,9 @@
                                     <tbody>
                                         @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                         {
-                                           // @foreach (var details in Model.Detailss.Where(x => x.SubGroupNumber.Equals(@Subs.SubGroupNo)))
-                                           // {
-                                                var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
+                                          // @foreach (var details in Model.Detailss.Where(x => x.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                          // {
+                                                    var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
                                                     var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name3 = String.Concat("ActCurrFinTill2ndQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -405,95 +505,191 @@
                                                             @Subs.subGroupName
                                                         </td>
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name1" type="text" value="">-->
-                                                                @*Html.TextBox(@name1, null, new { @class = "form-control" }) *@
-                                                            @Html.TextBoxFor(Model=>Model.BudEstCurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name1 , @Value= @details!=null ? Convert.ToString(@details.BudEstCurrFin) : "" }})
-                                                            @Html.ValidationMessageFor(Model=>Model.BudEstCurrFin[TableCount], "",new {@class = "text-danger"})
+                                    @Html.TextBox(@name1, details!=null ? Convert.ToString(details.BudEstCurrFin) : "", new { @class = "form-control", @id = @name1, @readonly="readonly"})
+                                                            @*Html.TextBoxFor(Model=>Model.BudEstCurrFin[TableCount], new { @class = "form-control", @id = @name1, @readonly="readonly", @value = details!=null ? Convert.ToString(details.BudEstCurrFin) : ""})*@
+                                                                @Html.ValidationMessage(@name1, "",new {@class = "text-danger"})
+                                                            </div>                                                            
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name1" type="text" value="">-->
+                                                            @Html.TextBox(@name1, details!=null ? Convert.ToString(details.BudEstCurrFin) : "", new { @class = "form-control", @id = @name1})
+                                                            @*Html.TextBoxFor(Model=>Model.BudEstCurrFin[TableCount], new { @class = "form-control", @id = @name1, @value = details!=null ? Convert.ToString(details.BudEstCurrFin) : ""})*@
+                                                            @Html.ValidationMessage(@name1, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
                                                         </td>
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name2" type="text" value="">-->
-                                                                @*@Html.TextBox(@name2, null, new { @class = "form-control" })*@
-                                    @Html.TextBoxFor(Model=>Model.ActPrevFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name2 @*, @Value= @details!=null ? Convert.ToString(@details.ActPrevFin) : ""*@ }})
-                                                            @Html.ValidationMessageFor(Model=>Model.ActPrevFin[TableCount], "",new {@class = "text-danger"})
+                                    @Html.TextBox(@name2, details!=null ? Convert.ToString(details.ActPrevFin) : "", new { @class = "form-control", @id = @name2, @readonly="readonly"})
+                                                            @*Html.TextBoxFor(Model=>Model.ActPrevFin[TableCount],new { @class = "form-control", @id = @name2, @readonly="readonly", @Value = details!=null ? Convert.ToString(details.ActPrevFin) : ""})*@
+                                                            @Html.ValidationMessage(@name2, "",new {@class = "text-danger"})
+                                                            </div>                                                            
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name2" type="text" value="">-->
+                                                               @Html.TextBox(@name2, details!=null ? Convert.ToString(details.ActPrevFin) : "", new { @class = "form-control", @id = @name2})
+                                                               @*Html.TextBoxFor(Model=>Model.ActPrevFin[TableCount],new { @class = "form-control", @id = @name2, @Value = details!=null ? Convert.ToString(details.ActPrevFin) : ""})*@
+                                                                @Html.ValidationMessage(@name2, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
                                                         </td>
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name3" type="text" value="">-->
-                                                                @* @Html.TextBox(@name3, null, new { @class = "form-control" }) *@
-                                    @Html.TextBoxFor(Model=>Model.ActCurrFinTill2ndQuart[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name3 @*, @Value= @details!=null ? Convert.ToString(@details.ActCurrFinTill2ndQuart) : "" *@ }})
-                                                            @Html.ValidationMessageFor(Model=>Model.ActCurrFinTill2ndQuart[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextBox(@name3, details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : "", new { @class = "form-control", @id = @name3, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model=>Model.ActCurrFinTill2ndQuart[TableCount], new { @class = "form-control", @id = @name3, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : ""})*@
+                                                                @Html.ValidationMessage(@name3, "",new {@class = "text-danger"})
+                                                            </div>                                                            
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name3" type="text" value="">-->
+                                                                @Html.TextBox(@name3, details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : "", new { @class = "form-control", @id = @name3})
+                                                                @*Html.TextBoxFor(Model=>Model.ActCurrFinTill2ndQuart[TableCount], new { @class = "form-control", @id = @name3, @Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : ""})*@
+                                                                @Html.ValidationMessage(@name3, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
                                                         </td>
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name4" type="text" value="">-->
-                                                                @* Html.TextBox(@name4, null, new { @class = "form-control" }) *@
-                                    @Html.TextBoxFor(Model=>Model.RevEstCurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name4 @*, @Value= @details!=null ? Convert.ToString(@details.RevEstCurrFin) : ""*@ }})
-                                                            @Html.ValidationMessageFor(Model=>Model.RevEstCurrFin[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextBox(@name4, details!=null ? Convert.ToString(details.RevEstCurrFin) : "", new { @class = "form-control", @id = @name4, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model=>Model.RevEstCurrFin[TableCount], new { @class = "form-control", @id = @name4, @readonly="readonly", @Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : ""})*@
+                                                                @Html.ValidationMessage(@name4, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name4" type="text" value="">-->
+                                                                @Html.TextBox(@name4, details!=null ? Convert.ToString(details.RevEstCurrFin) : "", new { @class = "form-control", @id = @name4})
+                                                                @*Html.TextBoxFor(Model=>Model.RevEstCurrFin[TableCount], new { @class = "form-control", @id = @name4, @Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : ""})*@
+                                                                @Html.ValidationMessage(@name4, "",new {@class = "text-danger"})
+                                                            </div>
+                                                        }
                                                         </td>
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name5" type="text" value="">-->
-                                                                @*Html.TextBox(@name5, null, new { @class = "form-control" }) *@
-                                    @Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name5 @*, @Value= @details!=null ? Convert.ToString(@details.PerVarRevEstOverBudgEstCurrFin) : ""*@ }})
-                                                            @Html.ValidationMessageFor(Model=>Model.PerVarRevEstOverBudgEstCurrFin[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextBox(@name5, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "", new { @class = "form-control", @id = @name5, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new { @class = "form-control", @id = @name5, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : ""})*@
+                                                                @Html.ValidationMessage(@name5, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name5" type="text" value="">-->
+                                                                @Html.TextBox(@name5, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "", new { @class = "form-control", @id = @name5})
+                                                                @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new { @class = "form-control", @id = @name5, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : ""})*@
+                                                                @Html.ValidationMessage(@name5, "",new {@class = "text-danger"})
+                                                            </div>
+                                                        }
                                                         </td>
                                                         @if (User.IsInRole("Admin"))
                                                         {
                                                             <td>
                                                                 <div class="form-group">
                                                                     <!-- <input id="@name6" type="text" value="">-->
-                                                                    @* Html.TextBox(@name6, null, new { @class = "form-control" }) *@
-                                    @Html.TextBoxFor(Model=>Model.ACAndBWPropRECurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name6 @*, @Value= @details!=null ? Convert.ToString(@details.ACAndBWPropRECurrFin) : ""*@ }})
-                                                                @Html.ValidationMessageFor(Model=>Model.ACAndBWPropRECurrFin[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextBox(@name6, details!=null ? Convert.ToString(details.ACAndBWPropRECurrFin) : "", new { @class = "form-control", @id = @name6})
+                                                                @*Html.TextBoxFor(Model=>Model.ACAndBWPropRECurrFin[TableCount],new { @class = "form-control", @id = @name6, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRECurrFin) : "" })*@
+                                                                @Html.ValidationMessage(@name6, "",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
                                                         }
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name7" type="text" value="">-->
-                                                                @*Html.TextBox(@name7, null, new { @class = "form-control" }) *@
-                                    @Html.TextBoxFor(Model=>Model.BudgEstNexFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name7 @*, @Value= @details!=null ? Convert.ToString(@details.BudgEstNexFin) : ""*@ }})
-                                                            @Html.ValidationMessageFor(Model=>Model.BudgEstNexFin[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextBox(@name7, details!=null ? Convert.ToString(details.BudgEstNexFin) : "", new { @class = "form-control", @id = @name7, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model=>Model.BudgEstNexFin[TableCount],new { @class = "form-control", @id = @name7, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : "" })*@
+                                                                @Html.ValidationMessage(@name7, "",new {@class = "text-danger"})
+                                                            </div>                                                            
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name7" type="text" value="">-->
+                                                            @Html.TextBox(@name7, details!=null ? Convert.ToString(details.BudgEstNexFin) : "", new { @class = "form-control", @id = @name7})
+                                                            @*Html.TextBoxFor(Model=>Model.BudgEstNexFin[TableCount],new { @class = "form-control", @id = @name7, @Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : "" })*@
+                                                            @Html.ValidationMessage(@name7, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
                                                         </td>
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name8" type="text" value="">-->
-                                                                @* @Html.TextBox(@name8, null, new { @class = "form-control" }) *@
-                                    @Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstNxtFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name8 @*, @Value= @details!=null ? Convert.ToString(@details.PerVarRevEstOverBudgEstNxtFin) : ""*@ }})
-                                                            @Html.ValidationMessageFor(Model=>Model.PerVarRevEstOverBudgEstNxtFin[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextBox(@name8, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : "", new { @class = "form-control", @id = @name8, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstNxtFin[TableCount],new { @class = "form-control", @id = @name8, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : ""  })*@
+                                                                @Html.ValidationMessage(@name8, "",new {@class = "text-danger"})
+                                                            </div>                                                            
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name8" type="text" value="">-->
+                                                                @Html.TextBox(@name8, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : "", new { @class = "form-control", @id = @name8})
+                                                                @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstNxtFin[TableCount],new { @class = "form-control", @id = @name8, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : ""  })*@
+                                                                @Html.ValidationMessage(@name8, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
                                                         </td>
                                                         @if (User.IsInRole("Admin"))
                                                         {
                                                             <td>
                                                                 <div class="form-group">
                                                                     <!-- <input id="@name9" type="text" value="">-->
-                                                                    @* Html.TextBox(@name9, null, new { @class = "form-control" }) *@
-                                    @Html.TextBoxFor(Model=>Model.ACAndBWPropRENxtFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name9 @*, @Value= @details!=null ? Convert.ToString(@details.ACAndBWPropRENxtFin) : ""*@ }})
-                                                                @Html.ValidationMessageFor(Model=>Model.ACAndBWPropRENxtFin[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextBox(@name9, details!=null ? Convert.ToString(details.ACAndBWPropRENxtFin) : "", new { @class = "form-control", @id = @name9})
+                                                                @*Html.TextBoxFor(Model=>Model.ACAndBWPropRENxtFin[TableCount],new { @class = "form-control", @id = @name9, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRENxtFin) : "" })*@
+                                                                @Html.ValidationMessage(@name9, "",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
                                                         }
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name10" type="text" value="">-->
-                                                                @* Html.TextBox(@name10, null, new { @class = "form-control" }) *@
-                                    @Html.TextAreaFor(Model=>Model.Justification[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name10 @*, @Value= @details!=null ? Convert.ToString(@details.Justification) : ""*@ }})
-                                                            @Html.ValidationMessageFor(Model=>Model.Justification[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextArea(@name10, details!=null ? Convert.ToString(details.Justification) : "", new { @class = "form-control", @id = @name10, @readonly="readonly"})
+                                                                @*Html.TextAreaFor(Model=>Model.Justification[TableCount],new { @class = "form-control", @id = @name10, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.Justification) : "" })*@
+                                                                @Html.ValidationMessage(@name10, "",new {@class = "text-danger"})
+                                                            </div>                                                            
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name10" type="text" value="">-->
+                                                            @Html.TextArea(@name10, details!=null ? Convert.ToString(details.Justification) : "", new { @class = "form-control", @id = @name10})
+                                                            @*Html.TextAreaFor(Model=>Model.Justification[TableCount],new { @class = "form-control", @id = @name10, @Value = details!=null ? Convert.ToString(details.Justification) : "" })*@
+                                                                @Html.ValidationMessage(@name10, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
                                                         </td>
                                                     </tr>
                                                
                                                     TableCount++;
-                                           // }
+                                           //}
                                         }
                                     </tbody>
                                 </table>
@@ -595,9 +791,9 @@
                                     <tbody>
                                         @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                         {
-                                             //  @foreach (var details in Model.Detailss.Where(x => x.SubGroupNumber.Equals(@Subs.SubGroupNo)))
-                                             //  {
-                                                var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
+                                            //@foreach (var details in Model.Detailss.Where(x => x.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                            //{
+                                                    var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
 
                                                     var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -636,100 +832,200 @@
                                                             @Subs.subGroupName
                                                         </td>
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name1" type="text" value="">-->
-                                                                @*Html.TextBox(@name1, null, new { @class = "form-control" }) *@
-                                                                @*@Html.EditorFor(Budgets.BudEstCurrFin, new {htmlAttributes = new { @class = "form-control", @id = @name1 }})*@
-                                                            @Html.TextBoxFor(Model=>Model.BudEstCurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name1, @Value = @details!=null ? Convert.ToString(@details.BudEstCurrFin) : "" }})
+                                                                @Html.TextBox(@name1, details!=null ? Convert.ToString(details.BudEstCurrFin) : "", new { @class = "form-control", @id = @name1, @readonly="readonly"})
+                                                                @*@Html.EditorFor(Budgets.BudEstCurrFin, htmlAttributes : new { @class = "form-control", @id = @name1 })*@
+                                                                @*Html.TextBoxFor(Model=>Model.BudEstCurrFin[TableCount],new { @class = "form-control", @id = @name1, @readonly="readonly",@value = details!=null ? Convert.ToString(details.BudEstCurrFin) : "" })*@
 
-                                                            @Html.ValidationMessageFor(Model=>Model.BudEstCurrFin[TableCount], "",new {@class = "text-danger"})
+                                                            @Html.ValidationMessage(@name1, "",new {@class = "text-danger"})
+                                                            </div>                                                            
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name1" type="text" value="">-->
+                                                                @Html.TextBox(@name1, details!=null ? Convert.ToString(details.BudEstCurrFin) : "", new { @class = "form-control", @id = @name1})
+                                                                @*@Html.EditorFor(Budgets.BudEstCurrFin, htmlAttributes : new { @class = "form-control", @id = @name1 })*@
+                                                                @*Html.TextBoxFor(@name1,new { @class = "form-control", @id = @name1, @value = details!=null ? Convert.ToString(details.BudEstCurrFin) : "" })*@
+
+                                                                @Html.ValidationMessage(@name1, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
                                                         </td>
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name2" type="text" value="">-->
-                                                                @*@Html.TextBox(@name2, null, new { @class = "form-control" })*@
+                                                                @Html.TextBox(@name2, details!=null ? Convert.ToString(details.BudEstCurrFin) : "", new { @class = "form-control", @id = @name2,@readonly="readonly"})
                                                                 @*@Html.EditorFor(model => model.ActPrevFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name2 }})*@
-                                                            @Html.TextBoxFor(Model=>Model.ActPrevFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name2@*, @Value = @details!=null ? Convert.ToString(@details.ActPrevFin) : ""*@ }})
-                                                            @Html.ValidationMessageFor(Model=>Model.ActPrevFin[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextBoxFor(Model=>Model.ActPrevFin[TableCount],new { @class = "form-control", @id = @name2, @readonly="readonly", @Value = details!=null ? Convert.ToString(details.ActPrevFin) : "" })
+                                                                @Html.ValidationMessage(@name2, "",new {@class = "text-danger"})
+                                                            </div>                                                            
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name2" type="text" value="">-->
+                                                                @Html.TextBox(@name2, details!=null ? Convert.ToString(details.ActPrevFin) : "", new { @class = "form-control", @id = @name2})
+                                                                @*@Html.EditorFor(model => model.ActPrevFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name2 }})*@
+                                                                @Html.TextBoxFor(Model=>Model.ActPrevFin[TableCount],new { @class = "form-control", @id = @name2, @Value = details!=null ? Convert.ToString(details.ActPrevFin) : "" })
+                                                                @Html.ValidationMessage(@name2, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
                                                         </td>
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name3" type="text" value="">-->
-                                                                @* @Html.TextBox(@name3, null, new { @class = "form-control" }) *@
-                                                            @Html.TextBoxFor(Model=>Model.ActCurrFinTill2ndQuart[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name3@*, @Value = @details!=null ? Convert.ToString(@details.ActCurrFinTill2ndQuart) : ""*@ }})
-                                                            @Html.ValidationMessageFor(Model=>Model.ActCurrFinTill2ndQuart[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextBox(@name3, details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : "", new { @class = "form-control", @id = @name3, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model=>Model.ActCurrFinTill2ndQuart[TableCount],new { @class = "form-control", @id = @name3, @readonly="readonly", @Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : "" })*@
+                                                                @Html.ValidationMessage(@name3, "",new {@class = "text-danger"})
+                                                            </div>                                                            
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name3" type="text" value="">-->
+                                                            @Html.TextBox(@name3, details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : "", new { @class = "form-control", @id = @name3})
+                                                            @*Html.TextBoxFor(Model=>Model.ActCurrFinTill2ndQuart[TableCount],new { @class = "form-control", @id = @name3, @Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : "" })*@
+                                                            @Html.ValidationMessage(@name3, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
                                                         </td>
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name4" type="text" value="">-->
-                                                                @* Html.TextBox(@name4, null, new { @class = "form-control" }) *@
-                                                            @Html.TextBoxFor(Model=>Model.RevEstCurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name4@*, @Value = @details!=null ? Convert.ToString(@details.RevEstCurrFin) : ""*@ }})
-                                                            @Html.ValidationMessageFor(Model=>Model.RevEstCurrFin[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextBox(@name4, details!=null ? Convert.ToString(details.RevEstCurrFin) : "", new { @class = "form-control", @id = @name4, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model=>Model.RevEstCurrFin[TableCount],new { @class = "form-control", @id = @name4, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : "" })*@
+                                                                @Html.ValidationMessage(@name4, "",new {@class = "text-danger"})
+                                                            </div>                                                            
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name4" type="text" value="">-->
+                                                            @Html.TextBox(@name4, details!=null ? Convert.ToString(details.RevEstCurrFin) : "", new { @class = "form-control", @id = @name4})
+                                                            @*Html.TextBoxFor(Model=>Model.RevEstCurrFin[TableCount],new { @class = "form-control", @id = @name4, @Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : "" })*@
+                                                                @Html.ValidationMessage(@name4, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
                                                         </td>
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name5" type="text" value="">-->
-                                                                @*Html.TextBox(@name5, null, new { @class = "form-control" }) *@
-                                                            @Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name5@*, @Value = @details!=null ? Convert.ToString(@details.PerVarRevEstOverBudgEstCurrFin) : ""*@ }})
-                                                            @Html.ValidationMessageFor(Model=>Model.PerVarRevEstOverBudgEstCurrFin[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextBox(@name5, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "", new { @class = "form-control", @id = @name5, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new { @class = "form-control", @id = @name5, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "" })*@
+                                                                @Html.ValidationMessage(@name5, "",new {@class = "text-danger"})
+                                                            </div>                                                            
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name5" type="text" value="">-->
+                                                            @Html.TextBox(@name5, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "", new { @class = "form-control", @id = @name5})
+                                                            @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new { @class = "form-control", @id = @name5, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "" })*@
+                                                                @Html.ValidationMessage(@name5, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
                                                         </td>
                                                         @if (User.IsInRole("Admin"))
                                                         {
                                                             <td>
                                                                 <div class="form-group">
                                                                     <!-- <input id="@name6" type="text" value="">-->
-                                                                    @* Html.TextBox(@name6, null, new { @class = "form-control" }) *@
-                                    @Html.TextBoxFor(Model=>Model.ACAndBWPropRECurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name6@*, @Value = @details!=null ? Convert.ToString(@details.ACAndBWPropRECurrFin) : ""*@ }})
-                                                                @Html.ValidationMessageFor(Model=>Model.ACAndBWPropRECurrFin[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextBox(@name6, details!=null ? Convert.ToString(details.ACAndBWPropRECurrFin) : "", new { @class = "form-control", @id = @name6})
+                                                                @*Html.TextBoxFor(Model=>Model.ACAndBWPropRECurrFin[TableCount],new { @class = "form-control", @id = @name6, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRECurrFin) : ""})*@
+                                                                @Html.ValidationMessage(@name6, "",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
                                                         }
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name7" type="text" value="">-->
-                                                                @*Html.TextBox(@name7, null, new { @class = "form-control" }) *@
-                                                            @Html.TextBoxFor(Model=>Model.BudgEstNexFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name7@*, @Value = @details!=null ? Convert.ToString(@details.BudgEstNexFin) : ""*@}})
-                                                            @Html.ValidationMessageFor(Model=>Model.BudgEstNexFin[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextBox(@name7, details!=null ? Convert.ToString(details.BudgEstNexFin) : "", new { @class = "form-control", @id = @name7, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model=>Model.BudgEstNexFin[TableCount],new { @class = "form-control", @id = @name7, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : ""})*@
+                                                                @Html.ValidationMessage(@name7, "",new {@class = "text-danger"})
+                                                            </div>                                                            
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name7" type="text" value="">-->
+                                                            @Html.TextBox(@name7, details!=null ? Convert.ToString(details.BudgEstNexFin) : "", new { @class = "form-control", @id = @name7})
+                                                            @*Html.TextBoxFor(Model=>Model.BudgEstNexFin[TableCount],new { @class = "form-control", @id = @name7, @Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : ""})*@
+                                                                @Html.ValidationMessage(@name7, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
                                                         </td>
                                                         <td>
+                                                         @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name8" type="text" value="">-->
-                                                                @* @Html.TextBox(@name8, null, new { @class = "form-control" }) *@
-                                                            @Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstNxtFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name8@*, @Value = @details!=null ? Convert.ToString(@details.PerVarRevEstOverBudgEstNxtFin) : ""*@}})
-                                                            @Html.ValidationMessageFor(Model=>Model.PerVarRevEstOverBudgEstNxtFin[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextBox(@name8, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : "", new { @class = "form-control", @id = @name8, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstNxtFin[TableCount],new { @class = "form-control", @id = @name8, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : ""})*@
+                                                                @Html.ValidationMessage(@name8, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name8" type="text" value="">-->
+                                                            @Html.TextBox(@name8, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : "", new { @class = "form-control", @id = @name8})
+                                                            @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstNxtFin[TableCount],new { @class = "form-control", @id = @name8, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : ""})*@
+                                                                @Html.ValidationMessage(@name8, "",new {@class = "text-danger"})
+                                                            </div>
+                                                        }
                                                         </td>
                                                         @if (User.IsInRole("Admin"))
                                                         {
                                                             <td>
                                                                 <div class="form-group">
                                                                     <!-- <input id="@name9" type="text" value="">-->
-                                                                    @* Html.TextBox(@name9, null, new { @class = "form-control" }) *@
-                                                                @Html.TextBoxFor(Model=>Model.ACAndBWPropRENxtFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name9@*, @Value = @details!=null ? Convert.ToString(@details.ACAndBWPropRENxtFin) : ""*@ }})
-                                                                @Html.ValidationMessageFor(Model=>Model.ACAndBWPropRENxtFin[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextBox(@name9, details!=null ? Convert.ToString(details.ACAndBWPropRENxtFin) : "", new { @class = "form-control", @id = @name9})
+                                                                @*Html.TextBoxFor(Model=>Model.ACAndBWPropRENxtFin[TableCount],new { @class = "form-control", @id = @name9, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRENxtFin) : "" })*@
+                                                                @Html.ValidationMessage(@name9, "",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
                                                         }
                                                         <td>
+                                                         @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name10" type="text" value="">-->
-                                                                @* Html.TextBox(@name10, null, new { @class = "form-control" }) *@
-                                                            @Html.TextAreaFor(Model=>Model.Justification[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name10@*, @Value = @details!=null ? Convert.ToString(@details.Justification) : "" *@ }})
-                                                            @Html.ValidationMessageFor(Model=>Model.Justification[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextArea(@name10, details!=null ? Convert.ToString(details.Justification) : "", new { @class = "form-control", @id = @name10, @readonly="readonly"})
+                                                                @*Html.TextAreaFor(Model=>Model.Justification[TableCount],new { @class = "form-control", @id = @name10, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.Justification) : ""  })*@
+                                                                @Html.ValidationMessage(@name10, "",new {@class = "text-danger"})
+                                                            </div>                                                            
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name10" type="text" value="">-->
+                                                            @Html.TextArea(@name10, details!=null ? Convert.ToString(details.Justification) : "", new { @class = "form-control", @id = @name10})
+                                                            @*Html.TextAreaFor(Model=>Model.Justification[TableCount],new { @class = "form-control", @id = @name10, @Value = details!=null ? Convert.ToString(details.Justification) : ""  })*@
+                                                                @Html.ValidationMessage(@name10, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
                                                         </td>
+
                                                     </tr>
 
                                                
                                                  TableCount++;
 
-                                             //  }
+                                            // }
                                         } 
                                           
                                     </tbody>
@@ -796,9 +1092,9 @@
                                     <tbody>
                                         @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                         {
-                                          // @foreach (var details in Model.Detailss.Where(x => x.SubGroupNumber.Equals(@Subs.SubGroupNo)))
-                                          // {
-                                                var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
+                                          //@foreach (var details in Model.Detailss.Where(x => x.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                          //{
+                                                  var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
 
                                                     var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -837,95 +1133,191 @@
                                                             @Subs.subGroupName
                                                         </td>
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name1" type="text" value="">-->
-                                                                @*Html.TextBox(@name1, null, new { @class = "form-control" }) *@
-                                                            @Html.TextBoxFor(Model => Model.BudEstCurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name1, @Value = @details!=null ? Convert.ToString(@details.BudEstCurrFin) : ""}})
-                                                            @Html.ValidationMessageFor(Model => Model.BudEstCurrFin[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextBox(@name1, details!=null ? Convert.ToString(details.BudEstCurrFin) : "", new { @class = "form-control", @id = @name1, @readonly = "readonly" })
+                                                                @*Html.TextBoxFor(Model => Model.BudEstCurrFin[TableCount], new { @class = "form-control", @id = @name1, @readonly="readonly",@value = details!=null ? Convert.ToString(details.BudEstCurrFin) : ""})*@
+                                                                @Html.ValidationMessage(@name1, "",new {@class = "text-danger"})
+                                                            </div>                                                            
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name1" type="text" value="">-->
+                                                                @Html.TextBox(@name1, details!=null ? Convert.ToString(details.BudEstCurrFin) : "", new { @class = "form-control", @id = @name1})
+                                                                @*Html.TextBoxFor(Model => Model.BudEstCurrFin[TableCount], new { @class = "form-control", @id = @name1, @value = details!=null ? Convert.ToString(details.BudEstCurrFin) : ""  })*@
+                                                                @Html.ValidationMessage(@name1, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
                                                         </td>
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name2" type="text" value="">-->
-                                                                @*@Html.TextBox(@name2, null, new { @class = "form-control" })*@
-                                                            @Html.TextBoxFor(Model => Model.ActPrevFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name2@*, @Value = @details!=null ? Convert.ToString(@details.ActPrevFin) : ""*@}})
-                                                            @Html.ValidationMessageFor(Model => Model.ActPrevFin[TableCount], "",new {@class = "text-danger"})
+                                                               @Html.TextBox(@name2, details!=null ? Convert.ToString(details.ActPrevFin) : "", new { @class = "form-control", @id = @name2, @readonly = "readonly" })
+                                                                @*Html.TextBoxFor(Model => Model.ActPrevFin[TableCount], new { @class = "form-control", @id = @name2, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.ActPrevFin) : ""  })*@
+                                                                @Html.ValidationMessage(@name2, "",new {@class = "text-danger"})
+                                                            </div>                                                            
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name2" type="text" value="">-->
+                                    @Html.TextBox(@name2, details!=null ? Convert.ToString(details.ActPrevFin) : "", new { @class = "form-control", @id = @name2})
+                                                                @*Html.TextBoxFor(Model => Model.ActPrevFin[TableCount], new { @class = "form-control", @id = @name2, @Value = details!=null ? Convert.ToString(details.ActPrevFin) : ""  })*@
+                                                                @Html.ValidationMessage(@name2, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
                                                         </td>
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name3" type="text" value="">-->
-                                                                @* @Html.TextBox(@name3, null, new { @class = "form-control" }) *@
-                                                            @Html.TextBoxFor(Model => Model.ActCurrFinTill2ndQuart[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name3@*, @Value = @details!=null ? Convert.ToString(@details.ActCurrFinTill2ndQuart) : ""*@ }})
-                                                            @Html.ValidationMessageFor(Model => Model.ActCurrFinTill2ndQuart[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextBox(@name3, details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : "", new { @class = "form-control", @id = @name3, @readonly = "readonly" })
+                                                                @*Html.TextBoxFor(Model => Model.ActCurrFinTill2ndQuart[TableCount],new { @class = "form-control", @id = @name3, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : ""   })*@
+                                                                @Html.ValidationMessage(@name3, "",new {@class = "text-danger"})
+                                                            </div>                                                            
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name3" type="text" value="">-->
+                                                            @Html.TextBox(@name3, details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : "", new { @class = "form-control", @id = @name3})
+                                                            @*Html.TextBoxFor(Model => Model.ActCurrFinTill2ndQuart[TableCount],new { @class = "form-control", @id = @name3, @Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : ""   })*@
+                                                                @Html.ValidationMessage(@name3, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
                                                         </td>
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name4" type="text" value="">-->
-                                                                @* Html.TextBox(@name4, null, new { @class = "form-control" }) *@
-                                                            @Html.TextBoxFor(Model => Model.RevEstCurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name4@*, @Value = @details!=null ? Convert.ToString(@details.RevEstCurrFin) : ""*@ }})
-                                                            @Html.ValidationMessageFor(Model => Model.RevEstCurrFin[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextBox(@name4, details!=null ? Convert.ToString(details.RevEstCurrFin) : "", new { @class = "form-control", @id = @name4,@readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model => Model.RevEstCurrFin[TableCount],new { @class = "form-control", @id = @name4, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : ""  })*@
+                                                                @Html.ValidationMessage(@name4, "",new {@class = "text-danger"})
+                                                            </div>                                                            
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name4" type="text" value="">-->
+                                                            @Html.TextBox(@name4, details!=null ? Convert.ToString(details.RevEstCurrFin) : "", new { @class = "form-control", @id = @name4})
+                                                            @*Html.TextBoxFor(Model => Model.RevEstCurrFin[TableCount],new { @class = "form-control", @id = @name4, @Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : ""  })*@
+                                                                @Html.ValidationMessage(@name4, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
                                                         </td>
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name5" type="text" value="">-->
-                                                                @*Html.TextBox(@name5, null, new { @class = "form-control" }) *@
-                                    @Html.TextBoxFor(Model => Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name5@*, @Value = @details!=null ? Convert.ToString(@details.PerVarRevEstOverBudgEstCurrFin) : ""*@ }})
-                                                            @Html.ValidationMessageFor(Model => Model.PerVarRevEstOverBudgEstCurrFin[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextBox(@name5, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "", new { @class = "form-control", @id = @name5, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model => Model.PerVarRevEstOverBudgEstCurrFin[TableCount],new { @class = "form-control", @id = @name5, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : ""  })*@
+                                                                @Html.ValidationMessage(@name5, "",new {@class = "text-danger"})
+                                                            </div>                                                            
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name5" type="text" value="">-->
+                                                            @Html.TextBox(@name5, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "", new { @class = "form-control", @id = @name5})
+                                                            @*Html.TextBoxFor(Model => Model.PerVarRevEstOverBudgEstCurrFin[TableCount],new { @class = "form-control", @id = @name5, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : ""  })*@
+                                                            @Html.ValidationMessage(@name5, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
                                                         </td>
                                                         @if (User.IsInRole("Admin"))
                                                         {
                                                             <td>
                                                                 <div class="form-group">
                                                                     <!-- <input id="@name6" type="text" value="">-->
-                                                                    @* Html.TextBox(@name6, null, new { @class = "form-control" }) *@
-                                    @Html.TextBoxFor(Model => Model.ACAndBWPropRECurrFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name6@*, @Value = @details!=null ? Convert.ToString(@details.ACAndBWPropRECurrFin) : "" *@ }})
-                                                                @Html.ValidationMessageFor(Model => Model.ACAndBWPropRECurrFin[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextBox(@name6, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "", new { @class = "form-control", @id = @name6})
+                                                                @*Html.TextBoxFor(Model => Model.ACAndBWPropRECurrFin[TableCount], new { @class = "form-control", @id = @name6, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRECurrFin) : ""  })*@
+                                                                @Html.ValidationMessage(@name6, "",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
                                                         }
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name7" type="text" value="">-->
-                                                                @*Html.TextBox(@name7, null, new { @class = "form-control" }) *@
-                                    @Html.TextBoxFor(Model => Model.BudgEstNexFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name7@*, @Value = @details!=null ? Convert.ToString(@details.BudgEstNexFin) : ""*@ }})
-                                                            @Html.ValidationMessageFor(Model => Model.BudgEstNexFin[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextBox(@name7, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "", new { @class = "form-control", @id = @name7, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model => Model.BudgEstNexFin[TableCount], new { @class = "form-control", @id = @name7, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : ""  })*@
+                                                                @Html.ValidationMessage(@name7, "",new {@class = "text-danger"})
+                                                            </div>                                                            
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name7" type="text" value="">-->
+                                                            @Html.TextBox(@name7, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "", new { @class = "form-control", @id = @name7})
+                                                            @*Html.TextBoxFor(Model => Model.BudgEstNexFin[TableCount], new { @class = "form-control", @id = @name7, @Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : ""  })*@
+                                                            @Html.ValidationMessage(@name7, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
                                                         </td>
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name8" type="text" value="">-->
-                                                                @* @Html.TextBox(@name8, null, new { @class = "form-control" }) *@
-                                                            @Html.TextBoxFor(Model => Model.PerVarRevEstOverBudgEstNxtFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name8@*, @Value = @details!=null ? Convert.ToString(@details.PerVarRevEstOverBudgEstNxtFin) : ""*@ }})
-                                                            @Html.ValidationMessageFor(Model => Model.PerVarRevEstOverBudgEstNxtFin[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextBox(@name8, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "", new { @class = "form-control", @id = @name8, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model => Model.PerVarRevEstOverBudgEstNxtFin[TableCount], new { @class = "form-control", @id = @name8, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : ""  })*@
+                                                                @Html.ValidationMessage(@name8, "",new {@class = "text-danger"})
+                                                            </div>                                                            
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name8" type="text" value="">-->
+                                                            @Html.TextBox(@name8, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : "", new { @class = "form-control", @id = @name8})
+                                                            @*Html.TextBoxFor(Model => Model.PerVarRevEstOverBudgEstNxtFin[TableCount], new { @class = "form-control", @id = @name8, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : ""  })*@
+                                                            @Html.ValidationMessage(@name8, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
                                                         </td>
                                                         @if (User.IsInRole("Admin"))
                                                         {
                                                             <td>
                                                                 <div class="form-group">
                                                                     <!-- <input id="@name9" type="text" value="">-->
-                                                                    @* Html.TextBox(@name9, null, new { @class = "form-control" }) *@
-                                    @Html.TextBoxFor(Model => Model.ACAndBWPropRENxtFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name9@*, @Value = @details!=null ? Convert.ToString(@details.ACAndBWPropRENxtFin) : ""*@ }})
-                                                                @Html.ValidationMessageFor(Model => Model.ACAndBWPropRENxtFin[TableCount], "",new {@class = "text-danger"})
+                                    @Html.TextBox(@name9, details!=null ? Convert.ToString(details.ACAndBWPropRENxtFin) : "", new { @class = "form-control", @id = @name9})
+                                                                @*Html.TextBoxFor(Model => Model.ACAndBWPropRENxtFin[TableCount], new { @class = "form-control", @id = @name9, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRENxtFin) : ""  })*@
+                                                                @Html.ValidationMessage(@name9, "",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
                                                         }
                                                         <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name10" type="text" value="">-->
-                                                                @* Html.TextBox(@name10, null, new { @class = "form-control" }) *@
-                                                            @Html.TextAreaFor(Model => Model.Justification[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name10@*, @Value = @details!=null ? Convert.ToString(@details.Justification) : ""*@ }})
-                                                            @Html.ValidationMessageFor(Model => Model.Justification[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.TextArea(@name10, details!=null ? Convert.ToString(details.Justification) : "", new { @class = "form-control", @id = @name10, @readonly="readonly"})
+                                                                @*Html.TextAreaFor(Model => Model.Justification[TableCount], new { @class = "form-control", @id = @name10, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.Justification) : "" })*@
+                                                                @Html.ValidationMessage(@name10, "",new {@class = "text-danger"})
+                                                            </div>                                                            
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <!-- <input id="@name10" type="text" value="">-->
+                                                            @Html.TextArea(@name10, details!=null ? Convert.ToString(details.Justification) : "", new { @class = "form-control", @id = @name10})
+                                                            @*Html.TextAreaFor(Model => Model.Justification[TableCount], new { @class = "form-control", @id = @name10, @Value = details!=null ? Convert.ToString(details.Justification) : "" })*@
+                                                                @Html.ValidationMessage(@name10, "",new {@class = "text-danger"})
                                                             </div>
+                                                        }
                                                         </td>
                                                     </tr>
                                             
                                               TableCount++;
-                                         // }
+                                          //}
                                         }
                                     </tbody>
                                 </table>
@@ -955,6 +1347,7 @@
             $("#Division").change(function(evt)
             {
                 $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
+                
              });
  
 
@@ -962,6 +1355,20 @@
             $("#AcademicYear").change(function (evt) 
             {
                 $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
+                var academicyear = $("#SelectedAcademicYear").val();
+                alert(academicyear);
+                var year = academicyear.split('-');
+                alert(year);
+                $.ajax({
+                    url:  @Url.Action("Index","Tabs"),
+                    data: { Year: year[0] },
+                    type: "Get"
+                    // dataType: "html",
+                    //success: function (data) {
+                    //Whatever result you have got from your controller with html partial view replace with a specific html.
+                    // $("#divPartialView").html(data); // HTML DOM replace
+                    // }
+                });
             });
        
 
