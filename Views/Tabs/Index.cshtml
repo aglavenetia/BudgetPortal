@@ -36,7 +36,7 @@
              </td>
            }       
              <td>
-              @Html.DropDownListFor(m => m.AcademicYears, Model.AcademicYears,"--Please select any Financial Year--", new { @class = "form-control", @id="AcademicYear" })
+              @Html.DropDownListFor(m => m.AcademicYears, Model.AcademicYears,new { @class = "form-control", @id="AcademicYear" })
               @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear)
               @Html.ValidationMessageFor(Model => Model.AcademicYears, "", new { @class = "text-danger" })
              </td>
@@ -1359,16 +1359,23 @@
                 alert(academicyear);
                 var year = academicyear.split('-');
                 alert(year);
-                $.ajax({
-                    url:  @Url.Action("Index","Tabs"),
-                    data: { Year: year[0] },
-                    type: "Get"
-                    // dataType: "html",
-                    //success: function (data) {
+              // $.ajax({  
+               //     type: "Post",
+                //    url:  @Url.Action("GetDetails","Tabs"),
+               //     data: { Year: year[0] }
+                    //dataType: "html",
+             //       success: function (data) 
+               //     {
                     //Whatever result you have got from your controller with html partial view replace with a specific html.
                     // $("#divPartialView").html(data); // HTML DOM replace
-                    // }
-                });
+               //     }
+                //    error: function (xhr, status, error) 
+                 //   {
+                //        alert(status);
+                //        alert(error);
+                //    },
+                 //   dataType: 'text'
+               // });
             });
        
 

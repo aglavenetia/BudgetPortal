@@ -12,15 +12,16 @@ namespace BudgetPortal.Controllers
     public class TabsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public int Year = DateTime.Now.Year;
+        //public int Year = DateTime.Now.Year;
         public TabsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
         [HttpGet]
-        public IActionResult Index(int Year)
+        public IActionResult Index()
         {
+            var Year = DateTime.Now.Year;
             var username = User.Identity.Name;
             var DivName = _context.Users
                           .Where(x => x.UserName.Equals(username))
@@ -36,7 +37,7 @@ namespace BudgetPortal.Controllers
             {
                 Year = DateTime.Now.Year - 1;
             }
-            //Year = 2021;
+            var AcademicYear = String.Concat(Year, "-", (Year + 1));
             var mymodel = new MultipleData();
             mymodel.Sectionss = _context.BudgetSections.ToList();
             mymodel.Groupss = _context.BudgetGroups.ToList();
@@ -60,27 +61,28 @@ namespace BudgetPortal.Controllers
                         Value = x.Id.ToString()
 
                     }).ToList();
-
+            var SelectedAcademicYear =  mymodel.AcademicYears.Where(x => x.Text.Equals(AcademicYear));
+            SelectedAcademicYear.Single().Selected = true;
             //mymodel.BudEstCurrFin = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
             //                         .Where(x => x.FinancialYear1 == Year).Select(x => x.BudEstCurrFin).ToList();
             //mymodel.ActPrevFin = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
-             //                        .Where(x => x.FinancialYear1 == Year).Select(x => x.ActPrevFin).ToList();
+            //                        .Where(x => x.FinancialYear1 == Year).Select(x => x.ActPrevFin).ToList();
             //mymodel.ActCurrFinTill2ndQuart = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
-             //                        .Where(x => x.FinancialYear1 == Year).Select(x => x.ActCurrFinTill2ndQuart).ToList();
+            //                        .Where(x => x.FinancialYear1 == Year).Select(x => x.ActCurrFinTill2ndQuart).ToList();
             //mymodel.RevEstCurrFin = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
             //                         .Where(x => x.FinancialYear1 == Year).Select(x => x.RevEstCurrFin).ToList();
             //mymodel.PerVarRevEstOverBudgEstCurrFin = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
-             //                        .Where(x => x.FinancialYear1 == Year).Select(x => x.PerVarRevEstOverBudgEstCurrFin).ToList();
+            //                        .Where(x => x.FinancialYear1 == Year).Select(x => x.PerVarRevEstOverBudgEstCurrFin).ToList();
             //mymodel.ACAndBWPropRECurrFin = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
-             //                        .Where(x => x.FinancialYear1 == Year).Select(x => x.ACAndBWPropRECurrFin).ToList();
+            //                        .Where(x => x.FinancialYear1 == Year).Select(x => x.ACAndBWPropRECurrFin).ToList();
             //mymodel.BudgEstNexFin = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
-             //                        .Where(x => x.FinancialYear1 == Year).Select(x => x.BudgEstNexFin).ToList();
+            //                        .Where(x => x.FinancialYear1 == Year).Select(x => x.BudgEstNexFin).ToList();
             //mymodel.PerVarRevEstOverBudgEstNxtFin = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
-             //                        .Where(x => x.FinancialYear1 == Year).Select(x => x.PerVarRevEstOverBudgEstNxtFin).ToList();
+            //                        .Where(x => x.FinancialYear1 == Year).Select(x => x.PerVarRevEstOverBudgEstNxtFin).ToList();
             //mymodel.ACAndBWPropRENxtFin = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
-             //                        .Where(x => x.FinancialYear1 == Year).Select(x => x.PerVarRevEstOverBudgEstNxtFin).ToList();
+            //                        .Where(x => x.FinancialYear1 == Year).Select(x => x.PerVarRevEstOverBudgEstNxtFin).ToList();
             //mymodel.Justification = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
-             //                        .Where(x => x.FinancialYear1 == Year).Select(x => x.Justification).ToList();
+            //                        .Where(x => x.FinancialYear1 == Year).Select(x => x.Justification).ToList();
 
             return View(mymodel);
         }
@@ -88,7 +90,7 @@ namespace BudgetPortal.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(MultipleData MD, FormCollection Form)
+        public IActionResult Index(MultipleData MD, IFormCollection Form)
         {
 
             var username = User.Identity.Name;
@@ -145,6 +147,53 @@ namespace BudgetPortal.Controllers
             return RedirectToAction("Index");
             //return View(MD);
          }
+
+
+        [HttpPost]
+        public IActionResult GetDetails(int Year)
+        {
+            var username = User.Identity.Name;
+            var DivName = _context.Users
+                          .Where(x => x.UserName.Equals(username))
+                          .Select(x => x.BranchName).First();
+            var LoggedInDivisionID = _context.Division
+                                   .Where(d => d.DivisionName == DivName)
+                                   .Select(x => x.DivisionID).FirstOrDefault();
+
+            //var Year = DateTime.Now.Year;
+            var Month = DateTime.Now.Month;
+
+            if (Month > 0 && Month < 4)
+            {
+                Year = DateTime.Now.Year - 1;
+            }
+            //Year = 2021;
+            var mymodel = new MultipleData();
+            mymodel.Sectionss = _context.BudgetSections.ToList();
+            mymodel.Groupss = _context.BudgetGroups.ToList();
+            mymodel.SubGroupss = _context.BudgetSubGroups.ToList();
+            mymodel.Ledgerss = _context.BudgetLedgers.ToList();
+            mymodel.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
+                                .Where(x => x.FinancialYear1 == Year).ToList();
+            mymodel.DivisionNames = _context.Division.AsEnumerable().Select(x =>
+                    new SelectListItem()
+                    {
+                        Selected = false,
+                        Text = x.DivisionName,
+                        Value = x.DivisionID.ToString()
+
+                    }).ToList();
+            mymodel.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
+                    new SelectListItem()
+                    {
+                        Selected = false,
+                        Text = x.Year1 + "-" + x.Year2,
+                        Value = x.Id.ToString()
+
+                    }).ToList();
+
+            return RedirectToAction("Index");
+        }
 
     }
 }
