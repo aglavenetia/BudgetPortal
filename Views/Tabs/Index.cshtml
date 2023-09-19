@@ -24,8 +24,8 @@
 {
     @Html.AntiForgeryToken()
 
-
-    <div id="outerdiv" style = "float:right">
+    <div id="outerdiv">
+      <div style = "float:right">
         <table border="0" cellpadding="5" cellspacing="0" >
           <tr>
            @if (User.IsInRole("Admin"))
@@ -45,9 +45,9 @@
           </tr>
         </table>
     </div>
-    <br />
-    <br />
-    <ul id="outerTab" class="nav nav-tabs" role="tablist" >    
+      <br />
+      <br />
+        <ul id="outerTab" class="nav nav-tabs" role="tablist" >    
       @foreach (var item in Model.Sectionss)
       {
             var inneridenti = String.Concat("Budget", @item.SectionNo.ToString());
@@ -71,7 +71,7 @@
       }
     </ul>
 
-    <div id="outerTabContent" class="tab-content" onclick="">
+        <div id="outerTabContent" class="tab-content" onclick="">
        <br />
        @foreach (var inner in Model.Sectionss)
        {
@@ -1335,6 +1335,7 @@
            OuterBodyCount++;
        }
     </div>
+    </div>
 }
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="~/js/nestedtable.js"></script>
@@ -1365,11 +1366,17 @@
                       url:  '@Url.Action("GetDetails","Tabs")',
                       data: { Year: year[0] },
                       dataType: "html",
-                        success: function (data) {
+                      success: function (data) 
+                      {
                         //Whatever result you have got from your controller with html partial view replace with a specific html.
-                            $('#outerdiv').html(data); // HTML DOM replace
+                           
+                        $('#outerdiv').html(data); // HTML DOM replace
                            alert('Success');
-                      }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) 
+                        {
+                            alert(errorThrown);
+                        }
                     
                  });
             });
