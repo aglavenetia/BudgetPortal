@@ -24,21 +24,22 @@
 {
     @Html.AntiForgeryToken()
 
-    <div style = "float:right">
+
+    <div id="outerdiv" style = "float:right">
         <table border="0" cellpadding="5" cellspacing="0" >
           <tr>
            @if (User.IsInRole("Admin"))
            {
              <td>
-              @Html.DropDownListFor(m => m.DivisionNames, Model.DivisionNames,"--Please select any Division--", new { @class = "form-control", @id="Division" })
+              @Html.DropDownListFor(m => m.SelectedDivisionID, Model.DivisionNames,"--Please select any Division--", new { @class = "form-control", @id="Division" })
               @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName)
-              @Html.ValidationMessageFor(Model => Model.DivisionNames, "", new { @class = "text-danger" })
+              @Html.ValidationMessageFor(Model => Model.SelectedDivisionID, "", new { @class = "text-danger" })
              </td>
            }       
              <td>
-              @Html.DropDownListFor(m => m.AcademicYears, Model.AcademicYears,new { @class = "form-control", @id="AcademicYear" })
+              @Html.DropDownListFor(m => m.SelectedAcademicYearID, Model.AcademicYears,"--Please select any Academic Year--",new { @class = "form-control", @id="AcademicYear" })
               @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear)
-              @Html.ValidationMessageFor(Model => Model.AcademicYears, "", new { @class = "text-danger" })
+              @Html.ValidationMessageFor(Model => Model.SelectedAcademicYearID, "", new { @class = "text-danger" })
              </td>
                 
           </tr>
@@ -219,16 +220,16 @@
                                                                 <!-- <input id="@name1" type="text" value="">-->
                                                                 @Html.TextBox(@name1, details!=null ? Convert.ToString(details.BudEstCurrFin) : "", new { @class = "form-control", @id = @name1, @readonly = "readonly" })
                                                                 @*Html.TextBoxFor(Model=> Model.BudEstCurrFin[TableCount],new { @class = "form-control", @id = @name1, @readonly = "readonly",@value = details!=null ? Convert.ToString(details.BudEstCurrFin) : ""})*@
-                                                                @Html.ValidationMessageFor(Model=> Model.BudEstCurrFin[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.ValidationMessage(@name1, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
                                                         else
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name1" type="text" value="">-->
-                                                                @Html.TextBox(@name1, details!=null ? Convert.ToString(details.BudEstCurrFin) : "", new { @class = "form-control", @id = @name1})
+                                                                @Html.TextBox(@name1, details!=null ? Convert.ToString(details.BudEstCurrFin) : "", new { @class = "form-control", @id = @name1, @name=@name1})
                                                                 @*Html.TextBoxFor(Model=> Model.BudEstCurrFin[TableCount],new { @class = "form-control", @id = @name1, @value = details!=null ? Convert.ToString(details.BudEstCurrFin) : ""})*@
-                                                                @Html.ValidationMessageFor(Model=> Model.BudEstCurrFin[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.ValidationMessage(@name1, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
                                                         </td>
@@ -248,7 +249,7 @@
                                                                 <!-- <input id="@name2" type="text" value="">-->
                                                                 @Html.TextBox(@name2, details!=null ? Convert.ToString(details.ActPrevFin) : "", new { @class = "form-control", @id = @name2})
                                                                 @*Html.TextBoxFor(Model=> Model.ActPrevFin[TableCount], new { @class = "form-control", @id = @name2,@Value = details!=null ? Convert.ToString(details.ActPrevFin) : ""})*@
-                                                                @Html.ValidationMessageFor(Model=> Model.ActPrevFin[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.ValidationMessage(@name2, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
                                                         </td>
@@ -259,7 +260,7 @@
                                                                 <!-- <input id="@name3" type="text" value="">-->
                                                                 @Html.TextBox(@name3, details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : "", new { @class = "form-control", @id = @name3, @readonly = "readonly"})
                                                                 @*Html.TextBoxFor(Model=> Model.ActCurrFinTill2ndQuart[TableCount], new { @class = "form-control", @id = @name3,  @readonly = "readonly", @Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : ""})*@
-                                                                @Html.ValidationMessageFor(Model=> Model.ActCurrFinTill2ndQuart[TableCount], "",new {@class = "text-danger"})
+                                                                @Html.ValidationMessage(@name3, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
                                                         else
@@ -509,8 +510,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name1" type="text" value="">-->
-                                    @Html.TextBox(@name1, details!=null ? Convert.ToString(details.BudEstCurrFin) : "", new { @class = "form-control", @id = @name1, @readonly="readonly"})
-                                                            @*Html.TextBoxFor(Model=>Model.BudEstCurrFin[TableCount], new { @class = "form-control", @id = @name1, @readonly="readonly", @value = details!=null ? Convert.ToString(details.BudEstCurrFin) : ""})*@
+                                                                @Html.TextBox(@name1, details!=null ? Convert.ToString(details.BudEstCurrFin) : "", new { @class = "form-control", @id = @name1, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model=>Model.BudEstCurrFin[TableCount], new { @class = "form-control", @id = @name1, @readonly="readonly", @value = details!=null ? Convert.ToString(details.BudEstCurrFin) : ""})*@
                                                                 @Html.ValidationMessage(@name1, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -529,9 +530,9 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name2" type="text" value="">-->
-                                    @Html.TextBox(@name2, details!=null ? Convert.ToString(details.ActPrevFin) : "", new { @class = "form-control", @id = @name2, @readonly="readonly"})
-                                                            @*Html.TextBoxFor(Model=>Model.ActPrevFin[TableCount],new { @class = "form-control", @id = @name2, @readonly="readonly", @Value = details!=null ? Convert.ToString(details.ActPrevFin) : ""})*@
-                                                            @Html.ValidationMessage(@name2, "",new {@class = "text-danger"})
+                                                              @Html.TextBox(@name2, details!=null ? Convert.ToString(details.ActPrevFin) : "", new { @class = "form-control", @id = @name2, @readonly="readonly"})
+                                                              @*Html.TextBoxFor(Model=>Model.ActPrevFin[TableCount],new { @class = "form-control", @id = @name2, @readonly="readonly", @Value = details!=null ? Convert.ToString(details.ActPrevFin) : ""})*@
+                                                              @Html.ValidationMessage(@name2, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
                                                         else
@@ -839,8 +840,7 @@
                                                                 @Html.TextBox(@name1, details!=null ? Convert.ToString(details.BudEstCurrFin) : "", new { @class = "form-control", @id = @name1, @readonly="readonly"})
                                                                 @*@Html.EditorFor(Budgets.BudEstCurrFin, htmlAttributes : new { @class = "form-control", @id = @name1 })*@
                                                                 @*Html.TextBoxFor(Model=>Model.BudEstCurrFin[TableCount],new { @class = "form-control", @id = @name1, @readonly="readonly",@value = details!=null ? Convert.ToString(details.BudEstCurrFin) : "" })*@
-
-                                                            @Html.ValidationMessage(@name1, "",new {@class = "text-danger"})
+                                                                @Html.ValidationMessage(@name1, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
                                                         else
@@ -862,7 +862,7 @@
                                                                 <!-- <input id="@name2" type="text" value="">-->
                                                                 @Html.TextBox(@name2, details!=null ? Convert.ToString(details.BudEstCurrFin) : "", new { @class = "form-control", @id = @name2,@readonly="readonly"})
                                                                 @*@Html.EditorFor(model => model.ActPrevFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name2 }})*@
-                                                                @Html.TextBoxFor(Model=>Model.ActPrevFin[TableCount],new { @class = "form-control", @id = @name2, @readonly="readonly", @Value = details!=null ? Convert.ToString(details.ActPrevFin) : "" })
+                                                                @*Html.TextBoxFor(Model=>Model.ActPrevFin[TableCount],new { @class = "form-control", @id = @name2, @readonly="readonly", @Value = details!=null ? Convert.ToString(details.ActPrevFin) : "" })*@
                                                                 @Html.ValidationMessage(@name2, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -872,7 +872,7 @@
                                                                 <!-- <input id="@name2" type="text" value="">-->
                                                                 @Html.TextBox(@name2, details!=null ? Convert.ToString(details.ActPrevFin) : "", new { @class = "form-control", @id = @name2})
                                                                 @*@Html.EditorFor(model => model.ActPrevFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name2 }})*@
-                                                                @Html.TextBoxFor(Model=>Model.ActPrevFin[TableCount],new { @class = "form-control", @id = @name2, @Value = details!=null ? Convert.ToString(details.ActPrevFin) : "" })
+                                                                @*Html.TextBoxFor(Model=>Model.ActPrevFin[TableCount],new { @class = "form-control", @id = @name2, @Value = details!=null ? Convert.ToString(details.ActPrevFin) : "" })*@
                                                                 @Html.ValidationMessage(@name2, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -1166,7 +1166,7 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name2" type="text" value="">-->
-                                    @Html.TextBox(@name2, details!=null ? Convert.ToString(details.ActPrevFin) : "", new { @class = "form-control", @id = @name2})
+                                                                @Html.TextBox(@name2, details!=null ? Convert.ToString(details.ActPrevFin) : "", new { @class = "form-control", @id = @name2})
                                                                 @*Html.TextBoxFor(Model => Model.ActPrevFin[TableCount], new { @class = "form-control", @id = @name2, @Value = details!=null ? Convert.ToString(details.ActPrevFin) : ""  })*@
                                                                 @Html.ValidationMessage(@name2, "",new {@class = "text-danger"})
                                                             </div>
@@ -1288,7 +1288,7 @@
                                                             <td>
                                                                 <div class="form-group">
                                                                     <!-- <input id="@name9" type="text" value="">-->
-                                    @Html.TextBox(@name9, details!=null ? Convert.ToString(details.ACAndBWPropRENxtFin) : "", new { @class = "form-control", @id = @name9})
+                                                                @Html.TextBox(@name9, details!=null ? Convert.ToString(details.ACAndBWPropRENxtFin) : "", new { @class = "form-control", @id = @name9})
                                                                 @*Html.TextBoxFor(Model => Model.ACAndBWPropRENxtFin[TableCount], new { @class = "form-control", @id = @name9, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRENxtFin) : ""  })*@
                                                                 @Html.ValidationMessage(@name9, "",new {@class = "text-danger"})
                                                                 </div>
@@ -1358,24 +1358,20 @@
                 var academicyear = $("#SelectedAcademicYear").val();
                 alert(academicyear);
                 var year = academicyear.split('-');
-                alert(year);
-              // $.ajax({  
-               //     type: "Post",
-                //    url:  @Url.Action("GetDetails","Tabs"),
-               //     data: { Year: year[0] }
-                    //dataType: "html",
-             //       success: function (data) 
-               //     {
-                    //Whatever result you have got from your controller with html partial view replace with a specific html.
-                    // $("#divPartialView").html(data); // HTML DOM replace
-               //     }
-                //    error: function (xhr, status, error) 
-                 //   {
-                //        alert(status);
-                //        alert(error);
-                //    },
-                 //   dataType: 'text'
-               // });
+                alert(year[0]);
+                 $.ajax
+                 ({  
+                      type: "Get",
+                      url:  '@Url.Action("GetDetails","Tabs")',
+                      data: { Year: year[0] },
+                      dataType: "html",
+                        success: function (data) {
+                        //Whatever result you have got from your controller with html partial view replace with a specific html.
+                            $('#outerdiv').html(data); // HTML DOM replace
+                           alert('Success');
+                      }
+                    
+                 });
             });
        
 

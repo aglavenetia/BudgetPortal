@@ -63,8 +63,9 @@ namespace BudgetPortal.ViewModel
 
         public IEnumerable<AcademicYears> AcademicYearss { get; set; }
         public IEnumerable<SelectListItem> AcademicYears { get; set; }
-        public String SelectedAcademicYear { get; set; }
         public String SelectedAcademicYearID { get; set; }
+        public String SelectedAcademicYear { get; set; }
+        
 
 
 
