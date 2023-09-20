@@ -61,6 +61,7 @@ namespace BudgetPortal.Controllers
 
                     }).ToList();
             mymodel.AcademicYears.Where(x => x.Text.Equals(AcademicYear)).Single().Selected = true;
+            mymodel.SelectedAcademicYear = String.Concat(Year.ToString(), "-", (Year + 1).ToString());
 
             return View(mymodel);
         }
@@ -168,6 +169,7 @@ namespace BudgetPortal.Controllers
 
                     }).ToList();
             mymodel.AcademicYears.Where(x => x.Text.Equals(AcademicYear)).Single().Selected = true;
+            mymodel.SelectedAcademicYear = String.Concat(Year.ToString(),"-",(Year+1).ToString());
 
             return View("Index", mymodel);
         }
