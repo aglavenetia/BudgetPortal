@@ -20,8 +20,8 @@
     
 }
 <br />
-@using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
-{
+@*using (Html.BeginForm("Index", "Tabs", FormMethod.Post))*@
+@*{*@
     @Html.AntiForgeryToken()
 
     <div id="outerdiv">
@@ -47,7 +47,7 @@
     </div>
       <br />
       <br />
-        <ul id="outerTab" class="nav nav-tabs" role="tablist" >    
+    <ul id="outerTab" class="nav nav-tabs" role="tablist" >    
       @foreach (var item in Model.Sectionss)
       {
             var inneridenti = String.Concat("Budget", @item.SectionNo.ToString());
@@ -71,7 +71,7 @@
       }
     </ul>
 
-        <div id="outerTabContent" class="tab-content" onclick="">
+    <div id="outerTabContent" class="tab-content" onclick="">
        <br />
        @foreach (var inner in Model.Sectionss)
        {
@@ -81,27 +81,24 @@
            TableCount = 0;
 
            if (OuterBodyCount == 0)
-          {
+           {
             <div id="@inneridenti" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="true">
 
                 <ul id="innertab1" class="nav nav-tabs" role="tablist">
-
-
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
-                    {
-                            
+                    {                           
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
                         
                         if (CountHeader == 0)
                         {
                             <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="@identi-nav" data-bs-toggle="tab" data-bs-target="#@identi" type="button" role="tab" aria-controls="@identi" aria-selected="true">@item.GroupName</button>
+                                        <button class="nav-link active" id="@identi-nav" data-bs-toggle="tab" data-bs-target="#@identi" type="button" role="tab" aria-controls="@identi" aria-selected="true">@item.GroupName</button>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="@identi-nav" data-bs-toggle="tab" data-bs-target="#@identi" type="button" role="tab" aria-controls="@identi" aria-selected="false">@item.GroupName</button>
+                                        <button class="nav-link" id="@identi-nav" data-bs-toggle="tab" data-bs-target="#@identi" type="button" role="tab" aria-controls="@identi" aria-selected="false">@item.GroupName</button>
                             </li>
                         }
 
@@ -119,8 +116,9 @@
                         if (CounterBody == 0)
                         {
                             <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
-
-                                    <table id="outertable" class="table">
+                              @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
+                              {
+                                <table id="outertable" class="table">
                                     <thead>
                                         <tr>
                                             <th></th>
@@ -409,13 +407,16 @@
                                 @Html.Hidden("SectionName",Model.SectionName)
                                 @Html.Hidden("GroupName",Model.GroupName)
                                 <input id="@Submit" class="Submit" type="submit" style="align-self:center">
+                              }
                             </div>
                         }
                         else
                         {
-                            <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
+                           <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
                                 <br />
-                                    <table id="outertable"  class="table">
+                              @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
+                              {
+                                <table id="outertable"  class="table">
                                     <thead>
                                         <tr>
                                             <th></th>
@@ -697,10 +698,12 @@
                                     @Html.Hidden("SectionName",Model.SectionName)
                                     @Html.Hidden("GroupName",Model.GroupName)
                                     <input id="@Submit" class="Submit" type="submit" style="align-self:center">
+                              }
                             </div>
                         }
                        CounterBody++;
                     }
+                  
                 </div>
             </div>
           }
@@ -723,7 +726,7 @@
                         else
                         {
                             <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="@identi-nav" data-bs-toggle="tab" data-bs-target="#@identi" type="button" role="tab" aria-controls="@identi" aria-selected="false">@item.GroupName</button>
+                                        <button class="nav-link" id="@identi-nav" data-bs-toggle="tab" data-bs-target="#@identi" type="button" role="tab" aria-controls="@identi" aria-selected="false">@item.GroupName</button>
                             </li>
                         }
 
@@ -739,9 +742,10 @@
                           var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
                           if (CounterBody == 0)
                          {
-                            <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
-
-                                    <table id="outertable"  class="table">
+                         <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
+                            @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
+                            {
+                                <table id="outertable"  class="table">
                                     <thead>
                                         <tr>
                                             <th></th>
@@ -1033,7 +1037,8 @@
                                     @Html.Hidden("SectionName",Model.SectionName)
                                     @Html.Hidden("GroupName",Model.GroupName)
                                     <input id="@Submit" class="Submit" type="submit" style="align-self:center">
-                                </div>
+                            }
+                            </div>
                             
                         }
                           else
@@ -1041,7 +1046,9 @@
 
                             <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
                                 <br />
-                                    <table id="outertable" class="table">
+                                @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
+                                {
+                                   <table id="outertable" class="table">
                                     <thead>
                                         <tr>
                                             <th></th>
@@ -1320,10 +1327,11 @@
                                           //}
                                         }
                                     </tbody>
-                                </table>
+                                   </table>
                                  @Html.Hidden("SectionName",Model.SectionName)
                                  @Html.Hidden("GroupName",Model.GroupName)
                                  <input id="@Submit" class="Submit" type="submit" style="align-self:center">
+                                }
                             </div>
                         }
                           CounterBody++;
@@ -1334,9 +1342,9 @@
 
            OuterBodyCount++;
        }
+       </div>
     </div>
-    </div>
-}
+@*}*@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="~/js/nestedtable.js"></script>
 @section Scripts
@@ -1386,24 +1394,24 @@
            $(".Submit").on('click',function () 
            {
                 var sectionnoid = $('#outerTab li button.active').attr('id');
-                //alert(sectionnoid);
+                alert(sectionnoid);
                 var section = sectionnoid.split('-');
-                //alert(section[0]);
+                alert(section[0]);
                 $('#SectionName').val($('#'+sectionnoid).text());
 
                 var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
-                //alert(groupnoid);
+                alert(groupnoid);
                 var group = groupnoid.split('-');
-                //alert(group[0]);
+                alert(group[0]);
                 $('#GroupName').val($('#' + groupnoid).text());
 
                 var subgroupcount = $('#' + group[0] + ' #outertable tbody').closest('tr').length;
-                //alert(subgroupcount);
+                alert(subgroupcount);
 
                 for(i=0; i<subgroupcount; i++)
                 {
-                    var subgroupnorow = $('#' + group[0] + ' #outertable tbody').closest('tr').text();
-                       //alert(subgroupnorow);
+                    //var subgroupnorow = $('#' + group[0] + ' #outertable tbody').closest('tr').text();
+                      // alert(subgroupnorow);
                     //var subgroupno = subgroupnorow.eq(2).text();
                     //alert(subgroupno);
                 }
