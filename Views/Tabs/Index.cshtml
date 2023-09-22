@@ -16,17 +16,18 @@
     int OuterBodyCount = 0;
     int CountHeader = 0;
     int CounterBody = 0;
-    int TableCount = 0;
+    @*int TableCount = 0;*@
     
 }
 <br />
-@using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
 
     <div id="outerdiv">
       <div style = "float:right">
-        <table border="0" cellpadding="5" cellspacing="0" >
+        @*using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
+        {*@
+            @Html.AntiForgeryToken()
+
+          <table border="0" cellpadding="5" cellspacing="0" >
           <tr>
            @if (User.IsInRole("Admin"))
            {
@@ -44,6 +45,7 @@
                 
           </tr>
         </table>
+        @*}*@
     </div>
       <br />
       <br />
@@ -54,7 +56,6 @@
             
         if (OuterHeaderCount == 0)
         {
-                @Html.Hidden("SectionName",Model.SectionName,new {Value = @item.SectionNo })
                 <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="@inneridenti-nav" data-bs-toggle="tab" data-bs-target="#@inneridenti" type="button" role="tab" aria-controls="@inneridenti" aria-selected="true">@item.SectionName</button>
                 </li>
@@ -78,7 +79,7 @@
            var inneridenti = String.Concat("Budget", @inner.SectionNo.ToString());
            CountHeader = 0;
            CounterBody = 0;
-           TableCount = 0;
+            
 
            if (OuterBodyCount == 0)
            {
@@ -109,15 +110,17 @@
                 <div id="innertabcontent1" class="tab-content">
                     <br />
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
-                    {       
+                    {
+                            int TableCount = 0;
                         var Submit = String.Concat("Submit", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                        var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());                        
-                           
+                        var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
+                        
                         if (CounterBody == 0)
                         {
                             <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
                               @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
                               {
+                                @Html.AntiForgeryToken()
                                 <table id="outertable" class="table">
                                     <thead>
                                         <tr>
@@ -128,41 +131,41 @@
                                             <th>
                                                 SubGroupName
                                             </th>
-                                            <th>
-                                                Budget Estimates 2022-23
+                                            <th class="CurrentBudgetEstimates" >
+                                                        @*Budget Estimates 2022-23*@
                                             </th>
-                                            <th>
-                                                Actal 2021-2022
+                                            <th class="PreviousActualBudget">
+                                                @*Actual 2021-2022*@
                                             </th>
-                                            <th>
-                                                Actual upto 30.09.2022
+                                            <th class="PreviousHalfYearActualBudget">
+                                                @*Actual upto 30.09.2022*@
                                             </th>
-                                            <th>
-                                                Revised Estimates 2022-23
+                                            <th class="CurrentYearRevisedEstimates">
+                                                @*Revised Estimates 2022-23*@
                                             </th>
-                                            <th>
-                                                % Variation in RE over the BE 2022-2023
+                                            <th class="VariationInRevisedEstimates">
+                                                        @*% Variation in RE over the BE 2022-2023*@
                                             </th>
                                             @if (User.IsInRole("Admin"))
                                              {
-                                               <th>
-                                                  AC & BW Proposal for RE 2022-2023
+                                               <th class="ACBWProposalForRevisedEstimates">
+                                                  @*AC & BW Proposal for RE 2022-2023*@
                                                </th>
                                              }
-                                            <th>
-                                                Budget Estimates 2023-24
+                                            <th class="BudgetEstimatesNextYear">
+                                                @*Budget Estimates 2023-24*@
                                             </th>
-                                            <th>
-                                                % Variation in BE 2023-2024 over the RE 2022-2023
+                                            <th class="VariationInBudgetEstimates">
+                                                @*% Variation in BE 2023-2024 over the RE 2022-2023*@
                                             </th>
                                             @if (User.IsInRole("Admin"))
                                              {
-                                                <th>
-                                                   AC & BW Proposal for BE 2023-2024
+                                               <th class="ACBWProposalForBudgetEstimates">
+                                                   @*AC & BW Proposal for BE 2023-2024*@
                                                 </th>
                                              }
-                                            <th>
-                                                Comments / Justification
+                                            <th class="Justification">
+                                                        @* Comments / Justification*@
                                             </th>
                                         </tr>
                                     </thead>
@@ -170,8 +173,6 @@
                                         
                                         @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                         {
-                                             // @foreach(var details in Model.Detailss.Where(x => x.SubGroupNumber.Equals(@Subs.SubGroupNo)))
-                                             // {
                                                     var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
                                                                                                  
                                                     var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -399,23 +400,25 @@
                                                     </tr>
                                                 
                                                     TableCount++;
-                                             // }
                                         }
-                                        
+                                       
                                     </tbody>
                                 </table>
-                                @Html.Hidden("SectionName",Model.SectionName)
-                                @Html.Hidden("GroupName",Model.GroupName)
+                                        @Html.Hidden("SectionName",Model.SectionName, new{@id = @identi+"-SectionName" })
+                                        @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
+                                        @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                 <input id="@Submit" class="Submit" type="submit" style="align-self:center">
                               }
                             </div>
+                          
                         }
                         else
                         {
-                           <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
+                            <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
                                 <br />
-                              @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
-                              {
+                             @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
+                             {
+                                            @Html.AntiForgeryToken()
                                 <table id="outertable"  class="table">
                                     <thead>
                                         <tr>
@@ -426,49 +429,47 @@
                                             <th>
                                                 SubGroupName
                                             </th>
-                                            <th>
-                                                Budget Estimates 2022-23
+                                            <th class="CurrentBudgetEstimates">
+                                                @*Budget Estimates 2022-23*@
                                             </th>
-                                            <th>
-                                                Actal 2021-2022
+                                            <th class="PreviousActualBudget">
+                                                @*Actal 2021-2022*@
                                             </th>
-                                            <th>
-                                                Actual upto 30.09.2022
+                                            <th class="PreviousHalfYearActualBudget">
+                                                @*Actual upto 30.09.2022*@
                                             </th>
-                                            <th>
-                                                Revised Estimates 2022-23
+                                            <th class="CurrentYearRevisedEstimates">
+                                                @*Revised Estimates 2022-23*@
                                             </th>
-                                            <th>
-                                                % Variation in RE over the BE 2022-2023
-                                            </th>
-                                            @if (User.IsInRole("Admin"))
-                                             {
-                                            <th>
-                                                AC & BW Proposal for RE 2022-2023
-                                            </th>
-                                             }
-                                            <th>
-                                                Budget Estimates 2023-24
-                                            </th>
-                                            <th>
-                                                % Variation in BE 2023-2024 over the RE 2022-2023
+                                            <th class="VariationInRevisedEstimates">
+                                                @*% Variation in RE over the BE 2022-2023*@
                                             </th>
                                             @if (User.IsInRole("Admin"))
                                              {
-                                            <th>
-                                                AC & BW Proposal for BE 2023-2024
+                                            <th class="ACBWProposalForRevisedEstimates">
+                                                @*AC & BW Proposal for RE 2022-2023*@
                                             </th>
                                              }
-                                            <th>
-                                                Comments / Justification
+                                            <th class="BudgetEstimatesNextYear">
+                                                        @*Budget Estimates 2023-24*@
+                                            </th>
+                                            <th class="VariationInBudgetEstimates">
+                                                        @* % Variation in BE 2023-2024 over the RE 2022-2023*@
+                                            </th>
+                                            @if (User.IsInRole("Admin"))
+                                             {
+                                            <th class="ACBWProposalForBudgetEstimates">
+                                               @* AC & BW Proposal for BE 2023-2024*@
+                                            </th>
+                                             }
+                                            <th class="Justification">
+                                                        @* Comments / Justification*@
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                         {
-                                          // @foreach (var details in Model.Detailss.Where(x => x.SubGroupNumber.Equals(@Subs.SubGroupNo)))
-                                          // {
                                                     var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
                                                     var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -691,15 +692,16 @@
                                                     </tr>
                                                
                                                     TableCount++;
-                                           //}
                                         }
                                     </tbody>
                                 </table>
-                                    @Html.Hidden("SectionName",Model.SectionName)
-                                    @Html.Hidden("GroupName",Model.GroupName)
+                                    @Html.Hidden("SectionName",Model.SectionName, new{@id = @identi+"-SectionName" })
+                                        @Html.Hidden("GroupName",Model.GroupName, new{@id = @identi+"-GroupName" })
+                                        @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                     <input id="@Submit" class="Submit" type="submit" style="align-self:center">
-                              }
+                             }
                             </div>
+                          
                         }
                        CounterBody++;
                     }
@@ -738,13 +740,16 @@
                     <br />
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
+                          int TableCount = 0;
                           var Submit = String.Concat("Submit", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                           var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
+                          
                           if (CounterBody == 0)
-                         {
-                         <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
-                            @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
-                            {
+                          {
+                              <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
+                              @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
+                              {
+                               @Html.AntiForgeryToken()           
                                 <table id="outertable"  class="table">
                                     <thead>
                                         <tr>
@@ -755,49 +760,47 @@
                                             <th>
                                                 SubGroupName
                                             </th>
-                                            <th>
-                                                Budget Estimates 2022-23
+                                            <th class="CurrentBudgetEstimates">
+                                                        @*Budget Estimates 2022-23*@
                                             </th>
-                                            <th>
-                                                Actal 2021-2022
+                                            <th class="PreviousActualBudget">
+                                                @*Actal 2021-2022*@
                                             </th>
-                                            <th>
-                                                Actual upto 30.09.2022
+                                            <th class="PreviousHalfYearActualBudget">
+                                                @*Actual upto 30.09.2022*@
                                             </th>
-                                            <th>
-                                                Revised Estimates 2022-23
+                                            <th class="CurrentYearRevisedEstimates">
+                                                @*Revised Estimates 2022-23*@
                                             </th>
-                                            <th>
-                                                % Variation in RE over the BE 2022-2023
-                                            </th>
-                                            @if (User.IsInRole("Admin"))
-                                             {
-                                            <th>
-                                                AC & BW Proposal for RE 2022-2023
-                                            </th>
-                                             }
-                                            <th>
-                                                Budget Estimates 2023-24
-                                            </th>
-                                            <th>
-                                                % Variation in BE 2023-2024 over the RE 2022-2023
+                                            <th class="VariationInRevisedEstimates">
+                                                @*% Variation in RE over the BE 2022-2023*@
                                             </th>
                                             @if (User.IsInRole("Admin"))
                                              {
-                                            <th>
-                                                AC & BW Proposal for BE 2023-2024
+                                                        <th class="ACBWProposalForRevisedEstimates">
+                                                            @*AC & BW Proposal for RE 2022-2023*@
                                             </th>
                                              }
-                                            <th>
-                                                Comments / Justification
+                                            <th class="BudgetEstimatesNextYear">
+                                                @*Budget Estimates 2023-24*@
+                                            </th>
+                                            <th class="VariationInBudgetEstimates">
+                                                @*% Variation in BE 2023-2024 over the RE 2022-2023*@
+                                            </th>
+                                            @if (User.IsInRole("Admin"))
+                                             {
+                                                        <th class="ACBWProposalForBudgetEstimates">
+                                                @*AC & BW Proposal for BE 2023-2024*@
+                                            </th>
+                                             }
+                                                    <th class="Justification">
+                                                        @*Comments / Justification*@
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                         {
-                                            //@foreach (var details in Model.Detailss.Where(x => x.SubGroupNumber.Equals(@Subs.SubGroupNo)))
-                                            //{
                                                     var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
 
                                                     var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -1028,27 +1031,26 @@
 
                                                
                                                  TableCount++;
-
-                                            // }
                                         } 
                                           
                                     </tbody>
                                 </table>
-                                    @Html.Hidden("SectionName",Model.SectionName)
-                                    @Html.Hidden("GroupName",Model.GroupName)
+                                        @Html.Hidden("SectionName",Model.SectionName, new{@id = @identi+"-SectionName" })
+                                        @Html.Hidden("GroupName",Model.GroupName, new{@id = @identi+"-GroupName" })
+                                        @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                     <input id="@Submit" class="Submit" type="submit" style="align-self:center">
-                            }
+                              }
                             </div>
-                            
-                        }
+                           
+                         }
                           else
-                        {
-
-                            <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
+                        {  
+                             <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
                                 <br />
-                                @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
-                                {
-                                   <table id="outertable" class="table">
+                             @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
+                             {
+                                 @Html.AntiForgeryToken()
+                                 <table id="outertable" class="table">
                                     <thead>
                                         <tr>
                                             <th></th>
@@ -1058,49 +1060,47 @@
                                             <th>
                                                 SubGroupName
                                             </th>
-                                            <th>
-                                                Budget Estimates 2022-23
+                                            <th class="CurrentBudgetEstimates">
+                                                        @*Budget Estimates 2022-23*@
                                             </th>
-                                            <th>
-                                                Actal 2021-2022
+                                            <th class="PreviousActualBudget">
+                                                  @*Actal 2021-2022*@
                                             </th>
-                                            <th>
-                                                Actual upto 30.09.2022
+                                            <th class="PreviousHalfYearActualBudget">
+                                                @*Actual upto 30.09.2022*@
                                             </th>
-                                            <th>
-                                                Revised Estimates 2022-23
+                                            <th class="CurrentYearRevisedEstimates">
+                                                @*Revised Estimates 2022-23*@
                                             </th>
-                                            <th>
-                                                % Variation in RE over the BE 2022-2023
+                                            <th class="VariationInRevisedEstimates">
+                                                 @*% Variation in RE over the BE 2022-2023*@
                                             </th>
                                             @if (User.IsInRole("Admin"))
                                              {
-                                                    <th>
-                                                        AC & BW Proposal for RE 2022-2023
+                                                    <th class="ACBWProposalForRevisedEstimates">
+                                                        @*AC & BW Proposal for RE 2022-2023*@
                                                     </th>
                                             }
-                                                <th>
-                                                Budget Estimates 2023-24
+                                            <th class="BudgetEstimatesNextYear">
+                                                @*Budget Estimates 2023-24*@
                                             </th>
-                                            <th>
-                                                % Variation in BE 2023-2024 over the RE 2022-2023
+                                            <th class="VariationInBudgetEstimates">
+                                                @*% Variation in BE 2023-2024 over the RE 2022-2023*@
                                             </th>
                                             @if (User.IsInRole("Admin"))
                                             {
-                                                    <th>
-                                                        AC & BW Proposal for BE 2023-2024
+                                                    <th class="ACBWProposalForBudgetEstimates">
+                                                        @*AC & BW Proposal for BE 2023-2024*@
                                                     </th>
                                              }
-                                                <th>
-                                                Comments / Justification
+                                                <th class="Justification">
+                                                        @*Comments / Justification*@
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                         {
-                                          //@foreach (var details in Model.Detailss.Where(x => x.SubGroupNumber.Equals(@Subs.SubGroupNo)))
-                                          //{
                                                   var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
 
                                                     var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -1324,15 +1324,16 @@
                                                     </tr>
                                             
                                               TableCount++;
-                                          //}
                                         }
                                     </tbody>
                                    </table>
-                                 @Html.Hidden("SectionName",Model.SectionName)
-                                 @Html.Hidden("GroupName",Model.GroupName)
+                                 @Html.Hidden("SectionName",Model.SectionName, new{@id = @identi+"-SectionName"})
+                                 @Html.Hidden("GroupName",Model.GroupName, new{@id = @identi+"-GroupName"})
+                                 @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                  <input id="@Submit" class="Submit" type="submit" style="align-self:center">
-                                }
-                            </div>
+                             }
+                             </div>
+                           
                         }
                           CounterBody++;
                     }
@@ -1344,7 +1345,7 @@
        }
        </div>
     </div>
-}
+
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="~/js/nestedtable.js"></script>
 @section Scripts
@@ -1353,17 +1354,45 @@
 
         $(document).ready(function() 
         {
+            $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
+            var academicyear = $("#SelectedAcademicYear").val();
+            var year = academicyear.split('-');
+
+            $(".CurrentBudgetEstimates").text('Budget Estimates ' + $("#SelectedAcademicYear").val());
+            $(".PreviousActualBudget").text('Actual '+(year[0]-1)+'-'+year[0]);
+            $(".PreviousHalfYearActualBudget").text('Actual upto 30.09 '+(year[0]-1));
+            $(".CurrentYearRevisedEstimates").text('Revised Estimates ' + $("#SelectedAcademicYear").val());
+            $(".VariationInRevisedEstimates").text('% Variation in RE ' + $("#SelectedAcademicYear").val() + ' over the BE ' + (year[0]-1) + '-' + year[0] );
+            $(".ACBWProposalForRevisedEstimates").text('AC & BW Proposal for RE ' + $("#SelectedAcademicYear").val());
+            $(".BudgetEstimatesNextYear").text('Budget Estimates ' + year[1] + '-' + (year[1]+1));
+            $(".VariationInBudgetEstimates").text('% Variation in BE in'+ year[1]+ '-' + (year[1]+1) + 'over the RE ' + $("#SelectedAcademicYear").val());
+            $(".ACBWProposalForBudgetEstimates").text('AC & BW Proposal for BE ' + year[1] + '-' + (year[1]+1));
+            //$(".Justification").text('Justification'));
+
             $("#Division").change(function(evt)
             {
                 $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
                 
              });
- 
-
        
             $("#AcademicYear").change(function (evt) 
             {
-                $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
+            $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
+
+            var academicyear = $("#SelectedAcademicYear").val();
+            var year = academicyear.split('-');
+
+            $(".CurrentBudgetEstimates").text('Budget Estimates ' + $("#SelectedAcademicYear").val());
+            $(".PreviousActualBudget").text('Actual '+(year[0]-1)+'-'+year[0]);
+            $(".PreviousHalfYearActualBudget").text('Actual upto 30.09 ' + (year[0] - 1));
+            $(".CurrentYearRevisedEstimates").text('Revised Estimates ' + $("#SelectedAcademicYear").val());
+            $(".VariationInRevisedEstimates").text('% Variation in RE ' + $("#SelectedAcademicYear").val() + ' over the BE ' + (year[0]-1) + '-' + year[0] );
+            $(".ACBWProposalForRevisedEstimates").text('AC & BW Proposal for RE ' + $("#SelectedAcademicYear").val());
+            $(".BudgetEstimatesNextYear").text('Budget Estimates ' + year[1] + '-' + (year[1]+1));
+            $(".VariationInBudgetEstimates").text('% Variation in BE in'+ year[1]+ '-' + (year[1]+1) + 'over the RE ' + $("#SelectedAcademicYear").val());
+            $(".ACBWProposalForBudgetEstimates").text('AC & BW Proposal for BE ' + year[1] + '-' + (year[1]+1));
+            //$(".Justification").text('Justification'));
+
                 var academicyear = $("#SelectedAcademicYear").val();
                 //alert(academicyear);
                 var year = academicyear.split('-');
@@ -1397,13 +1426,24 @@
                 alert(sectionnoid);
                 var section = sectionnoid.split('-');
                 alert(section[0]);
-                $('#SectionName').val($('#'+sectionnoid).text());
+                
 
                 var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
                 alert(groupnoid);
                 var group = groupnoid.split('-');
                 alert(group[0]);
-                $('#GroupName').val($('#' + groupnoid).text());
+
+                var hiddensectionid = group[0].concat( '-SectionName');
+                alert(hiddensectionid);
+                var hiddengroupid = group[0].concat('-GroupName');
+                alert(hiddengroupid);
+
+                var hiddenSelectedYear = group[0].concat('-SelectedAcademicYear');
+                alert(hiddenSelectedYear);
+
+                $('#'+hiddenSelectedYear).val($("#AcademicYear option:selected").text().trim());
+                $('#'+hiddensectionid).val($('#' + sectionnoid).text());
+                $('#'+hiddengroupid).val($('#' + groupnoid).text());
 
                 var subgroupcount = $('#' + group[0] + ' #outertable tbody').closest('tr').length;
                 alert(subgroupcount);

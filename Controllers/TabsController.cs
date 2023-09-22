@@ -61,11 +61,12 @@ namespace BudgetPortal.Controllers
 
                     }).ToList();
             mymodel.AcademicYears.Where(x => x.Text.Equals(AcademicYear)).Single().Selected = true;
-            mymodel.SelectedAcademicYear = String.Concat(Year.ToString(), "-", (Year + 1).ToString());
+            //mymodel.SelectedAcademicYear = String.Concat(Year, "-", (Year + 1)).AsEnumerable().ToString();
 
             return View(mymodel);
         }
 
+        //Save Budget Details to Database
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
@@ -123,11 +124,39 @@ namespace BudgetPortal.Controllers
                 _context.BudgetDetails.Add(dataModel);
                 _context.SaveChanges();
              }
-            
-            return View(MD);
+
+            var LoggedInDivisionID = _context.Division
+                                   .Where(d => d.DivisionName == DivName)
+                                   .Select(x => x.DivisionID).FirstOrDefault();
+            MD.Sectionss = _context.BudgetSections.ToList();
+            MD.Groupss = _context.BudgetGroups.ToList();
+            MD.SubGroupss = _context.BudgetSubGroups.ToList();
+            MD.Ledgerss = _context.BudgetLedgers.ToList();
+            MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+            MD.DivisionNames = _context.Division.AsEnumerable().Select(x =>
+                    new SelectListItem()
+                    {
+                        Selected = false,
+                        Text = x.DivisionName,
+                        Value = x.DivisionID.ToString()
+
+                    }).ToList();
+            MD.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
+                    new SelectListItem()
+                    {
+                        Selected = false,
+                        Text = x.Year1 + "-" + x.Year2,
+                        Value = x.Id.ToString()
+
+                    }).ToList();
+            MD.AcademicYears.Where(x => x.Text.Equals(MD.SelectedAcademicYear.ToString())).Single().Selected = true;
+
+            return View("Index",MD);
          }
 
-
+       
+        //Displays details while changing values in DropDownList
         [HttpGet]
         public IActionResult GetDetails(int Year)
         {
