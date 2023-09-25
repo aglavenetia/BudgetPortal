@@ -121,7 +121,7 @@
                               @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
                               {
                                 @Html.AntiForgeryToken()
-                                <table id="outertable" class="table">
+                                <table id="@identi-outertable" class="table">
                                     <thead>
                                         <tr>
                                             <th></th>
@@ -419,7 +419,7 @@
                              @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
                              {
                                             @Html.AntiForgeryToken()
-                                <table id="outertable"  class="table">
+                                <table id="@identi-outertable"  class="table">
                                     <thead>
                                         <tr>
                                             <th></th>
@@ -750,7 +750,7 @@
                               @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
                               {
                                @Html.AntiForgeryToken()           
-                                <table id="outertable"  class="table">
+                                <table id="@identi-outertable"  class="table">
                                     <thead>
                                         <tr>
                                             <th></th>
@@ -1050,7 +1050,7 @@
                              @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
                              {
                                  @Html.AntiForgeryToken()
-                                 <table id="outertable" class="table">
+                                 <table id="@identi-outertable" class="table">
                                     <thead>
                                         <tr>
                                             <th></th>
@@ -1353,50 +1353,53 @@
     <script type="text/javascript">
 
         $(document).ready(function() 
-        {
-            $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
-            var academicyear = $("#SelectedAcademicYear").val();
-            var year = academicyear.split('-');
+         {
+                 $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
+                 var academicyear = $("#SelectedAcademicYear").val();
+                 //alert(academicyear);
+                 var year = academicyear.split('-');
+                 //alert(year[1]);
 
-            $(".CurrentBudgetEstimates").text('Budget Estimates ' + $("#SelectedAcademicYear").val());
-            $(".PreviousActualBudget").text('Actual '+(year[0]-1)+'-'+year[0]);
-            $(".PreviousHalfYearActualBudget").text('Actual upto 30.09 '+(year[0]-1));
-            $(".CurrentYearRevisedEstimates").text('Revised Estimates ' + $("#SelectedAcademicYear").val());
-            $(".VariationInRevisedEstimates").text('% Variation in RE ' + $("#SelectedAcademicYear").val() + ' over the BE ' + (year[0]-1) + '-' + year[0] );
-            $(".ACBWProposalForRevisedEstimates").text('AC & BW Proposal for RE ' + $("#SelectedAcademicYear").val());
-            $(".BudgetEstimatesNextYear").text('Budget Estimates ' + year[1] + '-' + (year[1]+1));
-            $(".VariationInBudgetEstimates").text('% Variation in BE in'+ year[1]+ '-' + (year[1]+1) + 'over the RE ' + $("#SelectedAcademicYear").val());
-            $(".ACBWProposalForBudgetEstimates").text('AC & BW Proposal for BE ' + year[1] + '-' + (year[1]+1));
-            //$(".Justification").text('Justification'));
+                 $(".CurrentBudgetEstimates").text('Budget Estimates ' + $("#SelectedAcademicYear").val());
+                 $(".PreviousActualBudget").text('Actual ' + (Number.parseInt(year[0]) - Number.parseInt(1)) + '-' + Number.parseInt(year[0]));
+                 $(".PreviousHalfYearActualBudget").text('Actual upto 30.09 '+(Number.parseInt(year[0])-Number.parseInt(1)));
+                 $(".CurrentYearRevisedEstimates").text('Revised Estimates ' + $("#SelectedAcademicYear").val());
+                 $(".VariationInRevisedEstimates").text('% Variation in RE ' + $("#SelectedAcademicYear").val() + ' over the BE ' + (Number.parseInt(year[0])-Number.parseInt(1)) + '-' + Number.parseInt(year[0]) );
+                 $(".ACBWProposalForRevisedEstimates").text('AC & BW Proposal for RE ' + $("#SelectedAcademicYear").val());
+                 $(".BudgetEstimatesNextYear").text('Budget Estimates ' + Number.parseInt(year[1]) + '-' + (Number.parseInt(year[1]) + Number.parseInt(1)));
+                 $(".VariationInBudgetEstimates").text('% Variation in BE in ' + Number.parseInt(year[1]) + '-' + (Number.parseInt(year[1]) + Number.parseInt(1)) + 'over the RE ' + $("#SelectedAcademicYear").val());
+                 $(".ACBWProposalForBudgetEstimates").text('AC & BW Proposal for BE ' + Number.parseInt(year[1]) + '-' + (Number.parseInt(year[1]) + Number.parseInt(1)));
+                 $(".Justification").text('Justification');
 
-            $("#Division").change(function(evt)
-            {
-                $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
+            $("#Division").change(
+               function(evt)
+               {
+                 $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
                 
-             });
+               }
+             
+             );
        
-            $("#AcademicYear").change(function (evt) 
+            $("#AcademicYear").change(
+            function (evt) 
             {
-            $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
-
-            var academicyear = $("#SelectedAcademicYear").val();
-            var year = academicyear.split('-');
-
-            $(".CurrentBudgetEstimates").text('Budget Estimates ' + $("#SelectedAcademicYear").val());
-            $(".PreviousActualBudget").text('Actual '+(year[0]-1)+'-'+year[0]);
-            $(".PreviousHalfYearActualBudget").text('Actual upto 30.09 ' + (year[0] - 1));
-            $(".CurrentYearRevisedEstimates").text('Revised Estimates ' + $("#SelectedAcademicYear").val());
-            $(".VariationInRevisedEstimates").text('% Variation in RE ' + $("#SelectedAcademicYear").val() + ' over the BE ' + (year[0]-1) + '-' + year[0] );
-            $(".ACBWProposalForRevisedEstimates").text('AC & BW Proposal for RE ' + $("#SelectedAcademicYear").val());
-            $(".BudgetEstimatesNextYear").text('Budget Estimates ' + year[1] + '-' + (year[1]+1));
-            $(".VariationInBudgetEstimates").text('% Variation in BE in'+ year[1]+ '-' + (year[1]+1) + 'over the RE ' + $("#SelectedAcademicYear").val());
-            $(".ACBWProposalForBudgetEstimates").text('AC & BW Proposal for BE ' + year[1] + '-' + (year[1]+1));
-            //$(".Justification").text('Justification'));
+                $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
 
                 var academicyear = $("#SelectedAcademicYear").val();
-                //alert(academicyear);
+                
                 var year = academicyear.split('-');
-                //alert(year[0]);
+                alert(year[0]);
+                var sectionnoid = $('#outerTab li button.active').attr('id');
+                //alert(sectionnoid);
+                var section = sectionnoid.split('-');
+                //alert(section[0]);
+                
+
+                var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
+                alert(groupnoid);
+                var group = groupnoid.split('-');
+                alert(group[0]);
+
                  $.ajax
                  ({  
                       type: "Get",
@@ -1406,17 +1409,19 @@
                       success: function (data) 
                       {
                         //Whatever result you have got from your controller with html partial view replace with a specific html.
-                           
-                        $('#outerdiv').html(data); // HTML DOM replace
+
+                                $('#outerdiv').html(data); // HTML DOM replace
+                                $(document).trigger('ready');
                            //alert('Success');
-                        },
-                        error: function (jqXHR, textStatus, errorThrown) 
-                        {
+                      },
+                     error: function (jqXHR, textStatus, errorThrown) 
+                     {
                             alert(errorThrown);
-                        }
+                      }
                     
                  });
-            });
+            }
+            );
        
 
      
