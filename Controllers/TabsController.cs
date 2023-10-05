@@ -155,18 +155,105 @@ namespace BudgetPortal.Controllers
             return View("Index",MD);
          }
 
-       
+        //Update Budget Details in Database
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpdateDetailsAdmin(MultipleData MD, IFormCollection Form)
+        {
+            
+            var username = User.Identity.Name;
+            //var DivName = _context.Users
+            //            .Where(x => x.UserName.Equals(username))
+            //          .Select(x => x.BranchName).First();
+            var DivName = MD.SelectedDivisionName.ToString();
+            var SelectedDivisionID = _context.Division
+                                   .Where(d => d.DivisionName == DivName)
+                                   .Select(x => x.DivisionID).FirstOrDefault();
+            var splitAcademicYear = MD.SelectedAcademicYear.ToString().Split("-");
+            var SectionNumber = _context.BudgetSections
+                               .Where(x => x.SectionName.Equals(MD.SectionName))
+                               .Select(x => x.SectionNo).First();
+            var GroupNumber = _context.BudgetGroups
+                          .Where(x => x.GroupName.Equals(MD.GroupName))
+                          .Select(x => x.GroupNo).First();
+            var SubGroups = _context.BudgetSubGroups
+                          .Where(x => x.GroupNo.Equals(GroupNumber))
+                          .Select(x => x.SubGroupNo).ToList();
+
+            
+            for (int i = 0; i < SubGroups.Count(); i++)
+            {
+                var result = _context.BudgetDetails.SingleOrDefault(b => (b.DivisionID == SelectedDivisionID)
+                                                                  && (b.FinancialYear1.Equals(splitAcademicYear[0]))
+                                                                  && (b.SectionNumber == SectionNumber)
+                                                                  && (b.GroupNumber == GroupNumber)
+                                                                  && (b.SubGroupNumber == SubGroups[i]));
+
+              
+                result.ACAndBWPropRECurrFin = Convert.ToDecimal(Form[String.Concat("ACAndBWPropRECurrFin", SectionNumber, GroupNumber, i)]);
+                
+                result.ACAndBWPropRENxtFin = Convert.ToDecimal(Form[String.Concat("ACAndBWPropRENxtFin", SectionNumber, GroupNumber, i)]);
+                
+
+                _context.BudgetDetails.Update(result);
+                _context.SaveChanges();
+            }
+
+            var DivisionID = _context.Division
+                                   .Where(d => d.DivisionName == DivName)
+                                   .Select(x => x.DivisionID).FirstOrDefault();
+            MD.Sectionss = _context.BudgetSections.ToList();
+            MD.Groupss = _context.BudgetGroups.ToList();
+            MD.SubGroupss = _context.BudgetSubGroups.ToList();
+            MD.Ledgerss = _context.BudgetLedgers.ToList();
+            MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == DivisionID)
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+            MD.DivisionNames = _context.Division.AsEnumerable().Select(x =>
+                    new SelectListItem()
+                    {
+                        Selected = false,
+                        Text = x.DivisionName,
+                        Value = x.DivisionID.ToString()
+
+                    }).ToList();
+            MD.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
+                    new SelectListItem()
+                    {
+                        Selected = false,
+                        Text = x.Year1 + "-" + x.Year2,
+                        Value = x.Id.ToString()
+
+                    }).ToList();
+            MD.AcademicYears.Where(x => x.Text.Equals(MD.SelectedAcademicYear.ToString())).Single().Selected = true;
+            MD.DivisionNames.Where(x => x.Text.Equals(MD.SelectedDivisionID.ToString())).Single().Selected = true;
+
+            return View("Index", MD);
+        }
+
         //Displays details while changing values in DropDownList
         [HttpGet]
-        public IActionResult GetDetails(int Year)
+        public IActionResult GetDetails(int Year, String Division)
         {
             var username = User.Identity.Name;
+            var LoggedInDivisionID = 0;
             var DivName = _context.Users
                           .Where(x => x.UserName.Equals(username))
                           .Select(x => x.BranchName).First();
-            var LoggedInDivisionID = _context.Division
+
+            if(username != "admin@test.com")
+            { 
+                  LoggedInDivisionID = _context.Division
                                    .Where(d => d.DivisionName == DivName)
                                    .Select(x => x.DivisionID).FirstOrDefault();
+            }
+            else
+            { 
+                 LoggedInDivisionID = _context.Division
+                                     .Where(d => d.DivisionName == Division)
+                                     .Select(x => x.DivisionID).FirstOrDefault();
+            }
+
             var Month = DateTime.Now.Month;
 
             if (Month > 0 && Month < 4)
@@ -199,9 +286,11 @@ namespace BudgetPortal.Controllers
                     }).ToList();
             mymodel.AcademicYears.Where(x => x.Text.Equals(AcademicYear)).Single().Selected = true;
             //mymodel.SelectedAcademicYear = String.Concat(Year.ToString(),"-",(Year+1).ToString());
-
-            return View("Index", mymodel);
+            if (username.Equals( "admin@test.com"))
+            {
+                mymodel.DivisionNames.Where(x => x.Text.Equals(Division)).Single().Selected = true;
+            }
+                return View("Index", mymodel);
         }
-
     }
 }
