@@ -34,13 +34,13 @@
              <td>
               @Html.DropDownListFor(m => m.SelectedDivisionID, Model.DivisionNames,"--Please select any Division--", new { @class = "form-control", @id="Division" })
               @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName)
-              @Html.ValidationMessageFor(Model => Model.SelectedDivisionID, "", new { @class = "text-danger" })
+              @Html.ValidationMessageFor(Model => Model.DivisionNames, "", new { @class = "text-danger" })
              </td>
            }       
              <td>
               @Html.DropDownListFor(m => m.SelectedAcademicYearID, Model.AcademicYears,"--Please select any Academic Year--",new { @class = "form-control", @id="AcademicYear" })
               @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear)
-              @Html.ValidationMessageFor(Model => Model.SelectedAcademicYearID, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(Model => Model.AcademicYears, "", new { @class = "text-danger" })
              </td>
                 
           </tr>
@@ -407,6 +407,7 @@
                                         @Html.Hidden("SectionName",Model.SectionName, new{@id = @identi+"-SectionName" })
                                         @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
+                                        @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })
                                 <input id="@Submit" class="Submit" type="submit" style="align-self:center">
                               }
                             </div>
@@ -695,9 +696,10 @@
                                         }
                                     </tbody>
                                 </table>
-                                    @Html.Hidden("SectionName",Model.SectionName, new{@id = @identi+"-SectionName" })
+                                        @Html.Hidden("SectionName",Model.SectionName, new{@id = @identi+"-SectionName" })
                                         @Html.Hidden("GroupName",Model.GroupName, new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
+                                        @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })
                                     <input id="@Submit" class="Submit" type="submit" style="align-self:center">
                              }
                             </div>
@@ -1038,6 +1040,7 @@
                                         @Html.Hidden("SectionName",Model.SectionName, new{@id = @identi+"-SectionName" })
                                         @Html.Hidden("GroupName",Model.GroupName, new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
+                                        @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })
                                     <input id="@Submit" class="Submit" type="submit" style="align-self:center">
                               }
                             </div>
@@ -1330,6 +1333,7 @@
                                  @Html.Hidden("SectionName",Model.SectionName, new{@id = @identi+"-SectionName"})
                                  @Html.Hidden("GroupName",Model.GroupName, new{@id = @identi+"-GroupName"})
                                  @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
+                                 @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })
                                  <input id="@Submit" class="Submit" type="submit" style="align-self:center">
                              }
                              </div>
@@ -1481,9 +1485,21 @@
                         var hiddenSelectedYear = group[0].concat('-SelectedAcademicYear');
                         alert(hiddenSelectedYear);
 
+                        var hiddenSelectedDivision = group[0].concat('-SelectedDivisionName');
+                        alert(hiddenSelectedDivision);
+
+                        //$("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
+
+                        //var academicyear = $("#SelectedAcademicYear").val();
+
+                        //$("#SelectedDivisionName").val($("#Division option:selected").text().trim());
+
+                        //var divisionname = $("#SelectedDivisionName").val();
+
                         $('#' + hiddenSelectedYear).val($("#AcademicYear option:selected").text().trim());
                         $('#' + hiddensectionid).val($('#' + sectionnoid).text());
                         $('#' + hiddengroupid).val($('#' + groupnoid).text());
+                        $('#' + hiddenSelectedDivision).val($("#Division option:selected").text().trim());
 
                         var subgroupcount = $('#' + group[0] + ' #outertable tbody').closest('tr').length;
                         alert(subgroupcount);
