@@ -66,13 +66,14 @@ namespace BudgetPortal.Controllers
             return View(mymodel);
         }
 
-        //Save Budget Details to Database
+        
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
         public IActionResult Index(MultipleData MD, IFormCollection Form)
         {
-            if(User.Identity.Name.Equals("admin@test.com"))
+            //Update Budget Details for Admin User
+            if (User.Identity.Name.Equals("admin@test.com"))
             {
                 var username = User.Identity.Name;
                 //var DivName = _context.Users
@@ -145,6 +146,8 @@ namespace BudgetPortal.Controllers
 
                 return View("Index", MD);
             }
+
+            //Save Budget Details to Database
             else
             {
                  var username = User.Identity.Name;
@@ -299,7 +302,7 @@ namespace BudgetPortal.Controllers
             {
                 mymodel.DivisionNames.Where(x => x.Text.Equals(Division)).Single().Selected = true;
             }
-                return View("Index", mymodel);
+               return View("Index", mymodel);
         }
     }
 }

@@ -34,13 +34,13 @@
              <td>
               @Html.DropDownListFor(m => m.SelectedDivisionID, Model.DivisionNames,"--Please select any Division--", new { @class = "form-control", @id="Division" })
               @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName)
-              @Html.ValidationMessageFor(Model => Model.DivisionNames, "", new { @class = "text-danger" })
+              @Html.ValidationMessageFor(Model => Model.SelectedDivisionID, "", new { @class = "text-danger" })
              </td>
            }       
              <td>
               @Html.DropDownListFor(m => m.SelectedAcademicYearID, Model.AcademicYears,"--Please select any Academic Year--",new { @class = "form-control", @id="AcademicYear" })
               @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear)
-                    @Html.ValidationMessageFor(Model => Model.AcademicYears, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(Model => Model.SelectedAcademicYearID, "", new { @class = "text-danger" })
              </td>
                 
           </tr>
@@ -53,7 +53,9 @@
       @foreach (var item in Model.Sectionss)
       {
             var inneridenti = String.Concat("Budget", @item.SectionNo.ToString());
+
             
+
         if (OuterHeaderCount == 0)
         {
                 <li class="nav-item" role="presentation">
@@ -74,16 +76,111 @@
 
     <div id="outerTabContent" class="tab-content" onclick="">
        <br />
+
        @foreach (var inner in Model.Sectionss)
        {
            var inneridenti = String.Concat("Budget", @inner.SectionNo.ToString());
            CountHeader = 0;
            CounterBody = 0;
-            
 
-           if (OuterBodyCount == 0)
+            var SectionSumBudEstCurrFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.BudEstCurrFin).Sum();
+            var SectionSumActPrevFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ActPrevFin).Sum();
+            var SectionSumActCurrFinTill2ndQuart = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ActCurrFinTill2ndQuart).Sum();
+            var SectionSumRevEstCurrFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.RevEstCurrFin).Sum();
+            var SectionSumPerVarRevEstOverBudgEstCurrFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.PerVarRevEstOverBudgEstCurrFin).Sum();
+            var SectionSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ACAndBWPropRECurrFin).Sum();
+            var SectionSumBudgEstNexFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.BudgEstNexFin).Sum();
+            var SectionSumPerVarRevEstOverBudgEstNxtFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.PerVarRevEstOverBudgEstNxtFin).Sum();
+            var SectionSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ACAndBWPropRENxtFin).Sum();
+
+            if (OuterBodyCount == 0)
            {
             <div id="@inneridenti" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="true">
+
+                    <table id="@inneridenti-Totaltable" class="table">
+                <thead>
+                                      <tr>
+                                            <th>
+                                                
+                                            </th>
+                                            <th class="CurrentBudgetEstimates" >
+                                                        
+                                            </th>
+                                            <th class="PreviousActualBudget">
+                                                
+                                            </th>
+                                            <th class="PreviousHalfYearActualBudget">
+                                                
+                                            </th>
+                                            <th class="CurrentYearRevisedEstimates">
+                                                
+                                            </th>
+                                            <th class="VariationInRevisedEstimates">
+                                                        
+                                            </th>
+                                            @if (User.IsInRole("Admin"))
+                                             {
+                                               <th class="ACBWProposalForRevisedEstimates">
+                                                  
+                                               </th>
+                                             }
+                                            <th class="BudgetEstimatesNextYear">
+                                                
+                                            </th>
+                                            <th class="VariationInBudgetEstimates">
+                                                
+                                            </th>
+                                            @if (User.IsInRole("Admin"))
+                                             {
+                                               <th class="ACBWProposalForBudgetEstimates">
+                                                   
+                                                </th>
+                                             }
+                                           
+                                        </tr>
+                </thead>
+                <tbody>
+                                                <tr>
+                                                    <td>
+                                                      @inner.SectionNo @inner.SectionName-Total
+                                                    </td>
+
+                                                    <td>
+                                                        @Html.Label("SectionSumBudEstCurrFin"+@inner.SectionNo.ToString(),@SectionSumBudEstCurrFin.ToString(), new { @id = "SumBudEstCurrFin"+@inner.SectionNo.ToString()})
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("SectionSumActPrevFin"+@inner.SectionNo.ToString(),@SectionSumActPrevFin.ToString(), new { @id = "SumActPrevFin"+@inner.SectionNo.ToString()})
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("SectionSumActCurrFinTill2ndQuart"+@inner.SectionNo.ToString(),@SectionSumActCurrFinTill2ndQuart.ToString(), new { @id = "SumActCurrFinTill2ndQuart"+@inner.SectionNo.ToString()})
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("SectionSumRevEstCurrFin"+@inner.SectionNo.ToString(),@SectionSumRevEstCurrFin.ToString(), new { @id = "SumRevEstCurrFin"+@inner.SectionNo.ToString()})
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("SectionSumPerVarRevEstOverBudgEstCurrFin"+@inner.SectionNo.ToString(),@SectionSumPerVarRevEstOverBudgEstCurrFin.ToString(), new { @id = "SumPerVarRevEstOverBudgEstCurrFin"+@inner.SectionNo.ToString()})
+                                                    </td>
+                                                    @if (User.IsInRole("Admin"))
+                                                    {
+                                                        <td>
+                                                            @Html.Label("SectionSumACAndBWPropRECurrFin"+@inner.SectionNo.ToString(),@SectionSumACAndBWPropRECurrFin.ToString(), new { @id = "SumACAndBWPropRECurrFin"+@inner.SectionNo.ToString()})
+                                                        </td>
+                                                    }
+                                                    <td>
+                                                        @Html.Label("SectionSumBudgEstNexFin"+@inner.SectionNo.ToString(),@SectionSumBudgEstNexFin.ToString(), new { @id = "SumBudgEstNexFin"+@inner.SectionNo.ToString()})
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("SectionSumPerVarRevEstOverBudgEstNxtFin"+@inner.SectionNo.ToString(),@SectionSumPerVarRevEstOverBudgEstNxtFin.ToString(), new { @id = "SumPerVarRevEstOverBudgEstNxtFin"+@inner.SectionNo.ToString()})
+                                                    </td>
+                                                    @if (User.IsInRole("Admin"))
+                                                    {
+                                                        <td>
+                                                            @Html.Label("SectionSumACAndBWPropRENxtFin"+@inner.SectionNo.ToString(),@SectionSumACAndBWPropRENxtFin.ToString(), new { @id = "SumACAndBWPropRENxtFin"+@inner.SectionNo.ToString()})
+                                                        </td>
+                                                    }
+                                                </tr>
+                                    </tbody>
+                </table>
 
                 <ul id="innertab1" class="nav nav-tabs" role="tablist">
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
@@ -111,17 +208,27 @@
                     <br />
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
-                            int TableCount = 0;
+                        int TableCount = 0;
                         var Submit = String.Concat("Submit", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
                         
+                         var SumBudEstCurrFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.BudEstCurrFin).Sum();
+                         var SumActPrevFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ActPrevFin).Sum();
+                         var SumActCurrFinTill2ndQuart = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ActCurrFinTill2ndQuart).Sum();
+                         var SumRevEstCurrFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.RevEstCurrFin).Sum();
+                         var SumPerVarRevEstOverBudgEstCurrFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.PerVarRevEstOverBudgEstCurrFin).Sum();
+                         var SumACAndBWPropRECurrFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ACAndBWPropRECurrFin).Sum();
+                         var SumBudgEstNexFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.BudgEstNexFin).Sum();
+                         var SumPerVarRevEstOverBudgEstNxtFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.PerVarRevEstOverBudgEstNxtFin).Sum();
+                         var SumACAndBWPropRENxtFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ACAndBWPropRENxtFin).Sum();
+
                         if (CounterBody == 0)
                         {
                             <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
                               @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
                               {
                                 @Html.AntiForgeryToken()
-                                <table id="@identi-outertable" class="table">
+                                    <table id="@identi-outertable" class="table">
                                     <thead>
                                         <tr>
                                             <th></th>
@@ -132,40 +239,40 @@
                                                 SubGroupName
                                             </th>
                                             <th class="CurrentBudgetEstimates" >
-                                                        @*Budget Estimates 2022-23*@
+                                                        
                                             </th>
                                             <th class="PreviousActualBudget">
-                                                @*Actual 2021-2022*@
+                                                
                                             </th>
                                             <th class="PreviousHalfYearActualBudget">
-                                                @*Actual upto 30.09.2022*@
+                                                
                                             </th>
                                             <th class="CurrentYearRevisedEstimates">
-                                                @*Revised Estimates 2022-23*@
+                                                
                                             </th>
                                             <th class="VariationInRevisedEstimates">
-                                                        @*% Variation in RE over the BE 2022-2023*@
+                                                       
                                             </th>
                                             @if (User.IsInRole("Admin"))
                                              {
                                                <th class="ACBWProposalForRevisedEstimates">
-                                                  @*AC & BW Proposal for RE 2022-2023*@
+                                                 
                                                </th>
                                              }
                                             <th class="BudgetEstimatesNextYear">
-                                                @*Budget Estimates 2023-24*@
+                                                
                                             </th>
                                             <th class="VariationInBudgetEstimates">
-                                                @*% Variation in BE 2023-2024 over the RE 2022-2023*@
+                                                
                                             </th>
                                             @if (User.IsInRole("Admin"))
                                              {
                                                <th class="ACBWProposalForBudgetEstimates">
-                                                   @*AC & BW Proposal for BE 2023-2024*@
+                                                   
                                                 </th>
                                              }
                                             <th class="Justification">
-                                                        @* Comments / Justification*@
+                                                       
                                             </th>
                                         </tr>
                                     </thead>
@@ -186,6 +293,7 @@
                                                     var name9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
+                                                   
 
                                                     <tr>
                                                         <td>
@@ -217,7 +325,7 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name1" type="text" value="">-->
-                                                                @Html.TextBox(@name1, details!=null ? Convert.ToString(details.BudEstCurrFin) : "", new { @class = "form-control", @id = @name1, @readonly = "readonly" })
+                                                                @Html.TextBox(@name1, details!=null ? Convert.ToString(details.BudEstCurrFin) : "", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
                                                                 @*Html.TextBoxFor(Model=> Model.BudEstCurrFin[TableCount],new { @class = "form-control", @id = @name1, @readonly = "readonly",@value = details!=null ? Convert.ToString(details.BudEstCurrFin) : ""})*@
                                                                 @Html.ValidationMessage(@name1, "",new {@class = "text-danger"})
                                                             </div>
@@ -306,7 +414,7 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name5" type="text" value="">-->
-                                    @Html.TextBox(@name5, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "", new { @class = "form-control", @id = @name5})
+                                                                @Html.TextBox(@name5, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "", new { @class = "form-control", @id = @name5})
                                                                 @*Html.TextBoxFor(Model=> Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new { @class = "form-control", @id = @name5, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : ""})*@
                                                                 @Html.ValidationMessage(@name5, "",new {@class = "text-danger"})
                                                             </div>
@@ -337,7 +445,7 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name7" type="text" value="">-->
-                                    @Html.TextBox(@name7, details!=null ? Convert.ToString(details.BudgEstNexFin) : "", new { @class = "form-control", @id = @name7})
+                                                                @Html.TextBox(@name7, details!=null ? Convert.ToString(details.BudgEstNexFin) : "", new { @class = "form-control", @id = @name7})
                                                                 @*Html.TextBoxFor(Model=> Model.BudgEstNexFin[TableCount],new { @class = "form-control", @id = @name7, @Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : ""})*@
                                                                 @Html.ValidationMessage(@name7, "",new {@class = "text-danger"})
                                                             </div>
@@ -357,7 +465,7 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name8" type="text" value="">-->
-                                    @Html.TextBox(@name8, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : "", new { @class = "form-control", @id = @name8})
+                                                                @Html.TextBox(@name8, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : "", new { @class = "form-control", @id = @name8})
                                                                 @*Html.TextBoxFor(Model=> Model.PerVarRevEstOverBudgEstNxtFin[TableCount],new { @class = "form-control", @id = @name8, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : ""})*@
                                                                 @Html.ValidationMessage(@name8, "",new {@class = "text-danger"})
                                                             </div>
@@ -401,7 +509,55 @@
                                                 
                                                     TableCount++;
                                         }
-                                       
+
+
+
+                                                <tr>
+                                                    <td>
+                                                    </td>
+                                                    <td>
+                                                        Total
+                                                    </td>
+                                                    <td>
+                                                        Total
+                                                    </td>
+
+                                                    <td>
+                                                        @Html.Label("SumBudEstCurrFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumBudEstCurrFin.ToString(), new { @id = "SumBudEstCurrFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("SumActPrevFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumActPrevFin.ToString(), new { @id = "SumActPrevFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("SumActCurrFinTill2ndQuart"+@inner.SectionNo.ToString()+@item.GroupNo,@SumActCurrFinTill2ndQuart.ToString(), new { @id = "SumActCurrFinTill2ndQuart"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("SumRevEstCurrFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumRevEstCurrFin.ToString(), new { @id = "SumRevEstCurrFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("SumPerVarRevEstOverBudgEstCurrFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumPerVarRevEstOverBudgEstCurrFin.ToString(), new { @id = "SumPerVarRevEstOverBudgEstCurrFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                    </td>
+                                                    @if (User.IsInRole("Admin"))
+                                                    {
+                                                        <td>
+                                                            @Html.Label("SumACAndBWPropRECurrFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumACAndBWPropRECurrFin.ToString(), new { @id = "SumACAndBWPropRECurrFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                        </td>
+                                                    }
+                                                    <td>
+                                                        @Html.Label("SumBudgEstNexFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumBudgEstNexFin.ToString(), new { @id = "SumBudgEstNexFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("SumPerVarRevEstOverBudgEstNxtFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumPerVarRevEstOverBudgEstNxtFin.ToString(), new { @id = "SumPerVarRevEstOverBudgEstNxtFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                    </td>
+                                                    @if (User.IsInRole("Admin"))
+                                                    {
+                                                        <td>
+                                                            @Html.Label("SumACAndBWPropRENxtFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumACAndBWPropRENxtFin.ToString(), new { @id = "SumACAndBWPropRENxtFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                        </td>
+                                                    }
+                                                    <td>
+                                                    </td>
+                                                </tr>
                                     </tbody>
                                 </table>
                                         @Html.Hidden("SectionName",Model.SectionName, new{@id = @identi+"-SectionName" })
@@ -420,7 +576,7 @@
                              @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
                              {
                                             @Html.AntiForgeryToken()
-                                <table id="@identi-outertable"  class="table">
+                                        <table id="@identi-outertable" class="table" >
                                     <thead>
                                         <tr>
                                             <th></th>
@@ -430,42 +586,22 @@
                                             <th>
                                                 SubGroupName
                                             </th>
-                                            <th class="CurrentBudgetEstimates">
-                                                @*Budget Estimates 2022-23*@
-                                            </th>
-                                            <th class="PreviousActualBudget">
-                                                @*Actal 2021-2022*@
-                                            </th>
-                                            <th class="PreviousHalfYearActualBudget">
-                                                @*Actual upto 30.09.2022*@
-                                            </th>
-                                            <th class="CurrentYearRevisedEstimates">
-                                                @*Revised Estimates 2022-23*@
-                                            </th>
-                                            <th class="VariationInRevisedEstimates">
-                                                @*% Variation in RE over the BE 2022-2023*@
-                                            </th>
+                                            <th class="CurrentBudgetEstimates"></th>
+                                            <th class="PreviousActualBudget"></th>     
+                                            <th class="PreviousHalfYearActualBudget"></th>
+                                            <th class="CurrentYearRevisedEstimates"></th>
+                                            <th class="VariationInRevisedEstimates"></th>
                                             @if (User.IsInRole("Admin"))
                                              {
-                                            <th class="ACBWProposalForRevisedEstimates">
-                                                @*AC & BW Proposal for RE 2022-2023*@
-                                            </th>
+                                                 <th class="ACBWProposalForRevisedEstimates"></th>
                                              }
-                                            <th class="BudgetEstimatesNextYear">
-                                                        @*Budget Estimates 2023-24*@
-                                            </th>
-                                            <th class="VariationInBudgetEstimates">
-                                                        @* % Variation in BE 2023-2024 over the RE 2022-2023*@
-                                            </th>
+                                            <th class="BudgetEstimatesNextYear"></th>
+                                            <th class="VariationInBudgetEstimates"></th>
                                             @if (User.IsInRole("Admin"))
                                              {
-                                            <th class="ACBWProposalForBudgetEstimates">
-                                               @* AC & BW Proposal for BE 2023-2024*@
-                                            </th>
+                                                  <th class="ACBWProposalForBudgetEstimates"></th>
                                              }
-                                            <th class="Justification">
-                                                        @* Comments / Justification*@
-                                            </th>
+                                             <th class="Justification"></th> 
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -694,6 +830,52 @@
                                                
                                                     TableCount++;
                                         }
+                                                <tr>
+                                                    <td>
+                                                    </td>
+                                                    <td>
+                                                        Total
+                                                    </td>
+                                                    <td>
+                                                        Total
+                                                    </td>
+
+                                                    <td>
+                                                        @Html.Label("SumBudEstCurrFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumBudEstCurrFin.ToString(), new { @id = "SumBudEstCurrFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("SumActPrevFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumActPrevFin.ToString(), new { @id = "SumActPrevFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("SumActCurrFinTill2ndQuart"+@inner.SectionNo.ToString()+@item.GroupNo,@SumActCurrFinTill2ndQuart.ToString(), new { @id = "SumActCurrFinTill2ndQuart"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("SumRevEstCurrFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumRevEstCurrFin.ToString(), new { @id = "SumRevEstCurrFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("SumPerVarRevEstOverBudgEstCurrFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumPerVarRevEstOverBudgEstCurrFin.ToString(), new { @id = "SumPerVarRevEstOverBudgEstCurrFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                    </td>
+                                                    @if (User.IsInRole("Admin"))
+                                                    {
+                                                        <td>
+                                                            @Html.Label("SumACAndBWPropRECurrFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumACAndBWPropRECurrFin.ToString(), new { @id = "SumACAndBWPropRECurrFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                        </td>
+                                                    }
+                                                    <td>
+                                                        @Html.Label("SumBudgEstNexFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumBudgEstNexFin.ToString(), new { @id = "SumBudgEstNexFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("SumPerVarRevEstOverBudgEstNxtFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumPerVarRevEstOverBudgEstNxtFin.ToString(), new { @id = "SumPerVarRevEstOverBudgEstNxtFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                    </td>
+                                                    @if (User.IsInRole("Admin"))
+                                                    {
+                                                        <td>
+                                                            @Html.Label("SumACAndBWPropRENxtFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumACAndBWPropRENxtFin.ToString(), new { @id = "SumACAndBWPropRENxtFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                        </td>
+                                                    }
+                                                    <td>
+                                                    </td>
+                                                </tr>
                                     </tbody>
                                 </table>
                                         @Html.Hidden("SectionName",Model.SectionName, new{@id = @identi+"-SectionName" })
@@ -715,6 +897,91 @@
            else
            {
             <div id="@inneridenti" class="tab-pane fade" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="false">
+
+                    <table id="@inneridenti-Totaltable" class="table">
+                        <thead>
+                            <tr>
+                                <th>
+
+                                </th>
+                                <th class="CurrentBudgetEstimates">
+
+                                </th>
+                                <th class="PreviousActualBudget">
+
+                                </th>
+                                <th class="PreviousHalfYearActualBudget">
+
+                                </th>
+                                <th class="CurrentYearRevisedEstimates">
+
+                                </th>
+                                <th class="VariationInRevisedEstimates">
+
+                                </th>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <th class="ACBWProposalForRevisedEstimates">
+
+                                    </th>
+                                }
+                                <th class="BudgetEstimatesNextYear">
+
+                                </th>
+                                <th class="VariationInBudgetEstimates">
+
+                                </th>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <th class="ACBWProposalForBudgetEstimates">
+
+                                    </th>
+                                }
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    @inner.SectionNo @inner.SectionName-Total
+                                </td>
+
+                                <td>
+                                    @Html.Label("SectionSumBudEstCurrFin"+@inner.SectionNo.ToString(),@SectionSumBudEstCurrFin.ToString(), new { @id = "SumBudEstCurrFin"+@inner.SectionNo.ToString()})
+                                </td>
+                                <td>
+                                    @Html.Label("SectionSumActPrevFin"+@inner.SectionNo.ToString(),@SectionSumActPrevFin.ToString(), new { @id = "SumActPrevFin"+@inner.SectionNo.ToString()})
+                                </td>
+                                <td>
+                                    @Html.Label("SectionSumActCurrFinTill2ndQuart"+@inner.SectionNo.ToString(),@SectionSumActCurrFinTill2ndQuart.ToString(), new { @id = "SumActCurrFinTill2ndQuart"+@inner.SectionNo.ToString()})
+                                </td>
+                                <td>
+                                    @Html.Label("SectionSumRevEstCurrFin"+@inner.SectionNo.ToString(),@SectionSumRevEstCurrFin.ToString(), new { @id = "SumRevEstCurrFin"+@inner.SectionNo.ToString()})
+                                </td>
+                                <td>
+                                    @Html.Label("SectionSumPerVarRevEstOverBudgEstCurrFin"+@inner.SectionNo.ToString(),@SectionSumPerVarRevEstOverBudgEstCurrFin.ToString(), new { @id = "SumPerVarRevEstOverBudgEstCurrFin"+@inner.SectionNo.ToString()})
+                                </td>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <td>
+                                        @Html.Label("SectionSumACAndBWPropRECurrFin"+@inner.SectionNo.ToString(),@SectionSumACAndBWPropRECurrFin.ToString(), new { @id = "SumACAndBWPropRECurrFin"+@inner.SectionNo.ToString()})
+                                    </td>
+                                }
+                                <td>
+                                    @Html.Label("SectionSumBudgEstNexFin"+@inner.SectionNo.ToString(),@SectionSumBudgEstNexFin.ToString(), new { @id = "SumBudgEstNexFin"+@inner.SectionNo.ToString()})
+                                </td>
+                                <td>
+                                    @Html.Label("SectionSumPerVarRevEstOverBudgEstNxtFin"+@inner.SectionNo.ToString(),@SectionSumPerVarRevEstOverBudgEstNxtFin.ToString(), new { @id = "SumPerVarRevEstOverBudgEstNxtFin"+@inner.SectionNo.ToString()})
+                                </td>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <td>
+                                        @Html.Label("SectionSumACAndBWPropRENxtFin"+@inner.SectionNo.ToString(),@SectionSumACAndBWPropRENxtFin.ToString(), new { @id = "SumACAndBWPropRENxtFin"+@inner.SectionNo.ToString()})
+                                    </td>
+                                }
+                            </tr>
+                        </tbody>
+                    </table>
 
                 <ul id="innertab2" class="nav nav-tabs" role="tablist">
 
@@ -745,14 +1012,24 @@
                           int TableCount = 0;
                           var Submit = String.Concat("Submit", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                           var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
-                          
+
+                            var SumBudEstCurrFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.BudEstCurrFin).Sum();
+                            var SumActPrevFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ActPrevFin).Sum();
+                            var SumActCurrFinTill2ndQuart = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ActCurrFinTill2ndQuart).Sum();
+                            var SumRevEstCurrFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.RevEstCurrFin).Sum();
+                            var SumPerVarRevEstOverBudgEstCurrFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.PerVarRevEstOverBudgEstCurrFin).Sum();
+                            var SumACAndBWPropRECurrFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ACAndBWPropRECurrFin).Sum();
+                            var SumBudgEstNexFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.BudgEstNexFin).Sum();
+                            var SumPerVarRevEstOverBudgEstNxtFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.PerVarRevEstOverBudgEstNxtFin).Sum();
+                            var SumACAndBWPropRENxtFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ACAndBWPropRENxtFin).Sum();
+
                           if (CounterBody == 0)
                           {
                               <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
                               @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
                               {
-                               @Html.AntiForgeryToken()           
-                                <table id="@identi-outertable"  class="table">
+                               @Html.AntiForgeryToken()
+                                        <table id="@identi-outertable" class="table">
                                     <thead>
                                         <tr>
                                             <th></th>
@@ -762,42 +1039,22 @@
                                             <th>
                                                 SubGroupName
                                             </th>
-                                            <th class="CurrentBudgetEstimates">
-                                                        @*Budget Estimates 2022-23*@
-                                            </th>
-                                            <th class="PreviousActualBudget">
-                                                @*Actal 2021-2022*@
-                                            </th>
-                                            <th class="PreviousHalfYearActualBudget">
-                                                @*Actual upto 30.09.2022*@
-                                            </th>
-                                            <th class="CurrentYearRevisedEstimates">
-                                                @*Revised Estimates 2022-23*@
-                                            </th>
-                                            <th class="VariationInRevisedEstimates">
-                                                @*% Variation in RE over the BE 2022-2023*@
-                                            </th>
+                                            <th class="CurrentBudgetEstimates"></th>
+                                            <th class="PreviousActualBudget"></th>
+                                            <th class="PreviousHalfYearActualBudget"> </th>
+                                            <th class="CurrentYearRevisedEstimates"></th>
+                                            <th class="VariationInRevisedEstimates"></th>
                                             @if (User.IsInRole("Admin"))
                                              {
-                                                        <th class="ACBWProposalForRevisedEstimates">
-                                                            @*AC & BW Proposal for RE 2022-2023*@
-                                            </th>
+                                                <th class="ACBWProposalForRevisedEstimates"></th>
                                              }
-                                            <th class="BudgetEstimatesNextYear">
-                                                @*Budget Estimates 2023-24*@
-                                            </th>
-                                            <th class="VariationInBudgetEstimates">
-                                                @*% Variation in BE 2023-2024 over the RE 2022-2023*@
-                                            </th>
+                                            <th class="BudgetEstimatesNextYear"></th>
+                                            <th class="VariationInBudgetEstimates"></th>
                                             @if (User.IsInRole("Admin"))
                                              {
-                                                        <th class="ACBWProposalForBudgetEstimates">
-                                                @*AC & BW Proposal for BE 2023-2024*@
-                                            </th>
+                                                <th class="ACBWProposalForBudgetEstimates"></th>
                                              }
-                                                    <th class="Justification">
-                                                        @*Comments / Justification*@
-                                            </th>
+                                             <th class="Justification"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -869,7 +1126,7 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name2" type="text" value="">-->
-                                                                @Html.TextBox(@name2, details!=null ? Convert.ToString(details.BudEstCurrFin) : "", new { @class = "form-control", @id = @name2,@readonly="readonly"})
+                                                                @Html.TextBox(@name2, details!=null ? Convert.ToString(details.ActPrevFin) : "", new { @class = "form-control", @id = @name2,@readonly="readonly"})
                                                                 @*@Html.EditorFor(model => model.ActPrevFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name2 }})*@
                                                                 @*Html.TextBoxFor(Model=>Model.ActPrevFin[TableCount],new { @class = "form-control", @id = @name2, @readonly="readonly", @Value = details!=null ? Convert.ToString(details.ActPrevFin) : "" })*@
                                                                 @Html.ValidationMessage(@name2, "",new {@class = "text-danger"})
@@ -1033,8 +1290,54 @@
 
                                                
                                                  TableCount++;
-                                        } 
-                                          
+                                        }
+
+                                                <tr>
+                                                    <td>
+                                                    </td>
+                                                    <td>
+                                                        Total
+                                                    </td>
+                                                    <td>
+                                                        Total
+                                                    </td>
+
+                                                    <td>
+                                                        @Html.Label("SumBudEstCurrFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumBudEstCurrFin.ToString(), new { @id = "SumBudEstCurrFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("SumActPrevFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumActPrevFin.ToString(), new { @id = "SumActPrevFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("SumActCurrFinTill2ndQuart"+@inner.SectionNo.ToString()+@item.GroupNo,@SumActCurrFinTill2ndQuart.ToString(), new { @id = "SumActCurrFinTill2ndQuart"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("SumRevEstCurrFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumRevEstCurrFin.ToString(), new { @id = "SumRevEstCurrFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("SumPerVarRevEstOverBudgEstCurrFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumPerVarRevEstOverBudgEstCurrFin.ToString(), new { @id = "SumPerVarRevEstOverBudgEstCurrFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                    </td>
+                                                    @if (User.IsInRole("Admin"))
+                                                    {
+                                                        <td>
+                                                            @Html.Label("SumACAndBWPropRECurrFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumACAndBWPropRECurrFin.ToString(), new { @id = "SumACAndBWPropRECurrFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                        </td>
+                                                    }
+                                                    <td>
+                                                        @Html.Label("SumBudgEstNexFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumBudgEstNexFin.ToString(), new { @id = "SumBudgEstNexFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("SumPerVarRevEstOverBudgEstNxtFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumPerVarRevEstOverBudgEstNxtFin.ToString(), new { @id = "SumPerVarRevEstOverBudgEstNxtFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                    </td>
+                                                    @if (User.IsInRole("Admin"))
+                                                    {
+                                                        <td>
+                                                            @Html.Label("SumACAndBWPropRENxtFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumACAndBWPropRENxtFin.ToString(), new { @id = "SumACAndBWPropRENxtFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                        </td>
+                                                    }
+                                                    <td>
+                                                    </td>
+                                                </tr>
                                     </tbody>
                                 </table>
                                         @Html.Hidden("SectionName",Model.SectionName, new{@id = @identi+"-SectionName" })
@@ -1053,7 +1356,7 @@
                              @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
                              {
                                  @Html.AntiForgeryToken()
-                                 <table id="@identi-outertable" class="table">
+                                  <table id="@identi-outertable" class="table" >
                                     <thead>
                                         <tr>
                                             <th></th>
@@ -1063,42 +1366,22 @@
                                             <th>
                                                 SubGroupName
                                             </th>
-                                            <th class="CurrentBudgetEstimates">
-                                                        @*Budget Estimates 2022-23*@
-                                            </th>
-                                            <th class="PreviousActualBudget">
-                                                  @*Actal 2021-2022*@
-                                            </th>
-                                            <th class="PreviousHalfYearActualBudget">
-                                                @*Actual upto 30.09.2022*@
-                                            </th>
-                                            <th class="CurrentYearRevisedEstimates">
-                                                @*Revised Estimates 2022-23*@
-                                            </th>
-                                            <th class="VariationInRevisedEstimates">
-                                                 @*% Variation in RE over the BE 2022-2023*@
-                                            </th>
-                                            @if (User.IsInRole("Admin"))
-                                             {
-                                                    <th class="ACBWProposalForRevisedEstimates">
-                                                        @*AC & BW Proposal for RE 2022-2023*@
-                                                    </th>
-                                            }
-                                            <th class="BudgetEstimatesNextYear">
-                                                @*Budget Estimates 2023-24*@
-                                            </th>
-                                            <th class="VariationInBudgetEstimates">
-                                                @*% Variation in BE 2023-2024 over the RE 2022-2023*@
-                                            </th>
+                                            <th class="CurrentBudgetEstimates"></th>
+                                            <th class="PreviousActualBudget"></th>
+                                            <th class="PreviousHalfYearActualBudget"></th>
+                                            <th class="CurrentYearRevisedEstimates"></th>
+                                            <th class="VariationInRevisedEstimates"></th>
                                             @if (User.IsInRole("Admin"))
                                             {
-                                                    <th class="ACBWProposalForBudgetEstimates">
-                                                        @*AC & BW Proposal for BE 2023-2024*@
-                                                    </th>
-                                             }
-                                                <th class="Justification">
-                                                        @*Comments / Justification*@
-                                            </th>
+                                               <th class="ACBWProposalForRevisedEstimates"></th>     
+                                            }
+                                            <th class="BudgetEstimatesNextYear"></th>
+                                            <th class="VariationInBudgetEstimates"></th>
+                                            @if (User.IsInRole("Admin"))
+                                            {
+                                               <th class="ACBWProposalForBudgetEstimates"></th>       
+                                            }
+                                             <th class="Justification"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -1247,7 +1530,7 @@
                                                             <td>
                                                                 <div class="form-group">
                                                                     <!-- <input id="@name6" type="text" value="">-->
-                                                                @Html.TextBox(@name6, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "", new { @class = "form-control", @id = @name6})
+                                                                @Html.TextBox(@name6, details!=null ? Convert.ToString(details.ACAndBWPropRECurrFin) : "", new { @class = "form-control", @id = @name6})
                                                                 @*Html.TextBoxFor(Model => Model.ACAndBWPropRECurrFin[TableCount], new { @class = "form-control", @id = @name6, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRECurrFin) : ""  })*@
                                                                 @Html.ValidationMessage(@name6, "",new {@class = "text-danger"})
                                                                 </div>
@@ -1258,7 +1541,7 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name7" type="text" value="">-->
-                                                                @Html.TextBox(@name7, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "", new { @class = "form-control", @id = @name7, @readonly="readonly"})
+                                                                @Html.TextBox(@name7, details!=null ? Convert.ToString(details.BudgEstNexFin) : "", new { @class = "form-control", @id = @name7, @readonly="readonly"})
                                                                 @*Html.TextBoxFor(Model => Model.BudgEstNexFin[TableCount], new { @class = "form-control", @id = @name7, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : ""  })*@
                                                                 @Html.ValidationMessage(@name7, "",new {@class = "text-danger"})
                                                             </div>                                                            
@@ -1267,7 +1550,7 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name7" type="text" value="">-->
-                                                            @Html.TextBox(@name7, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "", new { @class = "form-control", @id = @name7})
+                                                            @Html.TextBox(@name7, details!=null ? Convert.ToString(details.BudgEstNexFin) : "", new { @class = "form-control", @id = @name7})
                                                             @*Html.TextBoxFor(Model => Model.BudgEstNexFin[TableCount], new { @class = "form-control", @id = @name7, @Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : ""  })*@
                                                             @Html.ValidationMessage(@name7, "",new {@class = "text-danger"})
                                                             </div>
@@ -1278,7 +1561,7 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name8" type="text" value="">-->
-                                                                @Html.TextBox(@name8, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "", new { @class = "form-control", @id = @name8, @readonly="readonly"})
+                                                                @Html.TextBox(@name8, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : "", new { @class = "form-control", @id = @name8, @readonly="readonly"})
                                                                 @*Html.TextBoxFor(Model => Model.PerVarRevEstOverBudgEstNxtFin[TableCount], new { @class = "form-control", @id = @name8, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : ""  })*@
                                                                 @Html.ValidationMessage(@name8, "",new {@class = "text-danger"})
                                                             </div>                                                            
@@ -1328,6 +1611,53 @@
                                             
                                               TableCount++;
                                         }
+
+                                                <tr>
+                                                    <td>
+                                                    </td>
+                                                    <td>
+                                                        Total
+                                                    </td>
+                                                    <td>
+                                                        Total
+                                                    </td>
+
+                                                    <td>
+                                                        @Html.Label("SumBudEstCurrFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumBudEstCurrFin.ToString(), new { @id = "SumBudEstCurrFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("SumActPrevFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumActPrevFin.ToString(), new { @id = "SumActPrevFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("SumActCurrFinTill2ndQuart"+@inner.SectionNo.ToString()+@item.GroupNo,@SumActCurrFinTill2ndQuart.ToString(), new { @id = "SumActCurrFinTill2ndQuart"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("SumRevEstCurrFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumRevEstCurrFin.ToString(), new { @id = "SumRevEstCurrFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("SumPerVarRevEstOverBudgEstCurrFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumPerVarRevEstOverBudgEstCurrFin.ToString(), new { @id = "SumPerVarRevEstOverBudgEstCurrFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                    </td>
+                                                    @if (User.IsInRole("Admin"))
+                                                    {
+                                                        <td>
+                                                            @Html.Label("SumACAndBWPropRECurrFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumACAndBWPropRECurrFin.ToString(), new { @id = "SumACAndBWPropRECurrFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                        </td>
+                                                    }
+                                                    <td>
+                                                        @Html.Label("SumBudgEstNexFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumBudgEstNexFin.ToString(), new { @id = "SumBudgEstNexFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("SumPerVarRevEstOverBudgEstNxtFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumPerVarRevEstOverBudgEstNxtFin.ToString(), new { @id = "SumPerVarRevEstOverBudgEstNxtFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                    </td>
+                                                    @if (User.IsInRole("Admin"))
+                                                    {
+                                                        <td>
+                                                            @Html.Label("SumACAndBWPropRENxtFin"+@inner.SectionNo.ToString()+@item.GroupNo,@SumACAndBWPropRENxtFin.ToString(), new { @id = "SumACAndBWPropRENxtFin"+@inner.SectionNo.ToString()+@item.GroupNo})
+                                                        </td>
+                                                    }
+                                                    <td>
+                                                    </td>
+                                                </tr>
                                     </tbody>
                                    </table>
                                  @Html.Hidden("SectionName",Model.SectionName, new{@id = @identi+"-SectionName"})
@@ -1360,8 +1690,6 @@
          function() 
          {
               onceDocReady();
-                var user = "<%: HttpContext.Current.User.Identity.Name %>";
-               alert(user);
 
                 $("#Division").change(
                     function (evt) {
@@ -1386,6 +1714,9 @@
                         var group = groupnoid.split('-');
                         alert(group[0]);
 
+                        var tableid = "#".concat(group[0]).concat("-outertable");
+                        alert(tableid);
+
                         $.ajax
                             ({
                                 type: "Get",
@@ -1397,7 +1728,9 @@
                                     //alert('Inside Success');
                                     console.log(data);
                                     //alert("HTML: " + $("#outerdiv").html());
-                                    $("#outerdiv").html(data);
+                                    //$("#" + section[0] + group[0]*10+"-outertable").html(data);
+                                    $(tableid).html(data);
+                                    
                                     //$('head').html(data);// HTML DOM replace
                                     //$(document).html(data);
                                     onceDocReady();
@@ -1437,6 +1770,11 @@
                         alert(groupnoid);
                         var group = groupnoid.split('-');
                         alert(group[0]);
+                        var number = parseFloat(group[0]).toFixed(1) * 10;
+                        alert(number);
+
+                        var tableid = "#".concat(group[0]).concat("-outertable");
+                        alert(tableid);
 
                         $.ajax
                             ({
@@ -1450,8 +1788,8 @@
                                     //alert('Inside Success');
                                     console.log(data);
                                     //alert("HTML: " + $("#outerdiv").html());
-                                    $("#outerdiv").html(data);
-                                    //$('head').html(data);// HTML DOM replace
+                                    //$("#outerdiv").html(data);
+                                    $(tableid).html(data);// HTML DOM replace
                                     //$(document).html(data);
                                     onceDocReady();
                                     //alert('Success');
