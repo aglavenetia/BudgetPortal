@@ -75,7 +75,11 @@
                    <!-- <a href="#" class="nav_link"> <i class='bx bx-bookmark nav_icon'></i> <span class="nav_name">Admin</span> </a> 
                     <a href="#" class="nav_link"> <i class='bx bx-folder nav_icon'></i> <span class="nav_name">Files</span> </a> -->
                    <!-- <a class="nav_link" asp-controller="Tabs" asp-action="Index"> <i class='bx bx-bar-chart-alt-2 nav_icon'></i> <span class="nav_name">Budget Details</span> </a>  -->
-                </div>
+                   @if (User.IsInRole("Admin"))
+                    {
+                        <a class="nav_link" asp-controller="Tabs" asp-action="ConsoActPrevYear"> <i class='bx bx-message-square-detail nav_icon'></i> <span class="nav_name">Add Section</span> </a>
+                    }
+               </div>
             </div> 
 
         <!--   <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">

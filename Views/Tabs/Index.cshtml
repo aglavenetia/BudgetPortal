@@ -1690,7 +1690,7 @@
          {
               onceDocReady();
 
-                $("#Division").change(
+                $('body').on('change',"#Division",
                     function (evt) {
                         $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
 
@@ -1701,14 +1701,14 @@
                         var academicyear = $("#SelectedAcademicYear").val();
 
                         var year = academicyear.split('-');
-                        alert(year[0]);
+                        //alert(year[0]);
                         var sectionnoid = $('#outerTab li button.active').attr('id');
                         var section = sectionnoid.split('-');
 
                         var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
-                        alert(groupnoid);
+                        //alert(groupnoid);
                         var group = groupnoid.split('-');
-                        alert(group[0]);
+                        //alert(group[0]);
 
                         $.ajax
                             ({
@@ -1718,8 +1718,8 @@
                                 dataType: "html",
                                 success: function (data) {
                                     //Whatever result you have got from your controller with html partial view replace with a specific html.
-                                    alert("Inside Ajax");
-                                    alert($("#outerdiv", data).html());
+                                    //alert("Inside Ajax");
+                                    //alert($("#outerdiv", data).html());
 
                                     //$("#outerdiv").html(data);
 
@@ -1738,7 +1738,7 @@
 
                 );
 
-                $("#AcademicYear").change(
+                $('body').on('change',"#AcademicYear",
                     function (evt) {
                         $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
 
@@ -1749,16 +1749,16 @@
                         var divisionname = $("#SelectedDivisionName").val();
 
                         var year = academicyear.split('-');
-                        alert(year[0]);
+                        //alert(year[0]);
 
                         var sectionnoid = $('#outerTab li button.active').attr('id');
 
                         var section = sectionnoid.split('-');
 
                         var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
-                        alert(groupnoid);
+                        //alert(groupnoid);
                         var group = groupnoid.split('-');
-                        alert(group[0]);
+                        //alert(group[0]);
 
                         $.ajax
                             ({
@@ -1769,8 +1769,8 @@
                                 success: function (data)
                                 {
                                     //Whatever result you have got from your controller with html partial view replace with a specific html.
-                                    alert("Inside Ajax");
-                                    alert($("#outerdiv", data).html());
+                                    //alert("Inside Ajax");
+                                    //alert($("#outerdiv", data).html());
  
                                     //$("#outerdiv").html(data);// HTML DOM replace
                                     
@@ -1788,29 +1788,29 @@
                     }
                 );
 
-                $(".Submit").on('click',
+                $('body').on('click',".Submit",
                     function () {
                         var sectionnoid = $('#outerTab li button.active').attr('id');
-                        alert(sectionnoid);
+                        //alert(sectionnoid);
                         var section = sectionnoid.split('-');
-                        alert(section[0]);
+                        //alert(section[0]);
 
 
                         var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
-                        alert(groupnoid);
+                        //alert(groupnoid);
                         var group = groupnoid.split('-');
-                        alert(group[0]);
+                        //alert(group[0]);
 
                         var hiddensectionid = group[0].concat('-SectionName');
-                        alert(hiddensectionid);
+                        //alert(hiddensectionid);
                         var hiddengroupid = group[0].concat('-GroupName');
-                        alert(hiddengroupid);
+                        //alert(hiddengroupid);
 
                         var hiddenSelectedYear = group[0].concat('-SelectedAcademicYear');
-                        alert(hiddenSelectedYear);
+                        //alert(hiddenSelectedYear);
 
                         var hiddenSelectedDivision = group[0].concat('-SelectedDivisionName');
-                        alert(hiddenSelectedDivision);
+                        //alert(hiddenSelectedDivision);
 
                         //$("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
 
@@ -1826,7 +1826,7 @@
                         $('#' + hiddenSelectedDivision).val($("#Division option:selected").text().trim());
 
                         var subgroupcount = $('#' + group[0] + ' #outertable tbody').closest('tr').length;
-                        alert(subgroupcount);
+                        //alert(subgroupcount);
 
                         for (i = 0; i < subgroupcount; i++) {
                             //var subgroupnorow = $('#' + group[0] + ' #outertable tbody').closest('tr').text();
@@ -1844,7 +1844,7 @@
         {
                  $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
                  var academicyear = $("#SelectedAcademicYear").val();
-                 alert('Inside Doc Ready module');
+                 //alert('Inside Doc Ready module');
                  var year = academicyear.split('-');
                  //alert(year[1]);
 
