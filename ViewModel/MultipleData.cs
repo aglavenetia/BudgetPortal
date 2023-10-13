@@ -55,8 +55,13 @@ namespace BudgetPortal.ViewModel
         public List<Decimal> ACAndBWPropRENxtFin { get; set; }
 
         public List<String> Justification { get; set; }
-        public IEnumerable<Division> Divisionss { get; set; }
 
+        public IEnumerable<BudgetReports> Reports { get; set; }
+        public IEnumerable<SelectListItem> ReportNames { get; set; }
+        public String SelectedReportID { get; set; }
+        public String SelectedReportName { get; set; }
+
+        public IEnumerable<Division> Divisionss { get; set; }
         public IEnumerable<SelectListItem> DivisionNames { get; set; }
         public String SelectedDivisionID { get; set; }
         public String SelectedDivisionName { get; set; }
@@ -66,8 +71,5 @@ namespace BudgetPortal.ViewModel
         public String SelectedAcademicYearID { get; set; }
         public String SelectedAcademicYear { get; set; }
         
-
-
-
     }
 }

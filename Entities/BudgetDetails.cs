@@ -45,6 +45,9 @@ namespace BudgetPortal.Entities
         public Decimal ACAndBWPropRECurrFin { get; set; }
 
         [Column(TypeName = "money")]
+        public Decimal BudgEstNexFinProposed { get; set; }
+
+        [Column(TypeName = "money")]
         public Decimal BudgEstNexFin { get; set; }
 
         [Column(TypeName = "decimal(4,2)")]
