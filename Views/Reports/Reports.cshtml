@@ -27,8 +27,8 @@
         <table border="0" cellpadding="5" cellspacing="0">
             <tr>
                 <td>
-                   @Html.DropDownListFor(m => m.SelectedReportID, Model.ReportNames,"--Please select any Report--", new { @class = "form-control", @id="Reports" })
-                   @Html.Hidden("SelectedReportName",Model.SelectedReportName)
+                    @Html.DropDownListFor(m => m.SelectedReportID, Model.ReportNames,"--Please select any Report--", new { @class = "form-control", @id="Reports" })
+                    @Html.Hidden("SelectedReportName",Model.SelectedReportName)
                     @Html.ValidationMessageFor(Model => Model.SelectedReportID, "", new { @class = "text-danger" })
                 </td>
                 <td>
@@ -37,11 +37,12 @@
                     @Html.ValidationMessageFor(Model => Model.SelectedAcademicYearID, "", new { @class = "text-danger" })
                 </td>
                 <td>
-                    @Html.DropDownListFor(m => m.SelectedDivisionTypeID, Model.DivisionTypeNames,"--Please select any Division--", new { @class = "form-control", @id="DivisionType" })
-                    @Html.Hidden("SelectedDivisionTypeName",Model.SelectedDivisionTypeName)
+                    @Html.DropDownListFor(m => m.SelectedDivisionTypeID, Model.DivisionTypeNames,"--Please select any DivisionType Name--",new { @class = "form-control", @id="DivisionType" })
+                    @Html.Hidden("SelectedDivisionTypeName", Model.SelectedDivisionTypeName)
                     @Html.ValidationMessageFor(Model => Model.SelectedDivisionTypeID, "", new { @class = "text-danger" })
                 </td>
             </tr>
+
         </table>
   
     </div>
@@ -51,8 +52,6 @@
         @foreach (var item in Model.Sectionss)
         {
             var inneridenti = String.Concat("Budget", @item.SectionNo.ToString());
-
-
 
             if (OuterHeaderCount == 0)
             {
@@ -95,7 +94,7 @@
             {
                 <div id="@inneridenti" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="true">
 
-                    <table id="@inneridenti-Totaltable" class="table">
+                  <!--  <table id="@inneridenti-Totaltable" class="table">
                         <thead>
                             <tr>
                                 <th>
@@ -178,7 +177,7 @@
                                 }
                             </tr>
                         </tbody>
-                    </table>
+                    </table> -->
 
                     <ul id="innertab1" class="nav nav-tabs" role="tablist">
                         @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
@@ -236,7 +235,7 @@
                                                     <th>
                                                         SubGroupName
                                                     </th>
-                                                    <th class="CurrentBudgetEstimates">
+                                                    <th>
                                                         Report Type
                                                     </th>
                                                     @foreach(var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(Model.SelectedDivisionTypeName)) )
@@ -281,7 +280,7 @@
                                                         </td>
                                                         @foreach(var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(Model.SelectedDivisionTypeName)))
                                                         {
-                                                            var result = (from a in Model.Detailss where a.DivisionID == Regions.DivisionId select a).FirstOrDefault();
+                                                            var result = (from a in Model.Detailss where a.DivisionID == Regions.DivisionID select a).FirstOrDefault();
                                                            
                                                             if(Model.SelectedReportName.Equals("Actual"))
                                                             {
@@ -1483,54 +1482,17 @@
         $(document).ready(
             function () {
                 onceDocReady();
+                
+                $('body').on('change', "#DivisionType",
+                    function (evt) 
+                    {
+                        $("#SelectedDivisionTypeName").val($("#DivisionType option:selected").text().trim());
+                    });
 
-                $('body').on('change', "#Division",
+                $('body').on('change', "#Reports",
                     function (evt) {
-                        $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
-
-                        var divisionname = $("#SelectedDivisionName").val();
-
-                        $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
-
-                        var academicyear = $("#SelectedAcademicYear").val();
-
-                        var year = academicyear.split('-');
-                        //alert(year[0]);
-                        var sectionnoid = $('#outerTab li button.active').attr('id');
-                        var section = sectionnoid.split('-');
-
-                        var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
-                        //alert(groupnoid);
-                        var group = groupnoid.split('-');
-                        //alert(group[0]);
-
-                        $.ajax
-                            ({
-                                type: "Get",
-                                url: '@Url.Action("GetDetails","Tabs")',
-                                data: { Year: year[0], Division: divisionname },
-                                dataType: "html",
-                                success: function (data) {
-                                    //Whatever result you have got from your controller with html partial view replace with a specific html.
-                                    //alert("Inside Ajax");
-                                    //alert($("#outerdiv", data).html());
-
-                                    //$("#outerdiv").html(data);
-
-                                    $("#outerdiv").html($("#outerdiv", data).html());
-
-                                    onceDocReady();
-                                },
-                                error: function (jqXHR, textStatus, errorThrown) {
-                                    alert(errorThrown);
-                                }
-
-                            });
-
-
-                    }
-
-                );
+                        $("#SelectedReportName").val($("#Reports option:selected").text().trim());
+                    });
 
                 $('body').on('change', "#AcademicYear",
                     function (evt) {
@@ -1634,6 +1596,12 @@
 
         function onceDocReady() {
             $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
+            alert("Yes");
+            $("#SelectedDivisionTypeName").val($("#DivisionType option:selected").text().trim());
+            alert("Yes");
+            $("#SelectedReportName").val($("#Reports option:selected").text().trim());
+            alert("Yes");
+
             var academicyear = $("#SelectedAcademicYear").val();
             //alert('Inside Doc Ready module');
             var year = academicyear.split('-');

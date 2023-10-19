@@ -66,6 +66,10 @@ namespace BudgetPortal.ViewModel
         public String SelectedDivisionID { get; set; }
         public String SelectedDivisionName { get; set; }
 
+        public List<SelectListItem> DivisionTypeNames { get; set; }
+        public String SelectedDivisionTypeID { get; set; }
+        public String SelectedDivisionTypeName { get; set; }
+
         public IEnumerable<AcademicYears> AcademicYearss { get; set; }
         public IEnumerable<SelectListItem> AcademicYears { get; set; }
         public String SelectedAcademicYearID { get; set; }
