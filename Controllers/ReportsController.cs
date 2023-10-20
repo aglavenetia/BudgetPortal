@@ -45,7 +45,8 @@ namespace BudgetPortal.Controllers
             mymodel.SubGroupss = _context.BudgetSubGroups.ToList();
             mymodel.Ledgerss = _context.BudgetLedgers.ToList();
             mymodel.Detailss = _context.BudgetDetails.Where(x => x.FinancialYear1 == Year).ToList();
-           
+            mymodel.Divisionss = _context.Division.ToList();
+
             String[] DivisionTypes = _context.Division.Select(x => x.DivisionType).Distinct().ToArray();
 
             mymodel.DivisionTypeNames = new List<SelectListItem>();
@@ -65,6 +66,7 @@ namespace BudgetPortal.Controllers
             });
 
             mymodel.DivisionTypeNames.Where(x => x.Text.Equals("Regional Office")).Single().Selected = true;
+            mymodel.SelectedDivisionTypeName = mymodel.DivisionTypeNames.Where(x => x.Selected == true).ToString();
 
             mymodel.ReportNames = _context.BudgetReports.AsEnumerable().Select(x =>
                     new SelectListItem()
@@ -75,6 +77,7 @@ namespace BudgetPortal.Controllers
 
                     }).ToList();
             mymodel.ReportNames.Where(x => x.Text.Equals("Actual")).Single().Selected = true;
+            mymodel.SelectedReportName = mymodel.ReportNames.Where(x => x.Selected == true).ToString();
 
             mymodel.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
                     new SelectListItem()

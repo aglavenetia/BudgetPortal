@@ -238,10 +238,14 @@
                                                     <th>
                                                         Report Type
                                                     </th>
-                                                    @foreach(var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(Model.SelectedDivisionTypeName)) )
+
+                                                    @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(Model.SelectedDivisionTypeName)))
                                                     {
-                                                        <th>Regions.DivisionName</th>
-                                                    }
+                                                        <th>
+                                                            @Regions.DivisionName;
+                                                        </th>
+                                                     }
+                                                   
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -249,6 +253,7 @@
                                                 @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                                 {
                                                     var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
+                                                    var ReportName = Model.SelectedReportName;
 
                                                     <tr>
                                                         <td>
@@ -276,9 +281,9 @@
                                                             @Subs.subGroupName
                                                         </td>
                                                         <td>
-                                                            @Model.SelectedReportName
+                                                            ReportName
                                                         </td>
-                                                        @foreach(var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(Model.SelectedDivisionTypeName)))
+                                                        @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(Model.SelectedDivisionTypeName)))
                                                         {
                                                             var result = (from a in Model.Detailss where a.DivisionID == Regions.DivisionID select a).FirstOrDefault();
                                                            
@@ -311,52 +316,7 @@
 
                                                     TableCount++;
                                                 }
-                                                <tr>
-                                                    <td>
-                                                    </td>
-                                                    <td>
-                                                        Total
-                                                    </td>
-                                                    <td>
-                                                        Total
-                                                    </td>
-
-                                                    <td>
-                                                        @SumBudEstCurrFin.ToString()
-                                                    </td>
-                                                    <td>
-                                                        @SumActPrevFin.ToString()
-                                                    </td>
-                                                    <td>
-                                                        @SumActCurrFinTill2ndQuart.ToString()
-                                                    </td>
-                                                    <td>
-                                                        @SumRevEstCurrFin.ToString()
-                                                    </td>
-                                                    <td>
-                                                        @SumPerVarRevEstOverBudgEstCurrFin.ToString()
-                                                    </td>
-                                                    @if (User.IsInRole("Admin"))
-                                                    {
-                                                        <td>
-                                                            @SumACAndBWPropRECurrFin.ToString()
-                                                        </td>
-                                                    }
-                                                    <td>
-                                                        @SumBudgEstNexFin.ToString()
-                                                    </td>
-                                                    <td>
-                                                        @SumPerVarRevEstOverBudgEstNxtFin.ToString()
-                                                    </td>
-                                                    @if (User.IsInRole("Admin"))
-                                                    {
-                                                        <td>
-                                                            @SumACAndBWPropRENxtFin.ToString()
-                                                        </td>
-                                                    }
-                                                    <td>
-                                                    </td>
-                                                </tr>
+                                                
                                             </tbody>
                                         </table>
                                     }
@@ -380,39 +340,21 @@
                                                     <th>
                                                         SubGroupName
                                                     </th>
-                                                    <th class="CurrentBudgetEstimates"></th>
-                                                    <th class="PreviousActualBudget"></th>
-                                                    <th class="PreviousHalfYearActualBudget"></th>
-                                                    <th class="CurrentYearRevisedEstimates"></th>
-                                                    <th class="VariationInRevisedEstimates"></th>
-                                                    @if (User.IsInRole("Admin"))
+                                                    <th>
+                                                        Report Type
+                                                    </th>
+                                                    @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(Model.SelectedDivisionTypeName)))
                                                     {
-                                                        <th class="ACBWProposalForRevisedEstimates"></th>
+                                                        <th>@Regions.DivisionName</th>
                                                     }
-                                                    <th class="BudgetEstimatesNextYear"></th>
-                                                    <th class="VariationInBudgetEstimates"></th>
-                                                    @if (User.IsInRole("Admin"))
-                                                    {
-                                                        <th class="ACBWProposalForBudgetEstimates"></th>
-                                                    }
-                                                    <th class="Justification"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+
                                                 @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                                 {
                                                     var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
-                                                    var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name3 = String.Concat("ActCurrFinTill2ndQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name4 = String.Concat("RevEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name5 = String.Concat("PerVarRevEstOverBudgEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name6 = String.Concat("ACAndBWPropRECurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name7 = String.Concat("BudgEstNexFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name8 = String.Concat("PerVarRevEstOverBudgEstNxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-
+                                                    var ReportName = Model.SelectedReportName;
                                                     <tr>
                                                         <td>
                                                             <img src="~/Images/plus.png" />
@@ -439,237 +381,42 @@
                                                             @Subs.subGroupName
                                                         </td>
                                                         <td>
-                                                            @if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name1" type="text" value="">-->
-                                        @Html.TextBox(@name1, details!=null ? Convert.ToString(details.BudEstCurrFin) : "", new { @class = "form-control", @id = @name1, @readonly="readonly"})
-                                                                    @*Html.TextBoxFor(Model=>Model.BudEstCurrFin[TableCount], new { @class = "form-control", @id = @name1, @readonly="readonly", @value = details!=null ? Convert.ToString(details.BudEstCurrFin) : ""})*@
-                                                                    @Html.ValidationMessage(@name1, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name1" type="text" value="">-->
-                                        @Html.TextBox(@name1, details!=null ? Convert.ToString(details.BudEstCurrFin) : "", new { @class = "form-control", @id = @name1})
-                                                                    @*Html.TextBoxFor(Model=>Model.BudEstCurrFin[TableCount], new { @class = "form-control", @id = @name1, @value = details!=null ? Convert.ToString(details.BudEstCurrFin) : ""})*@
-                                                                    @Html.ValidationMessage(@name1, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
+                                                            ReportName
                                                         </td>
-                                                        <td>
-                                                            @if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name2" type="text" value="">-->
-                                        @Html.TextBox(@name2, details!=null ? Convert.ToString(details.ActPrevFin) : "", new { @class = "form-control", @id = @name2, @readonly="readonly"})
-                                                                    @*Html.TextBoxFor(Model=>Model.ActPrevFin[TableCount],new { @class = "form-control", @id = @name2, @readonly="readonly", @Value = details!=null ? Convert.ToString(details.ActPrevFin) : ""})*@
-                                                                    @Html.ValidationMessage(@name2, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name2" type="text" value="">-->
-                                        @Html.TextBox(@name2, details!=null ? Convert.ToString(details.ActPrevFin) : "", new { @class = "form-control", @id = @name2})
-                                                                    @*Html.TextBoxFor(Model=>Model.ActPrevFin[TableCount],new { @class = "form-control", @id = @name2, @Value = details!=null ? Convert.ToString(details.ActPrevFin) : ""})*@
-                                                                    @Html.ValidationMessage(@name2, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                        </td>
-                                                        <td>
-                                                            @if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name3" type="text" value="">-->
-                                        @Html.TextBox(@name3, details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : "", new { @class = "form-control", @id = @name3, @readonly="readonly"})
-                                                                    @*Html.TextBoxFor(Model=>Model.ActCurrFinTill2ndQuart[TableCount], new { @class = "form-control", @id = @name3, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : ""})*@
-                                                                    @Html.ValidationMessage(@name3, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name3" type="text" value="">-->
-                                        @Html.TextBox(@name3, details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : "", new { @class = "form-control", @id = @name3})
-                                                                    @*Html.TextBoxFor(Model=>Model.ActCurrFinTill2ndQuart[TableCount], new { @class = "form-control", @id = @name3, @Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : ""})*@
-                                                                    @Html.ValidationMessage(@name3, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                        </td>
-                                                        <td>
-                                                            @if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name4" type="text" value="">-->
-                                        @Html.TextBox(@name4, details!=null ? Convert.ToString(details.RevEstCurrFin) : "", new { @class = "form-control", @id = @name4, @readonly="readonly"})
-                                                                    @*Html.TextBoxFor(Model=>Model.RevEstCurrFin[TableCount], new { @class = "form-control", @id = @name4, @readonly="readonly", @Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : ""})*@
-                                                                    @Html.ValidationMessage(@name4, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name4" type="text" value="">-->
-                                        @Html.TextBox(@name4, details!=null ? Convert.ToString(details.RevEstCurrFin) : "", new { @class = "form-control", @id = @name4})
-                                                                    @*Html.TextBoxFor(Model=>Model.RevEstCurrFin[TableCount], new { @class = "form-control", @id = @name4, @Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : ""})*@
-                                                                    @Html.ValidationMessage(@name4, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                        </td>
-                                                        <td>
-                                                            @if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name5" type="text" value="">-->
-                                        @Html.TextBox(@name5, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "", new { @class = "form-control", @id = @name5, @readonly="readonly"})
-                                                                    @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new { @class = "form-control", @id = @name5, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : ""})*@
-                                                                    @Html.ValidationMessage(@name5, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name5" type="text" value="">-->
-                                        @Html.TextBox(@name5, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "", new { @class = "form-control", @id = @name5})
-                                                                    @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new { @class = "form-control", @id = @name5, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : ""})*@
-                                                                    @Html.ValidationMessage(@name5, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                        </td>
-                                                        @if (User.IsInRole("Admin"))
+                                                        @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(Model.SelectedDivisionTypeName)))
                                                         {
-                                                            <td>
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name6" type="text" value="">-->
-                                        @Html.TextBox(@name6, details!=null ? Convert.ToString(details.ACAndBWPropRECurrFin) : "", new { @class = "form-control", @id = @name6})
-                                                                    @*Html.TextBoxFor(Model=>Model.ACAndBWPropRECurrFin[TableCount],new { @class = "form-control", @id = @name6, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRECurrFin) : "" })*@
-                                                                    @Html.ValidationMessage(@name6, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            </td>
+                                                            var result = (from a in Model.Detailss where a.DivisionID == Regions.DivisionID select a).FirstOrDefault();
+
+                                                            if (Model.SelectedReportName.Equals("Actual"))
+                                                            {
+                                                                <td>
+                                                                    @result.ActPrevFin
+                                                                </td>
+                                                            }
+                                                            else if (Model.SelectedReportName.Equals("Actual Half Year"))
+                                                            {
+                                                                <td>
+                                                                    @result.ActCurrFinTill2ndQuart
+                                                                </td>
+                                                            }
+                                                            else if (Model.SelectedReportName.Equals("Revised Estimates"))
+                                                            {
+                                                                <td>
+                                                                    @result.RevEstCurrFin
+                                                                </td>
+                                                            }
+                                                            else if (Model.SelectedReportName.Equals("Budget Estimates"))
+                                                            {
+                                                                <td>
+                                                                    @result.BudgEstNexFin
+                                                                </td>
+                                                            }
                                                         }
-                                                        <td>
-                                                            @if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name7" type="text" value="">-->
-                                        @Html.TextBox(@name7, details!=null ? Convert.ToString(details.BudgEstNexFin) : "", new { @class = "form-control", @id = @name7, @readonly="readonly"})
-                                                                    @*Html.TextBoxFor(Model=>Model.BudgEstNexFin[TableCount],new { @class = "form-control", @id = @name7, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : "" })*@
-                                                                    @Html.ValidationMessage(@name7, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name7" type="text" value="">-->
-                                        @Html.TextBox(@name7, details!=null ? Convert.ToString(details.BudgEstNexFin) : "", new { @class = "form-control", @id = @name7})
-                                                                    @*Html.TextBoxFor(Model=>Model.BudgEstNexFin[TableCount],new { @class = "form-control", @id = @name7, @Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : "" })*@
-                                                                    @Html.ValidationMessage(@name7, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                        </td>
-                                                        <td>
-                                                            @if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name8" type="text" value="">-->
-                                        @Html.TextBox(@name8, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : "", new { @class = "form-control", @id = @name8, @readonly="readonly"})
-                                                                    @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstNxtFin[TableCount],new { @class = "form-control", @id = @name8, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : ""  })*@
-                                                                    @Html.ValidationMessage(@name8, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name8" type="text" value="">-->
-                                        @Html.TextBox(@name8, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : "", new { @class = "form-control", @id = @name8})
-                                                                    @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstNxtFin[TableCount],new { @class = "form-control", @id = @name8, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : ""  })*@
-                                                                    @Html.ValidationMessage(@name8, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                        </td>
-                                                        @if (User.IsInRole("Admin"))
-                                                        {
-                                                            <td>
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name9" type="text" value="">-->
-                                        @Html.TextBox(@name9, details!=null ? Convert.ToString(details.ACAndBWPropRENxtFin) : "", new { @class = "form-control", @id = @name9})
-                                                                    @*Html.TextBoxFor(Model=>Model.ACAndBWPropRENxtFin[TableCount],new { @class = "form-control", @id = @name9, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRENxtFin) : "" })*@
-                                                                    @Html.ValidationMessage(@name9, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            </td>
-                                                        }
-                                                        <td>
-                                                            @if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name10" type="text" value="">-->
-                                        @Html.TextArea(@name10, details!=null ? Convert.ToString(details.Justification) : "", new { @class = "form-control", @id = @name10, @readonly="readonly"})
-                                                                    @*Html.TextAreaFor(Model=>Model.Justification[TableCount],new { @class = "form-control", @id = @name10, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.Justification) : "" })*@
-                                                                    @Html.ValidationMessage(@name10, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name10" type="text" value="">-->
-                                        @Html.TextArea(@name10, details!=null ? Convert.ToString(details.Justification) : "", new { @class = "form-control", @id = @name10})
-                                                                    @*Html.TextAreaFor(Model=>Model.Justification[TableCount],new { @class = "form-control", @id = @name10, @Value = details!=null ? Convert.ToString(details.Justification) : "" })*@
-                                                                    @Html.ValidationMessage(@name10, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                        </td>
                                                     </tr>
 
                                                     TableCount++;
                                                 }
-                                                <tr>
-                                                    <td>
-                                                    </td>
-                                                    <td>
-                                                        Total
-                                                    </td>
-                                                    <td>
-                                                        Total
-                                                    </td>
 
-                                                    <td>
-                                                        @SumBudEstCurrFin.ToString()
-                                                    </td>
-                                                    <td>
-                                                        @SumActPrevFin.ToString()
-                                                    </td>
-                                                    <td>
-                                                        @SumActCurrFinTill2ndQuart.ToString()
-                                                    </td>
-                                                    <td>
-                                                        @SumRevEstCurrFin.ToString()
-                                                    </td>
-                                                    <td>
-                                                        @SumPerVarRevEstOverBudgEstCurrFin.ToString()
-                                                    </td>
-                                                    @if (User.IsInRole("Admin"))
-                                                    {
-                                                        <td>
-                                                            @SumACAndBWPropRECurrFin.ToString()
-                                                        </td>
-                                                    }
-                                                    <td>
-                                                        @SumBudgEstNexFin.ToString()
-                                                    </td>
-                                                    <td>
-                                                        @SumPerVarRevEstOverBudgEstNxtFin.ToString()
-                                                    </td>
-                                                    @if (User.IsInRole("Admin"))
-                                                    {
-                                                        <td>
-                                                            @SumACAndBWPropRENxtFin.ToString()
-                                                        </td>
-                                                    }
-                                                    <td>
-                                                    </td>
-                                                </tr>
                                             </tbody>
                                         </table>
                                         @Html.Hidden("SectionName",Model.SectionName, new{@id = @identi+"-SectionName" })
@@ -692,96 +439,11 @@
             {
                 <div id="@inneridenti" class="tab-pane fade" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="false">
 
-                    <table id="@inneridenti-Totaltable" class="table">
-                        <thead>
-                            <tr>
-                                <th>
-
-                                </th>
-                                <th class="CurrentBudgetEstimates">
-
-                                </th>
-                                <th class="PreviousActualBudget">
-
-                                </th>
-                                <th class="PreviousHalfYearActualBudget">
-
-                                </th>
-                                <th class="CurrentYearRevisedEstimates">
-
-                                </th>
-                                <th class="VariationInRevisedEstimates">
-
-                                </th>
-                                @if (User.IsInRole("Admin"))
-                                {
-                                    <th class="ACBWProposalForRevisedEstimates">
-
-                                    </th>
-                                }
-                                <th class="BudgetEstimatesNextYear">
-
-                                </th>
-                                <th class="VariationInBudgetEstimates">
-
-                                </th>
-                                @if (User.IsInRole("Admin"))
-                                {
-                                    <th class="ACBWProposalForBudgetEstimates">
-
-                                    </th>
-                                }
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    @inner.SectionNo @inner.SectionName-Total
-                                </td>
-
-                                <td>
-                                    @SectionSumBudEstCurrFin.ToString()
-                                </td>
-                                <td>
-                                    @SectionSumActPrevFin.ToString()
-                                </td>
-                                <td>
-                                    @SectionSumActCurrFinTill2ndQuart.ToString()
-                                </td>
-                                <td>
-                                    @SectionSumRevEstCurrFin.ToString()
-                                </td>
-                                <td>
-                                    @SectionSumPerVarRevEstOverBudgEstCurrFin.ToString()
-                                </td>
-                                @if (User.IsInRole("Admin"))
-                                {
-                                    <td>
-                                        @SectionSumACAndBWPropRECurrFin.ToString()
-                                    </td>
-                                }
-                                <td>
-                                    @SectionSumBudgEstNexFin.ToString()
-                                </td>
-                                <td>
-                                    @SectionSumPerVarRevEstOverBudgEstNxtFin.ToString()
-                                </td>
-                                @if (User.IsInRole("Admin"))
-                                {
-                                    <td>
-                                        @SectionSumACAndBWPropRENxtFin.ToString()
-                                    </td>
-                                }
-                            </tr>
-                        </tbody>
-                    </table>
-
                     <ul id="innertab2" class="nav nav-tabs" role="tablist">
-
                         @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                         {
                             var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
+
                             if (CountHeader == 0)
                             {
                                 <li class="nav-item" role="presentation">
@@ -799,7 +461,7 @@
                         }
                     </ul>
 
-                    <div id="innertabcontent2" class="tab-content">
+                    <div id="innertabcontent1" class="tab-content">
                         <br />
                         @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                         {
@@ -833,39 +495,21 @@
                                                     <th>
                                                         SubGroupName
                                                     </th>
-                                                    <th class="CurrentBudgetEstimates"></th>
-                                                    <th class="PreviousActualBudget"></th>
-                                                    <th class="PreviousHalfYearActualBudget"> </th>
-                                                    <th class="CurrentYearRevisedEstimates"></th>
-                                                    <th class="VariationInRevisedEstimates"></th>
-                                                    @if (User.IsInRole("Admin"))
+                                                    <th>
+                                                        Report Type
+                                                    </th>
+                                                    @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(Model.SelectedDivisionTypeName)))
                                                     {
-                                                        <th class="ACBWProposalForRevisedEstimates"></th>
+                                                        <th>@Regions.DivisionName</th>
                                                     }
-                                                    <th class="BudgetEstimatesNextYear"></th>
-                                                    <th class="VariationInBudgetEstimates"></th>
-                                                    @if (User.IsInRole("Admin"))
-                                                    {
-                                                        <th class="ACBWProposalForBudgetEstimates"></th>
-                                                    }
-                                                    <th class="Justification"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+
                                                 @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                                 {
                                                     var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
-
-                                                    var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name3 = String.Concat("ActCurrFinTill2ndQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name4 = String.Concat("RevEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name5 = String.Concat("PerVarRevEstOverBudgEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name6 = String.Concat("ACAndBWPropRECurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name7 = String.Concat("BudgEstNexFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name8 = String.Concat("PerVarRevEstOverBudgEstNxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var ReportName = Model.SelectedReportName;
 
                                                     <tr>
                                                         <td>
@@ -893,252 +537,44 @@
                                                             @Subs.subGroupName
                                                         </td>
                                                         <td>
-                                                            @if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name1" type="text" value="">-->
-                                        @Html.TextBox(@name1, details!=null ? Convert.ToString(details.BudEstCurrFin) : "", new { @class = "form-control", @id = @name1, @readonly="readonly"})
-                                                                    @*@Html.EditorFor(Budgets.BudEstCurrFin, htmlAttributes : new { @class = "form-control", @id = @name1 })*@
-                                                                    @*Html.TextBoxFor(Model=>Model.BudEstCurrFin[TableCount],new { @class = "form-control", @id = @name1, @readonly="readonly",@value = details!=null ? Convert.ToString(details.BudEstCurrFin) : "" })*@
-                                                                    @Html.ValidationMessage(@name1, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name1" type="text" value="">-->
-                                        @Html.TextBox(@name1, details!=null ? Convert.ToString(details.BudEstCurrFin) : "", new { @class = "form-control", @id = @name1})
-                                                                    @*@Html.EditorFor(Budgets.BudEstCurrFin, htmlAttributes : new { @class = "form-control", @id = @name1 })*@
-                                                                    @*Html.TextBoxFor(@name1,new { @class = "form-control", @id = @name1, @value = details!=null ? Convert.ToString(details.BudEstCurrFin) : "" })*@
-
-                                                                    @Html.ValidationMessage(@name1, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
+                                                            ReportName
                                                         </td>
-                                                        <td>
-                                                            @if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name2" type="text" value="">-->
-                                        @Html.TextBox(@name2, details!=null ? Convert.ToString(details.ActPrevFin) : "", new { @class = "form-control", @id = @name2,@readonly="readonly"})
-                                                                    @*@Html.EditorFor(model => model.ActPrevFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name2 }})*@
-                                                                    @*Html.TextBoxFor(Model=>Model.ActPrevFin[TableCount],new { @class = "form-control", @id = @name2, @readonly="readonly", @Value = details!=null ? Convert.ToString(details.ActPrevFin) : "" })*@
-                                                                    @Html.ValidationMessage(@name2, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name2" type="text" value="">-->
-                                        @Html.TextBox(@name2, details!=null ? Convert.ToString(details.ActPrevFin) : "", new { @class = "form-control", @id = @name2})
-                                                                    @*@Html.EditorFor(model => model.ActPrevFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name2 }})*@
-                                                                    @*Html.TextBoxFor(Model=>Model.ActPrevFin[TableCount],new { @class = "form-control", @id = @name2, @Value = details!=null ? Convert.ToString(details.ActPrevFin) : "" })*@
-                                                                    @Html.ValidationMessage(@name2, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                        </td>
-                                                        <td>
-                                                            @if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name3" type="text" value="">-->
-                                        @Html.TextBox(@name3, details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : "", new { @class = "form-control", @id = @name3, @readonly="readonly"})
-                                                                    @*Html.TextBoxFor(Model=>Model.ActCurrFinTill2ndQuart[TableCount],new { @class = "form-control", @id = @name3, @readonly="readonly", @Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : "" })*@
-                                                                    @Html.ValidationMessage(@name3, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name3" type="text" value="">-->
-                                        @Html.TextBox(@name3, details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : "", new { @class = "form-control", @id = @name3})
-                                                                    @*Html.TextBoxFor(Model=>Model.ActCurrFinTill2ndQuart[TableCount],new { @class = "form-control", @id = @name3, @Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : "" })*@
-                                                                    @Html.ValidationMessage(@name3, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                        </td>
-                                                        <td>
-                                                            @if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name4" type="text" value="">-->
-                                        @Html.TextBox(@name4, details!=null ? Convert.ToString(details.RevEstCurrFin) : "", new { @class = "form-control", @id = @name4, @readonly="readonly"})
-                                                                    @*Html.TextBoxFor(Model=>Model.RevEstCurrFin[TableCount],new { @class = "form-control", @id = @name4, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : "" })*@
-                                                                    @Html.ValidationMessage(@name4, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name4" type="text" value="">-->
-                                        @Html.TextBox(@name4, details!=null ? Convert.ToString(details.RevEstCurrFin) : "", new { @class = "form-control", @id = @name4})
-                                                                    @*Html.TextBoxFor(Model=>Model.RevEstCurrFin[TableCount],new { @class = "form-control", @id = @name4, @Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : "" })*@
-                                                                    @Html.ValidationMessage(@name4, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                        </td>
-                                                        <td>
-                                                            @if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name5" type="text" value="">-->
-                                        @Html.TextBox(@name5, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "", new { @class = "form-control", @id = @name5, @readonly="readonly"})
-                                                                    @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new { @class = "form-control", @id = @name5, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "" })*@
-                                                                    @Html.ValidationMessage(@name5, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name5" type="text" value="">-->
-                                        @Html.TextBox(@name5, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "", new { @class = "form-control", @id = @name5})
-                                                                    @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new { @class = "form-control", @id = @name5, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "" })*@
-                                                                    @Html.ValidationMessage(@name5, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                        </td>
-                                                        @if (User.IsInRole("Admin"))
+                                                        @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(Model.SelectedDivisionTypeName)))
                                                         {
-                                                            <td>
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name6" type="text" value="">-->
-                                        @Html.TextBox(@name6, details!=null ? Convert.ToString(details.ACAndBWPropRECurrFin) : "", new { @class = "form-control", @id = @name6})
-                                                                    @*Html.TextBoxFor(Model=>Model.ACAndBWPropRECurrFin[TableCount],new { @class = "form-control", @id = @name6, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRECurrFin) : ""})*@
-                                                                    @Html.ValidationMessage(@name6, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            </td>
-                                                        }
-                                                        <td>
-                                                            @if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name7" type="text" value="">-->
-                                        @Html.TextBox(@name7, details!=null ? Convert.ToString(details.BudgEstNexFin) : "", new { @class = "form-control", @id = @name7, @readonly="readonly"})
-                                                                    @*Html.TextBoxFor(Model=>Model.BudgEstNexFin[TableCount],new { @class = "form-control", @id = @name7, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : ""})*@
-                                                                    @Html.ValidationMessage(@name7, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name7" type="text" value="">-->
-                                        @Html.TextBox(@name7, details!=null ? Convert.ToString(details.BudgEstNexFin) : "", new { @class = "form-control", @id = @name7})
-                                                                    @*Html.TextBoxFor(Model=>Model.BudgEstNexFin[TableCount],new { @class = "form-control", @id = @name7, @Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : ""})*@
-                                                                    @Html.ValidationMessage(@name7, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                        </td>
-                                                        <td>
-                                                            @if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name8" type="text" value="">-->
-                                        @Html.TextBox(@name8, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : "", new { @class = "form-control", @id = @name8, @readonly="readonly"})
-                                                                    @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstNxtFin[TableCount],new { @class = "form-control", @id = @name8, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : ""})*@
-                                                                    @Html.ValidationMessage(@name8, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name8" type="text" value="">-->
-                                        @Html.TextBox(@name8, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : "", new { @class = "form-control", @id = @name8})
-                                                                    @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstNxtFin[TableCount],new { @class = "form-control", @id = @name8, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : ""})*@
-                                                                    @Html.ValidationMessage(@name8, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                        </td>
-                                                        @if (User.IsInRole("Admin"))
-                                                        {
-                                                            <td>
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name9" type="text" value="">-->
-                                        @Html.TextBox(@name9, details!=null ? Convert.ToString(details.ACAndBWPropRENxtFin) : "", new { @class = "form-control", @id = @name9})
-                                                                    @*Html.TextBoxFor(Model=>Model.ACAndBWPropRENxtFin[TableCount],new { @class = "form-control", @id = @name9, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRENxtFin) : "" })*@
-                                                                    @Html.ValidationMessage(@name9, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            </td>
-                                                        }
-                                                        <td>
-                                                            @if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name10" type="text" value="">-->
-                                        @Html.TextArea(@name10, details!=null ? Convert.ToString(details.Justification) : "", new { @class = "form-control", @id = @name10, @readonly="readonly"})
-                                                                    @*Html.TextAreaFor(Model=>Model.Justification[TableCount],new { @class = "form-control", @id = @name10, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.Justification) : ""  })*@
-                                                                    @Html.ValidationMessage(@name10, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name10" type="text" value="">-->
-                                        @Html.TextArea(@name10, details!=null ? Convert.ToString(details.Justification) : "", new { @class = "form-control", @id = @name10})
-                                                                    @*Html.TextAreaFor(Model=>Model.Justification[TableCount],new { @class = "form-control", @id = @name10, @Value = details!=null ? Convert.ToString(details.Justification) : ""  })*@
-                                                                    @Html.ValidationMessage(@name10, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                        </td>
+                                                            var result = (from a in Model.Detailss where a.DivisionID == Regions.DivisionID select a).FirstOrDefault();
 
+                                                            if (Model.SelectedReportName.Equals("Actual"))
+                                                            {
+                                                                <td>
+                                                                    @result.ActPrevFin
+                                                                </td>
+                                                            }
+                                                            else if (Model.SelectedReportName.Equals("Actual Half Year"))
+                                                            {
+                                                                <td>
+                                                                    @result.ActCurrFinTill2ndQuart
+                                                                </td>
+                                                            }
+                                                            else if (Model.SelectedReportName.Equals("Revised Estimates"))
+                                                            {
+                                                                <td>
+                                                                    @result.RevEstCurrFin
+                                                                </td>
+                                                            }
+                                                            else if (Model.SelectedReportName.Equals("Budget Estimates"))
+                                                            {
+                                                                <td>
+                                                                    @result.BudgEstNexFin
+                                                                </td>
+                                                            }
+                                                        }
                                                     </tr>
-
 
                                                     TableCount++;
                                                 }
 
-                                                <tr>
-                                                    <td>
-                                                    </td>
-                                                    <td>
-                                                        Total
-                                                    </td>
-                                                    <td>
-                                                        Total
-                                                    </td>
-
-                                                    <td>
-                                                        @SumBudEstCurrFin.ToString()
-                                                    </td>
-                                                    <td>
-                                                        @SumActPrevFin.ToString()
-                                                    </td>
-                                                    <td>
-                                                        @SumActCurrFinTill2ndQuart.ToString()
-                                                    </td>
-                                                    <td>
-                                                        @SumRevEstCurrFin.ToString()
-                                                    </td>
-                                                    <td>
-                                                        @SumPerVarRevEstOverBudgEstCurrFin.ToString()
-                                                    </td>
-                                                    @if (User.IsInRole("Admin"))
-                                                    {
-                                                        <td>
-                                                            @SumACAndBWPropRECurrFin.ToString()
-                                                        </td>
-                                                    }
-                                                    <td>
-                                                        @SumBudgEstNexFin.ToString()
-                                                    </td>
-                                                    <td>
-                                                        @SumPerVarRevEstOverBudgEstNxtFin.ToString())
-                                                    </td>
-                                                    @if (User.IsInRole("Admin"))
-                                                    {
-                                                        <td>
-                                                            @SumACAndBWPropRENxtFin.ToString()
-                                                        </td>
-                                                    }
-                                                    <td>
-                                                    </td>
-                                                </tr>
                                             </tbody>
                                         </table>
-                                        @Html.Hidden("SectionName",Model.SectionName, new{@id = @identi+"-SectionName" })
-                                        @Html.Hidden("GroupName",Model.GroupName, new{@id = @identi+"-GroupName" })
-                                        @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
-                                        @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })
-                                        <input id="@Submit" class="Submit" type="submit" style="align-self:center">
                                     }
                                 </div>
 
@@ -1160,40 +596,21 @@
                                                     <th>
                                                         SubGroupName
                                                     </th>
-                                                    <th class="CurrentBudgetEstimates"></th>
-                                                    <th class="PreviousActualBudget"></th>
-                                                    <th class="PreviousHalfYearActualBudget"></th>
-                                                    <th class="CurrentYearRevisedEstimates"></th>
-                                                    <th class="VariationInRevisedEstimates"></th>
-                                                    @if (User.IsInRole("Admin"))
+                                                    <th>
+                                                        Report Type
+                                                    </th>
+                                                    @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(Model.SelectedDivisionTypeName)))
                                                     {
-                                                        <th class="ACBWProposalForRevisedEstimates"></th>
+                                                        <th>@Regions.DivisionName</th>
                                                     }
-                                                    <th class="BudgetEstimatesNextYear"></th>
-                                                    <th class="VariationInBudgetEstimates"></th>
-                                                    @if (User.IsInRole("Admin"))
-                                                    {
-                                                        <th class="ACBWProposalForBudgetEstimates"></th>
-                                                    }
-                                                    <th class="Justification"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+
                                                 @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                                 {
                                                     var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
-
-                                                    var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name3 = String.Concat("ActCurrFinTill2ndQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name4 = String.Concat("RevEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name5 = String.Concat("PerVarRevEstOverBudgEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name6 = String.Concat("ACAndBWPropRECurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name7 = String.Concat("BudgEstNexFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name8 = String.Concat("PerVarRevEstOverBudgEstNxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-
+                                                    var ReportName = Model.SelectedReportName;
                                                     <tr>
                                                         <td>
                                                             <img src="~/Images/plus.png" />
@@ -1220,241 +637,46 @@
                                                             @Subs.subGroupName
                                                         </td>
                                                         <td>
-                                                            @if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name1" type="text" value="">-->
-                                        @Html.TextBox(@name1, details!=null ? Convert.ToString(details.BudEstCurrFin) : "", new { @class = "form-control", @id = @name1, @readonly = "readonly" })
-                                                                    @*Html.TextBoxFor(Model => Model.BudEstCurrFin[TableCount], new { @class = "form-control", @id = @name1, @readonly="readonly",@value = details!=null ? Convert.ToString(details.BudEstCurrFin) : ""})*@
-                                                                    @Html.ValidationMessage(@name1, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name1" type="text" value="">-->
-                                        @Html.TextBox(@name1, details!=null ? Convert.ToString(details.BudEstCurrFin) : "", new { @class = "form-control", @id = @name1})
-                                                                    @*Html.TextBoxFor(Model => Model.BudEstCurrFin[TableCount], new { @class = "form-control", @id = @name1, @value = details!=null ? Convert.ToString(details.BudEstCurrFin) : ""  })*@
-                                                                    @Html.ValidationMessage(@name1, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
+                                                            ReportName
                                                         </td>
-                                                        <td>
-                                                            @if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name2" type="text" value="">-->
-                                        @Html.TextBox(@name2, details!=null ? Convert.ToString(details.ActPrevFin) : "", new { @class = "form-control", @id = @name2, @readonly = "readonly" })
-                                                                    @*Html.TextBoxFor(Model => Model.ActPrevFin[TableCount], new { @class = "form-control", @id = @name2, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.ActPrevFin) : ""  })*@
-                                                                    @Html.ValidationMessage(@name2, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name2" type="text" value="">-->
-                                        @Html.TextBox(@name2, details!=null ? Convert.ToString(details.ActPrevFin) : "", new { @class = "form-control", @id = @name2})
-                                                                    @*Html.TextBoxFor(Model => Model.ActPrevFin[TableCount], new { @class = "form-control", @id = @name2, @Value = details!=null ? Convert.ToString(details.ActPrevFin) : ""  })*@
-                                                                    @Html.ValidationMessage(@name2, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                        </td>
-                                                        <td>
-                                                            @if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name3" type="text" value="">-->
-                                        @Html.TextBox(@name3, details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : "", new { @class = "form-control", @id = @name3, @readonly = "readonly" })
-                                                                    @*Html.TextBoxFor(Model => Model.ActCurrFinTill2ndQuart[TableCount],new { @class = "form-control", @id = @name3, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : ""   })*@
-                                                                    @Html.ValidationMessage(@name3, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name3" type="text" value="">-->
-                                        @Html.TextBox(@name3, details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : "", new { @class = "form-control", @id = @name3})
-                                                                    @*Html.TextBoxFor(Model => Model.ActCurrFinTill2ndQuart[TableCount],new { @class = "form-control", @id = @name3, @Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : ""   })*@
-                                                                    @Html.ValidationMessage(@name3, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                        </td>
-                                                        <td>
-                                                            @if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name4" type="text" value="">-->
-                                        @Html.TextBox(@name4, details!=null ? Convert.ToString(details.RevEstCurrFin) : "", new { @class = "form-control", @id = @name4,@readonly="readonly"})
-                                                                    @*Html.TextBoxFor(Model => Model.RevEstCurrFin[TableCount],new { @class = "form-control", @id = @name4, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : ""  })*@
-                                                                    @Html.ValidationMessage(@name4, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name4" type="text" value="">-->
-                                        @Html.TextBox(@name4, details!=null ? Convert.ToString(details.RevEstCurrFin) : "", new { @class = "form-control", @id = @name4})
-                                                                    @*Html.TextBoxFor(Model => Model.RevEstCurrFin[TableCount],new { @class = "form-control", @id = @name4, @Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : ""  })*@
-                                                                    @Html.ValidationMessage(@name4, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                        </td>
-                                                        <td>
-                                                            @if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name5" type="text" value="">-->
-                                        @Html.TextBox(@name5, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "", new { @class = "form-control", @id = @name5, @readonly="readonly"})
-                                                                    @*Html.TextBoxFor(Model => Model.PerVarRevEstOverBudgEstCurrFin[TableCount],new { @class = "form-control", @id = @name5, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : ""  })*@
-                                                                    @Html.ValidationMessage(@name5, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name5" type="text" value="">-->
-                                        @Html.TextBox(@name5, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "", new { @class = "form-control", @id = @name5})
-                                                                    @*Html.TextBoxFor(Model => Model.PerVarRevEstOverBudgEstCurrFin[TableCount],new { @class = "form-control", @id = @name5, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : ""  })*@
-                                                                    @Html.ValidationMessage(@name5, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                        </td>
-                                                        @if (User.IsInRole("Admin"))
+                                                        @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(Model.SelectedDivisionTypeName)))
                                                         {
-                                                            <td>
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name6" type="text" value="">-->
-                                        @Html.TextBox(@name6, details!=null ? Convert.ToString(details.ACAndBWPropRECurrFin) : "", new { @class = "form-control", @id = @name6})
-                                                                    @*Html.TextBoxFor(Model => Model.ACAndBWPropRECurrFin[TableCount], new { @class = "form-control", @id = @name6, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRECurrFin) : ""  })*@
-                                                                    @Html.ValidationMessage(@name6, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            </td>
+                                                            var result = (from a in Model.Detailss where a.DivisionID == Regions.DivisionID select a).FirstOrDefault();
+
+                                                            if (Model.SelectedReportName.Equals("Actual"))
+                                                            {
+                                                                <td>
+                                                                    @result.ActPrevFin
+                                                                </td>
+                                                            }
+                                                            else if (Model.SelectedReportName.Equals("Actual Half Year"))
+                                                            {
+                                                                <td>
+                                                                    @result.ActCurrFinTill2ndQuart
+                                                                </td>
+                                                            }
+                                                            else if (Model.SelectedReportName.Equals("Revised Estimates"))
+                                                            {
+                                                                <td>
+                                                                    @result.RevEstCurrFin
+                                                                </td>
+                                                            }
+                                                            else if (Model.SelectedReportName.Equals("Budget Estimates"))
+                                                            {
+                                                                <td>
+                                                                    @result.BudgEstNexFin
+                                                                </td>
+                                                            }
                                                         }
-                                                        <td>
-                                                            @if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name7" type="text" value="">-->
-                                        @Html.TextBox(@name7, details!=null ? Convert.ToString(details.BudgEstNexFin) : "", new { @class = "form-control", @id = @name7, @readonly="readonly"})
-                                                                    @*Html.TextBoxFor(Model => Model.BudgEstNexFin[TableCount], new { @class = "form-control", @id = @name7, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : ""  })*@
-                                                                    @Html.ValidationMessage(@name7, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name7" type="text" value="">-->
-                                        @Html.TextBox(@name7, details!=null ? Convert.ToString(details.BudgEstNexFin) : "", new { @class = "form-control", @id = @name7})
-                                                                    @*Html.TextBoxFor(Model => Model.BudgEstNexFin[TableCount], new { @class = "form-control", @id = @name7, @Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : ""  })*@
-                                                                    @Html.ValidationMessage(@name7, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                        </td>
-                                                        <td>
-                                                            @if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name8" type="text" value="">-->
-                                        @Html.TextBox(@name8, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : "", new { @class = "form-control", @id = @name8, @readonly="readonly"})
-                                                                    @*Html.TextBoxFor(Model => Model.PerVarRevEstOverBudgEstNxtFin[TableCount], new { @class = "form-control", @id = @name8, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : ""  })*@
-                                                                    @Html.ValidationMessage(@name8, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name8" type="text" value="">-->
-                                        @Html.TextBox(@name8, details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : "", new { @class = "form-control", @id = @name8})
-                                                                    @*Html.TextBoxFor(Model => Model.PerVarRevEstOverBudgEstNxtFin[TableCount], new { @class = "form-control", @id = @name8, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : ""  })*@
-                                                                    @Html.ValidationMessage(@name8, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                        </td>
-                                                        @if (User.IsInRole("Admin"))
-                                                        {
-                                                            <td>
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name9" type="text" value="">-->
-                                        @Html.TextBox(@name9, details!=null ? Convert.ToString(details.ACAndBWPropRENxtFin) : "", new { @class = "form-control", @id = @name9})
-                                                                    @*Html.TextBoxFor(Model => Model.ACAndBWPropRENxtFin[TableCount], new { @class = "form-control", @id = @name9, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRENxtFin) : ""  })*@
-                                                                    @Html.ValidationMessage(@name9, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            </td>
-                                                        }
-                                                        <td>
-                                                            @if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name10" type="text" value="">-->
-                                        @Html.TextArea(@name10, details!=null ? Convert.ToString(details.Justification) : "", new { @class = "form-control", @id = @name10, @readonly="readonly"})
-                                                                    @*Html.TextAreaFor(Model => Model.Justification[TableCount], new { @class = "form-control", @id = @name10, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.Justification) : "" })*@
-                                                                    @Html.ValidationMessage(@name10, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    <!-- <input id="@name10" type="text" value="">-->
-                                        @Html.TextArea(@name10, details!=null ? Convert.ToString(details.Justification) : "", new { @class = "form-control", @id = @name10})
-                                                                    @*Html.TextAreaFor(Model => Model.Justification[TableCount], new { @class = "form-control", @id = @name10, @Value = details!=null ? Convert.ToString(details.Justification) : "" })*@
-                                                                    @Html.ValidationMessage(@name10, "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                        </td>
                                                     </tr>
 
                                                     TableCount++;
                                                 }
 
-                                                <tr>
-                                                    <td>
-                                                    </td>
-                                                    <td>
-                                                        Total
-                                                    </td>
-                                                    <td>
-                                                        Total
-                                                    </td>
-
-                                                    <td>
-                                                        @SumBudEstCurrFin.ToString()
-                                                    </td>
-                                                    <td>
-                                                        @SumActPrevFin.ToString()
-                                                    </td>
-                                                    <td>
-                                                        @SumActCurrFinTill2ndQuart.ToString()
-                                                    <td>
-                                                            @SumRevEstCurrFin.ToString()
-                                                    </td>
-                                                    <td>
-                                                            @SumPerVarRevEstOverBudgEstCurrFin.ToString()
-                                                    </td>
-                                                        @if (User.IsInRole("Admin"))
-                                                        {
-                                                        <td>
-                                                                @SumACAndBWPropRECurrFin.ToString()
-                                                        </td>
-                                                        }
-                                                    <td>
-                                                            @SumBudgEstNexFin.ToString()
-                                                    </td>
-                                                    <td>
-                                                            @SumPerVarRevEstOverBudgEstNxtFin.ToString()
-                                                    </td>
-                                                        @if (User.IsInRole("Admin"))
-                                                        {
-                                                        <td>
-                                                                @SumACAndBWPropRENxtFin.ToString()
-                                                        </td>
-                                                        }
-                                                    <td>
-                                                    </td>
-                                                </tr>
                                             </tbody>
                                         </table>
-                                        @Html.Hidden("SectionName",Model.SectionName, new{@id = @identi+"-SectionName"})
-                                        @Html.Hidden("GroupName",Model.GroupName, new{@id = @identi+"-GroupName"})
+                                        @Html.Hidden("SectionName",Model.SectionName, new{@id = @identi+"-SectionName" })
+                                        @Html.Hidden("GroupName",Model.GroupName, new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })
                                         <input id="@Submit" class="Submit" type="submit" style="align-self:center">
@@ -1464,6 +686,7 @@
                             }
                             CounterBody++;
                         }
+
                     </div>
                 </div>
             }
@@ -1603,20 +826,22 @@
             alert("Yes");
 
             var academicyear = $("#SelectedAcademicYear").val();
-            //alert('Inside Doc Ready module');
+            var DivisionTypeName = $("#SelectedDivisionTypeName").val();
+            alert(DivisionTypeName);
+            var ReportName = $("#SelectedReportName").val();
             var year = academicyear.split('-');
             //alert(year[1]);
 
-            $(".CurrentBudgetEstimates").text('Budget Estimates ' + $("#SelectedAcademicYear").val());
-            $(".PreviousActualBudget").text('Actual ' + (Number.parseInt(year[0]) - Number.parseInt(1)) + '-' + Number.parseInt(year[0]));
-            $(".PreviousHalfYearActualBudget").text('Actual upto 30.09 ' + (Number.parseInt(year[0]) - Number.parseInt(1)));
-            $(".CurrentYearRevisedEstimates").text('Revised Estimates ' + $("#SelectedAcademicYear").val());
-            $(".VariationInRevisedEstimates").text('% Variation in RE ' + $("#SelectedAcademicYear").val() + ' over the BE ' + (Number.parseInt(year[0]) - Number.parseInt(1)) + '-' + Number.parseInt(year[0]));
-            $(".ACBWProposalForRevisedEstimates").text('AC & BW Proposal for RE ' + $("#SelectedAcademicYear").val());
-            $(".BudgetEstimatesNextYear").text('Budget Estimates ' + Number.parseInt(year[1]) + '-' + (Number.parseInt(year[1]) + Number.parseInt(1)));
-            $(".VariationInBudgetEstimates").text('% Variation in BE in ' + Number.parseInt(year[1]) + '-' + (Number.parseInt(year[1]) + Number.parseInt(1)) + 'over the RE ' + $("#SelectedAcademicYear").val());
-            $(".ACBWProposalForBudgetEstimates").text('AC & BW Proposal for BE ' + Number.parseInt(year[1]) + '-' + (Number.parseInt(year[1]) + Number.parseInt(1)));
-            $(".Justification").text('Justification');
+            //$(".CurrentBudgetEstimates").text('Budget Estimates ' + $("#SelectedAcademicYear").val());
+            //$(".PreviousActualBudget").text('Actual ' + (Number.parseInt(year[0]) - Number.parseInt(1)) + '-' + Number.parseInt(year[0]));
+            //$(".PreviousHalfYearActualBudget").text('Actual upto 30.09 ' + (Number.parseInt(year[0]) - Number.parseInt(1)));
+            //$(".CurrentYearRevisedEstimates").text('Revised Estimates ' + $("#SelectedAcademicYear").val());
+            //$(".VariationInRevisedEstimates").text('% Variation in RE ' + $("#SelectedAcademicYear").val() + ' over the BE ' + (Number.parseInt(year[0]) - Number.parseInt(1)) + '-' + Number.parseInt(year[0]));
+            //$(".ACBWProposalForRevisedEstimates").text('AC & BW Proposal for RE ' + $("#SelectedAcademicYear").val());
+            //$(".BudgetEstimatesNextYear").text('Budget Estimates ' + Number.parseInt(year[1]) + '-' + (Number.parseInt(year[1]) + Number.parseInt(1)));
+            //$(".VariationInBudgetEstimates").text('% Variation in BE in ' + Number.parseInt(year[1]) + '-' + (Number.parseInt(year[1]) + Number.parseInt(1)) + 'over the RE ' + $("#SelectedAcademicYear").val());
+            //$(".ACBWProposalForBudgetEstimates").text('AC & BW Proposal for BE ' + Number.parseInt(year[1]) + '-' + (Number.parseInt(year[1]) + Number.parseInt(1)));
+            //$(".Justification").text('Justification');
         }
     </script>
 }
