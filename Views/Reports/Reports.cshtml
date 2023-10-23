@@ -28,17 +28,17 @@
             <tr>
                 <td>
                     @Html.DropDownListFor(m => m.SelectedReportID, Model.ReportNames,"--Please select any Report--", new { @class = "form-control", @id="Reports" })
-                    @Html.Hidden("SelectedReportName",Model.SelectedReportName)
+                    @Html.HiddenFor(m => m.SelectedReportName, new {id="SelectedReportName"})
                     @Html.ValidationMessageFor(Model => Model.SelectedReportID, "", new { @class = "text-danger" })
                 </td>
                 <td>
                     @Html.DropDownListFor(m => m.SelectedAcademicYearID, Model.AcademicYears,"--Please select any Academic Year--",new { @class = "form-control", @id="AcademicYear" })
-                    @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear)
+                    @Html.HiddenFor(m => m.SelectedAcademicYear, new {id="SelectedAcademicYear"}) 
                     @Html.ValidationMessageFor(Model => Model.SelectedAcademicYearID, "", new { @class = "text-danger" })
                 </td>
                 <td>
                     @Html.DropDownListFor(m => m.SelectedDivisionTypeID, Model.DivisionTypeNames,"--Please select any DivisionType Name--",new { @class = "form-control", @id="DivisionType" })
-                    @Html.Hidden("SelectedDivisionTypeName", Model.SelectedDivisionTypeName)
+                    @Html.HiddenFor(m => m.SelectedDivisionTypeName, new {id="SelectedDivisionTypeName"})
                     @Html.ValidationMessageFor(Model => Model.SelectedDivisionTypeID, "", new { @class = "text-danger" })
                 </td>
             </tr>
@@ -253,7 +253,7 @@
                                                 @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                                 {
                                                     var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
-                                                    var ReportName = Model.SelectedReportName;
+                                                    var ReportName = Model.ReportNames.Select(m => new SelectListItem { Selected = true });
 
                                                     <tr>
                                                         <td>
@@ -281,7 +281,7 @@
                                                             @Subs.subGroupName
                                                         </td>
                                                         <td>
-                                                            ReportName
+                                                            @ReportName
                                                         </td>
                                                         @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(Model.SelectedDivisionTypeName)))
                                                         {
@@ -354,7 +354,7 @@
                                                 @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                                 {
                                                     var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
-                                                    var ReportName = Model.SelectedReportName;
+                                                    var ReportName = (from a in Model.ReportNames where a.Selected.Equals("true") select a.Text).ToString();
                                                     <tr>
                                                         <td>
                                                             <img src="~/Images/plus.png" />
@@ -381,7 +381,7 @@
                                                             @Subs.subGroupName
                                                         </td>
                                                         <td>
-                                                            ReportName
+                                                            @ReportName
                                                         </td>
                                                         @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(Model.SelectedDivisionTypeName)))
                                                         {
@@ -423,7 +423,7 @@
                                         @Html.Hidden("GroupName",Model.GroupName, new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })
-                                        <input id="@Submit" class="Submit" type="submit" style="align-self:center">
+                                        //<input id="@Submit" class="Submit" type="submit" style="align-self:center">
                                     }
                                 </div>
 
@@ -509,7 +509,7 @@
                                                 @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                                 {
                                                     var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
-                                                    var ReportName = Model.SelectedReportName;
+                                                    var ReportName = (from a in Model.ReportNames where a.Selected.Equals("true") select a.Text).ToString();
 
                                                     <tr>
                                                         <td>
@@ -537,7 +537,7 @@
                                                             @Subs.subGroupName
                                                         </td>
                                                         <td>
-                                                            ReportName
+                                                            @ReportName
                                                         </td>
                                                         @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(Model.SelectedDivisionTypeName)))
                                                         {
@@ -610,7 +610,7 @@
                                                 @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                                 {
                                                     var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
-                                                    var ReportName = Model.SelectedReportName;
+                                                    var ReportName = (from a in Model.ReportNames where a.Selected.Equals("true") select a.Text).ToString();
                                                     <tr>
                                                         <td>
                                                             <img src="~/Images/plus.png" />
@@ -637,7 +637,7 @@
                                                             @Subs.subGroupName
                                                         </td>
                                                         <td>
-                                                            ReportName
+                                                            @ReportName
                                                         </td>
                                                         @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(Model.SelectedDivisionTypeName)))
                                                         {
@@ -679,7 +679,7 @@
                                         @Html.Hidden("GroupName",Model.GroupName, new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })
-                                        <input id="@Submit" class="Submit" type="submit" style="align-self:center">
+                                        //<input id="@Submit" class="Submit" type="submit" style="align-self:center">
                                     }
                                 </div>
 
@@ -765,65 +765,15 @@
                     }
                 );
 
-                $('body').on('click', ".Submit",
-                    function () {
-                        var sectionnoid = $('#outerTab li button.active').attr('id');
-                        //alert(sectionnoid);
-                        var section = sectionnoid.split('-');
-                        //alert(section[0]);
-
-
-                        var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
-                        //alert(groupnoid);
-                        var group = groupnoid.split('-');
-                        //alert(group[0]);
-
-                        var hiddensectionid = group[0].concat('-SectionName');
-                        //alert(hiddensectionid);
-                        var hiddengroupid = group[0].concat('-GroupName');
-                        //alert(hiddengroupid);
-
-                        var hiddenSelectedYear = group[0].concat('-SelectedAcademicYear');
-                        //alert(hiddenSelectedYear);
-
-                        var hiddenSelectedDivision = group[0].concat('-SelectedDivisionName');
-                        //alert(hiddenSelectedDivision);
-
-                        //$("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
-
-                        //var academicyear = $("#SelectedAcademicYear").val();
-
-                        //$("#SelectedDivisionName").val($("#Division option:selected").text().trim());
-
-                        //var divisionname = $("#SelectedDivisionName").val();
-
-                        $('#' + hiddenSelectedYear).val($("#AcademicYear option:selected").text().trim());
-                        $('#' + hiddensectionid).val($('#' + sectionnoid).text());
-                        $('#' + hiddengroupid).val($('#' + groupnoid).text());
-                        $('#' + hiddenSelectedDivision).val($("#Division option:selected").text().trim());
-
-                        var subgroupcount = $('#' + group[0] + ' #outertable tbody').closest('tr').length;
-                        //alert(subgroupcount);
-
-                        for (i = 0; i < subgroupcount; i++) {
-                            //var subgroupnorow = $('#' + group[0] + ' #outertable tbody').closest('tr').text();
-                            // alert(subgroupnorow);
-                            //var subgroupno = subgroupnorow.eq(2).text();
-                            //alert(subgroupno);
-                        }
-
-                        //alert(subtext);
-                    });
-
             });
 
         function onceDocReady() {
             $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
-            alert("Yes");
+            alert($("#SelectedAcademicYear").val());
             $("#SelectedDivisionTypeName").val($("#DivisionType option:selected").text().trim());
-            alert("Yes");
+            alert($("#SelectedDivisionTypeName").val());
             $("#SelectedReportName").val($("#Reports option:selected").text().trim());
-            alert("Yes");
+            alert($("#SelectedReportName").val());
 
             var academicyear = $("#SelectedAcademicYear").val();
             var DivisionTypeName = $("#SelectedDivisionTypeName").val();
