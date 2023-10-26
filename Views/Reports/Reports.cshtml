@@ -26,17 +26,17 @@
 
         <table border="0" cellpadding="5" cellspacing="0">
             <tr>
-                <td>
+                <td class="w-20">
                     @Html.DropDownListFor(m => m.SelectedReportID, Model.ReportNames,"--Please select any Report--", new { @class = "form-control", @id="Reports" })
                     @Html.HiddenFor(m => m.SelectedReportName, new {id="SelectedReportName"})
                     @Html.ValidationMessageFor(Model => Model.SelectedReportID, "", new { @class = "text-danger" })
                 </td>
-                <td>
+                <td class="w-20">
                     @Html.DropDownListFor(m => m.SelectedAcademicYearID, Model.AcademicYears,"--Please select any Academic Year--",new { @class = "form-control", @id="AcademicYear" })
                     @Html.HiddenFor(m => m.SelectedAcademicYear, new {id="SelectedAcademicYear"}) 
                     @Html.ValidationMessageFor(Model => Model.SelectedAcademicYearID, "", new { @class = "text-danger" })
                 </td>
-                <td>
+                <td class="w-20">
                     @Html.DropDownListFor(m => m.SelectedDivisionTypeID, Model.DivisionTypeNames,"--Please select any DivisionType Name--",new { @class = "form-control", @id="DivisionType" })
                     @Html.HiddenFor(m => m.SelectedDivisionTypeName, new {id="SelectedDivisionTypeName"})
                     @Html.ValidationMessageFor(Model => Model.SelectedDivisionTypeID, "", new { @class = "text-danger" })
@@ -138,40 +138,40 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>
+                                <td class="w-20">
                                     @inner.SectionNo @inner.SectionName-Total
                                 </td>
 
-                                <td>
+                                <td class="w-20">
                                     @SectionSumBudEstCurrFin.ToString()
                                 </td>
-                                <td>
+                                <td class="w-20">
                                     @SectionSumActPrevFin.ToString()
                                 </td>
-                                <td>
+                                <td class="w-20">
                                     @SectionSumActCurrFinTill2ndQuart.ToString()
                                 </td>
-                                <td>
+                                <td class="w-20">
                                     @SectionSumRevEstCurrFin.ToString()
                                 </td>
-                                <td>
+                                <td class="w-20">
                                     @SectionSumPerVarRevEstOverBudgEstCurrFin.ToString()
                                 </td>
                                 @if (User.IsInRole("Admin"))
                                 {
-                                    <td>
+                                    <td class="w-20">
                                         @SectionSumACAndBWPropRECurrFin.ToString()
                                     </td>
                                 }
-                                <td>
+                                <td class="w-20">
                                     @SectionSumBudgEstNexFin.ToString()
                                 </td>
-                                <td>
+                                <td class="w-20">
                                     @SectionSumPerVarRevEstOverBudgEstNxtFin.ToString()
                                 </td>
                                 @if (User.IsInRole("Admin"))
                                 {
-                                    <td>
+                                    <td class="w-20">
                                         @SectionSumACAndBWPropRENxtFin.ToString()
                                     </td>
                                 }
@@ -231,19 +231,19 @@
                                             <thead>
                                                 <tr>
                                                     <th></th>
-                                                    <th>
+                                                    <th >
                                                         SubGroupNumber
                                                     </th>
-                                                    <th>
+                                                <th >
                                                         SubGroupName
                                                     </th>
-                                                    <th>
+                                                <th >
                                                         Report Type
                                                     </th>
 
                                                 @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
                                                     {
-                                                        <th>
+                                                    <th >
                                                             @Html.DisplayName( Regions.DivisionName)
                                                         </th>
                                                      }
@@ -258,7 +258,7 @@
                                                     var ReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
 
                                                     <tr>
-                                                        <td>
+                                                        <td class="w-20">
                                                             <img src="~/Images/plus.png" />
                                                             <div id="NestedTable" style="display:none">
                                                                 <table class="table ChildGrid">
@@ -269,20 +269,20 @@
                                                                     @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
                                                                     {
                                                                         <tr>
-                                                                            <td>@Ledgers.LedgerNo</td>
-                                                                            <td>@Ledgers.LedgerName</td>
+                                                                            <td class="w-20">@Ledgers.LedgerNo</td>
+                                                                            <td class="w-20">@Ledgers.LedgerName</td>
                                                                         </tr>
                                                                     }
                                                                 </table>
                                                             </div>
                                                         </td>
-                                                        <td>
+                                                        <td class="w-20">
                                                             @Subs.SubGroupNo
                                                         </td>
-                                                        <td>
+                                                        <td class="w-20">
                                                             @Subs.subGroupName
                                                         </td>
-                                                        <td>
+                                                        <td class="w-20">
                                                             @ReportName
                                                         </td>
                                                         @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
@@ -291,27 +291,27 @@
 
                                                              if (ReportName.Equals("Actual"))
                                                             {
-                                                               <td>
-                                                                @Html.DisplayName(result!=null ? Convert.ToString(Convert.ToDecimal(result.ActPrevFin)) : "")
+                                                               <td align="right" class="w-20">
+                                                                @Html.TextBox("Actual", result!=null ? result.ActPrevFin.ToString("F") : "", new { @class = "form-control", @id = "Actual", @readonly="readonly", @width=50, @height =50 })
                                                                </td>
                                                             }
                                                             else if(ReportName.Equals("Actual Half Year"))
                                                             {
-                                                              <td>
-                                                                @Html.DisplayName(result!=null ? Convert.ToString(Convert.ToDecimal(result.ActCurrFinTill2ndQuart)) : "")
+                                                            <td align="right" class="w-20">
+                                                                @Html.DisplayName(result!=null ? result.ActCurrFinTill2ndQuart.ToString("F") : "")
                                                                </td>
                                                             }
                                                             else if(ReportName.Equals("Revised Estimates"))
                                                             {
-                                                               <td>
-                                                                @Html.DisplayName(result!=null ? Convert.ToString(Convert.ToDecimal(result.RevEstCurrFin)) : "")
+                                                            <td align="right" class="w-20">
+                                                                @Html.DisplayName(result!=null ? result.RevEstCurrFin.ToString("F") : "")
                                                                 
                                                                </td> 
                                                             }
                                                             else if (ReportName.Equals("Budget Estimates"))
                                                             {
-                                                                <td>
-                                                                @Html.DisplayName(result!=null ? Convert.ToString(Convert.ToDecimal(result.BudgEstNexFin)) : "")
+                                                            <td align="right" class="w-20">
+                                                                @Html.DisplayName(result!=null ? result.BudgEstNexFin.ToString("F") : "")
                                                                 </td>
                                                             }
                                                         }
@@ -335,18 +335,18 @@
                                             <thead>
                                                 <tr>
                                                     <th></th>
-                                                    <th>
+                                                    <th >
                                                         SubGroupNumber
                                                     </th>
-                                                    <th>
+                                                <th >
                                                         SubGroupName
                                                     </th>
-                                                    <th>
+                                                <th >
                                                         Report Type
                                                     </th>
                                                     @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
                                                     {
-                                                        <th> @Html.DisplayName(Regions.DivisionName)</th>
+                                                    <th > @Html.DisplayName(Regions.DivisionName)</th>
                                                     }
                                                 </tr>
                                             </thead>
@@ -357,7 +357,7 @@
                                                     var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
                                                     var ReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
                                                     <tr>
-                                                        <td>
+                                                        <td class="w-20">
                                                             <img src="~/Images/plus.png" />
                                                             <div id="NestedTable" style="display:none">
                                                                 <table class="table ChildGrid">
@@ -368,20 +368,20 @@
                                                                     @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
                                                                     {
                                                                         <tr>
-                                                                            <td>@Ledgers.LedgerNo</td>
-                                                                            <td>@Ledgers.LedgerName</td>
+                                                                            <td class="w-20">@Ledgers.LedgerNo</td>
+                                                                            <td class="w-20">@Ledgers.LedgerName</td>
                                                                         </tr>
                                                                     }
                                                                 </table>
                                                             </div>
                                                         </td>
-                                                        <td>
+                                                        <td class="w-20">
                                                             @Subs.SubGroupNo
                                                         </td>
-                                                        <td>
+                                                        <td class="w-20">
                                                             @Subs.subGroupName
                                                         </td>
-                                                        <td>
+                                                        <td class="w-20">
                                                             @ReportName
                                                         </td>
                                                     @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
@@ -390,27 +390,27 @@
 
                                                         if (ReportName.Equals("Actual"))
                                                         {
-                                                            <td>
-                                                                @Html.DisplayName(result!=null ? Convert.ToString(Convert.ToDecimal(result.ActPrevFin)) : "")
+                                                            <td align="right" class="w-20">
+                                                                @Html.TextBox("Actual", result!=null ? result.ActPrevFin.ToString("F") : "", new { @class = "form-control", @id = "Actual", @readonly="readonly", @width=50, @height =50 })
                                                             </td>
                                                         }
                                                         else if (ReportName.Equals("Actual Half Year"))
                                                         {
-                                                            <td>
-                                                                @Html.DisplayName(result!=null ? Convert.ToString(Convert.ToDecimal(result.ActCurrFinTill2ndQuart)) : "")
+                                                            <td align="right" class="w-20">
+                                                                @Html.DisplayName(result!=null ? result.ActCurrFinTill2ndQuart.ToString("F") : "")
                                                             </td>
                                                         }
                                                         else if (ReportName.Equals("Revised Estimates"))
                                                         {
-                                                            <td>
-                                                                @Html.DisplayName(result!=null ? Convert.ToString(Convert.ToDecimal(result.RevEstCurrFin)) : "")
+                                                            <td align="right" class="w-20">
+                                                                @Html.DisplayName(result!=null ? result.RevEstCurrFin.ToString("F") : "")
 
                                                             </td>
                                                         }
                                                         else if (ReportName.Equals("Budget Estimates"))
                                                         {
-                                                            <td>
-                                                                @Html.DisplayName( result!=null ? Convert.ToString(Convert.ToDecimal(result.BudgEstNexFin)) : "")
+                                                            <td align="right" class="w-20">
+                                                                @Html.DisplayName( result!=null ? result.BudgEstNexFin.ToString("F") : "")
                                                             </td>
                                                         }
                                                     }
@@ -489,18 +489,18 @@
                                             <thead>
                                                 <tr>
                                                     <th></th>
-                                                    <th>
+                                                <th >
                                                         SubGroupNumber
                                                     </th>
-                                                    <th>
+                                                    <th >
                                                         SubGroupName
                                                     </th>
-                                                    <th>
+                                                <th >
                                                         Report Type
                                                     </th>
                                                     @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
                                                     {
-                                                        <th> @Html.DisplayName(Regions.DivisionName)</th>
+                                                    <th > @Html.DisplayName(Regions.DivisionName)</th>
                                                     }
                                                 </tr>
                                             </thead>
@@ -512,7 +512,7 @@
                                                     var ReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
 
                                                     <tr>
-                                                        <td>
+                                                        <td class="w-20">
                                                             <img src="~/Images/plus.png" />
                                                             <div id="NestedTable" style="display:none">
                                                                 <table class="table ChildGrid">
@@ -523,20 +523,20 @@
                                                                     @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
                                                                     {
                                                                         <tr>
-                                                                            <td>@Ledgers.LedgerNo</td>
-                                                                            <td>@Ledgers.LedgerName</td>
+                                                                            <td class="w-20">@Ledgers.LedgerNo</td>
+                                                                            <td class="w-20">@Ledgers.LedgerName</td>
                                                                         </tr>
                                                                     }
                                                                 </table>
                                                             </div>
                                                         </td>
-                                                        <td>
+                                                        <td class="w-20">
                                                             @Subs.SubGroupNo
                                                         </td>
-                                                        <td>
+                                                        <td class="w-20">
                                                             @Subs.subGroupName
                                                         </td>
-                                                        <td>
+                                                        <td class="w-20">
                                                             @ReportName
                                                         </td>
                                                     @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
@@ -545,27 +545,27 @@
 
                                                         if (ReportName.Equals("Actual"))
                                                         {
-                                                            <td>
-                                                                @Html.DisplayName(result!=null ? Convert.ToString(Convert.ToDecimal(result.ActPrevFin)) : "")
+                                                            <td align="right" class="w-20">
+                                                                @Html.TextBox("Actual", result!=null ? result.ActPrevFin.ToString("F") : "", new { @class = "form-control", @id = "Actual", @readonly="readonly", @width=50, @height =50 })
                                                             </td>
                                                         }
                                                         else if (ReportName.Equals("Actual Half Year"))
                                                         {
-                                                            <td>
-                                                                @Html.DisplayName(result!=null ? Convert.ToString(Convert.ToDecimal(result.ActCurrFinTill2ndQuart)) : "")
+                                                            <td align="right" class="w-20">
+                                                                @Html.DisplayName(result!=null ? result.ActCurrFinTill2ndQuart.ToString("F") : "")
                                                             </td>
                                                         }
                                                         else if (ReportName.Equals("Revised Estimates"))
                                                         {
-                                                            <td>
-                                                                @Html.DisplayName(result!=null ? Convert.ToString(Convert.ToDecimal(result.RevEstCurrFin)) : "")
+                                                            <td align="right" class="w-20">
+                                                                @Html.DisplayName(result!=null ? result.RevEstCurrFin.ToString("F") : "")
 
                                                             </td>
                                                         }
                                                         else if (ReportName.Equals("Budget Estimates"))
                                                         {
-                                                            <td>
-                                                                @Html.DisplayName(result!=null ? Convert.ToString(Convert.ToDecimal(result.BudgEstNexFin)) : "")
+                                                            <td align="right" class="w-20">
+                                                                @Html.DisplayName(result!=null ? result.BudgEstNexFin.ToString("F") : "")
                                                             </td>
                                                         }
                                                     }
@@ -591,18 +591,18 @@
                                             <thead>
                                                 <tr>
                                                     <th></th>
-                                                    <th>
+                                                <th >
                                                         SubGroupNumber
                                                     </th>
-                                                    <th>
+                                                    <th >
                                                         SubGroupName
                                                     </th>
-                                                    <th>
+                                                    <th >
                                                         Report Type
                                                     </th>
                                                     @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
                                                     {
-                                                        <th> @Html.DisplayName(Regions.DivisionName)</th>
+                                                    <th > @Html.DisplayName(Regions.DivisionName)</th>
                                                     }
                                                 </tr>
                                             </thead>
@@ -613,7 +613,7 @@
                                                     var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
                                                     var ReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
                                                     <tr>
-                                                        <td>
+                                                        <td class="w-20">
                                                             <img src="~/Images/plus.png" />
                                                             <div id="NestedTable" style="display:none">
                                                                 <table class="table ChildGrid">
@@ -624,20 +624,20 @@
                                                                     @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
                                                                     {
                                                                         <tr>
-                                                                            <td>@Ledgers.LedgerNo</td>
-                                                                            <td>@Ledgers.LedgerName</td>
+                                                                            <td class="w-20">@Ledgers.LedgerNo</td>
+                                                                            <td class="w-20">@Ledgers.LedgerName</td>
                                                                         </tr>
                                                                     }
                                                                 </table>
                                                             </div>
                                                         </td>
-                                                        <td>
+                                                        <td class="w-20">
                                                             @Subs.SubGroupNo
                                                         </td>
-                                                        <td>
+                                                        <td class="w-20">
                                                             @Subs.subGroupName
                                                         </td>
-                                                        <td>
+                                                        <td class="w-20">
                                                             @ReportName
                                                         </td>
                                                     @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
@@ -646,27 +646,27 @@
 
                                                         if (ReportName.Equals("Actual"))
                                                         {
-                                                            <td>
-                                                                @Html.DisplayName(result!=null ? Convert.ToString(Convert.ToDecimal(result.ActPrevFin)) : "")
+                                                            <td align="right" class="w-20">
+                                                                @Html.TextBox("Actual", result!=null ? result.ActPrevFin.ToString("F") : "", new { @class = "form-control", @id = "Actual", @readonly="readonly", @width=50, @height =50 })
                                                             </td>
                                                         }
                                                         else if (ReportName.Equals("Actual Half Year"))
                                                         {
-                                                            <td>
-                                                                @Html.DisplayName(result!=null ? Convert.ToString(Convert.ToDecimal(result.ActCurrFinTill2ndQuart)) : "")
+                                                            <td align="right" class="w-20">
+                                                                @Html.DisplayName(result!=null ? result.ActCurrFinTill2ndQuart.ToString("F") : "")
                                                             </td>
                                                         }
                                                         else if (ReportName.Equals("Revised Estimates"))
                                                         {
-                                                            <td>
-                                                                @Html.DisplayName(result!=null ? Convert.ToString(Convert.ToDecimal(result.RevEstCurrFin)) : "")
+                                                            <td align="right" class="w-20">
+                                                                @Html.DisplayName(result!=null ? result.RevEstCurrFin.ToString("F") : "")
 
                                                             </td>
                                                         }
                                                         else if (ReportName.Equals("Budget Estimates"))
                                                         {
-                                                            <td>
-                                                                @Html.DisplayName(result!=null ? Convert.ToString(Convert.ToDecimal(result.BudgEstNexFin)) : "")
+                                                            <td align="right" class="w-20">
+                                                                @Html.DisplayName(result!=null ? result.BudgEstNexFin.ToString("F") : "")
                                                             </td>
                                                         }
                                                     }
