@@ -61,6 +61,7 @@ namespace BudgetPortal.ViewModel
         public String SelectedReportID { get; set; }
         public String SelectedReportName { get; set; }
 
+        [Required(ErrorMessage = "Please select a Division Name")]
         public IEnumerable<Division> Divisionss { get; set; }
         public IEnumerable<SelectListItem> DivisionNames { get; set; }
         public String SelectedDivisionID { get; set; }
@@ -70,6 +71,7 @@ namespace BudgetPortal.ViewModel
         public String SelectedDivisionTypeID { get; set; }
         public String SelectedDivisionTypeName { get; set; }
 
+        [Required(ErrorMessage = "Please select the Academic Year")]
         public IEnumerable<AcademicYears> AcademicYearss { get; set; }
         public IEnumerable<SelectListItem> AcademicYears { get; set; }
         public String SelectedAcademicYearID { get; set; }

@@ -22,9 +22,10 @@
 <br />
 
     <div id="outerdiv">
+    @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
+    {
       <div style = "float:right">
-        @*using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
-        {*@
+        
             @Html.AntiForgeryToken()
 
           <table border="0" cellpadding="5" cellspacing="0" >
@@ -34,18 +35,18 @@
              <td>
               @Html.DropDownListFor(m => m.SelectedDivisionID, Model.DivisionNames,"--Please select any Division--", new { @class = "form-control", @id="Division" })
               @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName)
-              @Html.ValidationMessageFor(Model => Model.SelectedDivisionID, "", new { @class = "text-danger" })
+              @Html.ValidationMessageFor(Model => Model.DivisionNames, "", new { @class = "text-danger, error" })
              </td>
            }       
              <td>
               @Html.DropDownListFor(m => m.SelectedAcademicYearID, Model.AcademicYears,"--Please select any Academic Year--",new { @class = "form-control", @id="AcademicYear" })
               @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear)
-                    @Html.ValidationMessageFor(Model => Model.SelectedAcademicYearID, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(Model => Model.AcademicYears, "", new { @class = "text-danger, error" })
              </td>
                 
           </tr>
         </table>
-        @*}*@
+        
     </div>
       <br />
       <br />
@@ -225,8 +226,8 @@
                         if (CounterBody == 0)
                         {
                             <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
-                              @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
-                              {
+                              @*using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
+                              {*@
                                 @Html.AntiForgeryToken()
                                     <table id="@identi-outertable" class="table">
                                     <thead>
@@ -325,8 +326,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name1" type="text" value="">-->
-                                                                @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : "", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
-                                                                @*Html.TextBoxFor(Model=> Model.BudEstCurrFin[TableCount],new { @class = "form-control", @id = @name1, @readonly = "readonly",@value = details!=null ? Convert.ToString(details.BudEstCurrFin) : ""})*@
+                                                                @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
+                                                                @*Html.TextBoxFor(Model=> Model.BudEstCurrFin[TableCount],new { @class = "form-control", @id = @name1, @readonly = "readonly",@value = details!=null ? Convert.ToString(details.BudEstCurrFin) : " "})*@
                                                                 @Html.ValidationMessage(@name1, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -334,8 +335,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name1" type="text" value="">-->
-                                                                @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : "", new { @class = "form-control", @id = @name1, @name=@name1})
-                                                                @*Html.TextBoxFor(Model=> Model.BudEstCurrFin[TableCount],new { @class = "form-control", @id = @name1, @value = details!=null ? Convert.ToString(details.BudEstCurrFin) : ""})*@
+                                                                @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @name=@name1})
+                                                                @*Html.TextBoxFor(Model=> Model.BudEstCurrFin[TableCount],new { @class = "form-control", @id = @name1, @value = details!=null ? Convert.ToString(details.BudEstCurrFin) : " "})*@
                                                                 @Html.ValidationMessage(@name1, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -345,8 +346,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name2" type="text" value="">-->
-                                                                @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : "", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
-                                                                @*Html.TextBoxFor(Model=> Model.ActPrevFin[TableCount], new { @class = "form-control", @id = @name2, @readonly = "readonly", @Value = details!=null ? Convert.ToString(details.ActPrevFin) : ""})*@
+                                                                @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
+                                                                @*Html.TextBoxFor(Model=> Model.ActPrevFin[TableCount], new { @class = "form-control", @id = @name2, @readonly = "readonly", @Value = details!=null ? Convert.ToString(details.ActPrevFin) : " "})*@
                                                                 @Html.ValidationMessage(@name2, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -354,8 +355,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name2" type="text" value="">-->
-                                                                @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : "", new { @class = "form-control", @id = @name2})
-                                                                @*Html.TextBoxFor(Model=> Model.ActPrevFin[TableCount], new { @class = "form-control", @id = @name2,@Value = details!=null ? Convert.ToString(details.ActPrevFin) : ""})*@
+                                                                @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2})
+                                                                @*Html.TextBoxFor(Model=> Model.ActPrevFin[TableCount], new { @class = "form-control", @id = @name2,@Value = details!=null ? Convert.ToString(details.ActPrevFin) : " "})*@
                                                                 @Html.ValidationMessage(@name2, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -365,8 +366,8 @@
                                                         {
                                                              <div class="form-group">
                                                                 <!-- <input id="@name3" type="text" value="">-->
-                                                                @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : "", new { @class = "form-control", @id = @name3, @readonly = "readonly"})
-                                                                @*Html.TextBoxFor(Model=> Model.ActCurrFinTill2ndQuart[TableCount], new { @class = "form-control", @id = @name3,  @readonly = "readonly", @Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : ""})*@
+                                                                @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3, @readonly = "readonly"})
+                                                                @*Html.TextBoxFor(Model=> Model.ActCurrFinTill2ndQuart[TableCount], new { @class = "form-control", @id = @name3,  @readonly = "readonly", @Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : " "})*@
                                                                 @Html.ValidationMessage(@name3, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -374,8 +375,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name3" type="text" value="">-->
-                                                                @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : "", new { @class = "form-control", @id = @name3})
-                                                                @*Html.TextBoxFor(Model=> Model.ActCurrFinTill2ndQuart[TableCount], new { @class = "form-control", @id = @name3, @Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : ""})*@
+                                                                @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3})
+                                                                @*Html.TextBoxFor(Model=> Model.ActCurrFinTill2ndQuart[TableCount], new { @class = "form-control", @id = @name3, @Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : " "})*@
                                                                 @Html.ValidationMessage(@name3, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -385,8 +386,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name4" type="text" value="">-->
-                                                                @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : "", new { @class = "form-control", @id = @name4, @readonly = "readonly"})
-                                                                @*Html.TextBoxFor(Model=> Model.RevEstCurrFin[TableCount], new { @class = "form-control", @id = @name4,  @readonly = "readonly",@Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : ""})*@
+                                                                @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4, @readonly = "readonly"})
+                                                                @*Html.TextBoxFor(Model=> Model.RevEstCurrFin[TableCount], new { @class = "form-control", @id = @name4,  @readonly = "readonly",@Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : " "})*@
                                                                 @Html.ValidationMessage(@name4, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -394,8 +395,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name4" type="text" value="">-->
-                                        @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : "", new { @class = "form-control", @id = @name4})
-                                                                @*Html.TextBoxFor(Model=> Model.RevEstCurrFin[TableCount], new { @class = "form-control", @id = @name4, @Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : ""})*@
+                                                                @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4})
+                                                                @*Html.TextBoxFor(Model=> Model.RevEstCurrFin[TableCount], new { @class = "form-control", @id = @name4, @Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : " "})*@
                                                                 @Html.ValidationMessage(@name4, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -405,8 +406,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name5" type="text" value="">-->
-                                        @Html.TextBox(@name5, details!=null ? details.PerVarRevEstOverBudgEstCurrFin.ToString("F") : "", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
-                                                                @*Html.TextBoxFor(Model=> Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new { @class = "form-control", @id = @name5, @readonly = "readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : ""})*@
+                                                                @Html.TextBox(@name5, details!=null ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
+                                                                @*Html.TextBoxFor(Model=> Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new { @class = "form-control", @id = @name5, @readonly = "readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : " "})*@
                                                                 @Html.ValidationMessage(@name5, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -414,8 +415,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name5" type="text" value="">-->
-                                        @Html.TextBox(@name5, details!=null ? details.PerVarRevEstOverBudgEstCurrFin.ToString("F") : "", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
-                                                                @*Html.TextBoxFor(Model=> Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new { @class = "form-control", @id = @name5, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : ""})*@
+                                        @Html.TextBox(@name5, details!=null ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")) : " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
+                                                                @*Html.TextBoxFor(Model=> Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new { @class = "form-control", @id = @name5, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : " "})*@
                                                                 @Html.ValidationMessage(@name5, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -425,8 +426,8 @@
                                                             <td>
                                                                 <div class="form-group">
                                                                     <!-- <input id="@name6" type="text" value="">-->
-                                                                @Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : "", new { @class = "form-control", @id = @name6})
-                                                                @*Html.TextBoxFor(Model=> Model.ACAndBWPropRECurrFin[TableCount], new { @class = "form-control", @id = @name6, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRECurrFin) : ""})*@
+                                                                @Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6})
+                                                                @*Html.TextBoxFor(Model=> Model.ACAndBWPropRECurrFin[TableCount], new { @class = "form-control", @id = @name6, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRECurrFin) : " "})*@
                                                                 @Html.ValidationMessage(@name6, "",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
@@ -436,8 +437,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name7" type="text" value="">-->
-                                                                @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : "", new { @class = "form-control", @id = @name7, @readonly = "readonly"})
-                                                                @*Html.TextBoxFor(Model=> Model.BudgEstNexFin[TableCount],new { @class = "form-control", @id = @name7, @readonly = "readonly",@Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : ""})*@
+                                                                @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly = "readonly"})
+                                                                @*Html.TextBoxFor(Model=> Model.BudgEstNexFin[TableCount],new { @class = "form-control", @id = @name7, @readonly = "readonly",@Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : " "})*@
                                                                 @Html.ValidationMessage(@name7, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -445,8 +446,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name7" type="text" value="">-->
-                                                                @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : "", new { @class = "form-control", @id = @name7})
-                                                                @*Html.TextBoxFor(Model=> Model.BudgEstNexFin[TableCount],new { @class = "form-control", @id = @name7, @Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : ""})*@
+                                                                @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7})
+                                                                @*Html.TextBoxFor(Model=> Model.BudgEstNexFin[TableCount],new { @class = "form-control", @id = @name7, @Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : " "})*@
                                                                 @Html.ValidationMessage(@name7, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -456,8 +457,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name8" type="text" value="">-->
-                                                                @Html.TextBox(@name8, details!=null ? details.PerVarRevEstOverBudgEstNxtFin.ToString("F") : "", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
-                                                                @*Html.TextBoxFor(Model=> Model.PerVarRevEstOverBudgEstNxtFin[TableCount],new { @class = "form-control", @id = @name8, @readonly = "readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : ""})*@
+                                                                @Html.TextBox(@name8, details!=null ? details.PerVarRevEstOverBudgEstNxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
+                                                                @*Html.TextBoxFor(Model=> Model.PerVarRevEstOverBudgEstNxtFin[TableCount],new { @class = "form-control", @id = @name8, @readonly = "readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : " "})*@
                                                                 @Html.ValidationMessage(@name8, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -465,8 +466,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name8" type="text" value="">-->
-                                                                @Html.TextBox(@name8, details!=null ? details.PerVarRevEstOverBudgEstNxtFin.ToString("F") : "", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
-                                                                @*Html.TextBoxFor(Model=> Model.PerVarRevEstOverBudgEstNxtFin[TableCount],new { @class = "form-control", @id = @name8, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : ""})*@
+                                                                @Html.TextBox(@name8, details!=null ? details.PerVarRevEstOverBudgEstNxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
+                                                                @*Html.TextBoxFor(Model=> Model.PerVarRevEstOverBudgEstNxtFin[TableCount],new { @class = "form-control", @id = @name8, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : " "})*@
                                                                 @Html.ValidationMessage(@name8, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -476,8 +477,8 @@
                                                             <td>
                                                                 <div class="form-group">
                                                                     <!-- <input id="@name9" type="text" value="">-->
-                                                                    @Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : "", new { @class = "form-control", @id = @name9})
-                                                                    @*Html.TextBoxFor(Model=> Model.ACAndBWPropRENxtFin[TableCount],new { @class = "form-control", @id = @name9, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRENxtFin) : ""})*@
+                                                                    @Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9})
+                                                                    @*Html.TextBoxFor(Model=> Model.ACAndBWPropRENxtFin[TableCount],new { @class = "form-control", @id = @name9, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRENxtFin) : " "})*@
                                                                     @Html.ValidationMessage(@name9, "",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
@@ -487,8 +488,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name10" type="text" value="">-->
-                                                                @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : "", new { @class = "form-control", @id = @name10, @readonly = "readonly"})
-                                                                @*Html.TextAreaFor(Model=> Model.Justification[TableCount], new { @class = "form-control", @id = @name10, @readonly = "readonly",@Value = details!=null ? Convert.ToString(details.Justification) : ""})*@
+                                                                @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10, @readonly = "readonly"})
+                                                                @*Html.TextAreaFor(Model=> Model.Justification[TableCount], new { @class = "form-control", @id = @name10, @readonly = "readonly",@Value = details!=null ? Convert.ToString(details.Justification) : " "})*@
                                                                 @Html.ValidationMessage(@name10, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -498,8 +499,8 @@
                                                         
                                                             <div class="form-group">
                                                                 <!-- <input id="@name10" type="text" value="">-->
-                                                                @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : "", new { @class = "form-control", @id = @name10})
-                                                                @*Html.TextAreaFor(Model=> Model.Justification[TableCount], new { @class = "form-control", @id = @name10, @Value = details!=null ? Convert.ToString(details.Justification) : ""})*@
+                                                                @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10})
+                                                                @*Html.TextAreaFor(Model=> Model.Justification[TableCount], new { @class = "form-control", @id = @name10, @Value = details!=null ? Convert.ToString(details.Justification) : " "})*@
                                                                 @Html.ValidationMessage(@name10, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -564,8 +565,8 @@
                                         @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })
-                                <input id="@Submit" class="Submit" type="submit" style="align-self:center">
-                              }
+                                        <input id="@Submit" class="Submit" type="submit" style="align-self:center"> 
+                              @*}*@
                             </div>
                           
                         }
@@ -573,8 +574,8 @@
                         {
                             <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
                                 <br />
-                             @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
-                             {
+                             @*using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
+                             {*@
                                             @Html.AntiForgeryToken()
                                         <table id="@identi-outertable" class="table" >
                                     <thead>
@@ -649,8 +650,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name1" type="text" value="">-->
-                                                                @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F"): "", new { @class = "form-control", @id = @name1, @readonly="readonly"})
-                                                                @*Html.TextBoxFor(Model=>Model.BudEstCurrFin[TableCount], new { @class = "form-control", @id = @name1, @readonly="readonly", @value = details!=null ? Convert.ToString(details.BudEstCurrFin) : ""})*@
+                                                                @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F"): " ", new { @class = "form-control", @id = @name1, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model=>Model.BudEstCurrFin[TableCount], new { @class = "form-control", @id = @name1, @readonly="readonly", @value = details!=null ? Convert.ToString(details.BudEstCurrFin) : " "})*@
                                                                 @Html.ValidationMessage(@name1, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -658,8 +659,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name1" type="text" value="">-->
-                                                            @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : "", new { @class = "form-control", @id = @name1})
-                                                            @*Html.TextBoxFor(Model=>Model.BudEstCurrFin[TableCount], new { @class = "form-control", @id = @name1, @value = details!=null ? Convert.ToString(details.BudEstCurrFin) : ""})*@
+                                                            @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1})
+                                                            @*Html.TextBoxFor(Model=>Model.BudEstCurrFin[TableCount], new { @class = "form-control", @id = @name1, @value = details!=null ? Convert.ToString(details.BudEstCurrFin) : " "})*@
                                                             @Html.ValidationMessage(@name1, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -669,8 +670,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name2" type="text" value="">-->
-                                                              @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : "", new { @class = "form-control", @id = @name2, @readonly="readonly"})
-                                                              @*Html.TextBoxFor(Model=>Model.ActPrevFin[TableCount],new { @class = "form-control", @id = @name2, @readonly="readonly", @Value = details!=null ? Convert.ToString(details.ActPrevFin) : ""})*@
+                                                              @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2, @readonly="readonly"})
+                                                              @*Html.TextBoxFor(Model=>Model.ActPrevFin[TableCount],new { @class = "form-control", @id = @name2, @readonly="readonly", @Value = details!=null ? Convert.ToString(details.ActPrevFin) : " "})*@
                                                               @Html.ValidationMessage(@name2, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -678,8 +679,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name2" type="text" value="">-->
-                                                               @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : "", new { @class = "form-control", @id = @name2})
-                                                               @*Html.TextBoxFor(Model=>Model.ActPrevFin[TableCount],new { @class = "form-control", @id = @name2, @Value = details!=null ? Convert.ToString(details.ActPrevFin) : ""})*@
+                                                               @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2})
+                                                               @*Html.TextBoxFor(Model=>Model.ActPrevFin[TableCount],new { @class = "form-control", @id = @name2, @Value = details!=null ? Convert.ToString(details.ActPrevFin) : " "})*@
                                                                 @Html.ValidationMessage(@name2, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -689,8 +690,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name3" type="text" value="">-->
-                                                                @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : "", new { @class = "form-control", @id = @name3, @readonly="readonly"})
-                                                                @*Html.TextBoxFor(Model=>Model.ActCurrFinTill2ndQuart[TableCount], new { @class = "form-control", @id = @name3, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : ""})*@
+                                                                @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model=>Model.ActCurrFinTill2ndQuart[TableCount], new { @class = "form-control", @id = @name3, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : " "})*@
                                                                 @Html.ValidationMessage(@name3, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -698,8 +699,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name3" type="text" value="">-->
-                                                                @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : "", new { @class = "form-control", @id = @name3})
-                                                                @*Html.TextBoxFor(Model=>Model.ActCurrFinTill2ndQuart[TableCount], new { @class = "form-control", @id = @name3, @Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : ""})*@
+                                                                @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3})
+                                                                @*Html.TextBoxFor(Model=>Model.ActCurrFinTill2ndQuart[TableCount], new { @class = "form-control", @id = @name3, @Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : " "})*@
                                                                 @Html.ValidationMessage(@name3, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -709,8 +710,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name4" type="text" value="">-->
-                                                                @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : "", new { @class = "form-control", @id = @name4, @readonly="readonly"})
-                                                                @*Html.TextBoxFor(Model=>Model.RevEstCurrFin[TableCount], new { @class = "form-control", @id = @name4, @readonly="readonly", @Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : ""})*@
+                                                                @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model=>Model.RevEstCurrFin[TableCount], new { @class = "form-control", @id = @name4, @readonly="readonly", @Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : " "})*@
                                                                 @Html.ValidationMessage(@name4, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -718,8 +719,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name4" type="text" value="">-->
-                                                                @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : "", new { @class = "form-control", @id = @name4})
-                                                                @*Html.TextBoxFor(Model=>Model.RevEstCurrFin[TableCount], new { @class = "form-control", @id = @name4, @Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : ""})*@
+                                                                @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4})
+                                                                @*Html.TextBoxFor(Model=>Model.RevEstCurrFin[TableCount], new { @class = "form-control", @id = @name4, @Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : " "})*@
                                                                 @Html.ValidationMessage(@name4, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -729,8 +730,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name5" type="text" value="">-->
-                                                                @Html.TextBox(@name5, details!=null ? details.PerVarRevEstOverBudgEstCurrFin.ToString("F") : "", new { @class = "form-control", @id = @name5, @readonly="readonly"})
-                                                                @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new { @class = "form-control", @id = @name5, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : ""})*@
+                                        @Html.TextBox(@name5, details!=null ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")) : " ", new { @class = "form-control", @id = @name5, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new { @class = "form-control", @id = @name5, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : " "})*@
                                                                 @Html.ValidationMessage(@name5, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -738,8 +739,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name5" type="text" value="">-->
-                                                                @Html.TextBox(@name5, details!=null ? details.PerVarRevEstOverBudgEstCurrFin.ToString("F") : "", new { @class = "form-control", @id = @name5, @readonly="readonly"})
-                                                                @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new { @class = "form-control", @id = @name5, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : ""})*@
+                                        @Html.TextBox(@name5, details!=null ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new { @class = "form-control", @id = @name5, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : " "})*@
                                                                 @Html.ValidationMessage(@name5, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -749,8 +750,8 @@
                                                             <td>
                                                                 <div class="form-group">
                                                                     <!-- <input id="@name6" type="text" value="">-->
-                                                                @Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : "", new { @class = "form-control", @id = @name6})
-                                                                @*Html.TextBoxFor(Model=>Model.ACAndBWPropRECurrFin[TableCount],new { @class = "form-control", @id = @name6, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRECurrFin) : "" })*@
+                                                                @Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6})
+                                                                @*Html.TextBoxFor(Model=>Model.ACAndBWPropRECurrFin[TableCount],new { @class = "form-control", @id = @name6, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRECurrFin) : " " })*@
                                                                 @Html.ValidationMessage(@name6, "",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
@@ -760,8 +761,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name7" type="text" value="">-->
-                                                                @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : "", new { @class = "form-control", @id = @name7, @readonly="readonly"})
-                                                                @*Html.TextBoxFor(Model=>Model.BudgEstNexFin[TableCount],new { @class = "form-control", @id = @name7, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : "" })*@
+                                                                @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model=>Model.BudgEstNexFin[TableCount],new { @class = "form-control", @id = @name7, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : " " })*@
                                                                 @Html.ValidationMessage(@name7, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -769,8 +770,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name7" type="text" value="">-->
-                                                            @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : "", new { @class = "form-control", @id = @name7})
-                                                            @*Html.TextBoxFor(Model=>Model.BudgEstNexFin[TableCount],new { @class = "form-control", @id = @name7, @Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : "" })*@
+                                                            @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7})
+                                                            @*Html.TextBoxFor(Model=>Model.BudgEstNexFin[TableCount],new { @class = "form-control", @id = @name7, @Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : " " })*@
                                                             @Html.ValidationMessage(@name7, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -780,8 +781,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name8" type="text" value="">-->
-                                                                @Html.TextBox(@name8, details!=null ? details.PerVarRevEstOverBudgEstNxtFin.ToString("F") : "", new { @class = "form-control", @id = @name8, @readonly="readonly"})
-                                                                @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstNxtFin[TableCount],new { @class = "form-control", @id = @name8, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : ""  })*@
+                                                                @Html.TextBox(@name8, details!=null ? details.PerVarRevEstOverBudgEstNxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name8, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstNxtFin[TableCount],new { @class = "form-control", @id = @name8, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : " "  })*@
                                                                 @Html.ValidationMessage(@name8, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -789,8 +790,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name8" type="text" value="">-->
-                                                                @Html.TextBox(@name8, details!=null ? details.PerVarRevEstOverBudgEstNxtFin.ToString("F") : "", new { @class = "form-control", @id = @name8, @readonly="readonly"})
-                                                                @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstNxtFin[TableCount],new { @class = "form-control", @id = @name8, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : ""  })*@
+                                                                @Html.TextBox(@name8, details!=null ? details.PerVarRevEstOverBudgEstNxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name8, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstNxtFin[TableCount],new { @class = "form-control", @id = @name8, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : " "  })*@
                                                                 @Html.ValidationMessage(@name8, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -800,8 +801,8 @@
                                                             <td>
                                                                 <div class="form-group">
                                                                     <!-- <input id="@name9" type="text" value="">-->
-                                                                @Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : "", new { @class = "form-control", @id = @name9})
-                                                                @*Html.TextBoxFor(Model=>Model.ACAndBWPropRENxtFin[TableCount],new { @class = "form-control", @id = @name9, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRENxtFin) : "" })*@
+                                                                @Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9})
+                                                                @*Html.TextBoxFor(Model=>Model.ACAndBWPropRENxtFin[TableCount],new { @class = "form-control", @id = @name9, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRENxtFin) : " " })*@
                                                                 @Html.ValidationMessage(@name9, "",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
@@ -811,8 +812,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name10" type="text" value="">-->
-                                                                @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : "", new { @class = "form-control", @id = @name10, @readonly="readonly"})
-                                                                @*Html.TextAreaFor(Model=>Model.Justification[TableCount],new { @class = "form-control", @id = @name10, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.Justification) : "" })*@
+                                                                @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10, @readonly="readonly"})
+                                                                @*Html.TextAreaFor(Model=>Model.Justification[TableCount],new { @class = "form-control", @id = @name10, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.Justification) : " " })*@
                                                                 @Html.ValidationMessage(@name10, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -820,8 +821,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name10" type="text" value="">-->
-                                                            @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : "", new { @class = "form-control", @id = @name10})
-                                                            @*Html.TextAreaFor(Model=>Model.Justification[TableCount],new { @class = "form-control", @id = @name10, @Value = details!=null ? Convert.ToString(details.Justification) : "" })*@
+                                                            @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10})
+                                                            @*Html.TextAreaFor(Model=>Model.Justification[TableCount],new { @class = "form-control", @id = @name10, @Value = details!=null ? Convert.ToString(details.Justification) : " " })*@
                                                                 @Html.ValidationMessage(@name10, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -883,7 +884,7 @@
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })
                                     <input id="@Submit" class="Submit" type="submit" style="align-self:center">
-                             }
+                             @*}*@
                             </div>
                           
                         }
@@ -1026,8 +1027,8 @@
                           if (CounterBody == 0)
                           {
                               <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
-                              @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
-                              {
+                              @*using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
+                              {*@
                                @Html.AntiForgeryToken()
                                         <table id="@identi-outertable" class="table">
                                     <thead>
@@ -1103,9 +1104,9 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name1" type="text" value="">-->
-                                                                @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : "", new { @class = "form-control", @id = @name1, @readonly="readonly"})
+                                                                @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly="readonly"})
                                                                 @*@Html.EditorFor(Budgets.BudEstCurrFin, htmlAttributes : new { @class = "form-control", @id = @name1 })*@
-                                                                @*Html.TextBoxFor(Model=>Model.BudEstCurrFin[TableCount],new { @class = "form-control", @id = @name1, @readonly="readonly",@value = details!=null ? Convert.ToString(details.BudEstCurrFin) : "" })*@
+                                                                @*Html.TextBoxFor(Model=>Model.BudEstCurrFin[TableCount],new { @class = "form-control", @id = @name1, @readonly="readonly",@value = details!=null ? Convert.ToString(details.BudEstCurrFin) : " " })*@
                                                                 @Html.ValidationMessage(@name1, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -1113,9 +1114,9 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name1" type="text" value="">-->
-                                                                @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : "", new { @class = "form-control", @id = @name1})
+                                                                @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1})
                                                                 @*@Html.EditorFor(Budgets.BudEstCurrFin, htmlAttributes : new { @class = "form-control", @id = @name1 })*@
-                                                                @*Html.TextBoxFor(@name1,new { @class = "form-control", @id = @name1, @value = details!=null ? Convert.ToString(details.BudEstCurrFin) : "" })*@
+                                                                @*Html.TextBoxFor(@name1,new { @class = "form-control", @id = @name1, @value = details!=null ? Convert.ToString(details.BudEstCurrFin) : " " })*@
 
                                                                 @Html.ValidationMessage(@name1, "",new {@class = "text-danger"})
                                                             </div>
@@ -1126,9 +1127,9 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name2" type="text" value="">-->
-                                                                @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : "", new { @class = "form-control", @id = @name2,@readonly="readonly"})
+                                                                @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2,@readonly="readonly"})
                                                                 @*@Html.EditorFor(model => model.ActPrevFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name2 }})*@
-                                                                @*Html.TextBoxFor(Model=>Model.ActPrevFin[TableCount],new { @class = "form-control", @id = @name2, @readonly="readonly", @Value = details!=null ? Convert.ToString(details.ActPrevFin) : "" })*@
+                                                                @*Html.TextBoxFor(Model=>Model.ActPrevFin[TableCount],new { @class = "form-control", @id = @name2, @readonly="readonly", @Value = details!=null ? Convert.ToString(details.ActPrevFin) : " " })*@
                                                                 @Html.ValidationMessage(@name2, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -1136,9 +1137,9 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name2" type="text" value="">-->
-                                                                @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : "", new { @class = "form-control", @id = @name2})
+                                                                @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2})
                                                                 @*@Html.EditorFor(model => model.ActPrevFin[TableCount], new {htmlAttributes = new { @class = "form-control", @id = @name2 }})*@
-                                                                @*Html.TextBoxFor(Model=>Model.ActPrevFin[TableCount],new { @class = "form-control", @id = @name2, @Value = details!=null ? Convert.ToString(details.ActPrevFin) : "" })*@
+                                                                @*Html.TextBoxFor(Model=>Model.ActPrevFin[TableCount],new { @class = "form-control", @id = @name2, @Value = details!=null ? Convert.ToString(details.ActPrevFin) : " " })*@
                                                                 @Html.ValidationMessage(@name2, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -1148,8 +1149,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name3" type="text" value="">-->
-                                                                @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : "", new { @class = "form-control", @id = @name3, @readonly="readonly"})
-                                                                @*Html.TextBoxFor(Model=>Model.ActCurrFinTill2ndQuart[TableCount],new { @class = "form-control", @id = @name3, @readonly="readonly", @Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : "" })*@
+                                                                @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model=>Model.ActCurrFinTill2ndQuart[TableCount],new { @class = "form-control", @id = @name3, @readonly="readonly", @Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : " " })*@
                                                                 @Html.ValidationMessage(@name3, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -1157,8 +1158,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name3" type="text" value="">-->
-                                                            @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : "", new { @class = "form-control", @id = @name3})
-                                                            @*Html.TextBoxFor(Model=>Model.ActCurrFinTill2ndQuart[TableCount],new { @class = "form-control", @id = @name3, @Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : "" })*@
+                                                            @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3})
+                                                            @*Html.TextBoxFor(Model=>Model.ActCurrFinTill2ndQuart[TableCount],new { @class = "form-control", @id = @name3, @Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : " " })*@
                                                             @Html.ValidationMessage(@name3, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -1168,8 +1169,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name4" type="text" value="">-->
-                                                                @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : "", new { @class = "form-control", @id = @name4, @readonly="readonly"})
-                                                                @*Html.TextBoxFor(Model=>Model.RevEstCurrFin[TableCount],new { @class = "form-control", @id = @name4, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : "" })*@
+                                                                @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model=>Model.RevEstCurrFin[TableCount],new { @class = "form-control", @id = @name4, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : " " })*@
                                                                 @Html.ValidationMessage(@name4, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -1177,8 +1178,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name4" type="text" value="">-->
-                                                            @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : "", new { @class = "form-control", @id = @name4})
-                                                            @*Html.TextBoxFor(Model=>Model.RevEstCurrFin[TableCount],new { @class = "form-control", @id = @name4, @Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : "" })*@
+                                                            @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4})
+                                                            @*Html.TextBoxFor(Model=>Model.RevEstCurrFin[TableCount],new { @class = "form-control", @id = @name4, @Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : " " })*@
                                                                 @Html.ValidationMessage(@name4, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -1188,8 +1189,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name5" type="text" value="">-->
-                                                                @Html.TextBox(@name5, details!=null ? details.PerVarRevEstOverBudgEstCurrFin.ToString("F") : "", new { @class = "form-control", @id = @name5, @readonly="readonly"})
-                                                                @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new { @class = "form-control", @id = @name5, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "" })*@
+                                                                @Html.TextBox(@name5, details!=null ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")) : " ", new { @class = "form-control", @id = @name5, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new { @class = "form-control", @id = @name5, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : " " })*@
                                                                 @Html.ValidationMessage(@name5, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -1197,8 +1198,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name5" type="text" value="">-->
-                                        @Html.TextBox(@name5, details!=null ? details.PerVarRevEstOverBudgEstCurrFin.ToString("F") : "", new { @class = "form-control", @id = @name5})
-                                                            @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new { @class = "form-control", @id = @name5, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : "" })*@
+                                                                @Html.TextBox(@name5, details!=null ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")) : " ", new { @class = "form-control", @id = @name5})
+                                                                @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new { @class = "form-control", @id = @name5, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : " " })*@
                                                                 @Html.ValidationMessage(@name5, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -1208,8 +1209,8 @@
                                                             <td>
                                                                 <div class="form-group">
                                                                     <!-- <input id="@name6" type="text" value="">-->
-                                                                @Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : "", new { @class = "form-control", @id = @name6})
-                                                                @*Html.TextBoxFor(Model=>Model.ACAndBWPropRECurrFin[TableCount],new { @class = "form-control", @id = @name6, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRECurrFin) : ""})*@
+                                                                @Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6})
+                                                                @*Html.TextBoxFor(Model=>Model.ACAndBWPropRECurrFin[TableCount],new { @class = "form-control", @id = @name6, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRECurrFin) : " "})*@
                                                                 @Html.ValidationMessage(@name6, "",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
@@ -1219,8 +1220,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name7" type="text" value="">-->
-                                                                @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : "", new { @class = "form-control", @id = @name7, @readonly="readonly"})
-                                                                @*Html.TextBoxFor(Model=>Model.BudgEstNexFin[TableCount],new { @class = "form-control", @id = @name7, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : ""})*@
+                                                                @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model=>Model.BudgEstNexFin[TableCount],new { @class = "form-control", @id = @name7, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : " "})*@
                                                                 @Html.ValidationMessage(@name7, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -1228,8 +1229,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name7" type="text" value="">-->
-                                                            @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : "", new { @class = "form-control", @id = @name7})
-                                                            @*Html.TextBoxFor(Model=>Model.BudgEstNexFin[TableCount],new { @class = "form-control", @id = @name7, @Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : ""})*@
+                                                            @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7})
+                                                            @*Html.TextBoxFor(Model=>Model.BudgEstNexFin[TableCount],new { @class = "form-control", @id = @name7, @Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : " "})*@
                                                                 @Html.ValidationMessage(@name7, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -1239,8 +1240,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name8" type="text" value="">-->
-                                                                @Html.TextBox(@name8, details!=null ? details.PerVarRevEstOverBudgEstNxtFin.ToString("F") : "", new { @class = "form-control", @id = @name8, @readonly="readonly"})
-                                                                @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstNxtFin[TableCount],new { @class = "form-control", @id = @name8, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : ""})*@
+                                                                @Html.TextBox(@name8, details!=null ? details.PerVarRevEstOverBudgEstNxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name8, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstNxtFin[TableCount],new { @class = "form-control", @id = @name8, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : " "})*@
                                                                 @Html.ValidationMessage(@name8, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -1248,8 +1249,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name8" type="text" value="">-->
-                                                            @Html.TextBox(@name8, details!=null ? details.PerVarRevEstOverBudgEstNxtFin.ToString("F") : "", new { @class = "form-control", @id = @name8, @readonly="readonly"})
-                                                            @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstNxtFin[TableCount],new { @class = "form-control", @id = @name8, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : ""})*@
+                                                            @Html.TextBox(@name8, details!=null ? details.PerVarRevEstOverBudgEstNxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name8, @readonly="readonly"})
+                                                            @*Html.TextBoxFor(Model=>Model.PerVarRevEstOverBudgEstNxtFin[TableCount],new { @class = "form-control", @id = @name8, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : " "})*@
                                                                 @Html.ValidationMessage(@name8, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -1259,8 +1260,8 @@
                                                             <td>
                                                                 <div class="form-group">
                                                                     <!-- <input id="@name9" type="text" value="">-->
-                                                                @Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : "", new { @class = "form-control", @id = @name9})
-                                                                @*Html.TextBoxFor(Model=>Model.ACAndBWPropRENxtFin[TableCount],new { @class = "form-control", @id = @name9, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRENxtFin) : "" })*@
+                                                                @Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9})
+                                                                @*Html.TextBoxFor(Model=>Model.ACAndBWPropRENxtFin[TableCount],new { @class = "form-control", @id = @name9, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRENxtFin) : " " })*@
                                                                 @Html.ValidationMessage(@name9, "",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
@@ -1270,8 +1271,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name10" type="text" value="">-->
-                                                                @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : "", new { @class = "form-control", @id = @name10, @readonly="readonly"})
-                                                                @*Html.TextAreaFor(Model=>Model.Justification[TableCount],new { @class = "form-control", @id = @name10, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.Justification) : ""  })*@
+                                                                @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10, @readonly="readonly"})
+                                                                @*Html.TextAreaFor(Model=>Model.Justification[TableCount],new { @class = "form-control", @id = @name10, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.Justification) : " "  })*@
                                                                 @Html.ValidationMessage(@name10, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -1279,8 +1280,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name10" type="text" value="">-->
-                                                            @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : "", new { @class = "form-control", @id = @name10})
-                                                            @*Html.TextAreaFor(Model=>Model.Justification[TableCount],new { @class = "form-control", @id = @name10, @Value = details!=null ? Convert.ToString(details.Justification) : ""  })*@
+                                                            @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10})
+                                                            @*Html.TextAreaFor(Model=>Model.Justification[TableCount],new { @class = "form-control", @id = @name10, @Value = details!=null ? Convert.ToString(details.Justification) : " "  })*@
                                                                 @Html.ValidationMessage(@name10, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -1345,7 +1346,7 @@
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })
                                     <input id="@Submit" class="Submit" type="submit" style="align-self:center">
-                              }
+                                    @*}*@
                             </div>
                            
                          }
@@ -1353,8 +1354,8 @@
                         {  
                              <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
                                 <br />
-                             @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
-                             {
+                             @*using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
+                             {*@
                                  @Html.AntiForgeryToken()
                                   <table id="@identi-outertable" class="table" >
                                     <thead>
@@ -1430,8 +1431,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name1" type="text" value="">-->
-                                                                @Html.TextBox(@name1, details!=null ? Convert.ToString(details.BudEstCurrFin) : "", new { @class = "form-control", @id = @name1, @readonly = "readonly" })
-                                                                @*Html.TextBoxFor(Model => Model.BudEstCurrFin[TableCount], new { @class = "form-control", @id = @name1, @readonly="readonly",@value = details!=null ? Convert.ToString(details.BudEstCurrFin) : ""})*@
+                                                                @Html.TextBox(@name1, details!=null ? Convert.ToString(details.BudEstCurrFin) : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly" })
+                                                                @*Html.TextBoxFor(Model => Model.BudEstCurrFin[TableCount], new { @class = "form-control", @id = @name1, @readonly="readonly",@value = details!=null ? Convert.ToString(details.BudEstCurrFin) : " "})*@
                                                                 @Html.ValidationMessage(@name1, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -1439,8 +1440,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name1" type="text" value="">-->
-                                        @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : "", new { @class = "form-control", @id = @name1})
-                                                                @*Html.TextBoxFor(Model => Model.BudEstCurrFin[TableCount], new { @class = "form-control", @id = @name1, @value = details!=null ? Convert.ToString(details.BudEstCurrFin) : ""  })*@
+                                        @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1})
+                                                                @*Html.TextBoxFor(Model => Model.BudEstCurrFin[TableCount], new { @class = "form-control", @id = @name1, @value = details!=null ? Convert.ToString(details.BudEstCurrFin) : " "  })*@
                                                                 @Html.ValidationMessage(@name1, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -1450,8 +1451,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name2" type="text" value="">-->
-                                        @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : "", new { @class = "form-control", @id = @name2, @readonly = "readonly" })
-                                                                @*Html.TextBoxFor(Model => Model.ActPrevFin[TableCount], new { @class = "form-control", @id = @name2, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.ActPrevFin) : ""  })*@
+                                        @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2, @readonly = "readonly" })
+                                                                @*Html.TextBoxFor(Model => Model.ActPrevFin[TableCount], new { @class = "form-control", @id = @name2, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.ActPrevFin) : " "  })*@
                                                                 @Html.ValidationMessage(@name2, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -1459,8 +1460,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name2" type="text" value="">-->
-                                        @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : "", new { @class = "form-control", @id = @name2})
-                                                                @*Html.TextBoxFor(Model => Model.ActPrevFin[TableCount], new { @class = "form-control", @id = @name2, @Value = details!=null ? Convert.ToString(details.ActPrevFin) : ""  })*@
+                                        @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2})
+                                                                @*Html.TextBoxFor(Model => Model.ActPrevFin[TableCount], new { @class = "form-control", @id = @name2, @Value = details!=null ? Convert.ToString(details.ActPrevFin) : " "  })*@
                                                                 @Html.ValidationMessage(@name2, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -1470,8 +1471,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name3" type="text" value="">-->
-                                                                @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : "", new { @class = "form-control", @id = @name3, @readonly = "readonly" })
-                                                                @*Html.TextBoxFor(Model => Model.ActCurrFinTill2ndQuart[TableCount],new { @class = "form-control", @id = @name3, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : ""   })*@
+                                                                @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3, @readonly = "readonly" })
+                                                                @*Html.TextBoxFor(Model => Model.ActCurrFinTill2ndQuart[TableCount],new { @class = "form-control", @id = @name3, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : " "   })*@
                                                                 @Html.ValidationMessage(@name3, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -1479,8 +1480,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name3" type="text" value="">-->
-                                                            @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : "", new { @class = "form-control", @id = @name3})
-                                                            @*Html.TextBoxFor(Model => Model.ActCurrFinTill2ndQuart[TableCount],new { @class = "form-control", @id = @name3, @Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : ""   })*@
+                                                            @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3})
+                                                            @*Html.TextBoxFor(Model => Model.ActCurrFinTill2ndQuart[TableCount],new { @class = "form-control", @id = @name3, @Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : " "   })*@
                                                                 @Html.ValidationMessage(@name3, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -1490,8 +1491,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name4" type="text" value="">-->
-                                                                @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F"): "", new { @class = "form-control", @id = @name4,@readonly="readonly"})
-                                                                @*Html.TextBoxFor(Model => Model.RevEstCurrFin[TableCount],new { @class = "form-control", @id = @name4, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : ""  })*@
+                                                                @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F"): " ", new { @class = "form-control", @id = @name4,@readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model => Model.RevEstCurrFin[TableCount],new { @class = "form-control", @id = @name4, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : " "  })*@
                                                                 @Html.ValidationMessage(@name4, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -1499,8 +1500,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name4" type="text" value="">-->
-                                                            @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : "", new { @class = "form-control", @id = @name4})
-                                                            @*Html.TextBoxFor(Model => Model.RevEstCurrFin[TableCount],new { @class = "form-control", @id = @name4, @Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : ""  })*@
+                                                            @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4})
+                                                            @*Html.TextBoxFor(Model => Model.RevEstCurrFin[TableCount],new { @class = "form-control", @id = @name4, @Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : " "  })*@
                                                                 @Html.ValidationMessage(@name4, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -1510,8 +1511,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name5" type="text" value="">-->
-                                                                @Html.TextBox(@name5, details!=null ? details.PerVarRevEstOverBudgEstCurrFin.ToString("F") : "", new { @class = "form-control", @id = @name5, @readonly="readonly"})
-                                                                @*Html.TextBoxFor(Model => Model.PerVarRevEstOverBudgEstCurrFin[TableCount],new { @class = "form-control", @id = @name5, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : ""  })*@
+                                                                @Html.TextBox(@name5, details!=null ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")) : " ", new { @class = "form-control", @id = @name5, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model => Model.PerVarRevEstOverBudgEstCurrFin[TableCount],new { @class = "form-control", @id = @name5, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : " "  })*@
                                                                 @Html.ValidationMessage(@name5, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -1519,8 +1520,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name5" type="text" value="">-->
-                                                            @Html.TextBox(@name5, details!=null ? details.PerVarRevEstOverBudgEstCurrFin.ToString("F") : "", new { @class = "form-control", @id = @name5, @readonly="readonly"})
-                                                            @*Html.TextBoxFor(Model => Model.PerVarRevEstOverBudgEstCurrFin[TableCount],new { @class = "form-control", @id = @name5, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : ""  })*@
+                                                            @Html.TextBox(@name5, details!=null ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")) : " ", new { @class = "form-control", @id = @name5, @readonly="readonly"})
+                                                            @*Html.TextBoxFor(Model => Model.PerVarRevEstOverBudgEstCurrFin[TableCount],new { @class = "form-control", @id = @name5, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : " "  })*@
                                                             @Html.ValidationMessage(@name5, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -1530,8 +1531,8 @@
                                                             <td>
                                                                 <div class="form-group">
                                                                     <!-- <input id="@name6" type="text" value="">-->
-                                                                @Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : "", new { @class = "form-control", @id = @name6})
-                                                                @*Html.TextBoxFor(Model => Model.ACAndBWPropRECurrFin[TableCount], new { @class = "form-control", @id = @name6, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRECurrFin) : ""  })*@
+                                                                @Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6})
+                                                                @*Html.TextBoxFor(Model => Model.ACAndBWPropRECurrFin[TableCount], new { @class = "form-control", @id = @name6, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRECurrFin) : " "  })*@
                                                                 @Html.ValidationMessage(@name6, "",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
@@ -1541,8 +1542,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name7" type="text" value="">-->
-                                                                @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : "", new { @class = "form-control", @id = @name7, @readonly="readonly"})
-                                                                @*Html.TextBoxFor(Model => Model.BudgEstNexFin[TableCount], new { @class = "form-control", @id = @name7, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : ""  })*@
+                                                                @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model => Model.BudgEstNexFin[TableCount], new { @class = "form-control", @id = @name7, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : " "  })*@
                                                                 @Html.ValidationMessage(@name7, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -1550,8 +1551,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name7" type="text" value="">-->
-                                                            @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : "", new { @class = "form-control", @id = @name7})
-                                                            @*Html.TextBoxFor(Model => Model.BudgEstNexFin[TableCount], new { @class = "form-control", @id = @name7, @Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : ""  })*@
+                                                            @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7})
+                                                            @*Html.TextBoxFor(Model => Model.BudgEstNexFin[TableCount], new { @class = "form-control", @id = @name7, @Value = details!=null ? Convert.ToString(details.BudgEstNexFin) : " "  })*@
                                                             @Html.ValidationMessage(@name7, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -1561,8 +1562,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name8" type="text" value="">-->
-                                                                @Html.TextBox(@name8, details!=null ? details.PerVarRevEstOverBudgEstNxtFin.ToString("F") : "", new { @class = "form-control", @id = @name8, @readonly="readonly"})
-                                                                @*Html.TextBoxFor(Model => Model.PerVarRevEstOverBudgEstNxtFin[TableCount], new { @class = "form-control", @id = @name8, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : ""  })*@
+                                                                @Html.TextBox(@name8, details!=null ? details.PerVarRevEstOverBudgEstNxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name8, @readonly="readonly"})
+                                                                @*Html.TextBoxFor(Model => Model.PerVarRevEstOverBudgEstNxtFin[TableCount], new { @class = "form-control", @id = @name8, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : " "  })*@
                                                                 @Html.ValidationMessage(@name8, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -1570,8 +1571,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name8" type="text" value="">-->
-                                                            @Html.TextBox(@name8, details!=null ? details.PerVarRevEstOverBudgEstNxtFin.ToString("F") : "", new { @class = "form-control", @id = @name8, @readonly="readonly"})
-                                                            @*Html.TextBoxFor(Model => Model.PerVarRevEstOverBudgEstNxtFin[TableCount], new { @class = "form-control", @id = @name8, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : ""  })*@
+                                                            @Html.TextBox(@name8, details!=null ? details.PerVarRevEstOverBudgEstNxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name8, @readonly="readonly"})
+                                                            @*Html.TextBoxFor(Model => Model.PerVarRevEstOverBudgEstNxtFin[TableCount], new { @class = "form-control", @id = @name8, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstNxtFin) : " "  })*@
                                                             @Html.ValidationMessage(@name8, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -1581,8 +1582,8 @@
                                                             <td>
                                                                 <div class="form-group">
                                                                     <!-- <input id="@name9" type="text" value="">-->
-                                                                @Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : "", new { @class = "form-control", @id = @name9})
-                                                                @*Html.TextBoxFor(Model => Model.ACAndBWPropRENxtFin[TableCount], new { @class = "form-control", @id = @name9, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRENxtFin) : ""  })*@
+                                                                @Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9})
+                                                                @*Html.TextBoxFor(Model => Model.ACAndBWPropRENxtFin[TableCount], new { @class = "form-control", @id = @name9, @Value = details!=null ? Convert.ToString(details.ACAndBWPropRENxtFin) : " "  })*@
                                                                 @Html.ValidationMessage(@name9, "",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
@@ -1592,8 +1593,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name10" type="text" value="">-->
-                                                                @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : "", new { @class = "form-control", @id = @name10, @readonly="readonly"})
-                                                                @*Html.TextAreaFor(Model => Model.Justification[TableCount], new { @class = "form-control", @id = @name10, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.Justification) : "" })*@
+                                                                @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10, @readonly="readonly"})
+                                                                @*Html.TextAreaFor(Model => Model.Justification[TableCount], new { @class = "form-control", @id = @name10, @readonly="readonly",@Value = details!=null ? Convert.ToString(details.Justification) : " " })*@
                                                                 @Html.ValidationMessage(@name10, "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -1601,8 +1602,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 <!-- <input id="@name10" type="text" value="">-->
-                                                            @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : "", new { @class = "form-control", @id = @name10})
-                                                            @*Html.TextAreaFor(Model => Model.Justification[TableCount], new { @class = "form-control", @id = @name10, @Value = details!=null ? Convert.ToString(details.Justification) : "" })*@
+                                                            @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10})
+                                                            @*Html.TextAreaFor(Model => Model.Justification[TableCount], new { @class = "form-control", @id = @name10, @Value = details!=null ? Convert.ToString(details.Justification) : " " })*@
                                                                 @Html.ValidationMessage(@name10, "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -1664,7 +1665,7 @@
                                  @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                  @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })
                                  <input id="@Submit" class="Submit" type="submit" style="align-self:center">
-                             }
+                                    @*}*@
                              </div>
                            
                         }
@@ -1676,8 +1677,10 @@
 
            OuterBodyCount++;
        }
-       </div>
     </div>
+       
+    }
+</div>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="~/js/nestedtable.js"></script>
@@ -1852,10 +1855,10 @@
                  $(".PreviousActualBudget").text('Actual ' + (Number.parseInt(year[0]) - Number.parseInt(1)) + '-' + Number.parseInt(year[0]));
                  $(".PreviousHalfYearActualBudget").text('Actual upto 30.09 '+(Number.parseInt(year[0])-Number.parseInt(1)));
                  $(".CurrentYearRevisedEstimates").text('Revised Estimates ' + $("#SelectedAcademicYear").val());
-                 $(".VariationInRevisedEstimates").text('% Variation in RE ' + $("#SelectedAcademicYear").val() + ' over the BE ' + (Number.parseInt(year[0])-Number.parseInt(1)) + '-' + Number.parseInt(year[0]) );
+                 $(".VariationInRevisedEstimates").text('% Variation in RE over the BE ' + $("#SelectedAcademicYear").val()  );
                  $(".ACBWProposalForRevisedEstimates").text('AC & BW Proposal for RE ' + $("#SelectedAcademicYear").val());
                  $(".BudgetEstimatesNextYear").text('Budget Estimates ' + Number.parseInt(year[1]) + '-' + (Number.parseInt(year[1]) + Number.parseInt(1)));
-                 $(".VariationInBudgetEstimates").text('% Variation in BE in ' + Number.parseInt(year[1]) + '-' + (Number.parseInt(year[1]) + Number.parseInt(1)) + 'over the RE ' + $("#SelectedAcademicYear").val());
+                 $(".VariationInBudgetEstimates").text('% Variation in BE ' + Number.parseInt(year[1]) + '-' + (Number.parseInt(year[1]) + Number.parseInt(1)) + 'over the RE ' + $("#SelectedAcademicYear").val());
                  $(".ACBWProposalForBudgetEstimates").text('AC & BW Proposal for BE ' + Number.parseInt(year[1]) + '-' + (Number.parseInt(year[1]) + Number.parseInt(1)));
                  $(".Justification").text('Justification');
         }  

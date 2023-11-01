@@ -188,6 +188,7 @@ namespace BudgetPortal.Controllers
                     dataModel.ActCurrFinTill2ndQuart = Convert.ToDecimal(Form[String.Concat("ActCurrFinTill2ndQuart", SectionNumber, GroupNumber, i)]);
                     //dataModel.RevEstCurrFin = MD.RevEstCurrFin[i];
                     dataModel.RevEstCurrFin = Convert.ToDecimal(Form[String.Concat("RevEstCurrFin", SectionNumber, GroupNumber, i)]);
+                    dataModel.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(Form[String.Concat("PerVarRevEstOverBudgEstCurrFin", SectionNumber, GroupNumber, i)]);
                     //dataModel.BudgEstNexFin = MD.BudgEstNexFin[i];
                     dataModel.BudgEstNexFin = Convert.ToDecimal(Form[String.Concat("BudgEstNexFin", SectionNumber, GroupNumber, i)]);
                     //dataModel.Justification = MD.Justification[i];
