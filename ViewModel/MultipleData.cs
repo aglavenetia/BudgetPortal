@@ -39,9 +39,11 @@ namespace BudgetPortal.ViewModel
         [Column(TypeName = "money")]
         public List<Decimal> RevEstCurrFin { get; set; }
 
+        
         [Column(TypeName = "decimal(4,2)")]
         public List<Decimal> PerVarRevEstOverBudgEstCurrFin { get; set; }
 
+        [Required]
         [Column(TypeName = "money")]
         public List<Decimal> ACAndBWPropRECurrFin { get; set; }
 
@@ -51,6 +53,7 @@ namespace BudgetPortal.ViewModel
         [Column(TypeName = "decimal(4,2)")]
         public List<Decimal> PerVarRevEstOverBudgEstNxtFin { get; set; }
 
+        [Required]
         [Column(TypeName = "money")]
         public List<Decimal> ACAndBWPropRENxtFin { get; set; }
 
