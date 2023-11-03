@@ -13,7 +13,6 @@ namespace BudgetPortal.Controllers
 {
     public class GroupsController : Controller
     {
-        private int SelectedSectionNo = 0;
         private readonly ApplicationDbContext _context;
         public GroupsController(ApplicationDbContext context)
         {
@@ -22,10 +21,9 @@ namespace BudgetPortal.Controllers
 
         // GET: Groups
         public async Task<IActionResult> Index(int Sectionid)
-        {   
-             Console.Write("Section Number : " + Sectionid);
-             SelectedSectionNo= Sectionid;
-             var applicationDbContext = _context.BudgetGroups.Where(b =>b.SectionNo == Sectionid).Include(b => b.Sections);
+        {        
+           var applicationDbContext = _context.BudgetGroups.Where(b =>b.SectionNo == Sectionid).Include(b => b.Sections);
+            ViewData["SecNo"] = Sectionid;
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -49,9 +47,10 @@ namespace BudgetPortal.Controllers
         }
 
         // GET: Groups/Create
-        public IActionResult Create()
+        public IActionResult Create(int Sectionid)
         {
-            ViewData["SectionNo"] = new SelectList(_context.BudgetSections, "SectionNo", "SectionNo");
+            ViewData["SectionNo"] = new SelectList(_context.BudgetSections, "SectionNo", "SectionNo", Sectionid);
+            ViewData["SectionID"] = Sectionid;
             return View();                     
         }
 
@@ -66,7 +65,7 @@ namespace BudgetPortal.Controllers
             {
                 _context.Add(budgetGroups);
                 await _context.SaveChangesAsync();
-                Console.WriteLine("budgetGroups.SectionNo:" + budgetGroups.SectionNo);
+                //Console.WriteLine("budgetGroups.SectionNo:" + budgetGroups.SectionNo);
                 return RedirectToAction(nameof(Index), "Groups",new { sectionid = budgetGroups.SectionNo });
             }
             ViewData["SectionNo"] = new SelectList(_context.BudgetSections, "SectionNo", "SectionNo", budgetGroups.SectionNo);

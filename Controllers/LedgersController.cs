@@ -23,6 +23,9 @@ namespace BudgetPortal.Controllers
         public async Task<IActionResult> Index(String SubGroupid)
         {
             var applicationDbContext = _context.BudgetLedgers.Where (b=> (b.SubGroupNo).Equals(SubGroupid) ).Include(b => b.subGroups);
+            ViewData["SubGroupNo"] = SubGroupid;
+            var GroupNo = _context.BudgetSubGroups.Where(a=>a.SubGroupNo.Equals(SubGroupid)).Select(a=>a.GroupNo).FirstOrDefault();
+            ViewData["GroupNo"] = GroupNo.ToString();
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -46,9 +49,10 @@ namespace BudgetPortal.Controllers
         }
 
         // GET: Ledgers/Create
-        public IActionResult Create()
+        public IActionResult Create(String SubGroupid)
         {
-            ViewData["SubGroupNo"] = new SelectList(_context.BudgetSubGroups, "SubGroupNo", "SubGroupNo");
+            ViewData["SubGroupNo"] = new SelectList(_context.BudgetSubGroups, "SubGroupNo", "SubGroupNo", SubGroupid);
+            ViewData["SubGroupID"] = SubGroupid;
             return View();
         }
 
