@@ -46,7 +46,7 @@ namespace BudgetPortal.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["GroupId"] = _context.BudgetSubGroups.Where(b => b.SubGroupNo == id).Select(b => b.GroupNo).FirstOrDefault();
             return View(budgetSubGroups);
         }
 
@@ -89,6 +89,7 @@ namespace BudgetPortal.Controllers
             {
                 return NotFound();
             }
+            ViewData["GroupId"] = _context.BudgetSubGroups.Where(b => b.SubGroupNo == id).Select(b => b.GroupNo).FirstOrDefault();
             ViewData["GroupNo"] = new SelectList(_context.BudgetGroups, "GroupNo", "GroupNo", budgetSubGroups.GroupNo);
             return View(budgetSubGroups);
         }
@@ -123,7 +124,8 @@ namespace BudgetPortal.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), "SubGroups", new { Groupid = budgetSubGroups.GroupNo });
             }
             ViewData["GroupNo"] = new SelectList(_context.BudgetGroups, "GroupNo", "GroupNo", budgetSubGroups.GroupNo);
             return View(budgetSubGroups);
@@ -164,7 +166,8 @@ namespace BudgetPortal.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            //return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), "SubGroups", new { Groupid = budgetSubGroups.GroupNo });
         }
 
         private bool BudgetSubGroupsExists(string id)

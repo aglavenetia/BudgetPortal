@@ -14,6 +14,7 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="SubGroupNo" />
+            
             <div class="form-group">
                 <label asp-for="subGroupName" class="control-label"></label>
                 <input asp-for="subGroupName" class="form-control" />
@@ -26,7 +27,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="CreatedDateTime" class="control-label"></label>
-                <input asp-for="CreatedDateTime" class="form-control" />
+                <input asp-for="CreatedDateTime" class="form-control" disabled="true" />
                 <span asp-validation-for="CreatedDateTime" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -37,7 +38,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" asp-controller="SubGroups" asp-route-Groupid="@ViewData["GroupId"]">Back to List</a>
 </div>
 
 @section Scripts {

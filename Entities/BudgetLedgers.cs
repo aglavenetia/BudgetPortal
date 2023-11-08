@@ -5,7 +5,7 @@ namespace BudgetPortal.Entities
     public class BudgetLedgers
     {
         [Key]
-        [StringLength(10)]
+        [StringLength(15)]
         public String LedgerNo { get; set; }
 
         [StringLength(200)]

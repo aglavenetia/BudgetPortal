@@ -42,7 +42,7 @@ namespace BudgetPortal.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["SectionId"] = _context.BudgetGroups.Where(b => b.GroupNo == id).Select(b => b.SectionNo).FirstOrDefault();
             return View(budgetGroups);
         }
 
@@ -85,6 +85,7 @@ namespace BudgetPortal.Controllers
             {
                 return NotFound();
             }
+            ViewData["SectionId"] = _context.BudgetGroups.Where(b => b.GroupNo == id).Select(b => b.SectionNo).FirstOrDefault();
             ViewData["SectionNo"] = new SelectList(_context.BudgetSections, "SectionNo", "SectionNo", budgetGroups.SectionNo);
             return View(budgetGroups);
         }
@@ -119,7 +120,8 @@ namespace BudgetPortal.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), "Groups", new { sectionid = budgetGroups.SectionNo });
             }
             ViewData["SectionNo"] = new SelectList(_context.BudgetSections, "SectionNo", "SectionNo", budgetGroups.SectionNo);
             return View(budgetGroups);
@@ -160,7 +162,8 @@ namespace BudgetPortal.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            //return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), "Groups", new { sectionid = budgetGroups.SectionNo });
         }
 
         private bool BudgetGroupsExists(string id)

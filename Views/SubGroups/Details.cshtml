@@ -12,6 +12,12 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SubGroupNo)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SubGroupNo)
+        </dd>
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.subGroupName)
         </dt>
         <dd class = "col-sm-10">
@@ -33,5 +39,5 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.SubGroupNo">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" asp-controller="SubGroups" asp-route-Groupid="@ViewData["GroupId"]">Back to List</a>
 </div>
