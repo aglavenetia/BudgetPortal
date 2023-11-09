@@ -299,7 +299,10 @@
                                                             <img src="~/Images/plus.png" />
                                                             <div id="NestedTable" style="display:none">
                                                                 <table class="table ChildGrid">
-                                                                    <tr>
+                                                                 
+                                                                    if(@Subs.RequireInput.Equals("True")
+                                                                    {
+                                                                       <tr>
                                                                         <th>Ledger Number</th>
                                                                         <th>Ledger Name</th>
                                                                         <!--<th class="CurrentBudgetEstimates w-50"></th>
@@ -319,12 +322,27 @@
                                                                         }
                                                                         <th class="Justification w-50"></th-->
                                                                     </tr>
-                                                                    @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
+                                                                       @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
+                                                                       {
+                                                                          <tr>
+                                                                            <td>@Ledgers.LedgerNo</td>
+                                                                            <td>@Ledgers.LedgerName</td>
+                                                                          </tr>
+                                                                       }
+                                                                    }
+                                                                    else
                                                                     {
+                                                                       <tr>
+                                                                          <th>Ledger Number</th>
+                                                                          <th>Ledger Name</th>                                                                       
+                                                                       </tr>
+                                                                      @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
+                                                                      {
                                                                         <tr>
                                                                             <td>@Ledgers.LedgerNo</td>
                                                                             <td>@Ledgers.LedgerName</td>
                                                                         </tr>
+                                                                      }
                                                                     }
                                                                 </table>
                                                             </div>
@@ -639,6 +657,38 @@
                                                             <img src="~/Images/plus.png" />
                                                             <div id="NestedTable" style="display:none">
                                                                 <table class="table ChildGrid">
+                                                                    if(@Subs.RequireInput.Equals("True")
+                                                                    {
+                                                                    <tr>
+                                                                        <th>Ledger Number</th>
+                                                                        <th>Ledger Name</th>
+                                                                        <!--<th class="CurrentBudgetEstimates w-50"></th>
+                                                                        <th class="PreviousActualBudget w-50"></th>
+                                                                        <th class="PreviousHalfYearActualBudget w-50"></th>
+                                                                        <th class="CurrentYearRevisedEstimates w-50"></th>
+                                                                        <th class="VariationInRevisedEstimates w-50"></th>
+                                                                        @if (User.IsInRole("Admin"))
+                                                                        {
+                                                                                <th class="ACBWProposalForRevisedEstimates w-50"></th>
+                                                                        }
+                                                                        <th class="BudgetEstimatesNextYear w-50"></th>
+                                                                        <th class="VariationInBudgetEstimates w-50"></th>
+                                                                        @if (User.IsInRole("Admin"))
+                                                                        {
+                                                                                <th class="ACBWProposalForBudgetEstimates w-50"></th>
+                                                                        }
+                                                                        <th class="Justification w-50"></th-->
+                                                                    </tr>
+                                                                    @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
+                                                                    {
+                                                                        <tr>
+                                                                            <td>@Ledgers.LedgerNo</td>
+                                                                            <td>@Ledgers.LedgerName</td>
+                                                                        </tr>
+                                                                    }
+                                                                    }
+                                                                    else
+                                                                    {
                                                                     <tr>
                                                                         <th>Ledger Number</th>
                                                                         <th>Ledger Name</th>
@@ -649,6 +699,7 @@
                                                                             <td>@Ledgers.LedgerNo</td>
                                                                             <td>@Ledgers.LedgerName</td>
                                                                         </tr>
+                                                                    }
                                                                     }
                                                                 </table>
                                                             </div>
@@ -1093,6 +1144,38 @@
                                                             <img src="~/Images/plus.png" />
                                                             <div id="NestedTable" style="display:none">
                                                                 <table class="table ChildGrid">
+                                                                    if(@Subs.RequireInput.Equals("True")
+                                                                    {
+                                                                    <tr>
+                                                                        <th>Ledger Number</th>
+                                                                        <th>Ledger Name</th>
+                                                                        <!--<th class="CurrentBudgetEstimates w-50"></th>
+                                                                        <th class="PreviousActualBudget w-50"></th>
+                                                                        <th class="PreviousHalfYearActualBudget w-50"></th>
+                                                                        <th class="CurrentYearRevisedEstimates w-50"></th>
+                                                                        <th class="VariationInRevisedEstimates w-50"></th>
+                                                                        @if (User.IsInRole("Admin"))
+                                                                        {
+                                                                                <th class="ACBWProposalForRevisedEstimates w-50"></th>
+                                                                        }
+                                                                        <th class="BudgetEstimatesNextYear w-50"></th>
+                                                                        <th class="VariationInBudgetEstimates w-50"></th>
+                                                                        @if (User.IsInRole("Admin"))
+                                                                        {
+                                                                                <th class="ACBWProposalForBudgetEstimates w-50"></th>
+                                                                        }
+                                                                        <th class="Justification w-50"></th-->
+                                                                    </tr>
+                                                                    @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
+                                                                    {
+                                                                        <tr>
+                                                                            <td>@Ledgers.LedgerNo</td>
+                                                                            <td>@Ledgers.LedgerName</td>
+                                                                        </tr>
+                                                                    }
+                                                                    }
+                                                                    else
+                                                                    {
                                                                     <tr>
                                                                         <th>Ledger Number</th>
                                                                         <th>Ledger Name</th>
@@ -1103,6 +1186,7 @@
                                                                             <td>@Ledgers.LedgerNo</td>
                                                                             <td>@Ledgers.LedgerName</td>
                                                                         </tr>
+                                                                    }
                                                                     }
                                                                 </table>
                                                             </div>
@@ -1420,6 +1504,38 @@
                                                             <img src="~/Images/plus.png" />
                                                             <div id="NestedTable" style="display:none">
                                                                 <table class="table ChildGrid">
+                                                                    if(@Subs.RequireInput.Equals("True")
+                                                                    {
+                                                                    <tr>
+                                                                        <th>Ledger Number</th>
+                                                                        <th>Ledger Name</th>
+                                                                        <!--<th class="CurrentBudgetEstimates w-50"></th>
+                                                                        <th class="PreviousActualBudget w-50"></th>
+                                                                        <th class="PreviousHalfYearActualBudget w-50"></th>
+                                                                        <th class="CurrentYearRevisedEstimates w-50"></th>
+                                                                        <th class="VariationInRevisedEstimates w-50"></th>
+                                                                        @if (User.IsInRole("Admin"))
+                                                                        {
+                                                                                <th class="ACBWProposalForRevisedEstimates w-50"></th>
+                                                                        }
+                                                                        <th class="BudgetEstimatesNextYear w-50"></th>
+                                                                        <th class="VariationInBudgetEstimates w-50"></th>
+                                                                        @if (User.IsInRole("Admin"))
+                                                                        {
+                                                                                <th class="ACBWProposalForBudgetEstimates w-50"></th>
+                                                                        }
+                                                                        <th class="Justification w-50"></th-->
+                                                                    </tr>
+                                                                    @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
+                                                                    {
+                                                                        <tr>
+                                                                            <td>@Ledgers.LedgerNo</td>
+                                                                            <td>@Ledgers.LedgerName</td>
+                                                                        </tr>
+                                                                    }
+                                                                    }
+                                                                    else
+                                                                    {
                                                                     <tr>
                                                                         <th>Ledger Number</th>
                                                                         <th>Ledger Name</th>
@@ -1430,6 +1546,7 @@
                                                                             <td>@Ledgers.LedgerNo</td>
                                                                             <td>@Ledgers.LedgerName</td>
                                                                         </tr>
+                                                                    }
                                                                     }
                                                                 </table>
                                                             </div>

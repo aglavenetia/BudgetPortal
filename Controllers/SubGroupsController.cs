@@ -63,7 +63,7 @@ namespace BudgetPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SubGroupNo,subGroupName,GroupNo,CreatedDateTime")] BudgetSubGroups budgetSubGroups)
+        public async Task<IActionResult> Create([Bind("SubGroupNo,subGroupName,GroupNo,RequireInput,CreatedDateTime")] BudgetSubGroups budgetSubGroups)
         {
             if (ModelState.IsValid)
             {
@@ -99,7 +99,7 @@ namespace BudgetPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("SubGroupNo,subGroupName,GroupNo,CreatedDateTime")] BudgetSubGroups budgetSubGroups)
+        public async Task<IActionResult> Edit(string id, [Bind("SubGroupNo,subGroupName,GroupNo,RequireInput,CreatedDateTime")] BudgetSubGroups budgetSubGroups)
         {
             if (id != budgetSubGroups.SubGroupNo)
             {
@@ -146,6 +146,7 @@ namespace BudgetPortal.Controllers
             {
                 return NotFound();
             }
+            ViewData["GroupId"] = _context.BudgetSubGroups.Where(b => b.SubGroupNo == id).Select(b => b.GroupNo).FirstOrDefault();
 
             return View(budgetSubGroups);
         }

@@ -19,20 +19,25 @@
                 <label asp-for="subGroupName" class="control-label"></label>
                 <input asp-for="subGroupName" class="form-control" />
                 <span asp-validation-for="subGroupName" class="text-danger"></span>
-            </div>
+            </div><br />
             <div class="form-group">
                 <label asp-for="GroupNo" class="control-label"></label>
                 <select asp-for="GroupNo" class="form-control" asp-items="ViewBag.GroupNo"></select>
                 <span asp-validation-for="GroupNo" class="text-danger"></span>
-            </div>
+            </div><br />
+            <div class="form-group">
+                <label asp-for="RequireInput" class="control-label">Does the Ledgers require Input ?</label><br />
+                <input type="radio" asp-for="RequireInput" value="true" id="true" /> True <br />
+                <input type="radio" asp-for="RequireInput" value="false" id="false"/> False <br />
+            </div> <br />
             <div class="form-group">
                 <label asp-for="CreatedDateTime" class="control-label"></label>
-                <input asp-for="CreatedDateTime" class="form-control" disabled="true" />
+                <input asp-for="CreatedDateTime" class="form-control" readonly="readonly" />
                 <span asp-validation-for="CreatedDateTime" class="text-danger"></span>
-            </div>
+            </div><br />
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
+            </div><br />
         </form>
     </div>
 </div>

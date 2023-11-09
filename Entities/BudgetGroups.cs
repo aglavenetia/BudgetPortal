@@ -15,7 +15,7 @@ namespace BudgetPortal.Entities
 
         public int SectionNo { get; set; }
 
-        public virtual BudgetSections? Sections { get; set; } = null!;
+        public BudgetSections? Sections { get; set; } = null!;
 
         public ICollection<BudgetSubGroups>? SubGroups { get; set; }
 

@@ -142,7 +142,7 @@ namespace BudgetPortal.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["SectionId"] = _context.BudgetGroups.Where(b => b.GroupNo == id).Select(b => b.SectionNo).FirstOrDefault();
             return View(budgetGroups);
         }
 
