@@ -340,7 +340,7 @@
                                                                                     {
                                                                                         <div class="form-group">
                                                                                            
-                                                        @Html.TextBox(@name1+"Ledger", details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1+"Ledger", @name=@name1})
+                                                                                            @Html.TextBox(@name1+"Ledger", details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1+"Ledger", @name=@name1})
                                                                                             
                                                                                             @Html.ValidationMessage(@name1+"Ledger",  "",new {@class = "text-danger"})
                                                                                         </div>
@@ -539,106 +539,121 @@
                                                             @Subs.subGroupName
                                                         </td>
                                                         <td>
-                                                        @if (User.IsInRole("Admin")||@Subs.RequireInput)
+                                                        @if (User.IsInRole("Admin"))
                                                         {
                                                             <div class="form-group">
-                                                                <!-- <input id="@name1" type="text" value="">-->
                                                                 @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
-                                                                @*Html.TextBoxFor(Model=> Model.BudEstCurrFin[TableCount],new { @class = "form-control", @id = @name1, @readonly = "readonly",@value = details!=null ? Convert.ToString(details.BudEstCurrFin) : " "})*@
                                                                 @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"})
                                                             </div>
                                                         }
-                                                        else
-                                                        {
-                                                            <div class="form-group">
-                                                                <!-- <input id="@name1" type="text" value="">-->
-                                                                @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @name=@name1})
-                                                                @*Html.TextBoxFor(Model=> Model.BudEstCurrFin[TableCount],new { @class = "form-control", @id = @name1, @value = details!=null ? Convert.ToString(details.BudEstCurrFin) : " "})*@
-                                                                @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"})
-                                                            </div>
-                                                        }
-                                                        </td>
-                                                        <td>
-                                                            @if (User.IsInRole("Admin") || @Subs.RequireInput)
-                                                        {
-                                                            <div class="form-group">
-                                                                <!-- <input id="@name2" type="text" value="">-->
-                                                                @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
-                                                                @*Html.TextBoxFor(Model=> Model.ActPrevFin[TableCount], new { @class = "form-control", @id = @name2, @readonly = "readonly", @Value = details!=null ? Convert.ToString(details.ActPrevFin) : " "})*@
-                                                                @Html.ValidationMessage(@name2,  "",new {@class = "text-danger"})
-                                                            </div>
-                                                        }
-                                                        else
-                                                        {
-                                                            <div class="form-group">
-                                                                <!-- <input id="@name2" type="text" value="">-->
-                                                                @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2})
-                                                                @*Html.TextBoxFor(Model=> Model.ActPrevFin[TableCount], new { @class = "form-control", @id = @name2,@Value = details!=null ? Convert.ToString(details.ActPrevFin) : " "})*@
-                                                                @Html.ValidationMessage(@name2,  "",new {@class = "text-danger"})
-                                                            </div>
-                                                        }
-                                                        </td>
-                                                        <td>
-                                                            @if (User.IsInRole("Admin") || @Subs.RequireInput)
+                                                        else if(@Subs.RequireInput)
                                                         {
                                                              <div class="form-group">
-                                                                <!-- <input id="@name3" type="text" value="">-->
+                                                                @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"})
+                                                            </div>   
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @name=@name1})
+                                                                @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"})
+                                                            </div>
+                                                        }
+                                                        </td>
+                                                        <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
+                                                            <div class="form-group">                                
+                                                                @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name2,  "",new {@class = "text-danger"})
+                                                            </div>
+                                                        }
+                                                        else if(@Subs.RequireInput)
+                                                        {
+                                                                <div class="form-group">
+                                                                    @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
+                                                                    @Html.ValidationMessage(@name2,  "",new {@class = "text-danger"})
+                                                                </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2})
+                                                                @Html.ValidationMessage(@name2,  "",new {@class = "text-danger"})
+                                                            </div>
+                                                        }
+                                                        </td>
+                                                        <td>
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
+                                                             <div class="form-group">
                                                                 @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3, @readonly = "readonly"})
-                                                                @*Html.TextBoxFor(Model=> Model.ActCurrFinTill2ndQuart[TableCount], new { @class = "form-control", @id = @name3,  @readonly = "readonly", @Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : " "})*@
                                                                 @Html.ValidationMessage(@name3,  "",new {@class = "text-danger"})
-                                                            </div>                                                            
+                                                             </div>
+                                                        }
+                                                        else if(@Subs.RequireInput)
+                                                        {
+                                                              <div class="form-group">
+                                                                @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name3,  "",new {@class = "text-danger"})
+                                                             </div>  
                                                         }
                                                         else
                                                         {
                                                             <div class="form-group">
-                                                                <!-- <input id="@name3" type="text" value="">-->
                                                                 @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3})
-                                                                @*Html.TextBoxFor(Model=> Model.ActCurrFinTill2ndQuart[TableCount], new { @class = "form-control", @id = @name3, @Value = details!=null ? Convert.ToString(details.ActCurrFinTill2ndQuart) : " "})*@
                                                                 @Html.ValidationMessage(@name3,  "",new {@class = "text-danger"})
                                                             </div>
                                                         }
                                                         </td>
                                                         <td>
-                                                        @if (User.IsInRole("Admin")||@Subs.RequireInput)
+                                                        @if (User.IsInRole("Admin"))
                                                         {
                                                             <div class="form-group">
-                                                                <!-- <input id="@name4" type="text" value="">-->
                                                                 @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4, @readonly = "readonly"})
-                                                                @*Html.TextBoxFor(Model=> Model.RevEstCurrFin[TableCount], new { @class = "form-control", @id = @name4,  @readonly = "readonly",@Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : " "})*@
                                                                 @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"})
-                                                            </div>                                                            
+                                                            </div>
+                                                        }
+                                                        else if(@Subs.RequireInput)
+                                                        {
+                                                              <div class="form-group">
+                                                                @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"})
+                                                              </div>  
                                                         }
                                                         else
                                                         {
                                                             <div class="form-group">
-                                                                <!-- <input id="@name4" type="text" value="">-->
                                                                 @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4})
-                                                                @*Html.TextBoxFor(Model=> Model.RevEstCurrFin[TableCount], new { @class = "form-control", @id = @name4, @Value = details!=null ? Convert.ToString(details.RevEstCurrFin) : " "})*@
                                                                 @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"})
                                                             </div>
                                                         }
                                                         </td>
                                                         <td>
-                                                        @if (User.IsInRole("Admin")||@Subs.RequireInput)
+                                                        @if (User.IsInRole("Admin"))
                                                         {
                                                             <div class="form-group">
-                                                                <!-- <input id="@name5" type="text" value="">-->
                                                                 @Html.TextBox(@name5, details!=null ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
-                                                                @*Html.TextBoxFor(Model=> Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new { @class = "form-control", @id = @name5, @readonly = "readonly",@Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : " "})*@
                                                                 @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"})
-                                                            </div>                                                            
+                                                            </div>
+                                                        }
+                                                        else if(@Subs.RequireInput)
+                                                        {
+                                                              <div class="form-group">
+                                                                @Html.TextBox(@name5, details!=null ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"})
+                                                              </div>  
                                                         }
                                                         else
                                                         {
                                                             <div class="form-group">
-                                                                <!-- <input id="@name5" type="text" value="">-->
                                                                 @Html.TextBox(@name5, details!=null ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")) : " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
-                                                                @*Html.TextBoxFor(Model=> Model.PerVarRevEstOverBudgEstCurrFin[TableCount], new { @class = "form-control", @id = @name5, @Value = details!=null ? Convert.ToString(details.PerVarRevEstOverBudgEstCurrFin) : " "})*@
                                                                 @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"})
                                                             </div>
                                                         }
                                                         </td>
-                                                        @if (User.IsInRole("Admin") && !@Subs.RequireInput)
+                                                        @if (User.IsInRole("Admin"))
                                                         {
                                                             <td>
                                                                 <div class="form-group">
@@ -648,6 +663,10 @@
                                                                 @Html.ValidationMessage(@name6,  "*",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
+                                                        }
+                                                        else if (@Subs.RequireInput)
+                                                        {
+                                                            
                                                         }
                                                         @if (User.IsInRole("Admin") && @Subs.RequireInput)
                                                         {
@@ -1589,7 +1608,7 @@
                                                                                     {
                                                                                         <div class="form-group">
                                                                                             <!-- <input id="@name2" type="text" value="">-->
-                                                        @Html.TextBox(@name2+"Ledger", details!=null ? details.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2+"Ledger", @readonly = "readonly"})
+                                                                                            @Html.TextBox(@name2+"Ledger", details!=null ? details.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2+"Ledger", @readonly = "readonly"})
                                                                                             @*Html.TextBoxFor(Model=> Model.ActPrevFin[TableCount], new { @class = "form-control", @id = @name2, @readonly = "readonly", @Value = details!=null ? Convert.ToString(details.ActPrevFin) : " "})*@
                                                                                             @Html.ValidationMessage(@name2+"Ledger",  "",new {@class = "text-danger"})
                                                                                         </div>
