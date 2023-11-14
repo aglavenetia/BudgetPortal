@@ -76,9 +76,6 @@ namespace BudgetPortal.Controllers
             if (User.Identity.Name.Equals("admin@test.com"))
             {
                 var username = User.Identity.Name;
-                //var DivName = _context.Users
-                //            .Where(x => x.UserName.Equals(username))
-                //          .Select(x => x.BranchName).First();
                 var DivName = MD.SelectedDivisionName.ToString();
                 var SelectedDivisionID = _context.Division
                                        .Where(d => d.DivisionName == DivName)
@@ -167,41 +164,64 @@ namespace BudgetPortal.Controllers
                  var SubGroups = _context.BudgetSubGroups
                           .Where(x => x.GroupNo.Equals(GroupNumber))
                           .Select(x => x.SubGroupNo).ToList();
-            
+                 
 
                 for (int i = 0; i < SubGroups.Count(); i++)
                 {
-                   var LedgerNumber = _context.BudgetLedgers
+                    var dataModel = new BudgetDetails();
+
+                    var LedgerStatus = _context.BudgetSubGroups
+                          .Where(x => x.SubGroupNo.Equals(SubGroups[i]))
+                          .Select(x => x.RequireInput).First();
+
+                    var Ledgers = _context.BudgetLedgers
                           .Where(x => x.SubGroupNo.Equals(SubGroups[i]))
                           .Select(x => x.LedgerNo).ToList();
-                  
-                    var dataModel = new BudgetDetails();
-                
+
+                  if(LedgerStatus)
+                  {
+                    for(int j=0; j < Ledgers.Count();i++)
+                      { 
+                        dataModel.DivisionID = Convert.ToInt32(SelectedDivisionID);
+                        dataModel.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
+                        dataModel.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
+                        dataModel.BudEstCurrFin = Convert.ToDecimal(Form[String.Concat("BudEstCurrFin", SectionNumber, GroupNumber, i, Ledgers[j])]);
+                        dataModel.ActPrevFin = Convert.ToDecimal(Form[String.Concat("ActPrevFin", SectionNumber, GroupNumber, i, Ledgers[j])]);
+                        dataModel.ActCurrFinTill2ndQuart = Convert.ToDecimal(Form[String.Concat("ActCurrFinTill2ndQuart", SectionNumber, GroupNumber, i, Ledgers[j])]);
+                        dataModel.RevEstCurrFin = Convert.ToDecimal(Form[String.Concat("RevEstCurrFin", SectionNumber, GroupNumber, i, Ledgers[j])]);
+                        //dataModel.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(Form[String.Concat("PerVarRevEstOverBudgEstCurrFin", SectionNumber, GroupNumber, i, Ledgers[j])]);
+                        dataModel.BudgEstNexFin = Convert.ToDecimal(Form[String.Concat("BudgEstNexFin", SectionNumber, GroupNumber, i, Ledgers[j])]);
+                        dataModel.Justification = Convert.ToString(Form[String.Concat("Justification", SectionNumber, GroupNumber, i, Ledgers[j])]);
+                        dataModel.SectionNumber = Convert.ToInt32(SectionNumber);
+                        dataModel.GroupNumber = GroupNumber;
+                        dataModel.SubGroupNumber = SubGroups[i];
+                        dataModel.LedgerNumber = Ledgers[j];
+
+                        _context.BudgetDetails.Add(dataModel);
+                        _context.SaveChanges();
+                      }
+                    }
+                    
+                  else
+                  { 
                     dataModel.DivisionID = Convert.ToInt32(SelectedDivisionID);
                     dataModel.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
                     dataModel.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
-                    //dataModel.BudEstCurrFin = MD.BudEstCurrFin[i];
                     dataModel.BudEstCurrFin = Convert.ToDecimal(Form[String.Concat("BudEstCurrFin", SectionNumber, GroupNumber,i)]);
-                    //dataModel.ActPrevFin = MD.ActPrevFin[i];
                     dataModel.ActPrevFin = Convert.ToDecimal(Form[String.Concat("ActPrevFin", SectionNumber, GroupNumber, i)]);
-                    //dataModel.ActCurrFinTill2ndQuart = MD.ActCurrFinTill2ndQuart[i];
                     dataModel.ActCurrFinTill2ndQuart = Convert.ToDecimal(Form[String.Concat("ActCurrFinTill2ndQuart", SectionNumber, GroupNumber, i)]);
-                    //dataModel.RevEstCurrFin = MD.RevEstCurrFin[i];
                     dataModel.RevEstCurrFin = Convert.ToDecimal(Form[String.Concat("RevEstCurrFin", SectionNumber, GroupNumber, i)]);
-                    dataModel.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(Form[String.Concat("PerVarRevEstOverBudgEstCurrFin", SectionNumber, GroupNumber, i)]);
-                    //dataModel.BudgEstNexFin = MD.BudgEstNexFin[i];
+                    //dataModel.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(Form[String.Concat("PerVarRevEstOverBudgEstCurrFin", SectionNumber, GroupNumber, i)]);       
                     dataModel.BudgEstNexFin = Convert.ToDecimal(Form[String.Concat("BudgEstNexFin", SectionNumber, GroupNumber, i)]);
-                    //dataModel.Justification = MD.Justification[i];
                     dataModel.Justification = Convert.ToString(Form[String.Concat("Justification", SectionNumber, GroupNumber, i)]);
                     dataModel.SectionNumber = Convert.ToInt32(SectionNumber);
                     dataModel.GroupNumber    = GroupNumber;
                     dataModel.SubGroupNumber = SubGroups[i];
-                    //foreach(var No in LedgerNumber)
-                       //dataModel.LedgerNumber += No;
-
+                
                    _context.BudgetDetails.Add(dataModel);
                    _context.SaveChanges();
-             }
+                  }
+                }
 
                var LoggedInDivisionID = _context.Division
                                    .Where(d => d.DivisionName == DivName)
@@ -233,16 +253,6 @@ namespace BudgetPortal.Controllers
                return View("Index",MD);
             }
         }
-
-        //Update Budget Details in Database
-        //[HttpPost]
-        //[Authorize]
-       // [ValidateAntiForgeryToken]
-       // public IActionResult UpdateDetailsAdmin(MultipleData MD, IFormCollection Form)
-       // {
-            
-            
-       // }
 
         //Displays details while changing values in DropDownList
         [HttpGet]
