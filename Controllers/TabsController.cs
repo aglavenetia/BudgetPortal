@@ -181,7 +181,7 @@ namespace BudgetPortal.Controllers
                   if(LedgerStatus)
                   {
                     for(int j=0; j < Ledgers.Count();i++)
-                      { 
+                    { 
                         dataModel.DivisionID = Convert.ToInt32(SelectedDivisionID);
                         dataModel.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
                         dataModel.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
@@ -189,7 +189,7 @@ namespace BudgetPortal.Controllers
                         dataModel.ActPrevFin = Convert.ToDecimal(Form[String.Concat("ActPrevFin", SectionNumber, GroupNumber, i, Ledgers[j])]);
                         dataModel.ActCurrFinTill2ndQuart = Convert.ToDecimal(Form[String.Concat("ActCurrFinTill2ndQuart", SectionNumber, GroupNumber, i, Ledgers[j])]);
                         dataModel.RevEstCurrFin = Convert.ToDecimal(Form[String.Concat("RevEstCurrFin", SectionNumber, GroupNumber, i, Ledgers[j])]);
-                        //dataModel.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(Form[String.Concat("PerVarRevEstOverBudgEstCurrFin", SectionNumber, GroupNumber, i, Ledgers[j])]);
+                            //dataModel.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(Form[String.Concat("PerVarRevEstOverBudgEstCurrFin", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
                         dataModel.BudgEstNexFin = Convert.ToDecimal(Form[String.Concat("BudgEstNexFin", SectionNumber, GroupNumber, i, Ledgers[j])]);
                         dataModel.Justification = Convert.ToString(Form[String.Concat("Justification", SectionNumber, GroupNumber, i, Ledgers[j])]);
                         dataModel.SectionNumber = Convert.ToInt32(SectionNumber);
@@ -199,8 +199,8 @@ namespace BudgetPortal.Controllers
 
                         _context.BudgetDetails.Add(dataModel);
                         _context.SaveChanges();
-                      }
                     }
+                  }
                     
                   else
                   { 

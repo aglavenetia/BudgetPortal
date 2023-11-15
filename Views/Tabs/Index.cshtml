@@ -137,7 +137,7 @@
                                              }
                                            
                                         </tr>
-                </thead>
+                      </thead>
                       <tbody>
                                                 <tr>
                                                     <td>
@@ -303,8 +303,10 @@
                                                                        @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
                                                                        {
 
-                                                                          var Ledgerdetails = (from a in Model.Detailss where a.LedgerNumber.Equals(@Ledgers.LedgerNo) select a).FirstOrDefault();
-                                                                          <tr>
+                                                                         var Ledgerdetails = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();
+                                                  
+                                                                                                 
+                                                                            <tr>
                                                                                 <td>@Ledgers.LedgerNo</td>
                                                                                 <td>@Ledgers.LedgerName</td>
                                                                                 <td>
@@ -873,7 +875,7 @@
                                                                     <table class="table ChildGrid">
                                                                         @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
                                                                         {
-                                                                            var Ledgerdetails = (from a in Model.Detailss where a.LedgerNumber.Equals(@Ledgers.LedgerNo) select a).FirstOrDefault();
+                                                                            var Ledgerdetails = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();
 
                                                                             <tr>
                                                                                 <td>@Ledgers.LedgerNo</td>
@@ -1579,7 +1581,7 @@
                                                                     <table class="table ChildGrid">                                                                       
                                                                         @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
                                                                         {
-                                                                            var Ledgerdetails = (from a in Model.Detailss where a.LedgerNumber.Equals(@Ledgers.LedgerNo) select a).FirstOrDefault();
+                                                                            var Ledgerdetails = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();
                                                                             <tr>
                                                                                 <td>@Ledgers.LedgerNo</td>
                                                                                 <td>@Ledgers.LedgerName</td>
@@ -2149,7 +2151,7 @@
                                                                     <table class="table ChildGrid">                                                                       
                                                                         @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
                                                                         {
-                                                                            var Ledgerdetails = (from a in Model.Detailss where a.LedgerNumber.Equals(@Ledgers.LedgerNo) select a).FirstOrDefault();
+                                                                            var Ledgerdetails = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();
 
                                                                             <tr>
                                                                                 <td>@Ledgers.LedgerNo</td>
