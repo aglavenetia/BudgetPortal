@@ -4,6 +4,7 @@ using BudgetPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetPortal.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231116055727_UPdatingRequiredInFieldsInBudgetDetails")]
+    partial class UPdatingRequiredInFieldsInBudgetDetails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -123,29 +126,11 @@ namespace BudgetPortal.Data.Migrations
 
             modelBuilder.Entity("BudgetPortal.Entities.BudgetDetails", b =>
                 {
-                    b.Property<int>("DivisionID")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("FinancialYear1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FinancialYear2")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SectionNumber")
-                        .HasColumnType("int");
-
-                    b.Property<string>("GroupNumber")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("SubGroupNumber")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("LedgerNumber")
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("ACAndBWPropRECurrFin")
                         .HasColumnType("money");
@@ -173,9 +158,27 @@ namespace BudgetPortal.Data.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETDATE()");
 
+                    b.Property<int>("DivisionID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FinancialYear1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FinancialYear2")
+                        .HasColumnType("int");
+
+                    b.Property<string>("GroupNumber")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
                     b.Property<string>("Justification")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LedgerNumber")
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<decimal>("PerVarRevEstOverBudgEstCurrFin")
                         .HasColumnType("decimal(4,2)");
@@ -186,10 +189,18 @@ namespace BudgetPortal.Data.Migrations
                     b.Property<decimal>("RevEstCurrFin")
                         .HasColumnType("money");
 
+                    b.Property<int>("SectionNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SubGroupNumber")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
                     b.Property<string>("SupportingDocumentPath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("DivisionID", "FinancialYear1", "FinancialYear2", "SectionNumber", "GroupNumber", "SubGroupNumber", "LedgerNumber");
+                    b.HasKey("Id");
 
                     b.ToTable("BudgetDetails");
                 });

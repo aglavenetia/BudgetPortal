@@ -518,15 +518,17 @@
                                                             @Subs.subGroupName
                                                         </td>
                                                         <td>
+                                                        
                                                         @if (@Subs.RequireInput)
                                                         {
+                                                            var LedgerSumBudEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstCurrFin).Sum();                                                                                                                            
                                                             <div class="form-group">
-                                                                @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
+                                                                @Html.TextBox(@name1, LedgerSumBudEstCurrFin!=null ? LedgerSumBudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
                                                                 @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"})
                                                             </div>
                                                         }
                                                         else if(User.IsInRole("Admin"))
-                                                        {
+                                                        {   
                                                              <div class="form-group">
                                                                 @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
                                                                 @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"})
@@ -543,15 +545,16 @@
                                                         <td>
                                                         @if (@Subs.RequireInput)
                                                         {
-                                                            <div class="form-group">                                
-                                                                @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
+                                                            var LedgerSumActPrevFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActPrevFin).Sum();
+                                                            <div class="form-group">                                                                                                                             
+                                                                @Html.TextBox(@name2, LedgerSumActPrevFin!=null ? LedgerSumActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
                                                                 @Html.ValidationMessage(@name2,  "",new {@class = "text-danger"})
                                                             </div>
                                                         }
                                                         else if(User.IsInRole("Admin"))
                                                         {
                                                                 <div class="form-group">
-                                                                    @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
+                                                                    @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F"): " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name2,  "",new {@class = "text-danger"})
                                                                 </div>
                                                         }
@@ -566,13 +569,14 @@
                                                         <td>
                                                         @if (@Subs.RequireInput)
                                                         {
+                                                                var LedgerSumActCurrFinTill2ndQuart = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActCurrFinTill2ndQuart).Sum();
                                                              <div class="form-group">
-                                                                @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3, @readonly = "readonly"})
+                                                                @Html.TextBox(@name3, LedgerSumActCurrFinTill2ndQuart!=null ? LedgerSumActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3, @readonly = "readonly"})
                                                                 @Html.ValidationMessage(@name3,  "",new {@class = "text-danger"})
                                                              </div>
                                                         }
                                                         else if(User.IsInRole("Admin"))
-                                                        {
+                                                        {                                       
                                                               <div class="form-group">
                                                                 @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3, @readonly = "readonly"})
                                                                 @Html.ValidationMessage(@name3,  "",new {@class = "text-danger"})
@@ -589,8 +593,9 @@
                                                         <td>
                                                         @if (@Subs.RequireInput)
                                                         {
+                                                            var LedgerSumRevEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.RevEstCurrFin).Sum();
                                                             <div class="form-group">
-                                                                @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4, @readonly = "readonly"})
+                                                                @Html.TextBox(@name4, LedgerSumRevEstCurrFin!=null ? LedgerSumRevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4, @readonly = "readonly"})
                                                                 @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -612,8 +617,10 @@
                                                         <td>
                                                         @if (@Subs.RequireInput)
                                                         {
+                                                            var LedgerSumRevEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.RevEstCurrFin).Sum();
+                                                            var LedgerSumBudEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstCurrFin).Sum();                                                                                                                            
                                                             <div class="form-group">
-                                                                @Html.TextBox(@name5, details!=null ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
+                                                                @Html.TextBox(@name5, LedgerSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? (Convert.ToDecimal(LedgerSumRevEstCurrFin.ToString("F"))- Convert.ToDecimal(LedgerSumBudEstCurrFin.ToString("F")))/Convert.ToDecimal(LedgerSumBudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                 @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -634,9 +641,10 @@
                                                         </td>
                                                         @if (User.IsInRole("Admin") && @Subs.RequireInput)
                                                         {
+                                                            var LedgerSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
                                                             <td>
-                                                              <div class="form-group">                                                                   
-                                                                @Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6})
+                                                              <div class="form-group">
+                                                                    @Html.TextBox(@name6, LedgerSumACAndBWPropRECurrFin!=null ? LedgerSumACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6, @readonly = "readonly"})
                                                                 @Html.ValidationMessage(@name6,  "*",new {@class = "text-danger"})
                                                               </div>
                                                             </td>
@@ -653,8 +661,9 @@
                                                         <td>
                                                         @if (@Subs.RequireInput)
                                                         {
+                                                            var LedgerSumBudgEstNexFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudgEstNexFin).Sum();
                                                             <div class="form-group">
-                                                                @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly = "readonly"})
+                                                                    @Html.TextBox(@name7, LedgerSumBudgEstNexFin!=null ? LedgerSumBudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly = "readonly"})
                                                                 @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
@@ -676,8 +685,9 @@
                                                         <td>
                                                         @if (@Subs.RequireInput)
                                                         {
+                                                            var LedgerSumPerVarRevEstOverBudgEstNxtFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.PerVarRevEstOverBudgEstNxtFin).Sum();
                                                             <div class="form-group">
-                                                                @Html.TextBox(@name8, details!=null ? details.PerVarRevEstOverBudgEstNxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
+                                                                    @Html.TextBox(@name8, LedgerSumPerVarRevEstOverBudgEstNxtFin!=null ? LedgerSumPerVarRevEstOverBudgEstNxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                 @Html.ValidationMessage(@name8,  "",new {@class = "text-danger"})
                                                             </div>
                                                         }
@@ -692,9 +702,10 @@
                                                         </td>
                                                         @if (User.IsInRole("Admin") && @Subs.RequireInput) 
                                                         {
+                                                            var LedgerSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
                                                             <td>
-                                                                <div class="form-group">                          
-                                                                    @Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9, @readonly = "readonly"})
+                                                                <div class="form-group">
+                                                                    @Html.TextBox(@name9, LedgerSumACAndBWPropRENxtFin!=null ? LedgerSumACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name9,  "*",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
@@ -1088,189 +1099,200 @@
                                                         <td>
                                                             @Subs.subGroupName
                                                         </td>
-                                                        <td>
-                                                            @if (@Subs.RequireInput)
-                                                            {
-                                                                <div class="form-group">
-                                                                    @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @name=@name1})
-                                                                    @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
+                                                         <td>
+                                                        
+                                                        @if (@Subs.RequireInput)
+                                                        {
+                                                            var LedgerSumBudEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstCurrFin).Sum();                                                                                                                            
+                                                            <div class="form-group">
+                                                                @Html.TextBox(@name1, LedgerSumBudEstCurrFin!=null ? LedgerSumBudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"})
+                                                            </div>
+                                                        }
+                                                        else if(User.IsInRole("Admin"))
+                                                        {   
+                                                             <div class="form-group">
+                                                                @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"})
+                                                            </div>   
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @name=@name1})
+                                                                @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"})
+                                                            </div>
+                                                        }
                                                         </td>
                                                         <td>
-                                                            @if (@Subs.RequireInput)
-                                                            {
+                                                        @if (@Subs.RequireInput)
+                                                        {
+                                                            var LedgerSumActPrevFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActPrevFin).Sum();
+                                                            <div class="form-group">                                                                                                                             
+                                                                @Html.TextBox(@name2, LedgerSumActPrevFin!=null ? LedgerSumActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name2,  "",new {@class = "text-danger"})
+                                                            </div>
+                                                        }
+                                                        else if(User.IsInRole("Admin"))
+                                                        {
                                                                 <div class="form-group">
-                                                                    @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
+                                                                    @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F"): " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name2,  "",new {@class = "text-danger"})
                                                                 </div>
-                                                            }
-                                                            else if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name2,  "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2})
-                                                                    @Html.ValidationMessage(@name2,  "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2})
+                                                                @Html.ValidationMessage(@name2,  "",new {@class = "text-danger"})
+                                                            </div>
+                                                        }
                                                         </td>
                                                         <td>
-                                                            @if (@Subs.RequireInput)
-                                                            {
-                                                                <div class="form-group">
-                                                                    @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name3,  "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name3,  "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3})
-                                                                    @Html.ValidationMessage(@name3,  "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
+                                                        @if (@Subs.RequireInput)
+                                                        {
+                                                                var LedgerSumActCurrFinTill2ndQuart = (from a in Model.Detailss where a.GroupNumber.Equals(@Subs.SubGroupNo) select a.ActCurrFinTill2ndQuart).Sum();
+                                                             <div class="form-group">
+                                                                @Html.TextBox(@name3, LedgerSumActCurrFinTill2ndQuart!=null ? LedgerSumActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name3,  "",new {@class = "text-danger"})
+                                                             </div>
+                                                        }
+                                                        else if(User.IsInRole("Admin"))
+                                                        {                                       
+                                                              <div class="form-group">
+                                                                @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name3,  "",new {@class = "text-danger"})
+                                                             </div>  
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3})
+                                                                @Html.ValidationMessage(@name3,  "",new {@class = "text-danger"})
+                                                            </div>
+                                                        }
                                                         </td>
                                                         <td>
-                                                            @if (@Subs.RequireInput)
-                                                            {
-                                                                <div class="form-group">
-                                                                    @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4})
-                                                                    @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
+                                                        @if (@Subs.RequireInput)
+                                                        {
+                                                            var LedgerSumRevEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.RevEstCurrFin).Sum();
+                                                            <div class="form-group">
+                                                                @Html.TextBox(@name4, LedgerSumRevEstCurrFin!=null ? LedgerSumRevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"})
+                                                            </div>
+                                                        }
+                                                        else if(User.IsInRole("Admin"))
+                                                        {
+                                                              <div class="form-group">
+                                                                @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"})
+                                                              </div>  
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4})
+                                                                @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"})
+                                                            </div>
+                                                        }
                                                         </td>
-                                                        <td>
-                                                            @if (@Subs.RequireInput)
-                                                            {
-                                                                <div class="form-group">
-                                                                    @Html.TextBox(@name5, details!=null ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    @Html.TextBox(@name5, details!=null ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    @Html.TextBox(@name5, details!=null ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")) : " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
+                                                        <td>                                                    
+                                                        @if (@Subs.RequireInput)
+                                                        {
+                                                            var LedgerSumRevEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.RevEstCurrFin).Sum();
+                                                            var LedgerSumBudEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstCurrFin).Sum();                                                                                                                            
+                                                            <div class="form-group">
+                                                                @Html.TextBox(@name5, LedgerSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? (Convert.ToDecimal(LedgerSumRevEstCurrFin.ToString("F"))- Convert.ToDecimal(LedgerSumBudEstCurrFin.ToString("F")))/Convert.ToDecimal(LedgerSumBudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"})
+                                                            </div>
+                                                        }
+                                                        else if(User.IsInRole("Admin"))
+                                                        {
+                                                              <div class="form-group">
+                                                                @Html.TextBox(@name5, details!=null ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"})
+                                                              </div>  
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                @Html.TextBox(@name5, details!=null ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")) : " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"})
+                                                            </div>
+                                                        }
                                                         </td>
                                                         @if (User.IsInRole("Admin") && @Subs.RequireInput)
                                                         {
+                                                            var LedgerSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
                                                             <td>
-                                                                <div class="form-group">
-                                                                    @Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6})
-                                                                    @Html.ValidationMessage(@name6,  "*",new {@class = "text-danger"})
-                                                                </div>
+                                                              <div class="form-group">
+                                                                    @Html.TextBox(@name6, LedgerSumACAndBWPropRECurrFin!=null ? LedgerSumACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name6,  "*",new {@class = "text-danger"})
+                                                              </div>
                                                             </td>
                                                         }
                                                         else if (User.IsInRole("Admin") && !@Subs.RequireInput)
                                                         {
                                                             <td>
                                                                 <div class="form-group">
-                                                                    @Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6})
-                                                                    @Html.ValidationMessage(@name6,  "*",new {@class = "text-danger"})
+                                                                @Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6})
+                                                                @Html.ValidationMessage(@name6,  "*",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
                                                         }
                                                         <td>
-                                                            @if (@Subs.RequireInput)
-                                                            {
-                                                                <div class="form-group">
-                                                                    @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"})
-                                                                </div>
+                                                        @if (@Subs.RequireInput)
+                                                        {
+                                                            var LedgerSumBudgEstNexFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudgEstNexFin).Sum();
+                                                            <div class="form-group">
+                                                                    @Html.TextBox(@name7, LedgerSumBudgEstNexFin!=null ? LedgerSumBudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"})
+                                                            </div>                                                            
+                                                        }
+                                                        else if(User.IsInRole("Admin"))
+                                                        {
+                                                            <div class="form-group">
+                                                                @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"})
+                                                            </div>
                                                             }
-                                                            else if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7})
-                                                                    @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7})
+                                                                @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"})
+                                                            </div>
+                                                        }
                                                         </td>
                                                         <td>
-                                                            @if (@Subs.RequireInput)
-                                                            {
-                                                                <div class="form-group">
-                                                                    @Html.TextBox(@name8, details!=null ? details.PerVarRevEstOverBudgEstNxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name8,  "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    @Html.TextBox(@name8, details!=null ? details.PerVarRevEstOverBudgEstNxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name8,  "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                        </td>
-                                                        @if (User.IsInRole("Admin") && @Subs.RequireInput)
+                                                        @if (@Subs.RequireInput)
                                                         {
+                                                            var LedgerSumPerVarRevEstOverBudgEstNxtFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.PerVarRevEstOverBudgEstNxtFin).Sum();
+                                                            <div class="form-group">
+                                                                    @Html.TextBox(@name8, LedgerSumPerVarRevEstOverBudgEstNxtFin!=null ? LedgerSumPerVarRevEstOverBudgEstNxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name8,  "",new {@class = "text-danger"})
+                                                            </div>
+                                                        }
+                                
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                @Html.TextBox(@name8, details!=null ? details.PerVarRevEstOverBudgEstNxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name8,  "",new {@class = "text-danger"})
+                                                            </div>
+                                                        }
+                                                        </td>
+                                                        @if (User.IsInRole("Admin") && @Subs.RequireInput) 
+                                                        {
+                                                            var LedgerSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
                                                             <td>
                                                                 <div class="form-group">
-                                                                    @Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9, @readonly = "readonly"})
+                                                                    @Html.TextBox(@name9, LedgerSumACAndBWPropRENxtFin!=null ? LedgerSumACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name9,  "*",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
                                                         }
-                                                        else if (User.IsInRole("Admin") && !@Subs.RequireInput)
+                                                        else if (User.IsInRole("Admin") && !@Subs.RequireInput) 
                                                         {
                                                             <td>
                                                                 <div class="form-group">
@@ -1280,27 +1302,27 @@
                                                             </td>
                                                         }
                                                         <td>
-                                                            @if (@Subs.RequireInput)
-                                                            {
-                                                                <div class="form-group">
-                                                                    @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name10,  "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else if (User.IsInRole("Admin"))
-                                                            {
-                                                                <div class="form-group">
-                                                                    @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name10,  "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10})
-                                                                    @Html.ValidationMessage(@name10,  "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
+                                                        @if (@Subs.RequireInput)
+                                                        {
+                                                            <div class="form-group">
+                                                                @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name10,  "",new {@class = "text-danger"})
+                                                            </div>
+                                                        }
+                                                        else if(User.IsInRole("Admin"))
+                                                        {
+                                                             <div class="form-group">
+                                                                @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name10,  "",new {@class = "text-danger"})
+                                                            </div>   
+                                                        }
+                                                        else
+                                                        {                                                                                                             
+                                                            <div class="form-group">
+                                                                @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10})
+                                                                @Html.ValidationMessage(@name10,  "",new {@class = "text-danger"})
+                                                            </div>
+                                                        }
                                                         </td>
 
                                                     </tr>
@@ -1794,10 +1816,12 @@
                                                             @Subs.subGroupName
                                                         </td>
                                                         <td>
+
                                                             @if (@Subs.RequireInput)
                                                             {
+                                                                var LedgerSumBudEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstCurrFin).Sum();
                                                                 <div class="form-group">
-                                                                    @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
+                                                                    @Html.TextBox(@name1, LedgerSumBudEstCurrFin!=null ? LedgerSumBudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"})
                                                                 </div>
                                                             }
@@ -1819,15 +1843,16 @@
                                                         <td>
                                                             @if (@Subs.RequireInput)
                                                             {
+                                                                var LedgerSumActPrevFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActPrevFin).Sum();
                                                                 <div class="form-group">
-                                                                    @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
+                                                                    @Html.TextBox(@name2, LedgerSumActPrevFin!=null ? LedgerSumActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name2,  "",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                             else if (User.IsInRole("Admin"))
                                                             {
                                                                 <div class="form-group">
-                                                                    @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
+                                                                    @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F"): " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name2,  "",new {@class = "text-danger"})
                                                                 </div>
                                                             }
@@ -1842,8 +1867,9 @@
                                                         <td>
                                                             @if (@Subs.RequireInput)
                                                             {
+                                                                var LedgerSumActCurrFinTill2ndQuart = (from a in Model.Detailss where a.GroupNumber.Equals(@Subs.SubGroupNo) select a.ActCurrFinTill2ndQuart).Sum();
                                                                 <div class="form-group">
-                                                                    @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3, @readonly = "readonly"})
+                                                                    @Html.TextBox(@name3, LedgerSumActCurrFinTill2ndQuart!=null ? LedgerSumActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name3,  "",new {@class = "text-danger"})
                                                                 </div>
                                                             }
@@ -1865,8 +1891,9 @@
                                                         <td>
                                                             @if (@Subs.RequireInput)
                                                             {
+                                                                var LedgerSumRevEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.RevEstCurrFin).Sum();
                                                                 <div class="form-group">
-                                                                    @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4, @readonly = "readonly"})
+                                                                    @Html.TextBox(@name4, LedgerSumRevEstCurrFin!=null ? LedgerSumRevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"})
                                                                 </div>
                                                             }
@@ -1888,10 +1915,12 @@
                                                         <td>
                                                             @if (@Subs.RequireInput)
                                                             {
-                                                                <div class="form-group">
-                                                                    @Html.TextBox(@name5, details!=null ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"})
-                                                                </div>
+                                                            var LedgerSumRevEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.RevEstCurrFin).Sum();
+                                                            var LedgerSumBudEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstCurrFin).Sum();                                                                                                                            
+                                                            <div class="form-group">
+                                                                @Html.TextBox(@name5, LedgerSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? (Convert.ToDecimal(LedgerSumRevEstCurrFin.ToString("F"))- Convert.ToDecimal(LedgerSumBudEstCurrFin.ToString("F")))/Convert.ToDecimal(LedgerSumBudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"})
+                                                            </div>
                                                             }
                                                             else if (User.IsInRole("Admin"))
                                                             {
@@ -1910,9 +1939,10 @@
                                                         </td>
                                                         @if (User.IsInRole("Admin") && @Subs.RequireInput)
                                                         {
+                                                            var LedgerSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
                                                             <td>
                                                                 <div class="form-group">
-                                                                    @Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6})
+                                                                    @Html.TextBox(@name6, LedgerSumACAndBWPropRECurrFin!=null ? LedgerSumACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name6,  "*",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
@@ -1929,8 +1959,9 @@
                                                         <td>
                                                             @if (@Subs.RequireInput)
                                                             {
+                                                                var LedgerSumBudgEstNexFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudgEstNexFin).Sum();
                                                                 <div class="form-group">
-                                                                    @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly = "readonly"})
+                                                                    @Html.TextBox(@name7, LedgerSumBudgEstNexFin!=null ? LedgerSumBudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"})
                                                                 </div>
                                                             }
@@ -1952,8 +1983,9 @@
                                                         <td>
                                                             @if (@Subs.RequireInput)
                                                             {
+                                                                var LedgerSumPerVarRevEstOverBudgEstNxtFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.PerVarRevEstOverBudgEstNxtFin).Sum();
                                                                 <div class="form-group">
-                                                                    @Html.TextBox(@name8, details!=null ? details.PerVarRevEstOverBudgEstNxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
+                                                                    @Html.TextBox(@name8, LedgerSumPerVarRevEstOverBudgEstNxtFin!=null ? LedgerSumPerVarRevEstOverBudgEstNxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name8,  "",new {@class = "text-danger"})
                                                                 </div>
                                                             }
@@ -1968,9 +2000,10 @@
                                                         </td>
                                                         @if (User.IsInRole("Admin") && @Subs.RequireInput)
                                                         {
+                                                            var LedgerSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
                                                             <td>
                                                                 <div class="form-group">
-                                                                    @Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9, @readonly = "readonly"})
+                                                                    @Html.TextBox(@name9, LedgerSumACAndBWPropRENxtFin!=null ? LedgerSumACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name9,  "*",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
@@ -2365,10 +2398,12 @@
                                                             @Subs.subGroupName
                                                         </td>
                                                         <td>
+
                                                             @if (@Subs.RequireInput)
                                                             {
+                                                                var LedgerSumBudEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstCurrFin).Sum();
                                                                 <div class="form-group">
-                                                                    @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
+                                                                    @Html.TextBox(@name1, LedgerSumBudEstCurrFin!=null ? LedgerSumBudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"})
                                                                 </div>
                                                             }
@@ -2390,15 +2425,16 @@
                                                         <td>
                                                             @if (@Subs.RequireInput)
                                                             {
+                                                                var LedgerSumActPrevFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActPrevFin).Sum();
                                                                 <div class="form-group">
-                                                                    @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
+                                                                    @Html.TextBox(@name2, LedgerSumActPrevFin!=null ? LedgerSumActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name2,  "",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                             else if (User.IsInRole("Admin"))
                                                             {
                                                                 <div class="form-group">
-                                                                    @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
+                                                                    @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F"): " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name2,  "",new {@class = "text-danger"})
                                                                 </div>
                                                             }
@@ -2413,8 +2449,9 @@
                                                         <td>
                                                             @if (@Subs.RequireInput)
                                                             {
+                                                                var LedgerSumActCurrFinTill2ndQuart = (from a in Model.Detailss where a.GroupNumber.Equals(@Subs.SubGroupNo) select a.ActCurrFinTill2ndQuart).Sum();
                                                                 <div class="form-group">
-                                                                    @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3, @readonly = "readonly"})
+                                                                    @Html.TextBox(@name3, LedgerSumActCurrFinTill2ndQuart!=null ? LedgerSumActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name3,  "",new {@class = "text-danger"})
                                                                 </div>
                                                             }
@@ -2436,8 +2473,9 @@
                                                         <td>
                                                             @if (@Subs.RequireInput)
                                                             {
+                                                                var LedgerSumRevEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.RevEstCurrFin).Sum();
                                                                 <div class="form-group">
-                                                                    @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4, @readonly = "readonly"})
+                                                                    @Html.TextBox(@name4, LedgerSumRevEstCurrFin!=null ? LedgerSumRevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"})
                                                                 </div>
                                                             }
@@ -2459,10 +2497,12 @@
                                                         <td>
                                                             @if (@Subs.RequireInput)
                                                             {
-                                                                <div class="form-group">
-                                                                    @Html.TextBox(@name5, details!=null ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"})
-                                                                </div>
+                                                            var LedgerSumRevEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.RevEstCurrFin).Sum();
+                                                            var LedgerSumBudEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstCurrFin).Sum();                                                                                                                            
+                                                            <div class="form-group">
+                                                                @Html.TextBox(@name5, LedgerSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? (Convert.ToDecimal(LedgerSumRevEstCurrFin.ToString("F"))- Convert.ToDecimal(LedgerSumBudEstCurrFin.ToString("F")))/Convert.ToDecimal(LedgerSumBudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"})
+                                                            </div>
                                                             }
                                                             else if (User.IsInRole("Admin"))
                                                             {
@@ -2481,9 +2521,10 @@
                                                         </td>
                                                         @if (User.IsInRole("Admin") && @Subs.RequireInput)
                                                         {
+                                                            var LedgerSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
                                                             <td>
                                                                 <div class="form-group">
-                                                                    @Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6})
+                                                                    @Html.TextBox(@name6, LedgerSumACAndBWPropRECurrFin!=null ? LedgerSumACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name6,  "*",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
@@ -2500,8 +2541,9 @@
                                                         <td>
                                                             @if (@Subs.RequireInput)
                                                             {
+                                                                var LedgerSumBudgEstNexFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudgEstNexFin).Sum();
                                                                 <div class="form-group">
-                                                                    @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly = "readonly"})
+                                                                    @Html.TextBox(@name7, LedgerSumBudgEstNexFin!=null ? LedgerSumBudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"})
                                                                 </div>
                                                             }
@@ -2523,8 +2565,9 @@
                                                         <td>
                                                             @if (@Subs.RequireInput)
                                                             {
+                                                                var LedgerSumPerVarRevEstOverBudgEstNxtFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.PerVarRevEstOverBudgEstNxtFin).Sum();
                                                                 <div class="form-group">
-                                                                    @Html.TextBox(@name8, details!=null ? details.PerVarRevEstOverBudgEstNxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
+                                                                    @Html.TextBox(@name8, LedgerSumPerVarRevEstOverBudgEstNxtFin!=null ? LedgerSumPerVarRevEstOverBudgEstNxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name8,  "",new {@class = "text-danger"})
                                                                 </div>
                                                             }
@@ -2539,9 +2582,10 @@
                                                         </td>
                                                         @if (User.IsInRole("Admin") && @Subs.RequireInput)
                                                         {
+                                                            var LedgerSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
                                                             <td>
                                                                 <div class="form-group">
-                                                                    @Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9, @readonly = "readonly"})
+                                                                    @Html.TextBox(@name9, LedgerSumACAndBWPropRENxtFin!=null ? LedgerSumACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name9,  "*",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
@@ -2721,16 +2765,16 @@
                         var divisionname = $("#SelectedDivisionName").val();
 
                         var year = academicyear.split('-');
-                        //alert(year[0]);
+                        alert(year[0]);
 
                         var sectionnoid = $('#outerTab li button.active').attr('id');
 
                         var section = sectionnoid.split('-');
 
                         var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
-                        //alert(groupnoid);
+                        alert(groupnoid);
                         var group = groupnoid.split('-');
-                        //alert(group[0]);
+                        alert(group[0]);
 
                         $.ajax
                             ({
@@ -2741,7 +2785,7 @@
                                 success: function (data)
                                 {
                                     //Whatever result you have got from your controller with html partial view replace with a specific html.
-                                    //alert("Inside Ajax");
+                                    alert("Inside Ajax");
                                     //alert($("#outerdiv", data).html());
  
                                     //$("#outerdiv").html(data);// HTML DOM replace
@@ -2754,6 +2798,7 @@
                                 error: function (jqXHR, textStatus, errorThrown)
                                 {
                                     alert(errorThrown);
+                                    alert("Error Thrown");
                                 }
 
                             });

@@ -180,18 +180,18 @@ namespace BudgetPortal.Controllers
 
                   if(LedgerStatus)
                   {
-                    for(int j=0; j < Ledgers.Count();i++)
+                    for(int j=0; j < Ledgers.Count();j++)
                     { 
                         dataModel.DivisionID = Convert.ToInt32(SelectedDivisionID);
                         dataModel.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
                         dataModel.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
-                        dataModel.BudEstCurrFin = Convert.ToDecimal(Form[String.Concat("BudEstCurrFin", SectionNumber, GroupNumber, i, Ledgers[j])]);
-                        dataModel.ActPrevFin = Convert.ToDecimal(Form[String.Concat("ActPrevFin", SectionNumber, GroupNumber, i, Ledgers[j])]);
-                        dataModel.ActCurrFinTill2ndQuart = Convert.ToDecimal(Form[String.Concat("ActCurrFinTill2ndQuart", SectionNumber, GroupNumber, i, Ledgers[j])]);
-                        dataModel.RevEstCurrFin = Convert.ToDecimal(Form[String.Concat("RevEstCurrFin", SectionNumber, GroupNumber, i, Ledgers[j])]);
+                        dataModel.BudEstCurrFin = Convert.ToDecimal(Form[String.Concat("BudEstCurrFin", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
+                        dataModel.ActPrevFin = Convert.ToDecimal(Form[String.Concat("ActPrevFin", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
+                        dataModel.ActCurrFinTill2ndQuart = Convert.ToDecimal(Form[String.Concat("ActCurrFinTill2ndQuart", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
+                        dataModel.RevEstCurrFin = Convert.ToDecimal(Form[String.Concat("RevEstCurrFin", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
                             //dataModel.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(Form[String.Concat("PerVarRevEstOverBudgEstCurrFin", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
-                        dataModel.BudgEstNexFin = Convert.ToDecimal(Form[String.Concat("BudgEstNexFin", SectionNumber, GroupNumber, i, Ledgers[j])]);
-                        dataModel.Justification = Convert.ToString(Form[String.Concat("Justification", SectionNumber, GroupNumber, i, Ledgers[j])]);
+                        dataModel.BudgEstNexFin = Convert.ToDecimal(Form[String.Concat("BudgEstNexFin", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
+                        dataModel.Justification = Convert.ToString(Form[String.Concat("Justification", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
                         dataModel.SectionNumber = Convert.ToInt32(SectionNumber);
                         dataModel.GroupNumber = GroupNumber;
                         dataModel.SubGroupNumber = SubGroups[i];
@@ -217,7 +217,7 @@ namespace BudgetPortal.Controllers
                     dataModel.SectionNumber = Convert.ToInt32(SectionNumber);
                     dataModel.GroupNumber    = GroupNumber;
                     dataModel.SubGroupNumber = SubGroups[i];
-                
+                    dataModel.LedgerNumber = Convert.ToDecimal(0).ToString();
                    _context.BudgetDetails.Add(dataModel);
                    _context.SaveChanges();
                   }
