@@ -72,28 +72,31 @@ namespace BudgetPortal.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Index(MultipleData MD, IFormCollection Form)
         {
+          
             //Update Budget Details for Admin User
             if (User.Identity.Name.Equals("admin@test.com"))
             {
-                var username = User.Identity.Name;
-                var DivName = MD.SelectedDivisionName.ToString();
-                var SelectedDivisionID = _context.Division
+                if (ModelState.IsValid)
+                { 
+                  var username = User.Identity.Name;
+                  var DivName = MD.SelectedDivisionName.ToString();
+                  var SelectedDivisionID = _context.Division
                                        .Where(d => d.DivisionName == DivName)
                                        .Select(x => x.DivisionID).FirstOrDefault();
-                var splitAcademicYear = MD.SelectedAcademicYear.ToString().Split("-");
-                var SectionNumber = _context.BudgetSections
+                  var splitAcademicYear = MD.SelectedAcademicYear.ToString().Split("-");
+                  var SectionNumber = _context.BudgetSections
                                    .Where(x => x.SectionName.Equals(MD.SectionName))
                                    .Select(x => x.SectionNo).First();
-                var GroupNumber = _context.BudgetGroups
+                  var GroupNumber = _context.BudgetGroups
                               .Where(x => x.GroupName.Equals(MD.GroupName))
                               .Select(x => x.GroupNo).First();
-                var SubGroups = _context.BudgetSubGroups
+                  var SubGroups = _context.BudgetSubGroups
                               .Where(x => x.GroupNo.Equals(GroupNumber))
                               .Select(x => x.SubGroupNo).ToList();
 
 
-                for (int i = 0; i < SubGroups.Count(); i++)
-                {
+                  for (int i = 0; i < SubGroups.Count(); i++)
+                  { 
                     var result = new BudgetDetails();
                         
                         result = _context.BudgetDetails
@@ -140,118 +143,121 @@ namespace BudgetPortal.Controllers
                         }).ToList();
                 MD.AcademicYears.Where(x => x.Text.Equals(MD.SelectedAcademicYear.ToString())).Single().Selected = true;
                 MD.DivisionNames.Where(x => x.Text.Equals(MD.SelectedDivisionName.ToString())).Single().Selected = true;
-
-                return View("Index", MD);
+                }
+               return View("Index", MD);
             }
 
             //Save Budget Details to Database
             else
             {
-                 var username = User.Identity.Name;
-                 var DivName = _context.Users
-                          .Where(x => x.UserName.Equals(username))
-                          .Select(x => x.BranchName).First();
-                 var SelectedDivisionID = _context.Division
-                                   .Where(d => d.DivisionName == DivName)
-                                   .Select(x => x.DivisionID).FirstOrDefault();
-                 var splitAcademicYear = MD.SelectedAcademicYear.ToString().Split("-");      
-                 var SectionNumber = _context.BudgetSections
-                               .Where(x => x.SectionName.Equals(MD.SectionName))
-                               .Select(x => x.SectionNo).First();
-                 var GroupNumber = _context.BudgetGroups
-                          .Where(x => x.GroupName.Equals(MD.GroupName))
-                          .Select(x => x.GroupNo).First();
-                 var SubGroups = _context.BudgetSubGroups
-                          .Where(x => x.GroupNo.Equals(GroupNumber))
-                          .Select(x => x.SubGroupNo).ToList();
-                 
-
-                for (int i = 0; i < SubGroups.Count(); i++)
+                if (ModelState.IsValid)
                 {
-                    var dataModel = new BudgetDetails();
+                    var username = User.Identity.Name;
+                    var DivName = _context.Users
+                             .Where(x => x.UserName.Equals(username))
+                             .Select(x => x.BranchName).First();
+                    var SelectedDivisionID = _context.Division
+                                      .Where(d => d.DivisionName == DivName)
+                                      .Select(x => x.DivisionID).FirstOrDefault();
+                    var splitAcademicYear = MD.SelectedAcademicYear.ToString().Split("-");
+                    var SectionNumber = _context.BudgetSections
+                                  .Where(x => x.SectionName.Equals(MD.SectionName))
+                                  .Select(x => x.SectionNo).First();
+                    var GroupNumber = _context.BudgetGroups
+                             .Where(x => x.GroupName.Equals(MD.GroupName))
+                             .Select(x => x.GroupNo).First();
+                    var SubGroups = _context.BudgetSubGroups
+                             .Where(x => x.GroupNo.Equals(GroupNumber))
+                             .Select(x => x.SubGroupNo).ToList();
 
-                    var LedgerStatus = _context.BudgetSubGroups
-                          .Where(x => x.SubGroupNo.Equals(SubGroups[i]))
-                          .Select(x => x.RequireInput).First();
 
-                    var Ledgers = _context.BudgetLedgers
-                          .Where(x => x.SubGroupNo.Equals(SubGroups[i]))
-                          .Select(x => x.LedgerNo).ToList();
+                    for (int i = 0; i < SubGroups.Count(); i++)
+                    {
+                        var dataModel = new BudgetDetails();
 
-                  if(LedgerStatus)
-                  {
-                    for(int j=0; j < Ledgers.Count();j++)
-                    { 
-                        dataModel.DivisionID = Convert.ToInt32(SelectedDivisionID);
-                        dataModel.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
-                        dataModel.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
-                        dataModel.BudEstCurrFin = Convert.ToDecimal(Form[String.Concat("BudEstCurrFin", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
-                        dataModel.ActPrevFin = Convert.ToDecimal(Form[String.Concat("ActPrevFin", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
-                        dataModel.ActCurrFinTill2ndQuart = Convert.ToDecimal(Form[String.Concat("ActCurrFinTill2ndQuart", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
-                        dataModel.RevEstCurrFin = Convert.ToDecimal(Form[String.Concat("RevEstCurrFin", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
-                            //dataModel.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(Form[String.Concat("PerVarRevEstOverBudgEstCurrFin", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
-                        dataModel.BudgEstNexFin = Convert.ToDecimal(Form[String.Concat("BudgEstNexFin", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
-                        dataModel.Justification = Convert.ToString(Form[String.Concat("Justification", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
-                        dataModel.SectionNumber = Convert.ToInt32(SectionNumber);
-                        dataModel.GroupNumber = GroupNumber;
-                        dataModel.SubGroupNumber = SubGroups[i];
-                        dataModel.LedgerNumber = Ledgers[j];
+                        var LedgerStatus = _context.BudgetSubGroups
+                              .Where(x => x.SubGroupNo.Equals(SubGroups[i]))
+                              .Select(x => x.RequireInput).First();
 
-                        _context.BudgetDetails.Add(dataModel);
-                        _context.SaveChanges();
+                        var Ledgers = _context.BudgetLedgers
+                              .Where(x => x.SubGroupNo.Equals(SubGroups[i]))
+                              .Select(x => x.LedgerNo).ToList();
+
+                        if (LedgerStatus)
+                        {
+                            for (int j = 0; j < Ledgers.Count(); j++)
+                            {
+                                dataModel.DivisionID = Convert.ToInt32(SelectedDivisionID);
+                                dataModel.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
+                                dataModel.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
+                                dataModel.BudEstCurrFin = Convert.ToDecimal(Form[String.Concat("BudEstCurrFin", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
+                                dataModel.ActPrevFin = Convert.ToDecimal(Form[String.Concat("ActPrevFin", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
+                                dataModel.ActCurrFinTill2ndQuart = Convert.ToDecimal(Form[String.Concat("ActCurrFinTill2ndQuart", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
+                                dataModel.RevEstCurrFin = Convert.ToDecimal(Form[String.Concat("RevEstCurrFin", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
+                                //dataModel.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(Form[String.Concat("PerVarRevEstOverBudgEstCurrFin", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
+                                dataModel.BudgEstNexFin = Convert.ToDecimal(Form[String.Concat("BudgEstNexFin", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
+                                dataModel.Justification = Convert.ToString(Form[String.Concat("Justification", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
+                                dataModel.SectionNumber = Convert.ToInt32(SectionNumber);
+                                dataModel.GroupNumber = GroupNumber;
+                                dataModel.SubGroupNumber = SubGroups[i];
+                                dataModel.LedgerNumber = Ledgers[j];
+
+                                _context.BudgetDetails.Add(dataModel);
+                                _context.SaveChanges();
+                            }
+                        }
+
+                        else
+                        {
+                            dataModel.DivisionID = Convert.ToInt32(SelectedDivisionID);
+                            dataModel.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
+                            dataModel.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
+                            dataModel.BudEstCurrFin = Convert.ToDecimal(Form[String.Concat("BudEstCurrFin", SectionNumber, GroupNumber, i)]);
+                            dataModel.ActPrevFin = Convert.ToDecimal(Form[String.Concat("ActPrevFin", SectionNumber, GroupNumber, i)]);
+                            dataModel.ActCurrFinTill2ndQuart = Convert.ToDecimal(Form[String.Concat("ActCurrFinTill2ndQuart", SectionNumber, GroupNumber, i)]);
+                            dataModel.RevEstCurrFin = Convert.ToDecimal(Form[String.Concat("RevEstCurrFin", SectionNumber, GroupNumber, i)]);
+                            //dataModel.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(Form[String.Concat("PerVarRevEstOverBudgEstCurrFin", SectionNumber, GroupNumber, i)]);       
+                            dataModel.BudgEstNexFin = Convert.ToDecimal(Form[String.Concat("BudgEstNexFin", SectionNumber, GroupNumber, i)]);
+                            dataModel.Justification = Convert.ToString(Form[String.Concat("Justification", SectionNumber, GroupNumber, i)]);
+                            dataModel.SectionNumber = Convert.ToInt32(SectionNumber);
+                            dataModel.GroupNumber = GroupNumber;
+                            dataModel.SubGroupNumber = SubGroups[i];
+                            dataModel.LedgerNumber = Convert.ToDecimal(0).ToString();
+                            _context.BudgetDetails.Add(dataModel);
+                            _context.SaveChanges();
+                        }
                     }
-                  }
-                    
-                  else
-                  { 
-                    dataModel.DivisionID = Convert.ToInt32(SelectedDivisionID);
-                    dataModel.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
-                    dataModel.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
-                    dataModel.BudEstCurrFin = Convert.ToDecimal(Form[String.Concat("BudEstCurrFin", SectionNumber, GroupNumber,i)]);
-                    dataModel.ActPrevFin = Convert.ToDecimal(Form[String.Concat("ActPrevFin", SectionNumber, GroupNumber, i)]);
-                    dataModel.ActCurrFinTill2ndQuart = Convert.ToDecimal(Form[String.Concat("ActCurrFinTill2ndQuart", SectionNumber, GroupNumber, i)]);
-                    dataModel.RevEstCurrFin = Convert.ToDecimal(Form[String.Concat("RevEstCurrFin", SectionNumber, GroupNumber, i)]);
-                    //dataModel.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(Form[String.Concat("PerVarRevEstOverBudgEstCurrFin", SectionNumber, GroupNumber, i)]);       
-                    dataModel.BudgEstNexFin = Convert.ToDecimal(Form[String.Concat("BudgEstNexFin", SectionNumber, GroupNumber, i)]);
-                    dataModel.Justification = Convert.ToString(Form[String.Concat("Justification", SectionNumber, GroupNumber, i)]);
-                    dataModel.SectionNumber = Convert.ToInt32(SectionNumber);
-                    dataModel.GroupNumber    = GroupNumber;
-                    dataModel.SubGroupNumber = SubGroups[i];
-                    dataModel.LedgerNumber = Convert.ToDecimal(0).ToString();
-                   _context.BudgetDetails.Add(dataModel);
-                   _context.SaveChanges();
-                  }
+
+                    var LoggedInDivisionID = _context.Division
+                                        .Where(d => d.DivisionName == DivName)
+                                        .Select(x => x.DivisionID).FirstOrDefault();
+                    MD.Sectionss = _context.BudgetSections.ToList();
+                    MD.Groupss = _context.BudgetGroups.ToList();
+                    MD.SubGroupss = _context.BudgetSubGroups.ToList();
+                    MD.Ledgerss = _context.BudgetLedgers.ToList();
+                    MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
+                                     .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+                    MD.DivisionNames = _context.Division.AsEnumerable().Select(x =>
+                         new SelectListItem()
+                         {
+                             Selected = false,
+                             Text = x.DivisionName,
+                             Value = x.DivisionID.ToString()
+
+                         }).ToList();
+                    MD.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
+                        new SelectListItem()
+                        {
+                            Selected = false,
+                            Text = x.Year1 + "-" + x.Year2,
+                            Value = x.Id.ToString()
+
+                        }).ToList();
+                    MD.AcademicYears.Where(x => x.Text.Equals(MD.SelectedAcademicYear.ToString())).Single().Selected = true;
                 }
-
-               var LoggedInDivisionID = _context.Division
-                                   .Where(d => d.DivisionName == DivName)
-                                   .Select(x => x.DivisionID).FirstOrDefault();
-               MD.Sectionss = _context.BudgetSections.ToList();
-               MD.Groupss = _context.BudgetGroups.ToList();
-               MD.SubGroupss = _context.BudgetSubGroups.ToList();
-               MD.Ledgerss = _context.BudgetLedgers.ToList();
-               MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
-                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
-               MD.DivisionNames = _context.Division.AsEnumerable().Select(x =>
-                    new SelectListItem()
-                    {
-                        Selected = false,
-                        Text = x.DivisionName,
-                        Value = x.DivisionID.ToString()
-
-                    }).ToList();
-                MD.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
-                    new SelectListItem()
-                    {
-                        Selected = false,
-                        Text = x.Year1 + "-" + x.Year2,
-                        Value = x.Id.ToString()
-
-                    }).ToList();
-               MD.AcademicYears.Where(x => x.Text.Equals(MD.SelectedAcademicYear.ToString())).Single().Selected = true;
-
                return View("Index",MD);
             }
+          
         }
 
         //Displays details while changing values in DropDownList
