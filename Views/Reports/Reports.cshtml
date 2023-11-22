@@ -270,9 +270,9 @@
                                                        @ReportName @SelectedAcademicYear
                                                     </th>
 
-                                                @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
+                                                    @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
                                                     {
-                                                    <th >
+                                                        <th >
                                                             @Html.Label( Regions.DivisionName)
                                                         </th>
                                                      }
@@ -319,9 +319,11 @@
                                                                                  where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
                                                                                  select a.BudgEstNexFin).Sum();
                                                             }
-
+                                                    var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                     <tr>
                                                         <td class="w-20">
+                                                        @if(LedgerCount >0)
+                                                        {
                                                             <img src="~/Images/plus.png" />
                                                             <div id="NestedTable" style="display:none">
                                                                 <table class="table ChildGrid">
@@ -338,6 +340,7 @@
                                                                     }
                                                                 </table>
                                                             </div>
+                                                        }
                                                         </td>
                                                         <td class="w-20">
                                                             @Subs.SubGroupNo
@@ -350,32 +353,75 @@
                                                         </td>
                                                         @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
                                                         {
-                                                        var result = (from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a).FirstOrDefault();
+                                                            var result = (from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a).FirstOrDefault();
 
                                                              if (ReportName.Equals("Actual"))
                                                             {
-                                                               <td align="right" class="w-20">
-                                                                @Html.Label("Actual" + Regions.DivisionName,result!=null ? Convert.ToDecimal(result.ActPrevFin).ToString("F") : "-")
-                                                               </td>
+                                                                
+                                                                if(Subs.RequireInput)
+                                                                {
+                                                                  var LedgersSum =(Double) (from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ActPrevFin).Sum();
+                                                                  <td align="right" class="w-20">
+                                                                    @Html.Label("Actual" + Regions.DivisionName,@LedgersSum!= 0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
+                                                                  </td>
+                                                                }
+                                                                else
+                                                                {
+                                                                   <td align="right" class="w-20">
+                                                                     @Html.Label("Actual" + Regions.DivisionName,result!=null ? Convert.ToDecimal(result.ActPrevFin).ToString("F") : "-")
+                                                                   </td>
+                                                                }
                                                             }
                                                             else if(ReportName.Equals("Actual Half Year"))
                                                             {
-                                                            <td align="right" class="w-20">
-                                                                @Html.Label("Actual Half Year" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ActCurrFinTill2ndQuart).ToString("F") : "-")
-                                                               </td>
+                                                                if(Subs.RequireInput)
+                                                                {
+                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ActCurrFinTill2ndQuart).Sum();
+                                                                  
+                                                                  <td align="right" class="w-20">
+                                                                    @Html.Label("Actual Half Year" + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
+                                                                  </td>
+                                                                }
+                                                                else
+                                                                {
+                                                                  <td align="right" class="w-20">
+                                                                    @Html.Label("Actual Half Year" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ActCurrFinTill2ndQuart).ToString("F") : "-")
+                                                                  </td>
+                                                                }
                                                             }
                                                             else if(ReportName.Equals("Revised Estimates"))
                                                             {
-                                                            <td align="right" class="w-20">
-                                                                @Html.Label("Revised Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.RevEstCurrFin).ToString("F") : "-")
-                                                                
-                                                               </td> 
+                                                                if(Subs.RequireInput)
+                                                                {
+                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.RevEstCurrFin).Sum();
+                                                                  
+                                                                  <td align="right" class="w-20">
+                                                                    @Html.Label("Revised Estimates" + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
+                                                                  </td>
+                                                                }
+                                                                else
+                                                                {
+                                                                  <td align="right" class="w-20">
+                                                                     @Html.Label("Revised Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.RevEstCurrFin).ToString("F") : "-")
+                                                                  </td>
+                                                                }
                                                             }
                                                             else if (ReportName.Equals("Budget Estimates"))
                                                             {
-                                                            <td align="right" class="w-20">
-                                                                @Html.Label("Budget Estimates"+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.BudgEstNexFin).ToString("F") : "-")
-                                                                </td>
+                                                                if(Subs.RequireInput)
+                                                                {
+                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.BudgEstNexFin).Sum();
+                                                                  
+                                                                  <td align="right" class="w-20">
+                                                                    @Html.Label("Budget Estimates" + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
+                                                                  </td>
+                                                                }
+                                                                else
+                                                                {
+                                                                   <td align="right" class="w-20">
+                                                                      @Html.Label("Budget Estimates"+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.BudgEstNexFin).ToString("F") : "-")
+                                                                   </td>
+                                                                }
                                                             }
                                                         }
                                                     </tr>
@@ -539,9 +585,11 @@
                                                                                  select a.BudgEstNexFin).Sum();
                                                 }
                                                     
-                                                    
+                                                 var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();   
                                                     <tr>
                                                         <td class="w-20">
+                                                         @if(LedgerCount > 0)
+                                                         {
                                                             <img src="~/Images/plus.png" />
                                                             <div id="NestedTable" style="display:none">
                                                                 <table class="table ChildGrid">
@@ -558,6 +606,7 @@
                                                                     }
                                                                 </table>
                                                             </div>
+                                                         }
                                                         </td>
                                                         <td class="w-20">
                                                             @Subs.SubGroupNo
@@ -574,28 +623,71 @@
 
                                                         if (ReportName.Equals("Actual"))
                                                         {
-                                                            <td align="right" class="w-20">
-                                                                @Html.Label("Actual"+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ActPrevFin).ToString("F") : "-")
-                                                            </td>
+
+                                                            if (Subs.RequireInput)
+                                                            {
+                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ActPrevFin).Sum();
+                                                                <td align="right" class="w-20">
+                                                                    @Html.Label("Actual" + Regions.DivisionName,@LedgersSum!= 0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td align="right" class="w-20">
+                                                                    @Html.Label("Actual" + Regions.DivisionName,result!=null ? Convert.ToDecimal(result.ActPrevFin).ToString("F") : "-")
+                                                                </td>
+                                                            }
                                                         }
                                                         else if (ReportName.Equals("Actual Half Year"))
                                                         {
-                                                            <td align="right" class="w-20">
-                                                                @Html.Label("Actual Half Year"+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ActCurrFinTill2ndQuart).ToString("F") : "-")
-                                                            </td>
+                                                            if (Subs.RequireInput)
+                                                            {
+                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ActCurrFinTill2ndQuart).Sum();
+
+                                                                <td align="right" class="w-20">
+                                                                    @Html.Label("Actual Half Year" + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td align="right" class="w-20">
+                                                                    @Html.Label("Actual Half Year" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ActCurrFinTill2ndQuart).ToString("F") : "-")
+                                                                </td>
+                                                            }
                                                         }
                                                         else if (ReportName.Equals("Revised Estimates"))
                                                         {
-                                                            <td align="right" class="w-20">
-                                                                @Html.Label("Revised Estimates"+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.RevEstCurrFin).ToString("F") : "-")
+                                                            if (Subs.RequireInput)
+                                                            {
+                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.RevEstCurrFin).Sum();
 
-                                                            </td>
+                                                                <td align="right" class="w-20">
+                                                                    @Html.Label("Revised Estimates" + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td align="right" class="w-20">
+                                                                    @Html.Label("Revised Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.RevEstCurrFin).ToString("F") : "-")
+                                                                </td>
+                                                            }
                                                         }
                                                         else if (ReportName.Equals("Budget Estimates"))
                                                         {
-                                                            <td align="right" class="w-20">
-                                                                @Html.Label( "Budget Estimates"+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.BudgEstNexFin).ToString("F") : "-")
-                                                            </td>
+                                                            if (Subs.RequireInput)
+                                                            {
+                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.BudgEstNexFin).Sum();
+
+                                                                <td align="right" class="w-20">
+                                                                    @Html.Label("Budget Estimates" + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td align="right" class="w-20">
+                                                                    @Html.Label("Budget Estimates"+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.BudgEstNexFin).ToString("F") : "-")
+                                                                </td>
+                                                            }
                                                         }
                                                     }
                                                     </tr>
@@ -838,28 +930,71 @@
 
                                                         if (ReportName.Equals("Actual"))
                                                         {
-                                                            <td align="right" class="w-20">
-                                                                @Html.Label("Actual"+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ActPrevFin).ToString("F") : "-")
-                                                            </td>
+
+                                                            if (Subs.RequireInput)
+                                                            {
+                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ActPrevFin).Sum();
+                                                                <td align="right" class="w-20">
+                                                                    @Html.Label("Actual" + Regions.DivisionName,@LedgersSum!= 0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td align="right" class="w-20">
+                                                                    @Html.Label("Actual" + Regions.DivisionName,result!=null ? Convert.ToDecimal(result.ActPrevFin).ToString("F") : "-")
+                                                                </td>
+                                                            }
                                                         }
                                                         else if (ReportName.Equals("Actual Half Year"))
                                                         {
-                                                            <td align="right" class="w-20">
-                                                                @Html.Label("Actual Half Year"+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ActCurrFinTill2ndQuart).ToString("F") : "-")
-                                                            </td>
+                                                            if (Subs.RequireInput)
+                                                            {
+                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ActCurrFinTill2ndQuart).Sum();
+
+                                                                <td align="right" class="w-20">
+                                                                    @Html.Label("Actual Half Year" + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td align="right" class="w-20">
+                                                                    @Html.Label("Actual Half Year" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ActCurrFinTill2ndQuart).ToString("F") : "-")
+                                                                </td>
+                                                            }
                                                         }
                                                         else if (ReportName.Equals("Revised Estimates"))
                                                         {
-                                                            <td align="right" class="w-20">
-                                                                @Html.Label("Revised Estimates"+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.RevEstCurrFin).ToString("F") : "-")
+                                                            if (Subs.RequireInput)
+                                                            {
+                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.RevEstCurrFin).Sum();
 
-                                                            </td>
+                                                                <td align="right" class="w-20">
+                                                                    @Html.Label("Revised Estimates" + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td align="right" class="w-20">
+                                                                    @Html.Label("Revised Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.RevEstCurrFin).ToString("F") : "-")
+                                                                </td>
+                                                            }
                                                         }
                                                         else if (ReportName.Equals("Budget Estimates"))
                                                         {
-                                                            <td align="right" class="w-20">
-                                                                @Html.Label("Budget Estimates"+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.BudgEstNexFin).ToString("F") : "-")
-                                                            </td>
+                                                            if (Subs.RequireInput)
+                                                            {
+                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.BudgEstNexFin).Sum();
+
+                                                                <td align="right" class="w-20">
+                                                                    @Html.Label("Budget Estimates" + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td align="right" class="w-20">
+                                                                    @Html.Label("Budget Estimates"+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.BudgEstNexFin).ToString("F") : "-")
+                                                                </td>
+                                                            }
                                                         }
                                                     }
                                                     </tr>
@@ -1059,28 +1194,71 @@
 
                                                         if (ReportName.Equals("Actual"))
                                                         {
-                                                            <td align="right" class="w-20">
-                                                                @Html.Label("Actual" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ActPrevFin).ToString("F") : "-")
-                                                            </td>
+
+                                                            if (Subs.RequireInput)
+                                                            {
+                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ActPrevFin).Sum();
+                                                                <td align="right" class="w-20">
+                                                                    @Html.Label("Actual" + Regions.DivisionName,@LedgersSum!= 0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td align="right" class="w-20">
+                                                                    @Html.Label("Actual" + Regions.DivisionName,result!=null ? Convert.ToDecimal(result.ActPrevFin).ToString("F") : "-")
+                                                                </td>
+                                                            }
                                                         }
                                                         else if (ReportName.Equals("Actual Half Year"))
                                                         {
-                                                            <td align="right" class="w-20">
-                                                                @Html.Label("Actual Half Year" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ActCurrFinTill2ndQuart).ToString("F") : "-")
-                                                            </td>
+                                                            if (Subs.RequireInput)
+                                                            {
+                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ActCurrFinTill2ndQuart).Sum();
+
+                                                                <td align="right" class="w-20">
+                                                                    @Html.Label("Actual Half Year" + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td align="right" class="w-20">
+                                                                    @Html.Label("Actual Half Year" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ActCurrFinTill2ndQuart).ToString("F") : "-")
+                                                                </td>
+                                                            }
                                                         }
                                                         else if (ReportName.Equals("Revised Estimates"))
                                                         {
-                                                            <td align="right" class="w-20">
-                                                                @Html.Label("Revised Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.RevEstCurrFin).ToString("F") : "-")
+                                                            if (Subs.RequireInput)
+                                                            {
+                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.RevEstCurrFin).Sum();
 
-                                                            </td>
+                                                                <td align="right" class="w-20">
+                                                                    @Html.Label("Revised Estimates" + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td align="right" class="w-20">
+                                                                    @Html.Label("Revised Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.RevEstCurrFin).ToString("F") : "-")
+                                                                </td>
+                                                            }
                                                         }
                                                         else if (ReportName.Equals("Budget Estimates"))
                                                         {
-                                                            <td align="right" class="w-20">
-                                                                @Html.Label("Budget Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.BudgEstNexFin).ToString("F") : "-")
-                                                            </td>
+                                                            if (Subs.RequireInput)
+                                                            {
+                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.BudgEstNexFin).Sum();
+
+                                                                <td align="right" class="w-20">
+                                                                    @Html.Label("Budget Estimates" + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td align="right" class="w-20">
+                                                                    @Html.Label("Budget Estimates"+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.BudgEstNexFin).ToString("F") : "-")
+                                                                </td>
+                                                            }
                                                         }
                                                     }
                                                     </tr>

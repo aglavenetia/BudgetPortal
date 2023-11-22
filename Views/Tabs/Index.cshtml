@@ -27,6 +27,17 @@
             @Html.AntiForgeryToken()
 
           <table border="0" cellpadding="5" cellspacing="0" >
+              <tr>
+                  @if (User.IsInRole("Admin"))
+                 {
+                    <td>
+                        @Html.LabelFor(Model => Model.DivisionNames)                       
+                    </td> 
+                 }     
+                    <td>
+                    @Html.LabelFor(Model => Model.AcademicYears)
+                </td>
+              </tr>
           <tr>
            @if (User.IsInRole("Admin"))
            {
@@ -50,6 +61,8 @@
         </table>
         
     </div>
+      <br />
+      <br />
       <br />
       <br />
     <ul id="outerTab" class="nav nav-tabs" role="tablist" >    
@@ -96,10 +109,14 @@
             var SectionSumPerVarRevEstOverBudgEstNxtFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.PerVarRevEstOverBudgEstNxtFin).Sum();
             var SectionSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ACAndBWPropRENxtFin).Sum();
 
+            var GroupsCount = (from a in Model.Groupss where a.SectionNo.Equals(@inner.SectionNo) select a.GroupNo).Count();
+ 
             if (OuterBodyCount == 0)
            {
             <div id="@inneridenti" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="true">
-
+              
+              @if(GroupsCount > 0)
+              {
                  <table id="@inneridenti-Totaltable" class="table">
                       <thead>
                                       <tr>
@@ -184,6 +201,7 @@
                                                 </tr>
                                     </tbody>
                 </table>
+              }
 
                 <ul id="innertab1" class="nav nav-tabs" role="tablist">
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
@@ -228,6 +246,7 @@
                         if (CounterBody == 0)
                         {
                             <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
+                             
                               @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
                               {
                                 @Html.AntiForgeryToken()
@@ -295,13 +314,16 @@
                                                     var name9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
+                                                    var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                    
-
                                                     <tr>
+                                                        
                                                         <td>
-                                                            <img src="~/Images/plus.png" />
-                                                            <div id="NestedTable" style="display:none">
-                                                            @if(@Subs.RequireInput)
+                                                            @if(LedgerCount > 0)
+                                                            {
+                                                               <img src="~/Images/plus.png" />
+                                                               <div id="NestedTable" style="display:none">
+                                                                 @if(@Subs.RequireInput)
                                                             {
                                                                 <table class="table ChildGrid">                                                 
                                                                        @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
@@ -331,7 +353,7 @@
                                                                                             
                                                                                             <!-- @Html.ValidationMessage(@name1+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"}) -->
 
-                                                                                            @Html.ValidationMessageFor(model => model.BudEstCurrFin,"Please enter the value",new {@class = "text-danger"});
+                                                                                            @Html.ValidationMessageFor(model => model.BudEstCurrFin,"*",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                 </td>
@@ -503,7 +525,7 @@
                                                                        }
                                                                 </table>
                                                             }
-                                                            else
+                                                                 else
                                                             {
                                                                 <table class="table ChildGrid">                                                                     
                                                                       @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
@@ -515,7 +537,8 @@
                                                                       }
                                                                 </table>
                                                              }
-                                                            </div>
+                                                               </div>
+                                                            }
                                                         </td>
                                                         <td>
                                                             @Subs.SubGroupNo
@@ -545,7 +568,7 @@
                                                             <div class="form-group">
                                                                 @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @name=@name1})
                                                                 <!-- @Html.ValidationMessage(@name1,  "*",new {@class = "text-danger"}) -->
-                                                                @Html.ValidationMessageFor(model => model.BudEstCurrFin,"Please enter the value",new {@class = "text-danger"});
+                                                                @Html.ValidationMessageFor(model => model.BudEstCurrFin,"*",new {@class = "text-danger"})
                                                             </div>
                                                         }
                                                         </td>
@@ -815,6 +838,7 @@
                         {
                             <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
                                 <br />
+                                
                                 @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
                                 {
                                         @Html.AntiForgeryToken()
@@ -882,12 +906,14 @@
                                                     var name9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
-
+                                                    var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
 
                                                     <tr>
                                                         <td>
-                                                            <img src="~/Images/plus.png" />
-                                                            <div id="NestedTable" style="display:none">
+                                                            @if(LedgerCount >0)
+                                                            {
+                                                              <img src="~/Images/plus.png" />
+                                                              <div id="NestedTable" style="display:none">
                                                                 @if (@Subs.RequireInput)
                                                                 {
                                                                     <table class="table ChildGrid">
@@ -918,7 +944,7 @@
 
                                                                                             <!-- @Html.ValidationMessage(@name1+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"}) -->
 
-                                                                                            @Html.ValidationMessageFor(model => model.BudEstCurrFin,"Please enter the value",new {@class = "text-danger"});
+                                                                                            @Html.ValidationMessageFor(model => model.BudEstCurrFin,"*",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                 </td>
@@ -1103,6 +1129,7 @@
                                                                     </table>
                                                                 }
                                                             </div>
+                                                            }
                                                         </td>
                                                         <td>
                                                             @Subs.SubGroupNo
@@ -1132,7 +1159,7 @@
                                                             <div class="form-group">
                                                                 @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @name=@name1})
                                                                 <!-- @Html.ValidationMessage(@name1,  "*",new {@class = "text-danger"}) -->
-                                                                @Html.ValidationMessageFor(model => model.BudEstCurrFin,"Please enter the value",new {@class = "text-danger"});
+                                                                @Html.ValidationMessageFor(model => model.BudEstCurrFin,"*",new {@class = "text-danger"})
                                                             </div>
                                                         }
                                                         </td>
@@ -1409,6 +1436,8 @@
            {
             <div id="@inneridenti" class="tab-pane fade" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="false">
 
+                @if(GroupsCount>0)
+                {
                     <table id="@inneridenti-Totaltable" class="table">
                         <thead>
                             <tr>
@@ -1493,7 +1522,7 @@
                             </tr>
                         </tbody>
                     </table>
-
+                    }
                 <ul id="innertab2" class="nav nav-tabs" role="tablist">
 
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
@@ -1534,9 +1563,11 @@
                             var SumPerVarRevEstOverBudgEstNxtFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.PerVarRevEstOverBudgEstNxtFin).Sum();
                             var SumACAndBWPropRENxtFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ACAndBWPropRENxtFin).Sum();
 
+
                           if (CounterBody == 0)
                           {
                               <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
+                                  
                                  @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
                                  {
                                   @Html.AntiForgeryToken()
@@ -1604,10 +1635,12 @@
                                                     var name9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
-
+                                                    var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
 
                                                     <tr>
                                                         <td>
+                                                         @if(LedgerCount > 0)
+                                                         {
                                                             <img src="~/Images/plus.png" />
                                                             <div id="NestedTable" style="display:none">
                                                                 @if (@Subs.RequireInput)
@@ -1820,6 +1853,7 @@
                                                                     </table>
                                                                 }
                                                             </div>
+                                                         }
                                                         </td>
                                                         <td>
                                                             @Subs.SubGroupNo
@@ -1849,7 +1883,7 @@
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @name=@name1})
                                                                     <!-- @Html.ValidationMessage(@name1,  "*",new {@class = "text-danger"}) -->
-                                                                    @Html.ValidationMessageFor(model => model.BudEstCurrFin,"Please enter the value",new {@class = "text-danger"});
+                                                                    @Html.ValidationMessageFor(model => model.BudEstCurrFin,"*",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                         </td>
@@ -2119,6 +2153,7 @@
                         {  
                              <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
                                 <br />
+                              
                              @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
                              {
                                  @Html.AntiForgeryToken()
@@ -2186,12 +2221,14 @@
                                                     var name9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
-
+                                                    var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
 
                                                     <tr>
                                                         <td>
-                                                            <img src="~/Images/plus.png" />
-                                                            <div id="NestedTable" style="display:none">
+                                                            @if(LedgerCount > 0)
+                                                            {
+                                                              <img src="~/Images/plus.png" />
+                                                              <div id="NestedTable" style="display:none">
                                                                 @if (@Subs.RequireInput)
                                                                 {
                                                                     <table class="table ChildGrid">                                                                       
@@ -2263,7 +2300,6 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
                                                                                     {
                                                                                         <div class="form-group">
 
@@ -2403,6 +2439,7 @@
                                                                     </table>
                                                                 }
                                                             </div>
+                                                            }
                                                         </td>
                                                         <td>
                                                             @Subs.SubGroupNo
@@ -2432,7 +2469,7 @@
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @name=@name1})
                                                                     <!-- @Html.ValidationMessage(@name1,  "*",new {@class = "text-danger"}) -->
-                                                                    @Html.ValidationMessageFor(model => model.BudEstCurrFin,"Please enter the value",new {@class = "text-danger"});
+                                                                    @Html.ValidationMessageFor(model => model.BudEstCurrFin,"*",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                         </td>
@@ -2711,6 +2748,10 @@
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="~/js/nestedtable.js"></script>
+<script type="text/javascript" src="@Url.Content(" ~/Scripts/jquery-1.10.2.js ")"></script>   
+<script type="text/javascript" src="@Url.Content(" ~/Scripts/jquery.validate.min.js ")"></script>  
+<script type="text/javascript" src="@Url.Content(" ~/Scripts/jquery.validate.unobtrusive.min.js ")"></script>  
+
 @section Scripts
 {
     <script type="text/javascript">
@@ -2786,9 +2827,9 @@
                         var section = sectionnoid.split('-');
 
                         var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
-                        alert(groupnoid);
+                        //alert(groupnoid);
                         var group = groupnoid.split('-');
-                        alert(group[0]);
+                        //alert(group[0]);
 
                         $.ajax
                             ({
@@ -2799,7 +2840,7 @@
                                 success: function (data)
                                 {
                                     //Whatever result you have got from your controller with html partial view replace with a specific html.
-                                    alert("Inside Ajax");
+                                    //alert("Inside Ajax");
                                     //alert($("#outerdiv", data).html());
  
                                     //$("#outerdiv").html(data);// HTML DOM replace
@@ -2812,7 +2853,7 @@
                                 error: function (jqXHR, textStatus, errorThrown)
                                 {
                                     alert(errorThrown);
-                                    alert("Error Thrown");
+                                    //alert("Error Thrown");
                                 }
 
                             });
@@ -2881,7 +2922,7 @@
 
                  $(".CurrentBudgetEstimates").text('Budget Estimates ' + $("#SelectedAcademicYear").val());
                  $(".PreviousActualBudget").text('Actual ' + (Number.parseInt(year[0]) - Number.parseInt(1)) + '-' + Number.parseInt(year[0]));
-                 $(".PreviousHalfYearActualBudget").text('Actual upto 30.09 '+(Number.parseInt(year[0])-Number.parseInt(1)));
+                 $(".PreviousHalfYearActualBudget").text('Actual upto 30.09.'+Number.parseInt(year[0]));
                  $(".CurrentYearRevisedEstimates").text('Revised Estimates ' + $("#SelectedAcademicYear").val());
                  $(".VariationInRevisedEstimates").text('% Variation in RE over the BE ' + $("#SelectedAcademicYear").val()  );
                  $(".ACBWProposalForRevisedEstimates").text('AC & BW Proposal for RE ' + $("#SelectedAcademicYear").val());

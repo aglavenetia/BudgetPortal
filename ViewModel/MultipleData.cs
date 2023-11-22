@@ -27,15 +27,19 @@ namespace BudgetPortal.ViewModel
 
         public String GroupName { get; set; }
 
+        [Required(ErrorMessage = "Please enter BudgetEstimates for the Current Financial Year")]
         [Column(TypeName = "money")]
         public List<Decimal> BudEstCurrFin { get; set; }
 
+        [Required(ErrorMessage = "Please enter Actual for the Previous Financial Year")]
         [Column(TypeName = "money")]
         public List<Decimal> ActPrevFin { get; set; }
 
+        [Required(ErrorMessage = "Please enter Actual for the Current Financial Year Till 2nd Quarter")]
         [Column(TypeName = "money")]
         public List<Decimal> ActCurrFinTill2ndQuart { get; set; }
 
+        [Required(ErrorMessage = "Please enter Revised Estimates for the Current Financial Year")]
         [Column(TypeName = "money")]
         public List<Decimal> RevEstCurrFin { get; set; }
 
@@ -47,6 +51,7 @@ namespace BudgetPortal.ViewModel
         [Column(TypeName = "money")]
         public List<Decimal> ACAndBWPropRECurrFin { get; set; }
 
+        [Required(ErrorMessage = "Please enter Budget Estimates for the Next Financial Year")]
         [Column(TypeName = "money")]
         public List<Decimal> BudgEstNexFin { get; set; }
 
@@ -76,6 +81,8 @@ namespace BudgetPortal.ViewModel
 
         [Required(ErrorMessage = "Please select the Academic Year")]
         public IEnumerable<AcademicYears> AcademicYearss { get; set; }
+
+        [Display(Name = "Financial Year")]
         public IEnumerable<SelectListItem> AcademicYears { get; set; }
         public String SelectedAcademicYearID { get; set; }
         public String SelectedAcademicYear { get; set; }
