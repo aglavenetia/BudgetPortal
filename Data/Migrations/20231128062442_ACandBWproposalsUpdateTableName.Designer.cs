@@ -4,6 +4,7 @@ using BudgetPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetPortal.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231128062442_ACandBWproposalsUpdateTableName")]
+    partial class ACandBWproposalsUpdateTableName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -121,6 +124,51 @@ namespace BudgetPortal.Data.Migrations
                     b.ToTable("AcademicYears");
                 });
 
+            modelBuilder.Entity("BudgetPortal.Entities.BudgetACandBWproposals", b =>
+                {
+                    b.Property<int>("DivisionID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FinancialYear1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FinancialYear2")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SectionNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("GroupNumber")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("SubGroupNumber")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("LedgerNumber")
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<decimal>("BudEstCurrFinACandBW")
+                        .HasColumnType("money");
+
+                    b.Property<decimal>("BudEstNextFin")
+                        .HasColumnType("money");
+
+                    b.Property<DateTime>("CreatedDateTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<decimal>("RevEstCurrFinACandBW")
+                        .HasColumnType("money");
+
+                    b.HasKey("DivisionID", "FinancialYear1", "FinancialYear2", "SectionNumber", "GroupNumber", "SubGroupNumber", "LedgerNumber");
+
+                    b.ToTable("BudgetACandBWproposals");
+                });
+
             modelBuilder.Entity("BudgetPortal.Entities.BudgetDetails", b =>
                 {
                     b.Property<int>("DivisionID")
@@ -192,49 +240,6 @@ namespace BudgetPortal.Data.Migrations
                     b.HasKey("DivisionID", "FinancialYear1", "FinancialYear2", "SectionNumber", "GroupNumber", "SubGroupNumber", "LedgerNumber");
 
                     b.ToTable("BudgetDetails");
-                });
-
-            modelBuilder.Entity("BudgetPortal.Entities.BudgetDetailsApproved", b =>
-                {
-                    b.Property<int>("DivisionID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FinancialYear1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FinancialYear2")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SectionNumber")
-                        .HasColumnType("int");
-
-                    b.Property<string>("GroupNumber")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("SubGroupNumber")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("LedgerNumber")
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
-
-                    b.Property<decimal>("BudEstCurrFinACandBW")
-                        .HasColumnType("money");
-
-                    b.Property<decimal>("BudEstNextFin")
-                        .HasColumnType("money");
-
-                    b.Property<DateTime>("CreatedDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("RevEstCurrFinACandBW")
-                        .HasColumnType("money");
-
-                    b.HasKey("DivisionID", "FinancialYear1", "FinancialYear2", "SectionNumber", "GroupNumber", "SubGroupNumber", "LedgerNumber");
-
-                    b.ToTable("BudgetDetailsApproved");
                 });
 
             modelBuilder.Entity("BudgetPortal.Entities.BudgetGroups", b =>
