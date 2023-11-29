@@ -95,9 +95,7 @@
     </ul>
 
     <div id="outerTabContent" class="tab-content" onclick="">
-       <br />
-       <br />
-    
+       <br />  
        @foreach (var inner in Model.Sectionss)
        {
            var inneridenti = String.Concat("Budget", @inner.SectionNo.ToString());
@@ -2904,19 +2902,68 @@
                         $('#' + hiddengroupid).val($('#' + groupnoid).text());
                         $('#' + hiddenSelectedDivision).val($("#Division option:selected").text().trim());
 
-                        var subgroupcount = $('#' + group[0] + ' #outertable tbody').closest('tr').length;
+                        //var subgroupcount = $('#' + group[0] + ' #outertable tbody').closest('tr').length;
                         //alert(subgroupcount);
 
-                        for (i = 0; i < subgroupcount; i++) {
+                        //for (i = 0; i < subgroupcount; i++) {
                             //var subgroupnorow = $('#' + group[0] + ' #outertable tbody').closest('tr').text();
                             // alert(subgroupnorow);
                             //var subgroupno = subgroupnorow.eq(2).text();
                             //alert(subgroupno);
-                        }
+                        //}
 
                         //alert(subtext);
                     });
+                
+                $('body').on('click',".FinalSubmit",
+                    function () {
+                        var sectionnoid = $('#outerTab li button.active').attr('id');
+                        //alert(sectionnoid);
+                        var section = sectionnoid.split('-');
+                        //alert(section[0]);
 
+
+                        var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
+                        //alert(groupnoid);
+                        var group = groupnoid.split('-');
+                        //alert(group[0]);
+
+                        var hiddensectionid = group[0].concat('-SectionName');
+                        //alert(hiddensectionid);
+                        var hiddengroupid = group[0].concat('-GroupName');
+                        //alert(hiddengroupid);
+
+                        var hiddenSelectedYear = group[0].concat('-SelectedAcademicYear');
+                        //alert(hiddenSelectedYear);
+
+                        var hiddenSelectedDivision = group[0].concat('-SelectedDivisionName');
+                        //alert(hiddenSelectedDivision);
+
+                        //$("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
+
+                        //var academicyear = $("#SelectedAcademicYear").val();
+
+                        //$("#SelectedDivisionName").val($("#Division option:selected").text().trim());
+
+                        //var divisionname = $("#SelectedDivisionName").val();
+
+                        $('#' + hiddenSelectedYear).val($("#AcademicYear option:selected").text().trim());
+                        $('#' + hiddensectionid).val($('#' + sectionnoid).text());
+                        $('#' + hiddengroupid).val($('#' + groupnoid).text());
+                        $('#' + hiddenSelectedDivision).val($("#Division option:selected").text().trim());
+
+                        //var subgroupcount = $('#' + group[0] + ' #outertable tbody').closest('tr').length;
+                        //alert(subgroupcount);
+
+                        //for (i = 0; i < subgroupcount; i++) {
+                            //var subgroupnorow = $('#' + group[0] + ' #outertable tbody').closest('tr').text();
+                            // alert(subgroupnorow);
+                            //var subgroupno = subgroupnorow.eq(2).text();
+                            //alert(subgroupno);
+                        //}
+
+                        //alert(subtext);
+                    });
          });
         
         function onceDocReady()
