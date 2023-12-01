@@ -65,9 +65,14 @@
       <br />
       <br />
       <br />
- @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
- {
-       <input id="FinalSubmit" class="FinalSubmit" type="submit" style="align-self:center">
+    @using(Html.BeginForm(null, null, FormMethod.Post, new { @action = "", enctype = "multipart/form-data", id = "AppForm" })) 
+    {
+        @if (User.IsInRole("Admin"))
+        {
+            <input id="Submit" class="FinalSubmit" formaction="Tabs/FinalSubmit" value="Finalise Budget" type="submit" style="align-self:center">
+            @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = "FinalSubmit-SelectedAcademicYear" })
+            @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = "FinalSubmit-SelectedDivisionName" })
+        }
        <br />
     <ul id="outerTab" class="nav nav-tabs" role="tablist" >    
       @foreach (var item in Model.Sectionss)
@@ -250,8 +255,8 @@
                         {
                             <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
                              
-                              @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
-                              {
+                              @*using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
+                              {*@
                                         @Html.AntiForgeryToken()
                                         <table id="@identi-outertable" class="table">
                                     <thead>
@@ -832,8 +837,8 @@
                                         @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })
-                                <input id="@Submit" class="Submit" type="submit" style="align-self:center"> 
-                              }
+                                        <input id="@Submit" class="Submit" formaction="Tabs/Index" type="submit" value="Save Budget" style="align-self:center">
+                               @*}*@
                             </div>
                           
                         }
@@ -842,8 +847,8 @@
                             <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
                                 <br />
                                 
-                                @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
-                                {
+                                @*using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
+                                {*@
                                         @Html.AntiForgeryToken()
                                         <table id="@identi-outertable" class="table">
                                             <thead>
@@ -1423,8 +1428,8 @@
                                         @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })
-                                        <input id="@Submit" class="Submit" type="submit" style="align-self:center">
-                                }
+                                        <input id="@Submit" class="Submit" formaction="Tabs/Index" type="submit" value="Save Budget" style="align-self:center">
+                                @*}*@
                             </div>
                           
                         }
@@ -1571,9 +1576,9 @@
                           {
                               <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
                                   
-                                 @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
-                                 {
-                                  @Html.AntiForgeryToken()
+                                 @*using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
+                                 {*@
+                                        @Html.AntiForgeryToken()
                                         <table id="@identi-outertable" class="table">
                                             <thead>
                                                 <tr>
@@ -2147,8 +2152,8 @@
                                         @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })
-                                        <input id="@Submit" class="Submit" type="submit" style="align-self:center">
-                                 }
+                                        <input id="@Submit" class="Submit" formaction="Tabs/Index" type="submit" value="Save Budget" style="align-self:center">
+                                 @*}*@
                             </div>
                            
                          }
@@ -2157,8 +2162,8 @@
                              <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
                                 <br />
                               
-                             @using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
-                             {
+                             @*using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
+                             {*@
                                  @Html.AntiForgeryToken()
                                         <table id="@identi-outertable" class="table">
                                             <thead>
@@ -2733,8 +2738,8 @@
                                         @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })
-                                        <input id="@Submit" class="Submit" type="submit" style="align-self:center">
-                               }
+                                        <input id="@Submit" class="Submit" formaction="Tabs/Index" type="submit" value="Save Budget" style="align-self:center">
+                               @*}*@
                              </div>
                            
                         }
@@ -2917,52 +2922,22 @@
                 
                 $('body').on('click',".FinalSubmit",
                     function () {
-                        var sectionnoid = $('#outerTab li button.active').attr('id');
-                        //alert(sectionnoid);
-                        var section = sectionnoid.split('-');
-                        //alert(section[0]);
+                        
+                        //var hiddenSelectedYear = group[0].concat('-SelectedAcademicYear');
+                        
 
+                        //var hiddenSelectedDivision = group[0].concat('-SelectedDivisionName');
+                        
 
-                        var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
-                        //alert(groupnoid);
-                        var group = groupnoid.split('-');
-                        //alert(group[0]);
+                        //$('#' + hiddenSelectedYear).val($("#AcademicYear option:selected").text().trim());
+                        
+                        //$('#' + hiddenSelectedDivision).val($("#Division option:selected").text().trim());
 
-                        var hiddensectionid = group[0].concat('-SectionName');
-                        //alert(hiddensectionid);
-                        var hiddengroupid = group[0].concat('-GroupName');
-                        //alert(hiddengroupid);
+                        $("#FinalSubmit-SelectedDivisionName").val($("#Division option:selected").text().trim());
 
-                        var hiddenSelectedYear = group[0].concat('-SelectedAcademicYear');
-                        //alert(hiddenSelectedYear);
+                       // var divisionname = $("#SelectedDivisionName").val();
 
-                        var hiddenSelectedDivision = group[0].concat('-SelectedDivisionName');
-                        //alert(hiddenSelectedDivision);
-
-                        //$("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
-
-                        //var academicyear = $("#SelectedAcademicYear").val();
-
-                        //$("#SelectedDivisionName").val($("#Division option:selected").text().trim());
-
-                        //var divisionname = $("#SelectedDivisionName").val();
-
-                        $('#' + hiddenSelectedYear).val($("#AcademicYear option:selected").text().trim());
-                        $('#' + hiddensectionid).val($('#' + sectionnoid).text());
-                        $('#' + hiddengroupid).val($('#' + groupnoid).text());
-                        $('#' + hiddenSelectedDivision).val($("#Division option:selected").text().trim());
-
-                        //var subgroupcount = $('#' + group[0] + ' #outertable tbody').closest('tr').length;
-                        //alert(subgroupcount);
-
-                        //for (i = 0; i < subgroupcount; i++) {
-                            //var subgroupnorow = $('#' + group[0] + ' #outertable tbody').closest('tr').text();
-                            // alert(subgroupnorow);
-                            //var subgroupno = subgroupnorow.eq(2).text();
-                            //alert(subgroupno);
-                        //}
-
-                        //alert(subtext);
+                        $("#FinalSubmit-SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
                     });
          });
         
@@ -2973,6 +2948,7 @@
                  //alert('Inside Doc Ready module');
                  var year = academicyear.split('-');
                  //alert(year[1]);
+
 
                  $(".CurrentBudgetEstimates").text('Budget Estimates ' + $("#SelectedAcademicYear").val());
                  $(".PreviousActualBudget").text('Actual ' + (Number.parseInt(year[0]) - Number.parseInt(1)) + '-' + Number.parseInt(year[0]));
