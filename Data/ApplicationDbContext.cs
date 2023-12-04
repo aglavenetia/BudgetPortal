@@ -69,6 +69,14 @@ namespace BudgetPortal.Data
                 .Property(b => b.CreatedDateTime)
                 .HasDefaultValueSql("GETDATE()");
 
+            modelBuilder.Entity<BudgetDetailsApproved>()
+                .Property(b => b.CreatedDateTime)
+                .HasDefaultValueSql("GETDATE()");
+
+            modelBuilder.Entity<BudgetdetailsStatus>()
+                .Property(b => b.CreatedDateTime)
+                .HasDefaultValueSql("GETDATE()");
+
             modelBuilder.Entity<Division>()
                 .Property(b => b.CreatedDateTime)
                 .HasDefaultValueSql("GETDATE()");
@@ -85,6 +93,7 @@ namespace BudgetPortal.Data
         public DbSet<AcademicYears> AcademicYears { get; set; }
         public DbSet<BudgetReports> BudgetReports { get; set;}
         public DbSet<BudgetDetailsApproved> BudgetDetailsApproved { get; set; }
+        public DbSet<BudgetdetailsStatus> BudgetdetailsStatus { get; set; }
     }
 
 

@@ -4,6 +4,7 @@ using BudgetPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetPortal.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231204065448_CreatedDateTimeBudgetDetailsApproved")]
+    partial class CreatedDateTimeBudgetDetailsApproved
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -361,33 +364,6 @@ namespace BudgetPortal.Data.Migrations
                     b.HasIndex("GroupNo");
 
                     b.ToTable("BudgetSubGroups");
-                });
-
-            modelBuilder.Entity("BudgetPortal.Entities.BudgetdetailsStatus", b =>
-                {
-                    b.Property<int>("DivisionID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FinancialYear1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FinancialYear2")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("AdminEditStatus")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("CreatedDateTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<bool>("DelegateEditStatus")
-                        .HasColumnType("bit");
-
-                    b.HasKey("DivisionID", "FinancialYear1", "FinancialYear2");
-
-                    b.ToTable("BudgetdetailsStatus");
                 });
 
             modelBuilder.Entity("BudgetPortal.Entities.Division", b =>
