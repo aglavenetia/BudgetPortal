@@ -107,6 +107,17 @@
            CountHeader = 0;
            CounterBody = 0;
 
+                var AcademicYearYear = Model.SelectedAcademicYear.ToString();
+                var DivisionName = Model.SelectedDivisionName.ToString();
+                var splitAcademicYear = AcademicYearYear.Split("-");
+                Boolean AdminEditStatus = true;
+
+           @if(Model.SelectedDivisionName!=null || Model.SelectedAcademicYear!=null)
+           {   
+                 var DivisionID = (from a in Model.Divisionss where a.DivisionName.Equals(DivisionName) select a.DivisionID).FirstOrDefault();
+                 AdminEditStatus = (from a in Model.Statuss where a.DivisionID == DivisionID && a.FinancialYear1==Convert.ToInt32(splitAcademicYear[0]) select a.AdminEditStatus).FirstOrDefault();
+            }
+            
             var SectionSumBudEstCurrFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.BudEstCurrFin).Sum();
             var SectionSumActPrevFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ActPrevFin).Sum();
             var SectionSumActCurrFinTill2ndQuart = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ActCurrFinTill2ndQuart).Sum();
@@ -250,7 +261,7 @@
                          var SumBudgEstNexFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.BudgEstNexFin).Sum();
                          var SumPerVarRevEstOverBudgEstNxtFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.PerVarRevEstOverBudgEstNxtFin).Sum();
                          var SumACAndBWPropRENxtFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ACAndBWPropRENxtFin).Sum();
-
+                         
                         if (CounterBody == 0)
                         {
                             <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
@@ -338,7 +349,6 @@
                                                                        {
 
                                                                          var Ledgerdetails = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();
-                                                  
                                                                                                  
                                                                             <tr>
                                                                                 <td>@Ledgers.LedgerNo</td>
@@ -445,17 +455,32 @@
                                                                                         </div>
                                                                                     }
                                                                                 </td>
-                                                                                @if (User.IsInRole("Admin"))
-                                                                                {
-                                                                                    <td>
+                                                                                 @if (User.IsInRole("Admin"))
+                                                                                    {
+                                                                                        <td>
+
+                                                                                            <div class="form-group">
+
+                                                                                                @Html.TextBox(@name6+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6+@Ledgers.LedgerNo})
+
+                                                                                                @Html.ValidationMessage(@name6+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else if (!AdminEditStatus)
+                                                                                    {
+                                                                                      <td>
                                                                                         <div class="form-group">
-                                                                                            
-                                                                                            @Html.TextBox(@name6+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6+@Ledgers.LedgerNo})
-                                                                                            
+
+                                                                                            @Html.TextBox(@name6+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6+@Ledgers.LedgerNo, @readonly = "readonly"})
+
                                                                                             @Html.ValidationMessage(@name6+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
                                                                                         </div>
-                                                                                    </td>
-                                                                                }
+                                                                                      </td>
+                                                                                    }
+                                                                                    
+                                                                                
+                                                                                
                                                                                 <td>
                                                                                     @if (User.IsInRole("Admin"))
                                                                                     {
@@ -507,6 +532,17 @@
                                                                                         </div>
                                                                                     </td>
                                                                                 }
+                                                                                else if (!AdminEditStatus)
+                                                                                {
+                                                                                    <td>
+                                                                                        <div class="form-group">
+
+                                                                                                @Html.TextBox(@name9+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                            
+                                                                                            @Html.ValidationMessage(@name9+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                        </div>
+                                                                                    </td>
+                                                                                }
                                                                                 <td>
                                                                                     @if (User.IsInRole("Admin"))
                                                                                     {
@@ -533,7 +569,7 @@
                                                                        }
                                                                 </table>
                                                             }
-                                                                 else
+                                                            else
                                                             {
                                                                 <table class="table ChildGrid">                                                                     
                                                                       @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
@@ -696,6 +732,15 @@
                                                                 </div>
                                                             </td>
                                                         }
+                                                        else if (!AdminEditStatus)
+                                                        {
+                                                            <td>
+                                                                <div class="form-group">
+                                                                @Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name6,  "*",new {@class = "text-danger"})
+                                                                </div>
+                                                            </td>
+                                                        }
                                                         <td>
                                                         @if (@Subs.RequireInput)
                                                         {
@@ -753,6 +798,15 @@
                                                             <td>
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9})
+                                                                    @Html.ValidationMessage(@name9,  "*",new {@class = "text-danger"})
+                                                                </div>
+                                                            </td>
+                                                        }
+                                                        else if (!AdminEditStatus) 
+                                                        {
+                                                            <td>
+                                                                <div class="form-group">
+                                                                    @Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name9,  "*",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
@@ -1047,6 +1101,17 @@
                                                                                         </div>
                                                                                     </td>
                                                                                 }
+                                                                                else if (!AdminEditStatus)
+                                                                                {
+                                                                                    <td>
+                                                                                        <div class="form-group">
+
+                                                                                            @Html.TextBox(@name6+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6+@Ledgers.LedgerNo, @readonly = "readonly"})
+
+                                                                                            @Html.ValidationMessage(@name6+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                        </div>
+                                                                                    </td>
+                                                                                }
                                                                                 <td>
                                                                                     @if (User.IsInRole("Admin"))
                                                                                     {
@@ -1093,6 +1158,17 @@
                                                                                         <div class="form-group">
 
                                                                                             @Html.TextBox(@name9+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9+@Ledgers.LedgerNo})
+
+                                                                                            @Html.ValidationMessage(@name9+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                        </div>
+                                                                                    </td>
+                                                                                }
+                                                                                else if (!AdminEditStatus)
+                                                                                {
+                                                                                    <td>
+                                                                                        <div class="form-group">
+
+                                                                                            @Html.TextBox(@name9+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9+@Ledgers.LedgerNo, @readonly="readonly"})
 
                                                                                             @Html.ValidationMessage(@name9+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
                                                                                         </div>
@@ -1287,6 +1363,15 @@
                                                                 </div>
                                                             </td>
                                                         }
+                                                         else if (!AdminEditStatus)
+                                                        {
+                                                            <td>
+                                                                <div class="form-group">
+                                                                @Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6, @readonly="readonly"})
+                                                                @Html.ValidationMessage(@name6,  "*",new {@class = "text-danger"})
+                                                                </div>
+                                                            </td>
+                                                        }
                                                         <td>
                                                         @if (@Subs.RequireInput)
                                                         {
@@ -1344,6 +1429,15 @@
                                                             <td>
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9})
+                                                                    @Html.ValidationMessage(@name9,  "*",new {@class = "text-danger"})
+                                                                </div>
+                                                            </td>
+                                                        }
+                                                        else if (!AdminEditStatus) 
+                                                        {
+                                                            <td>
+                                                                <div class="form-group">
+                                                                    @Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9, @readonly="readonly"})
                                                                     @Html.ValidationMessage(@name9,  "*",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
@@ -1771,6 +1865,17 @@
                                                                                         </div>
                                                                                     </td>
                                                                                 }
+                                                                                else if (!AdminEditStatus)
+                                                                                {
+                                                                                    <td>
+                                                                                        <div class="form-group">
+
+                                                                                            @Html.TextBox(@name6+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6+@Ledgers.LedgerNo, @readonly = "readonly"})
+
+                                                                                            @Html.ValidationMessage(@name6+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                        </div>
+                                                                                    </td>
+                                                                                }
                                                                                 <td>
                                                                                     @if (User.IsInRole("Admin"))
                                                                                     {
@@ -1817,6 +1922,17 @@
                                                                                         <div class="form-group">
 
                                                                                             @Html.TextBox(@name9+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9+@Ledgers.LedgerNo})
+
+                                                                                            @Html.ValidationMessage(@name9+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                        </div>
+                                                                                    </td>
+                                                                                }
+                                                                                else if (!AdminEditStatus)
+                                                                                {
+                                                                                    <td>
+                                                                                        <div class="form-group">
+
+                                                                                            @Html.TextBox(@name9+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9+@Ledgers.LedgerNo, @readonly = "readonly"})
 
                                                                                             @Html.ValidationMessage(@name9+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
                                                                                         </div>
@@ -2011,6 +2127,15 @@
                                                                 </div>
                                                             </td>
                                                         }
+                                                        else if (!AdminEditStatus)
+                                                        {
+                                                            <td>
+                                                                <div class="form-group">
+                                                                    @Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6, @readonly="readonly"})
+                                                                    @Html.ValidationMessage(@name6,  "*",new {@class = "text-danger"})
+                                                                </div>
+                                                            </td>
+                                                        }
                                                         <td>
                                                             @if (@Subs.RequireInput)
                                                             {
@@ -2068,6 +2193,15 @@
                                                             <td>
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9})
+                                                                    @Html.ValidationMessage(@name9,  "*",new {@class = "text-danger"})
+                                                                </div>
+                                                            </td>
+                                                        }
+                                                        else if (!AdminEditStatus)
+                                                        {
+                                                            <td>
+                                                                <div class="form-group">
+                                                                    @Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name9,  "*",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
@@ -2357,6 +2491,17 @@
                                                                                         </div>
                                                                                     </td>
                                                                                 }
+                                                                                else if (!AdminEditStatus)
+                                                                                {
+                                                                                    <td>
+                                                                                        <div class="form-group">
+
+                                                                                            @Html.TextBox(@name6+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6+@Ledgers.LedgerNo, @readonly = "readonly"})
+
+                                                                                            @Html.ValidationMessage(@name6+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                        </div>
+                                                                                    </td>
+                                                                                }
                                                                                 <td>
                                                                                     @if (User.IsInRole("Admin"))
                                                                                     {
@@ -2403,6 +2548,17 @@
                                                                                         <div class="form-group">
 
                                                                                             @Html.TextBox(@name9+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9+@Ledgers.LedgerNo})
+
+                                                                                            @Html.ValidationMessage(@name9+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                        </div>
+                                                                                    </td>
+                                                                                }
+                                                                                else if (!AdminEditStatus)
+                                                                                {
+                                                                                    <td>
+                                                                                        <div class="form-group">
+
+                                                                                            @Html.TextBox(@name9+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9+@Ledgers.LedgerNo, @readonly = "readonly"})
 
                                                                                             @Html.ValidationMessage(@name9+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
                                                                                         </div>
@@ -2597,6 +2753,15 @@
                                                                 </div>
                                                             </td>
                                                         }
+                                                        else if (!AdminEditStatus)
+                                                        {
+                                                            <td>
+                                                                <div class="form-group">
+                                                                    @Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6, @readonly = "readonly"})
+                                                                    @Html.ValidationMessage(@name6,  "*",new {@class = "text-danger"})
+                                                                </div>
+                                                            </td>
+                                                        }
                                                         <td>
                                                             @if (@Subs.RequireInput)
                                                             {
@@ -2654,6 +2819,15 @@
                                                             <td>
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9})
+                                                                    @Html.ValidationMessage(@name9,  "*",new {@class = "text-danger"})
+                                                                </div>
+                                                            </td>
+                                                        }
+                                                         else if (!AdminEditStatus)
+                                                        {
+                                                            <td>
+                                                                <div class="form-group">
+                                                                    @Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name9,  "*",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>

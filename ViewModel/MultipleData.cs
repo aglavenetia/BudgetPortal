@@ -23,6 +23,8 @@ namespace BudgetPortal.ViewModel
 
         public IEnumerable<BudgetDetails> Detailss { get; set; }
 
+        public IEnumerable<BudgetdetailsStatus> Statuss { get; set; }
+
         public String SectionName { get; set; }
 
         public String GroupName { get; set; }
