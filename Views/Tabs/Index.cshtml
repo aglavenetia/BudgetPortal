@@ -69,12 +69,12 @@
     {
         @if (User.IsInRole("Admin"))
         {
-            <input id="Submit" class="FinalSubmit" formaction="Tabs/FinalSubmit" value="Finalise Budget" type="submit" style="align-self:center">
+            <input id="Submit" class="FinalSubmit" formaction="Tabs/FinalSubmit" value="Finalise Budget" type="submit" style="align-self:center"/>
             @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = "FinalSubmit-SelectedAcademicYear" })
             @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = "FinalSubmit-SelectedDivisionName" })
         }
        <br />
-    <ul id="outerTab" class="nav nav-tabs" role="tablist" >    
+       <ul id="outerTab" class="nav nav-tabs" role="tablist" >    
       @foreach (var item in Model.Sectionss)
       {
             var inneridenti = String.Concat("Budget", @item.SectionNo.ToString());
@@ -99,7 +99,7 @@
       }
     </ul>
 
-    <div id="outerTabContent" class="tab-content" onclick="">
+       <div id="outerTabContent" class="tab-content" onclick="">
        <br />  
        @foreach (var inner in Model.Sectionss)
        {
@@ -107,13 +107,14 @@
            CountHeader = 0;
            CounterBody = 0;
 
-                var AcademicYearYear = Model.SelectedAcademicYear.ToString();
-                var DivisionName = Model.SelectedDivisionName.ToString();
-                var splitAcademicYear = AcademicYearYear.Split("-");
+               
                 Boolean AdminEditStatus = true;
 
            @if(Model.SelectedDivisionName!=null || Model.SelectedAcademicYear!=null)
            {   
+                var AcademicYearYear = Model.SelectedAcademicYear.ToString();
+                var DivisionName = Model.SelectedDivisionName.ToString();
+                var splitAcademicYear = AcademicYearYear.Split("-");
                  var DivisionID = (from a in Model.Divisionss where a.DivisionName.Equals(DivisionName) select a.DivisionID).FirstOrDefault();
                  AdminEditStatus = (from a in Model.Statuss where a.DivisionID == DivisionID && a.FinancialYear1==Convert.ToInt32(splitAcademicYear[0]) select a.AdminEditStatus).FirstOrDefault();
             }
@@ -891,7 +892,7 @@
                                         @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })
-                                        <input id="@Submit" class="Submit" formaction="Tabs/Index" type="submit" value="Save Budget" style="align-self:center">
+                                        <input id="@Submit" class="Submit" formaction="Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
                                @*}*@
                             </div>
                           
@@ -1522,7 +1523,7 @@
                                         @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })
-                                        <input id="@Submit" class="Submit" formaction="Tabs/Index" type="submit" value="Save Budget" style="align-self:center">
+                                        <input id="@Submit" class="Submit" formaction="Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
                                 @*}*@
                             </div>
                           
@@ -2286,7 +2287,7 @@
                                         @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })
-                                        <input id="@Submit" class="Submit" formaction="Tabs/Index" type="submit" value="Save Budget" style="align-self:center">
+                                        <input id="@Submit" class="Submit" formaction="Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
                                  @*}*@
                             </div>
                            
@@ -2912,7 +2913,7 @@
                                         @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })
-                                        <input id="@Submit" class="Submit" formaction="Tabs/Index" type="submit" value="Save Budget" style="align-self:center">
+                                        <input id="@Submit" class="Submit" formaction="Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
                                @*}*@
                              </div>
                            
@@ -2927,7 +2928,7 @@
        }
  
     </div>
- }
+    }
 </div>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
@@ -2977,6 +2978,8 @@
                                     //alert($("#outerdiv", data).html());
 
                                     //$("#outerdiv").html(data);
+
+                                    //onceDocReady();
 
                                     $("#outerdiv").html($("#outerdiv",data).html());
 
@@ -3063,10 +3066,10 @@
                         //alert(hiddengroupid);
 
                         var hiddenSelectedYear = group[0].concat('-SelectedAcademicYear');
-                        //alert(hiddenSelectedYear);
+                        alert(hiddenSelectedYear);
 
                         var hiddenSelectedDivision = group[0].concat('-SelectedDivisionName');
-                        //alert(hiddenSelectedDivision);
+                        alert(hiddenSelectedDivision);
 
                         //$("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
 
@@ -3123,6 +3126,7 @@
                  var year = academicyear.split('-');
                  //alert(year[1]);
 
+                 $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
 
                  $(".CurrentBudgetEstimates").text('Budget Estimates ' + $("#SelectedAcademicYear").val());
                  $(".PreviousActualBudget").text('Actual ' + (Number.parseInt(year[0]) - Number.parseInt(1)) + '-' + Number.parseInt(year[0]));

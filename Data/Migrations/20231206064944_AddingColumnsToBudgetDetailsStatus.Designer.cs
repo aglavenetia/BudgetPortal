@@ -4,6 +4,7 @@ using BudgetPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetPortal.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231206064944_AddingColumnsToBudgetDetailsStatus")]
+    partial class AddingColumnsToBudgetDetailsStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -374,13 +377,6 @@ namespace BudgetPortal.Data.Migrations
                     b.Property<int>("FinancialYear2")
                         .HasColumnType("int");
 
-                    b.Property<int>("SectionNumber")
-                        .HasColumnType("int");
-
-                    b.Property<string>("GroupNumber")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
                     b.Property<bool>("AdminEditStatus")
                         .HasColumnType("bit");
 
@@ -392,7 +388,15 @@ namespace BudgetPortal.Data.Migrations
                     b.Property<bool>("DelegateEditStatus")
                         .HasColumnType("bit");
 
-                    b.HasKey("DivisionID", "FinancialYear1", "FinancialYear2", "SectionNumber", "GroupNumber");
+                    b.Property<string>("GroupNumber")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<int>("SectionNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("DivisionID", "FinancialYear1", "FinancialYear2");
 
                     b.ToTable("BudgetdetailsStatus");
                 });

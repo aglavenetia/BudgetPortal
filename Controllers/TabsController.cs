@@ -272,6 +272,8 @@ namespace BudgetPortal.Controllers
                            Status.DivisionID = Convert.ToInt32(SelectedDivisionID);
                            Status.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
                            Status.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
+                           Status.SectionNumber = SectionNumber;
+                           Status.GroupNumber = GroupNumber;
                            Status.DelegateEditStatus = false;
                            Status.AdminEditStatus = true;
 
@@ -463,13 +465,19 @@ namespace BudgetPortal.Controllers
 
             var adminstatus = new BudgetdetailsStatus();
 
-            adminstatus = _context.BudgetdetailsStatus
-                            .Where(b => (b.DivisionID == SelectedDivisionID)
-                             && (b.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0]))).FirstOrDefault();
-
+            adminstatus.DivisionID = Convert.ToInt32(SelectedDivisionID);
+            adminstatus.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
+            adminstatus.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
+            adminstatus.SectionNumber = Convert.ToInt32(0);
+            adminstatus.GroupNumber = 0.ToString();
+            adminstatus.DelegateEditStatus = false;
             adminstatus.AdminEditStatus = false;
-            _context.BudgetdetailsStatus.Update(adminstatus);
+
+            _context.BudgetdetailsStatus.Add(adminstatus);
             _context.SaveChanges();
+
+            //_context.BudgetdetailsStatus.Update(adminstatus);
+            //_context.SaveChanges();
 
             var DivisionID = _context.Division
                                        .Where(d => d.DivisionName == DivName)
