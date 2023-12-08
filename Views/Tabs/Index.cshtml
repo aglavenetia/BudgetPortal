@@ -45,7 +45,7 @@
                    @Html.DropDownListFor(Model => Model.SelectedDivisionID, Model.DivisionNames,"--Please select any Division--", new { @class = "form-control", @id="Division" })
                    @Html.ValidationMessageFor(Model => Model.DivisionNames,  "*", new { @class = "text-danger" })
                   
-                   @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName)
+                   @*Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName)*@
                         
              </td> 
            }       
@@ -53,7 +53,7 @@
               @Html.DropDownListFor(Model => Model.SelectedAcademicYearID, Model.AcademicYears,"--Please select any Academic Year--",new { @class = "form-control", @id="AcademicYear" })
               @Html.ValidationMessageFor(Model => Model.AcademicYears,  "*", new { @class = "text-danger" }) 
 
-              @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear)
+              @*Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear)*@
               
              </td>
                 
@@ -67,6 +67,7 @@
       <br />
     @using(Html.BeginForm(null, null, FormMethod.Post, new { @action = "", enctype = "multipart/form-data", id = "AppForm" })) 
     {
+        @Html.AntiForgeryToken()
         @if (User.IsInRole("Admin"))
         {
             <input id="Submit" class="FinalSubmit" formaction="Tabs/FinalSubmit" value="Finalise Budget" type="submit" style="align-self:center"/>
@@ -81,7 +82,7 @@
 
             
 
-        if (OuterHeaderCount == 0)
+        @if (OuterHeaderCount == 0)
         {
                 <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="@inneridenti-nav" data-bs-toggle="tab" data-bs-target="#@inneridenti" type="button" role="tab" aria-controls="@inneridenti" aria-selected="true">@item.SectionName</button>
@@ -101,6 +102,11 @@
 
        <div id="outerTabContent" class="tab-content" onclick="">
        <br />  
+       @Html.Hidden("SectionName",Model.SectionName, new{@id = "SectionName" })
+       @Html.Hidden("GroupName",Model.GroupName,  new{@id = "GroupName" })
+       @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = "SelectedAcademicYear" })
+       @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = "SelectedDivisionName" })
+
        @foreach (var inner in Model.Sectionss)
        {
            var inneridenti = String.Concat("Budget", @inner.SectionNo.ToString());
@@ -131,7 +137,7 @@
 
             var GroupsCount = (from a in Model.Groupss where a.SectionNo.Equals(@inner.SectionNo) select a.GroupNo).Count();
  
-            if (OuterBodyCount == 0)
+           @if (OuterBodyCount == 0)
            {
             <div id="@inneridenti" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="true">
               
@@ -228,7 +234,7 @@
                     {                           
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
                         
-                        if (CountHeader == 0)
+                        @if (CountHeader == 0)
                         {
                             <li class="nav-item" role="presentation">
                                         <button class="nav-link active" id="@identi-nav" data-bs-toggle="tab" data-bs-target="#@identi" type="button" role="tab" aria-controls="@identi" aria-selected="true">@item.GroupName</button>
@@ -247,6 +253,7 @@
 
                 <div id="innertabcontent1" class="tab-content">
                     <br />
+
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
                         int TableCount = 0;
@@ -263,14 +270,14 @@
                          var SumPerVarRevEstOverBudgEstNxtFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.PerVarRevEstOverBudgEstNxtFin).Sum();
                          var SumACAndBWPropRENxtFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ACAndBWPropRENxtFin).Sum();
                          
-                        if (CounterBody == 0)
+                        @if (CounterBody == 0)
                         {
                             <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
                              
                               @*using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
-                              {*@
-                                        @Html.AntiForgeryToken()
-                                        <table id="@identi-outertable" class="table">
+                              {
+                              @Html.AntiForgeryToken()*@
+                                 <table id="@identi-outertable" class="table">
                                     <thead>
                                         <tr>
                                             <th></th>
@@ -888,10 +895,10 @@
                                                 </tr>
                                     </tbody>
                                 </table>
-                                        @Html.Hidden("SectionName",Model.SectionName, new{@id = @identi+"-SectionName" })
+                                        @*Html.Hidden("SectionName",Model.SectionName, new{@id = @identi+"-SectionName" })
                                         @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
-                                        @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })
+                                        @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })*@
                                         <input id="@Submit" class="Submit" formaction="Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
                                @*}*@
                             </div>
@@ -903,8 +910,8 @@
                                 <br />
                                 
                                 @*using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
-                                {*@
-                                        @Html.AntiForgeryToken()
+                                {
+                                        @Html.AntiForgeryToken()*@
                                         <table id="@identi-outertable" class="table">
                                             <thead>
                                                 <tr>
@@ -1519,10 +1526,10 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        @Html.Hidden("SectionName",Model.SectionName, new{@id = @identi+"-SectionName" })
+                                        @*Html.Hidden("SectionName",Model.SectionName, new{@id = @identi+"-SectionName" })
                                         @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
-                                        @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })
+                                        @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })*@
                                         <input id="@Submit" class="Submit" formaction="Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
                                 @*}*@
                             </div>
@@ -1631,7 +1638,7 @@
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
-                        if (CountHeader == 0)
+                        @if (CountHeader == 0)
                         {
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="@identi-nav" data-bs-toggle="tab" data-bs-target="#@identi" type="button" role="tab" aria-controls="@identi" aria-selected="true">@item.GroupName</button>
@@ -1667,13 +1674,13 @@
                             var SumACAndBWPropRENxtFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ACAndBWPropRENxtFin).Sum();
 
 
-                          if (CounterBody == 0)
+                          @if (CounterBody == 0)
                           {
                               <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
                                   
                                  @*using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
-                                 {*@
-                                        @Html.AntiForgeryToken()
+                                 {
+                                        @Html.AntiForgeryToken()*@
                                         <table id="@identi-outertable" class="table">
                                             <thead>
                                                 <tr>
@@ -2283,10 +2290,10 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        @Html.Hidden("SectionName",Model.SectionName, new{@id = @identi+"-SectionName" })
+                                        @*Html.Hidden("SectionName",Model.SectionName, new{@id = @identi+"-SectionName" })
                                         @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
-                                        @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })
+                                        @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })*@
                                         <input id="@Submit" class="Submit" formaction="Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
                                  @*}*@
                             </div>
@@ -2298,8 +2305,8 @@
                                 <br />
                               
                              @*using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
-                             {*@
-                                 @Html.AntiForgeryToken()
+                             {
+                                 @Html.AntiForgeryToken()*@
                                         <table id="@identi-outertable" class="table">
                                             <thead>
                                                 <tr>
@@ -2909,10 +2916,10 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        @Html.Hidden("SectionName",Model.SectionName, new{@id = @identi+"-SectionName" })
+                                        @*Html.Hidden("SectionName",Model.SectionName, new{@id = @identi+"-SectionName" })
                                         @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
-                                        @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })
+                                        @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })*@
                                         <input id="@Submit" class="Submit" formaction="Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
                                @*}*@
                              </div>
@@ -3057,32 +3064,39 @@
 
                         var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
                         //alert(groupnoid);
-                        var group = groupnoid.split('-');
+                        //var group = groupnoid.split('-');
                         //alert(group[0]);
 
-                        var hiddensectionid = group[0].concat('-SectionName');
+                        //var hiddensectionid = group[0].concat('-SectionName');
                         //alert(hiddensectionid);
-                        var hiddengroupid = group[0].concat('-GroupName');
+                        //var hiddengroupid = group[0].concat('-GroupName');
                         //alert(hiddengroupid);
 
-                        var hiddenSelectedYear = group[0].concat('-SelectedAcademicYear');
-                        alert(hiddenSelectedYear);
+                        //var hiddenSelectedYear = group[0].concat('-SelectedAcademicYear');
+                        //alert(hiddenSelectedYear);
 
-                        var hiddenSelectedDivision = group[0].concat('-SelectedDivisionName');
-                        alert(hiddenSelectedDivision);
+                        //var hiddenSelectedDivision = group[0].concat('-SelectedDivisionName');
+                        //alert(hiddenSelectedDivision);
 
-                        //$("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
-
+                        $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
+                        alert($("#SelectedAcademicYear").val());
                         //var academicyear = $("#SelectedAcademicYear").val();
 
-                        //$("#SelectedDivisionName").val($("#Division option:selected").text().trim());
-
+                        $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
+                        alert($("#SelectedDivisionName").val());
                         //var divisionname = $("#SelectedDivisionName").val();
 
-                        $('#' + hiddenSelectedYear).val($("#AcademicYear option:selected").text().trim());
-                        $('#' + hiddensectionid).val($('#' + sectionnoid).text());
-                        $('#' + hiddengroupid).val($('#' + groupnoid).text());
-                        $('#' + hiddenSelectedDivision).val($("#Division option:selected").text().trim());
+                        //$('#' + hiddenSelectedYear).val($("#AcademicYear option:selected").text().trim());
+                        
+                        //alert($('#' + hiddenSelectedYear).val());
+                        //$('#' + hiddensectionid).val($('#' + sectionnoid).text());
+                        $('#SectionName').val($('#' + sectionnoid).text());
+                        alert($('#SectionName').val());
+                        //$('#' + hiddengroupid).val($('#' + groupnoid).text());
+                        $('#GroupName').val($('#' + groupnoid).text());
+                        alert($('#GroupName').val());
+                        //$('#' + hiddenSelectedDivision).val($("#Division option:selected").text().trim());
+                        //alert($('#' + hiddenSelectedDivision).val());
 
                         //var subgroupcount = $('#' + group[0] + ' #outertable tbody').closest('tr').length;
                         //alert(subgroupcount);

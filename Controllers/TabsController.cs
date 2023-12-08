@@ -177,8 +177,8 @@ namespace BudgetPortal.Controllers
                             }).ToList();
                         MD.AcademicYears.Where(x => x.Text.Equals(MD.SelectedAcademicYear.ToString())).Single().Selected = true;
                         
-                        MD.DivisionNames.Where(x => x.Text.Equals(MD.SelectedDivisionName.ToString())).Single().Selected = true;                       
-
+                        MD.DivisionNames.Where(x => x.Text.Equals(MD.SelectedDivisionName.ToString())).Single().Selected = true;
+                      
                         return View("Index", MD);
                     }
 
@@ -262,9 +262,7 @@ namespace BudgetPortal.Controllers
                                 dataModel.LedgerNumber = Convert.ToDecimal(0).ToString();
                                 _context.BudgetDetails.Add(dataModel);
                                 _context.SaveChanges();
-
-
-                                
+       
                             }
                         }
 
@@ -307,7 +305,6 @@ namespace BudgetPortal.Controllers
                             }).ToList();
                         ViewBag.SelectedAcademicYearID = MD.AcademicYears;
                         MD.AcademicYears.Where(x => x.Text.Equals(MD.SelectedAcademicYear.ToString())).Single().Selected = true;
-                        
                         return View("Index", MD);
                     }   
         }
@@ -508,7 +505,7 @@ namespace BudgetPortal.Controllers
             MD.AcademicYears.Where(x => x.Text.Equals(MD.SelectedAcademicYear.ToString())).Single().Selected = true;
 
             MD.DivisionNames.Where(x => x.Text.Equals(MD.SelectedDivisionName.ToString())).Single().Selected = true;
-
+            
             return View("Index", MD);
         }
     }
