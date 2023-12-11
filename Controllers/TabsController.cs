@@ -304,6 +304,7 @@ namespace BudgetPortal.Controllers
 
                             }).ToList();
                         ViewBag.SelectedAcademicYearID = MD.AcademicYears;
+                        
                         MD.AcademicYears.Where(x => x.Text.Equals(MD.SelectedAcademicYear.ToString())).Single().Selected = true;
                         return View("Index", MD);
                     }   
@@ -345,6 +346,8 @@ namespace BudgetPortal.Controllers
             mymodel.SubGroupss = _context.BudgetSubGroups.ToList();
             mymodel.Ledgerss = _context.BudgetLedgers.ToList();
             mymodel.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
+                                .Where(x => x.FinancialYear1 == Year).ToList();
+            mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
                                 .Where(x => x.FinancialYear1 == Year).ToList();
             mymodel.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                     new SelectListItem()

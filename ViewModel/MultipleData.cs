@@ -88,6 +88,10 @@ namespace BudgetPortal.ViewModel
         public IEnumerable<SelectListItem> AcademicYears { get; set; }
         public String SelectedAcademicYearID { get; set; }
         public String SelectedAcademicYear { get; set; }
+
+        public Boolean AdminEditStatus { get; set; }
+
+        public Boolean DelegateEditStatus { get; set; }
         
     }
 }

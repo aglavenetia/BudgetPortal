@@ -112,18 +112,6 @@
            var inneridenti = String.Concat("Budget", @inner.SectionNo.ToString());
            CountHeader = 0;
            CounterBody = 0;
-
-               
-                Boolean AdminEditStatus = true;
-
-           @if(Model.SelectedDivisionName!=null || Model.SelectedAcademicYear!=null)
-           {   
-                var AcademicYearYear = Model.SelectedAcademicYear.ToString();
-                var DivisionName = Model.SelectedDivisionName.ToString();
-                var splitAcademicYear = AcademicYearYear.Split("-");
-                 var DivisionID = (from a in Model.Divisionss where a.DivisionName.Equals(DivisionName) select a.DivisionID).FirstOrDefault();
-                 AdminEditStatus = (from a in Model.Statuss where a.DivisionID == DivisionID && a.FinancialYear1==Convert.ToInt32(splitAcademicYear[0]) select a.AdminEditStatus).FirstOrDefault();
-            }
             
             var SectionSumBudEstCurrFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.BudEstCurrFin).Sum();
             var SectionSumActPrevFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ActPrevFin).Sum();
