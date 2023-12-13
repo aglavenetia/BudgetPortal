@@ -35,8 +35,8 @@
                     </td> 
                  }     
                     <td>
-                    @Html.LabelFor(Model => Model.AcademicYears)
-                </td>
+                        @Html.LabelFor(Model => Model.AcademicYears)
+                    </td>
               </tr>
           <tr>
            @if (User.IsInRole("Admin"))
@@ -67,12 +67,22 @@
       <br />
     @using(Html.BeginForm(null, null, FormMethod.Post, new { @action = "", enctype = "multipart/form-data", id = "AppForm" })) 
     {
+
         @Html.AntiForgeryToken()
-        @if (User.IsInRole("Admin"))
+
+        Boolean AdminEditStatus = true;
+        Boolean DelegateEditStatus = true;
+
+        @if ((from a in Model.Statuss select a.AdminEditStatus).Count() > 0 && User.IsInRole("Admin"))
+            AdminEditStatus = false;
+        
+
+        
+        @if (User.IsInRole("Admin") && AdminEditStatus)
         {
             <input id="Submit" class="FinalSubmit" formaction="Tabs/FinalSubmit" value="Finalise Budget" type="submit" style="align-self:center"/>
-            @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = "FinalSubmit-SelectedAcademicYear" })
-            @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = "FinalSubmit-SelectedDivisionName" })
+            @*Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = "FinalSubmit-SelectedAcademicYear" })
+            @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = "FinalSubmit-SelectedDivisionName" })*@
         }
        <br />
        <ul id="outerTab" class="nav nav-tabs" role="tablist" >    
@@ -100,7 +110,7 @@
       }
     </ul>
 
-       <div id="outerTabContent" class="tab-content" onclick="">
+    <div id="outerTabContent" class="tab-content" onclick="">
        <br />  
        @Html.Hidden("SectionName",Model.SectionName, new{@id = "SectionName" })
        @Html.Hidden("GroupName",Model.GroupName,  new{@id = "GroupName" })
@@ -124,7 +134,13 @@
             var SectionSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ACAndBWPropRENxtFin).Sum();
 
             var GroupsCount = (from a in Model.Groupss where a.SectionNo.Equals(@inner.SectionNo) select a.GroupNo).Count();
- 
+
+            @* Boolean AdminEditStatus = false; *@
+
+            
+
+            
+
            @if (OuterBodyCount == 0)
            {
             <div id="@inneridenti" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="true">
@@ -244,6 +260,10 @@
 
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
+
+                        @if ((from a in Model.Statuss where a.SectionNumber==@inner.SectionNo where a.GroupNumber.Equals(@item.GroupNo) select a.DelegateEditStatus).Count() > 0 && !User.IsInRole("Admin"))
+                                      DelegateEditStatus = false;
+
                         int TableCount = 0;
                         var Submit = String.Concat("Submit", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
@@ -330,7 +350,8 @@
                                                     var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
-                                                   
+
+                                                    
                                                     <tr>
                                                         
                                                         <td>
@@ -338,8 +359,8 @@
                                                             {
                                                                <img src="~/Images/plus.png" />
                                                                <div id="NestedTable" style="display:none">
-                                                                 @if(@Subs.RequireInput)
-                                                            {
+                                                               @if(@Subs.RequireInput)
+                                                               {
                                                                 <table class="table ChildGrid">                                                 
                                                                        @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
                                                                        {
@@ -350,7 +371,7 @@
                                                                                 <td>@Ledgers.LedgerNo</td>
                                                                                 <td>@Ledgers.LedgerName</td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
 
@@ -372,7 +393,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                             
@@ -392,7 +413,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                             
@@ -412,7 +433,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                             
@@ -432,7 +453,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                             
@@ -451,7 +472,7 @@
                                                                                         </div>
                                                                                     }
                                                                                 </td>
-                                                                                 @if (User.IsInRole("Admin"))
+                                                                                    @if (User.IsInRole("Admin") && AdminEditStatus)
                                                                                     {
                                                                                         <td>
 
@@ -463,7 +484,7 @@
                                                                                             </div>
                                                                                         </td>
                                                                                     }
-                                                                                    else if (!AdminEditStatus)
+                                                                                    else if (User.IsInRole("Admin") && !AdminEditStatus)
                                                                                     {
                                                                                       <td>
                                                                                         <div class="form-group">
@@ -478,7 +499,7 @@
                                                                                 
                                                                                 
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus )
                                                                                     {
                                                                                         <div class="form-group">
 
@@ -498,7 +519,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                             
@@ -517,7 +538,7 @@
                                                                                         </div>
                                                                                     }
                                                                                 </td>
-                                                                                @if (User.IsInRole("Admin"))
+                                                                                @if (User.IsInRole("Admin") && AdminEditStatus)
                                                                                 {
                                                                                     <td>
                                                                                         <div class="form-group">
@@ -528,7 +549,7 @@
                                                                                         </div>
                                                                                     </td>
                                                                                 }
-                                                                                else if (!AdminEditStatus)
+                                                                                else if (User.IsInRole("Admin") && !AdminEditStatus)
                                                                                 {
                                                                                     <td>
                                                                                         <div class="form-group">
@@ -540,7 +561,7 @@
                                                                                     </td>
                                                                                 }
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
 
@@ -564,9 +585,9 @@
                                                                           </tr>
                                                                        }
                                                                 </table>
-                                                            }
-                                                            else
-                                                            {
+                                                               }
+                                                               else
+                                                               {
                                                                 <table class="table ChildGrid">                                                                     
                                                                       @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
                                                                       {
@@ -576,7 +597,7 @@
                                                                         </tr>
                                                                       }
                                                                 </table>
-                                                             }
+                                                               }
                                                                </div>
                                                             }
                                                         </td>
@@ -596,7 +617,7 @@
                                                                 @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"})
                                                             </div>
                                                         }
-                                                        else if(User.IsInRole("Admin"))
+                                                        else if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                         {   
                                                              <div class="form-group">
                                                                 @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
@@ -621,7 +642,7 @@
                                                                 @Html.ValidationMessage(@name2,  "",new {@class = "text-danger"})
                                                             </div>
                                                         }
-                                                        else if(User.IsInRole("Admin"))
+                                                        else if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                         {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F"): " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
@@ -645,7 +666,7 @@
                                                                 @Html.ValidationMessage(@name3,  "",new {@class = "text-danger"})
                                                              </div>
                                                         }
-                                                        else if(User.IsInRole("Admin"))
+                                                            else if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                         {                                       
                                                               <div class="form-group">
                                                                 @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3, @readonly = "readonly"})
@@ -669,7 +690,7 @@
                                                                 @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"})
                                                             </div>
                                                         }
-                                                        else if(User.IsInRole("Admin"))
+                                                        else if(User.IsInRole("Admin") || !DelegateEditStatus)
                                                         {
                                                               <div class="form-group">
                                                                 @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4, @readonly = "readonly"})
@@ -694,7 +715,7 @@
                                                                 @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"})
                                                             </div>
                                                         }
-                                                        else if(User.IsInRole("Admin"))
+                                                        else if(User.IsInRole("Admin") || !DelegateEditStatus)
                                                         {
                                                               <div class="form-group">
                                                                 @Html.TextBox(@name5, details!=null ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
@@ -709,7 +730,7 @@
                                                             </div>
                                                         }
                                                         </td>
-                                                        @if (User.IsInRole("Admin") && @Subs.RequireInput)
+                                                        @if (User.IsInRole("Admin") && @Subs.RequireInput && AdminEditStatus)
                                                         {
                                                             var LedgerSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
                                                             <td>
@@ -719,7 +740,7 @@
                                                               </div>
                                                             </td>
                                                         }
-                                                        else if (User.IsInRole("Admin") && !@Subs.RequireInput)
+                                                        else if ((User.IsInRole("Admin") && !@Subs.RequireInput && AdminEditStatus))
                                                         {
                                                             <td>
                                                                 <div class="form-group">
@@ -728,7 +749,7 @@
                                                                 </div>
                                                             </td>
                                                         }
-                                                        else if (!AdminEditStatus)
+                                                        else if (User.IsInRole("Admin") && !AdminEditStatus)
                                                         {
                                                             <td>
                                                                 <div class="form-group">
@@ -746,7 +767,7 @@
                                                                 @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
-                                                        else if(User.IsInRole("Admin"))
+                                                        else if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                         {
                                                             <div class="form-group">
                                                                 @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly = "readonly"})
@@ -779,7 +800,7 @@
                                                             </div>
                                                         }
                                                         </td>
-                                                        @if (User.IsInRole("Admin") && @Subs.RequireInput) 
+                                                        @if (User.IsInRole("Admin") && @Subs.RequireInput && AdminEditStatus)
                                                         {
                                                             var LedgerSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
                                                             <td>
@@ -789,7 +810,7 @@
                                                                 </div>
                                                             </td>
                                                         }
-                                                        else if (User.IsInRole("Admin") && !@Subs.RequireInput) 
+                                                        else if (User.IsInRole("Admin") && !@Subs.RequireInput && AdminEditStatus) 
                                                         {
                                                             <td>
                                                                 <div class="form-group">
@@ -798,7 +819,7 @@
                                                                 </div>
                                                             </td>
                                                         }
-                                                        else if (!AdminEditStatus) 
+                                                        else if (User.IsInRole("Admin") && !AdminEditStatus) 
                                                         {
                                                             <td>
                                                                 <div class="form-group">
@@ -808,20 +829,20 @@
                                                             </td>
                                                         }
                                                         <td>
-                                                        @if (@Subs.RequireInput)
+                                                            @if (@Subs.RequireInput || User.IsInRole("Admin") || !DelegateEditStatus)
                                                         {
                                                             <div class="form-group">
                                                                 @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10, @readonly = "readonly"})
                                                                 @Html.ValidationMessage(@name10,  "",new {@class = "text-danger"})
                                                             </div>
                                                         }
-                                                        else if(User.IsInRole("Admin"))
+                                                        @*else if(User.IsInRole("Admin") || !DelegateEditStatus)
                                                         {
                                                              <div class="form-group">
                                                                 @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10, @readonly = "readonly"})
                                                                 @Html.ValidationMessage(@name10,  "",new {@class = "text-danger"})
                                                             </div>   
-                                                        }
+                                                        }*@
                                                         else
                                                         {                                                                                                             
                                                             <div class="form-group">
@@ -887,8 +908,11 @@
                                         @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })*@
-                                        <input id="@Submit" class="Submit" formaction="Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
-                               @*}*@
+                                    @if ((User.IsInRole("Admin") && AdminEditStatus) || DelegateEditStatus)
+                                    {
+                                            <input id="@Submit" class="Submit" formaction="Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
+                                    }
+                                        @*}*@
                             </div>
                           
                         }
@@ -983,7 +1007,7 @@
                                                                                 <td>@Ledgers.LedgerNo</td>
                                                                                 <td>@Ledgers.LedgerName</td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
 
@@ -1007,7 +1031,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
 
@@ -1027,7 +1051,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
 
@@ -1047,7 +1071,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
 
@@ -1067,7 +1091,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
 
@@ -1086,7 +1110,7 @@
                                                                                         </div>
                                                                                     }
                                                                                 </td>
-                                                                                @if (User.IsInRole("Admin"))
+                                                                                @if (User.IsInRole("Admin") && AdminEditStatus)
                                                                                 {
                                                                                     <td>
                                                                                         <div class="form-group">
@@ -1097,7 +1121,7 @@
                                                                                         </div>
                                                                                     </td>
                                                                                 }
-                                                                                else if (!AdminEditStatus)
+                                                                                else if (User.IsInRole("Admin") && !AdminEditStatus)
                                                                                 {
                                                                                     <td>
                                                                                         <div class="form-group">
@@ -1109,7 +1133,7 @@
                                                                                     </td>
                                                                                 }
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
 
@@ -1129,7 +1153,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
 
@@ -1148,7 +1172,7 @@
                                                                                         </div>
                                                                                     }
                                                                                 </td>
-                                                                                @if (User.IsInRole("Admin"))
+                                                                                @if (User.IsInRole("Admin") && AdminEditStatus)
                                                                                 {
                                                                                     <td>
                                                                                         <div class="form-group">
@@ -1159,7 +1183,7 @@
                                                                                         </div>
                                                                                     </td>
                                                                                 }
-                                                                                else if (!AdminEditStatus)
+                                                                                else if (User.IsInRole("Admin") && !AdminEditStatus)
                                                                                 {
                                                                                     <td>
                                                                                         <div class="form-group">
@@ -1171,7 +1195,7 @@
                                                                                     </td>
                                                                                 }
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
 
@@ -1227,7 +1251,7 @@
                                                                 @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"})
                                                             </div>
                                                         }
-                                                        else if(User.IsInRole("Admin"))
+                                                        else if(User.IsInRole("Admin") || !DelegateEditStatus)
                                                         {   
                                                              <div class="form-group">
                                                                 @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
@@ -1252,7 +1276,7 @@
                                                                 @Html.ValidationMessage(@name2,  "",new {@class = "text-danger"})
                                                             </div>
                                                         }
-                                                        else if(User.IsInRole("Admin"))
+                                                        else if(User.IsInRole("Admin")|| !DelegateEditStatus)
                                                         {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F"): " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
@@ -1276,7 +1300,7 @@
                                                                 @Html.ValidationMessage(@name3,  "",new {@class = "text-danger"})
                                                              </div>
                                                         }
-                                                        else if(User.IsInRole("Admin"))
+                                                        else if(User.IsInRole("Admin") || !DelegateEditStatus)
                                                         {                                       
                                                               <div class="form-group">
                                                                 @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3, @readonly = "readonly"})
@@ -1300,7 +1324,7 @@
                                                                 @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"})
                                                             </div>
                                                         }
-                                                        else if(User.IsInRole("Admin"))
+                                                        else if(User.IsInRole("Admin") || !DelegateEditStatus)
                                                         {
                                                               <div class="form-group">
                                                                 @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4, @readonly = "readonly"})
@@ -1325,7 +1349,7 @@
                                                                 @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"})
                                                             </div>
                                                         }
-                                                        else if(User.IsInRole("Admin"))
+                                                        else if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                         {
                                                               <div class="form-group">
                                                                 @Html.TextBox(@name5, details!=null ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
@@ -1340,7 +1364,7 @@
                                                             </div>
                                                         }
                                                         </td>
-                                                        @if (User.IsInRole("Admin") && @Subs.RequireInput)
+                                                        @if (User.IsInRole("Admin") && @Subs.RequireInput && AdminEditStatus)
                                                         {
                                                             var LedgerSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
                                                             <td>
@@ -1350,7 +1374,7 @@
                                                               </div>
                                                             </td>
                                                         }
-                                                        else if (User.IsInRole("Admin") && !@Subs.RequireInput)
+                                                        else if (User.IsInRole("Admin") && !@Subs.RequireInput && AdminEditStatus)
                                                         {
                                                             <td>
                                                                 <div class="form-group">
@@ -1359,7 +1383,7 @@
                                                                 </div>
                                                             </td>
                                                         }
-                                                         else if (!AdminEditStatus)
+                                                         else if (User.IsInRole("Admin") && !AdminEditStatus)
                                                         {
                                                             <td>
                                                                 <div class="form-group">
@@ -1377,7 +1401,7 @@
                                                                 @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"})
                                                             </div>                                                            
                                                         }
-                                                        else if(User.IsInRole("Admin"))
+                                                        else if(User.IsInRole("Admin") || !DelegateEditStatus)
                                                         {
                                                             <div class="form-group">
                                                                 @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly = "readonly"})
@@ -1410,7 +1434,7 @@
                                                             </div>
                                                         }
                                                         </td>
-                                                        @if (User.IsInRole("Admin") && @Subs.RequireInput) 
+                                                        @if (User.IsInRole("Admin") && @Subs.RequireInput && AdminEditStatus)
                                                         {
                                                             var LedgerSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
                                                             <td>
@@ -1420,7 +1444,7 @@
                                                                 </div>
                                                             </td>
                                                         }
-                                                        else if (User.IsInRole("Admin") && !@Subs.RequireInput) 
+                                                        else if (User.IsInRole("Admin") && !@Subs.RequireInput && AdminEditStatus) 
                                                         {
                                                             <td>
                                                                 <div class="form-group">
@@ -1429,7 +1453,7 @@
                                                                 </div>
                                                             </td>
                                                         }
-                                                        else if (!AdminEditStatus) 
+                                                        else if (User.IsInRole("Admin") && !AdminEditStatus) 
                                                         {
                                                             <td>
                                                                 <div class="form-group">
@@ -1439,20 +1463,20 @@
                                                             </td>
                                                         }
                                                         <td>
-                                                        @if (@Subs.RequireInput)
+                                                        @if (@Subs.RequireInput || User.IsInRole("Admin") || !DelegateEditStatus)
                                                         {
                                                             <div class="form-group">
                                                                 @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10, @readonly = "readonly"})
                                                                 @Html.ValidationMessage(@name10,  "",new {@class = "text-danger"})
                                                             </div>
                                                         }
-                                                        else if(User.IsInRole("Admin"))
+                                                        @*else if(User.IsInRole("Admin") || !DelegateEditStatus)
                                                         {
                                                              <div class="form-group">
                                                                 @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10, @readonly = "readonly"})
                                                                 @Html.ValidationMessage(@name10,  "",new {@class = "text-danger"})
                                                             </div>   
-                                                        }
+                                                        }*@
                                                         else
                                                         {                                                                                                             
                                                             <div class="form-group">
@@ -1518,8 +1542,11 @@
                                         @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })*@
-                                        <input id="@Submit" class="Submit" formaction="Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
-                                @*}*@
+                                        @if ((User.IsInRole("Admin") && AdminEditStatus) || DelegateEditStatus)
+                                        {
+                                            <input id="@Submit" class="Submit" formaction="Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
+                                        }
+                                        @*}*@
                             </div>
                           
                         }
@@ -1620,7 +1647,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    }
+                }
                 <ul id="innertab2" class="nav nav-tabs" role="tablist">
 
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
@@ -1647,6 +1674,9 @@
                     <br />
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
+                         @if ((from a in Model.Statuss where a.SectionNumber==@inner.SectionNo where a.GroupNumber.Equals(@item.GroupNo) select a.DelegateEditStatus).Count() > 0 && !User.IsInRole("Admin"))
+                                      DelegateEditStatus = false;
+
                           int TableCount = 0;
                           var Submit = String.Concat("Submit", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                           var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
@@ -1751,7 +1781,7 @@
                                                                                 <td>@Ledgers.LedgerNo</td>
                                                                                 <td>@Ledgers.LedgerName</td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
 
@@ -1771,7 +1801,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
 
@@ -1791,7 +1821,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
 
@@ -1811,7 +1841,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
 
@@ -1831,7 +1861,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
 
@@ -1850,7 +1880,7 @@
                                                                                         </div>
                                                                                     }
                                                                                 </td>
-                                                                                @if (User.IsInRole("Admin"))
+                                                                                    @if (User.IsInRole("Admin") && AdminEditStatus)
                                                                                 {
                                                                                     <td>
                                                                                         <div class="form-group">
@@ -1861,7 +1891,7 @@
                                                                                         </div>
                                                                                     </td>
                                                                                 }
-                                                                                else if (!AdminEditStatus)
+                                                                                    else if (User.IsInRole("Admin") && !AdminEditStatus)
                                                                                 {
                                                                                     <td>
                                                                                         <div class="form-group">
@@ -1873,7 +1903,7 @@
                                                                                     </td>
                                                                                 }
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
 
@@ -1912,7 +1942,7 @@
                                                                                         </div>
                                                                                     }
                                                                                 </td>
-                                                                                @if (User.IsInRole("Admin"))
+                                                                                @if (User.IsInRole("Admin")&& AdminEditStatus)
                                                                                 {
                                                                                     <td>
                                                                                         <div class="form-group">
@@ -1923,7 +1953,7 @@
                                                                                         </div>
                                                                                     </td>
                                                                                 }
-                                                                                else if (!AdminEditStatus)
+                                                                                    else if (User.IsInRole("Admin") && !AdminEditStatus)
                                                                                 {
                                                                                     <td>
                                                                                         <div class="form-group">
@@ -1935,7 +1965,7 @@
                                                                                     </td>
                                                                                 }
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
 
@@ -1991,7 +2021,7 @@
                                                                     @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"})
                                                                 </div>
                                                             }
-                                                            else if (User.IsInRole("Admin"))
+                                                            else if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
@@ -2016,7 +2046,7 @@
                                                                     @Html.ValidationMessage(@name2,  "",new {@class = "text-danger"})
                                                                 </div>
                                                             }
-                                                            else if (User.IsInRole("Admin"))
+                                                            else if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F"): " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
@@ -2040,7 +2070,7 @@
                                                                     @Html.ValidationMessage(@name3,  "",new {@class = "text-danger"})
                                                                 </div>
                                                             }
-                                                            else if (User.IsInRole("Admin"))
+                                                            else if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3, @readonly = "readonly"})
@@ -2064,7 +2094,7 @@
                                                                     @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"})
                                                                 </div>
                                                             }
-                                                            else if (User.IsInRole("Admin"))
+                                                            else if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4, @readonly = "readonly"})
@@ -2089,7 +2119,7 @@
                                                                 @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"})
                                                             </div>
                                                             }
-                                                            else if (User.IsInRole("Admin"))
+                                                            else if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name5, details!=null ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
@@ -2104,7 +2134,7 @@
                                                                 </div>
                                                             }
                                                         </td>
-                                                        @if (User.IsInRole("Admin") && @Subs.RequireInput)
+                                                        @if (User.IsInRole("Admin") && @Subs.RequireInput && AdminEditStatus)
                                                         {
                                                             var LedgerSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
                                                             <td>
@@ -2114,7 +2144,7 @@
                                                                 </div>
                                                             </td>
                                                         }
-                                                        else if (User.IsInRole("Admin") && !@Subs.RequireInput)
+                                                        else if (User.IsInRole("Admin") && !@Subs.RequireInput && AdminEditStatus)
                                                         {
                                                             <td>
                                                                 <div class="form-group">
@@ -2123,7 +2153,7 @@
                                                                 </div>
                                                             </td>
                                                         }
-                                                        else if (!AdminEditStatus)
+                                                        else if (User.IsInRole("Admin") && !AdminEditStatus)
                                                         {
                                                             <td>
                                                                 <div class="form-group">
@@ -2141,7 +2171,7 @@
                                                                     @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"})
                                                                 </div>
                                                             }
-                                                            else if (User.IsInRole("Admin"))
+                                                            else if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly = "readonly"})
@@ -2174,7 +2204,7 @@
                                                                 </div>
                                                             }
                                                         </td>
-                                                        @if (User.IsInRole("Admin") && @Subs.RequireInput)
+                                                        @if (User.IsInRole("Admin") && @Subs.RequireInput && AdminEditStatus)
                                                         {
                                                             var LedgerSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
                                                             <td>
@@ -2184,7 +2214,7 @@
                                                                 </div>
                                                             </td>
                                                         }
-                                                        else if (User.IsInRole("Admin") && !@Subs.RequireInput)
+                                                        else if (User.IsInRole("Admin") && !@Subs.RequireInput && AdminEditStatus)
                                                         {
                                                             <td>
                                                                 <div class="form-group">
@@ -2193,7 +2223,7 @@
                                                                 </div>
                                                             </td>
                                                         }
-                                                        else if (!AdminEditStatus)
+                                                        else if (User.IsInRole("Admin") && !AdminEditStatus)
                                                         {
                                                             <td>
                                                                 <div class="form-group">
@@ -2203,20 +2233,20 @@
                                                             </td>
                                                         }
                                                         <td>
-                                                            @if (@Subs.RequireInput)
+                                                            @if (@Subs.RequireInput || User.IsInRole("Admin") || !DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name10,  "",new {@class = "text-danger"})
                                                                 </div>
                                                             }
-                                                            else if (User.IsInRole("Admin"))
+                                                            @*else if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name10,  "",new {@class = "text-danger"})
                                                                 </div>
-                                                            }
+                                                            }*@
                                                             else
                                                             {
                                                                 <div class="form-group">
@@ -2282,8 +2312,11 @@
                                         @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })*@
-                                        <input id="@Submit" class="Submit" formaction="Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
-                                 @*}*@
+                                        @if ((User.IsInRole("Admin") && AdminEditStatus) || DelegateEditStatus)
+                                        {
+                                            <input id="@Submit" class="Submit" formaction="Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
+                                        }
+                                        @*}*@
                             </div>
                            
                          }
@@ -2378,7 +2411,7 @@
                                                                                 <td>@Ledgers.LedgerNo</td>
                                                                                 <td>@Ledgers.LedgerName</td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
 
@@ -2398,7 +2431,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
 
@@ -2418,7 +2451,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
 
@@ -2438,6 +2471,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
+                                                                                   @*if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
 
@@ -2454,10 +2488,10 @@
 
                                                                                             @Html.ValidationMessage(@name4+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
                                                                                         </div>
-                                                                                    }
+                                                                                    }*@
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
 
@@ -2476,7 +2510,7 @@
                                                                                         </div>
                                                                                     }
                                                                                 </td>
-                                                                                @if (User.IsInRole("Admin"))
+                                                                                @if (User.IsInRole("Admin") && AdminEditStatus)
                                                                                 {
                                                                                     <td>
                                                                                         <div class="form-group">
@@ -2487,7 +2521,7 @@
                                                                                         </div>
                                                                                     </td>
                                                                                 }
-                                                                                else if (!AdminEditStatus)
+                                                                                else if (User.IsInRole("Admin") && !AdminEditStatus)
                                                                                 {
                                                                                     <td>
                                                                                         <div class="form-group">
@@ -2499,7 +2533,7 @@
                                                                                     </td>
                                                                                 }
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
 
@@ -2538,7 +2572,7 @@
                                                                                         </div>
                                                                                     }
                                                                                 </td>
-                                                                                @if (User.IsInRole("Admin"))
+                                                                                @if (User.IsInRole("Admin") && AdminEditStatus)
                                                                                 {
                                                                                     <td>
                                                                                         <div class="form-group">
@@ -2549,7 +2583,7 @@
                                                                                         </div>
                                                                                     </td>
                                                                                 }
-                                                                                else if (!AdminEditStatus)
+                                                                                else if (User.IsInRole("Admin") && !AdminEditStatus)
                                                                                 {
                                                                                     <td>
                                                                                         <div class="form-group">
@@ -2561,7 +2595,7 @@
                                                                                     </td>
                                                                                 }
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin"))
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus )
                                                                                     {
                                                                                         <div class="form-group">
 
@@ -2617,7 +2651,7 @@
                                                                     @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"})
                                                                 </div>
                                                             }
-                                                            else if (User.IsInRole("Admin"))
+                                                            else if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
@@ -2642,7 +2676,7 @@
                                                                     @Html.ValidationMessage(@name2,  "",new {@class = "text-danger"})
                                                                 </div>
                                                             }
-                                                            else if (User.IsInRole("Admin"))
+                                                            else if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F"): " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
@@ -2666,7 +2700,7 @@
                                                                     @Html.ValidationMessage(@name3,  "",new {@class = "text-danger"})
                                                                 </div>
                                                             }
-                                                            else if (User.IsInRole("Admin"))
+                                                            else if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3, @readonly = "readonly"})
@@ -2690,7 +2724,7 @@
                                                                     @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"})
                                                                 </div>
                                                             }
-                                                            else if (User.IsInRole("Admin"))
+                                                            else if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4, @readonly = "readonly"})
@@ -2715,7 +2749,7 @@
                                                                 @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"})
                                                             </div>
                                                             }
-                                                            else if (User.IsInRole("Admin"))
+                                                            else if (User.IsInRole("Admin") || !DelegateEditStatus )
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name5, details!=null ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
@@ -2730,7 +2764,7 @@
                                                                 </div>
                                                             }
                                                         </td>
-                                                        @if (User.IsInRole("Admin") && @Subs.RequireInput)
+                                                        @if (User.IsInRole("Admin") && @Subs.RequireInput && AdminEditStatus)
                                                         {
                                                             var LedgerSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
                                                             <td>
@@ -2740,7 +2774,7 @@
                                                                 </div>
                                                             </td>
                                                         }
-                                                        else if (User.IsInRole("Admin") && !@Subs.RequireInput)
+                                                        else if (User.IsInRole("Admin") && !@Subs.RequireInput && AdminEditStatus)
                                                         {
                                                             <td>
                                                                 <div class="form-group">
@@ -2749,7 +2783,7 @@
                                                                 </div>
                                                             </td>
                                                         }
-                                                        else if (!AdminEditStatus)
+                                                        else if (User.IsInRole("Admin") && !AdminEditStatus)
                                                         {
                                                             <td>
                                                                 <div class="form-group">
@@ -2767,7 +2801,7 @@
                                                                     @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"})
                                                                 </div>
                                                             }
-                                                            else if (User.IsInRole("Admin"))
+                                                            else if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly = "readonly"})
@@ -2800,7 +2834,7 @@
                                                                 </div>
                                                             }
                                                         </td>
-                                                        @if (User.IsInRole("Admin") && @Subs.RequireInput)
+                                                        @if (User.IsInRole("Admin") && @Subs.RequireInput && AdminEditStatus)
                                                         {
                                                             var LedgerSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
                                                             <td>
@@ -2810,7 +2844,7 @@
                                                                 </div>
                                                             </td>
                                                         }
-                                                        else if (User.IsInRole("Admin") && !@Subs.RequireInput)
+                                                        else if (User.IsInRole("Admin") && !@Subs.RequireInput && AdminEditStatus)
                                                         {
                                                             <td>
                                                                 <div class="form-group">
@@ -2819,7 +2853,7 @@
                                                                 </div>
                                                             </td>
                                                         }
-                                                         else if (!AdminEditStatus)
+                                                         else if (User.IsInRole("Admin") && !AdminEditStatus)
                                                         {
                                                             <td>
                                                                 <div class="form-group">
@@ -2829,20 +2863,20 @@
                                                             </td>
                                                         }
                                                         <td>
-                                                            @if (@Subs.RequireInput)
+                                                            @if (@Subs.RequireInput || User.IsInRole("Admin") || !DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name10,  "",new {@class = "text-danger"})
                                                                 </div>
                                                             }
-                                                            else if (User.IsInRole("Admin"))
+                                                            @*else if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name10,  "",new {@class = "text-danger"})
                                                                 </div>
-                                                            }
+                                                            }*@
                                                             else
                                                             {
                                                                 <div class="form-group">
@@ -2908,8 +2942,11 @@
                                         @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })*@
-                                        <input id="@Submit" class="Submit" formaction="Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
-                               @*}*@
+                                        @if ((User.IsInRole("Admin") && AdminEditStatus) || DelegateEditStatus)
+                                        {
+                                            <input id="@Submit" class="Submit" formaction="Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
+                                        }
+                                        @*}*@
                              </div>
                            
                         }
@@ -3113,10 +3150,12 @@
                         //$('#' + hiddenSelectedDivision).val($("#Division option:selected").text().trim());
 
                         $("#FinalSubmit-SelectedDivisionName").val($("#Division option:selected").text().trim());
+                        alert($("#FinalSubmit-SelectedDivisionName").val());
 
                        // var divisionname = $("#SelectedDivisionName").val();
 
                         $("#FinalSubmit-SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
+                        alert($("#FinalSubmit-SelectedAcademicYear").val());
                     });
          });
         
