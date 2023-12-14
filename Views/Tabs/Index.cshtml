@@ -80,12 +80,12 @@
         
         @if (User.IsInRole("Admin") && AdminEditStatus)
         {
-            <input id="Submit" class="FinalSubmit" formaction="Tabs/FinalSubmit" value="Finalise Budget" type="submit" style="align-self:center"/>
+            <input id="Submit" class="FinalSubmit" formaction="~/Tabs/FinalSubmit" value="Finalise Budget" type="submit" style="align-self:center"/>
             @*Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = "FinalSubmit-SelectedAcademicYear" })
             @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = "FinalSubmit-SelectedDivisionName" })*@
         }
        <br />
-       <ul id="outerTab" class="nav nav-tabs" role="tablist" >    
+    <ul id="outerTab" class="nav nav-tabs" role="tablist" >    
       @foreach (var item in Model.Sectionss)
       {
             var inneridenti = String.Concat("Budget", @item.SectionNo.ToString());
@@ -261,8 +261,10 @@
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
 
-                        @if ((from a in Model.Statuss where a.SectionNumber==@inner.SectionNo where a.GroupNumber.Equals(@item.GroupNo) select a.DelegateEditStatus).Count() > 0 && !User.IsInRole("Admin"))
+                        @if ((from a in Model.Statuss where (a.SectionNumber==@inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.DelegateEditStatus).Count() > 0 && !User.IsInRole("Admin"))
                                       DelegateEditStatus = false;
+                        else
+                            DelegateEditStatus = true;
 
                         int TableCount = 0;
                         var Submit = String.Concat("Submit", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -908,9 +910,9 @@
                                         @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })*@
-                                    @if ((User.IsInRole("Admin") && AdminEditStatus) || DelegateEditStatus)
+                                    @if ((User.IsInRole("Admin") && AdminEditStatus) || (!User.IsInRole("Admin") && DelegateEditStatus))
                                     {
-                                            <input id="@Submit" class="Submit" formaction="Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
+                                            <input id="@Submit" class="Submit" formaction="~/Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
                                     }
                                         @*}*@
                             </div>
@@ -1542,9 +1544,9 @@
                                         @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })*@
-                                        @if ((User.IsInRole("Admin") && AdminEditStatus) || DelegateEditStatus)
+                                        @if ((User.IsInRole("Admin") && AdminEditStatus) || (!User.IsInRole("Admin") && DelegateEditStatus))
                                         {
-                                            <input id="@Submit" class="Submit" formaction="Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
+                                            <input id="@Submit" class="Submit" formaction="~/Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
                                         }
                                         @*}*@
                             </div>
@@ -1674,8 +1676,10 @@
                     <br />
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
-                         @if ((from a in Model.Statuss where a.SectionNumber==@inner.SectionNo where a.GroupNumber.Equals(@item.GroupNo) select a.DelegateEditStatus).Count() > 0 && !User.IsInRole("Admin"))
-                                      DelegateEditStatus = false;
+                        @if ((from a in Model.Statuss where a.SectionNumber==@inner.SectionNo where a.GroupNumber.Equals(@item.GroupNo) select a.DelegateEditStatus).Count() > 0 && !User.IsInRole("Admin"))
+                             DelegateEditStatus = false;
+                        else
+                             DelegateEditStatus = true;
 
                           int TableCount = 0;
                           var Submit = String.Concat("Submit", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -2312,9 +2316,9 @@
                                         @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })*@
-                                        @if ((User.IsInRole("Admin") && AdminEditStatus) || DelegateEditStatus)
+                                        @if ((User.IsInRole("Admin") && AdminEditStatus) || (!User.IsInRole("Admin") && DelegateEditStatus))
                                         {
-                                            <input id="@Submit" class="Submit" formaction="Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
+                                            <input id="@Submit" class="Submit" formaction="~/Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
                                         }
                                         @*}*@
                             </div>
@@ -2942,9 +2946,9 @@
                                         @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })*@
-                                        @if ((User.IsInRole("Admin") && AdminEditStatus) || DelegateEditStatus)
+                                        @if ((User.IsInRole("Admin") && AdminEditStatus) || (!User.IsInRole("Admin") && DelegateEditStatus))
                                         {
-                                            <input id="@Submit" class="Submit" formaction="Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
+                                            <input id="@Submit" class="Submit" formaction="~/Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
                                         }
                                         @*}*@
                              </div>
