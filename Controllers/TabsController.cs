@@ -42,6 +42,8 @@ namespace BudgetPortal.Controllers
             mymodel.Ledgerss = _context.BudgetLedgers.ToList();
             mymodel.Detailss = _context.BudgetDetails.Where(x => x.DivisionID==LoggedInDivisionID)
                                 .Where(x => x.FinancialYear1 == Year).ToList();
+            mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == LoggedInDivisionID)
+                                .Where(x => x.FinancialYear1 == (Year-1)).ToList();
             if (username != "admin@test.com")
             {
                 mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
@@ -170,7 +172,9 @@ namespace BudgetPortal.Controllers
                                             .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
                         MD.Statuss  = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
                                             .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).ToList();
-                MD.DivisionNames = _context.Division.AsEnumerable().Select(x =>
+                        MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == DivisionID)
+                                             .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0])-1)).ToList();
+                        MD.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                                 new SelectListItem()
                                 {
                                     Selected = false,
@@ -300,7 +304,10 @@ namespace BudgetPortal.Controllers
                         MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
                                          .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
                         MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
-                        .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber != Convert.ToInt32(0)).ToList();
+                                         .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber != Convert.ToInt32(0)).ToList();
+                        MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == LoggedInDivisionID)
+                                         .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
+
                         MD.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                              new SelectListItem()
                              {
@@ -361,6 +368,8 @@ namespace BudgetPortal.Controllers
             mymodel.Ledgerss = _context.BudgetLedgers.ToList();
             mymodel.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
                                 .Where(x => x.FinancialYear1 == Year).ToList();
+            mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == LoggedInDivisionID)
+                                         .Where(x => x.FinancialYear1 == (Year - 1)).ToList();
             if (username != "admin@test.com")
             {
                 mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
@@ -512,6 +521,8 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
             MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).ToList();
+            MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == DivisionID)
+                                         .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
             MD.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                     new SelectListItem()
                     {
