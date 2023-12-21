@@ -43,7 +43,7 @@
            {
              <td>
                    @Html.DropDownListFor(Model => Model.SelectedDivisionID, Model.DivisionNames,"--Please select any Division--", new { @class = "form-control", @id="Division" })
-                   @Html.ValidationMessageFor(Model => Model.DivisionNames,  "*", new { @class = "text-danger" })
+                   @Html.ValidationMessageFor(Model => Model.DivisionNames,  "", new { @class = "text-danger" })
                   
                    @*Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName)*@
                         
@@ -51,7 +51,7 @@
            }       
              <td>
               @Html.DropDownListFor(Model => Model.SelectedAcademicYearID, Model.AcademicYears,"--Please select any Academic Year--",new { @class = "form-control", @id="AcademicYear" })
-              @Html.ValidationMessageFor(Model => Model.AcademicYears,  "*", new { @class = "text-danger" }) 
+              @Html.ValidationMessageFor(Model => Model.AcademicYears,  "", new { @class = "text-danger" }) 
 
               @*Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear)*@
               
@@ -84,6 +84,9 @@
             @*Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = "FinalSubmit-SelectedAcademicYear" })
             @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = "FinalSubmit-SelectedDivisionName" })*@
         }
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
        <br />
     <ul id="outerTab" class="nav nav-tabs" role="tablist" >    
       @foreach (var item in Model.Sectionss)
@@ -377,7 +380,7 @@
                                                                                             
                                                                                             <!-- @Html.ValidationMessage(@name1+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"}) -->
 
-                                                                                            @Html.ValidationMessageFor(model => model.BudEstCurrFin,"*",new {@class = "text-danger"})
+                                                                                            @Html.ValidationMessageFor(model => model.BudEstCurrFin,"",new {@class = "text-danger"})
                                                                                         </div>                                                                                       
                                                                                     }
                                                                                    else
@@ -632,7 +635,7 @@
                                                                     @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
 
                                                                     <!-- @Html.ValidationMessage(@name1,  "*",new {@class = "text-danger"}) -->
-                                                                    @Html.ValidationMessageFor(model => model.BudEstCurrFin,"*",new {@class = "text-danger"})
+                                                                    @Html.ValidationMessageFor(model => model.BudEstCurrFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                         }
                                                         else
@@ -1084,7 +1087,7 @@
 
                                                                                             <!-- @Html.ValidationMessage(@name1+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"}) -->
 
-                                                                                            @Html.ValidationMessageFor(model => model.BudEstCurrFin,"*",new {@class = "text-danger"})
+                                                                                            @Html.ValidationMessageFor(model => model.BudEstCurrFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                 </td>
@@ -1095,7 +1098,8 @@
 
                                                                                             @Html.TextBox(@name2+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2+@Ledgers.LedgerNo, @readonly = "readonly"})
 
-                                                                                            @Html.ValidationMessage(@name2+@Ledgers.LedgerNo,  "",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name2+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+                                                                                            @Html.ValidationMessageFor(model => model.ActPrevFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                     else
@@ -1104,7 +1108,9 @@
 
                                                                                             @Html.TextBox(@name2+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2+@Ledgers.LedgerNo})
 
-                                                                                            @Html.ValidationMessage(@name2+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                                <!-- @Html.ValidationMessage(@name2+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"}) -->
+
+                                                                                            @Html.ValidationMessageFor(model => model.ActPrevFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                 </td>
@@ -1115,7 +1121,9 @@
 
                                                                                             @Html.TextBox(@name3+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3+@Ledgers.LedgerNo, @readonly = "readonly"})
 
-                                                                                            @Html.ValidationMessage(@name3+@Ledgers.LedgerNo,  "",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name3+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+
+                                                                                             @Html.ValidationMessageFor(model => model.ActCurrFinTill2ndQuart,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                     else
@@ -1124,7 +1132,9 @@
 
                                                                                             @Html.TextBox(@name3+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3+@Ledgers.LedgerNo})
 
-                                                                                            @Html.ValidationMessage(@name3+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name3+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"}) -->
+
+                                                                                            @Html.ValidationMessageFor(model => model.ActCurrFinTill2ndQuart,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                 </td>
@@ -1135,7 +1145,9 @@
 
                                                                                             @Html.TextBox(@name4+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4+@Ledgers.LedgerNo, @readonly = "readonly"})
 
-                                                                                            @Html.ValidationMessage(@name4+@Ledgers.LedgerNo,  "",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name4+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+                                                                                            
+                                                                                            @Html.ValidationMessageFor(model => model.RevEstCurrFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                     else
@@ -1144,7 +1156,9 @@
 
                                                                                             @Html.TextBox(@name4+@Ledgers.LedgerNo, LedPrevYearApp!=null ? LedPrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name4+@Ledgers.LedgerNo})
 
-                                                                                            @Html.ValidationMessage(@name4+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name4+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"}) -->
+
+                                                                                            @Html.ValidationMessageFor(model => model.RevEstCurrFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                 </td>
@@ -1155,7 +1169,9 @@
 
                                                                                                 @Html.TextBox(@name5+@Ledgers.LedgerNo, (Ledgerdetails!=null) ? (Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @readonly = "readonly"})
 
-                                                                                            @Html.ValidationMessage(@name5+@Ledgers.LedgerNo,  "",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name5+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+
+                                                                                            @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                         else
@@ -1164,7 +1180,9 @@
 
                                                                                                 @Html.TextBox(@name5+@Ledgers.LedgerNo, LedPrevYearApp!=null ? (Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : " ", new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @readonly = "readonly"})
 
-                                                                                                @Html.ValidationMessage(@name5+@Ledgers.LedgerNo,  "",new {@class = "text-danger"})
+                                                                                                <!-- @Html.ValidationMessage(@name5+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+
+                                                                                                @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin,"",new {@class = "text-danger"})
                                                                                             </div>
                                                                                         }
                                                                                 </td>
@@ -1175,7 +1193,9 @@
 
                                                                                             @Html.TextBox(@name6+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6+@Ledgers.LedgerNo})
 
-                                                                                            @Html.ValidationMessage(@name6+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name6+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"}) -->
+
+                                                                                            @Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     </td>
                                                                                 }
@@ -1186,7 +1206,9 @@
 
                                                                                             @Html.TextBox(@name6+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6+@Ledgers.LedgerNo, @readonly = "readonly"})
 
-                                                                                            @Html.ValidationMessage(@name6+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name6+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"}) -->
+
+                                                                                            @Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     </td>
                                                                                 }
@@ -1197,7 +1219,9 @@
 
                                                                                             @Html.TextBox(@name7+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.BudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7+@Ledgers.LedgerNo, @readonly = "readonly"})
 
-                                                                                            @Html.ValidationMessage(@name7+@Ledgers.LedgerNo,  "",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name7+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+
+                                                                                            @Html.ValidationMessageFor(model => model.BudgEstNexFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                     else
@@ -1206,7 +1230,9 @@
 
                                                                                             @Html.TextBox(@name7+@Ledgers.LedgerNo, LedPrevYearApp!=null ? LedPrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name7+@Ledgers.LedgerNo})
 
-                                                                                            @Html.ValidationMessage(@name7+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name7+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"}) -->
+
+                                                                                            @Html.ValidationMessageFor(model => model.BudgEstNexFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                 </td>
@@ -1217,7 +1243,9 @@
 
                                                                                                 @Html.TextBox(@name8+@Ledgers.LedgerNo, (Ledgerdetails!=null) ? (Convert.ToDecimal(Ledgerdetails.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @readonly = "readonly"})
 
-                                                                                            @Html.ValidationMessage(@name8+@Ledgers.LedgerNo,  "",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name8+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+
+                                                                                            @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                     else
@@ -1226,7 +1254,9 @@
 
                                                                                               @Html.TextBox(@name8+@Ledgers.LedgerNo, LedPrevYearApp!=null ? (Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : " ", new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @readonly = "readonly"})
 
-                                                                                              @Html.ValidationMessage(@name8+@Ledgers.LedgerNo,  "",new {@class = "text-danger"})
+                                                                                              <!-- @Html.ValidationMessage(@name8+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+
+                                                                                              @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin,"",new {@class = "text-danger"})
                                                                                          </div>
                                                                                     }
                                                                                 </td>
@@ -1237,7 +1267,8 @@
 
                                                                                             @Html.TextBox(@name9+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9+@Ledgers.LedgerNo})
 
-                                                                                            @Html.ValidationMessage(@name9+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                                <!--  @Html.ValidationMessage(@name9+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"}) -->
+                                                                                            @Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     </td>
                                                                                 }
@@ -1248,7 +1279,9 @@
 
                                                                                             @Html.TextBox(@name9+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9+@Ledgers.LedgerNo, @readonly="readonly"})
 
-                                                                                            @Html.ValidationMessage(@name9+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name9+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"}) -->
+
+                                                                                            @Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     </td>
                                                                                 }
@@ -1259,7 +1292,9 @@
 
                                                                                             @Html.TextArea(@name10+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.Justification.ToString() : " ", new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @readonly = "readonly"})
 
-                                                                                            @Html.ValidationMessage(@name10+@Ledgers.LedgerNo,  "",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name10+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+
+                                                                                            @Html.ValidationMessageFor(model => model.Justification,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                     else
@@ -1270,7 +1305,9 @@
 
                                                                                             @Html.TextArea(@name10+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.Justification.ToString() : " ", new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo})
 
-                                                                                            @Html.ValidationMessage(@name10+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name10+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"}) -->
+
+                                                                                            @Html.ValidationMessageFor(model => model.Justification,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                 </td>
@@ -1306,7 +1343,8 @@
                                                             var LedgerPastYearAppBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();                                                                                                                            
                                                             <div class="form-group">
                                                                     @Html.TextBox(@name1, LedgerPastYearAppBudEstCurrFin!=null ? LedgerPastYearAppBudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"})
+                                                                   <!--  @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.BudEstCurrFin,"",new {@class = "text-danger"})
                                                             </div>
                                                         }
                                                         else if (@Subs.RequireInput && !DelegateEditStatus)
@@ -1314,7 +1352,8 @@
                                                             var LedgerSumBudEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstCurrFin).Sum();                                                                                                                            
                                                             <div class="form-group">
                                                                 @Html.TextBox(@name1, LedgerSumBudEstCurrFin!=null ? LedgerSumBudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"})
+                                                                <!-- @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"}) -->
+                                                                 @Html.ValidationMessageFor(model => model.BudEstCurrFin,"",new {@class = "text-danger"})
                                                             </div>
                                                         }
                                                         
@@ -1322,15 +1361,16 @@
                                                         {  
                                                              <div class="form-group">
                                                                 @Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F")  : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"})
+                                                                <!-- @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"}) -->
+                                                                @Html.ValidationMessageFor(model => model.BudEstCurrFin,"",new {@class = "text-danger"})
                                                             </div>   
                                                         }
                                                         else
                                                         {
                                                             <div class="form-group">
-                                                                    @Html.TextBox(@name1, PrevYearApp!=null?PrevYearApp.BudEstNextFin : " ", new { @class = "form-control", @id = @name1, @name=@name1, @readonly = "readonly"})
+                                                                @Html.TextBox(@name1, PrevYearApp!=null?PrevYearApp.BudEstNextFin : " ", new { @class = "form-control", @id = @name1, @name=@name1, @readonly = "readonly"})
                                                                 <!-- @Html.ValidationMessage(@name1,  "*",new {@class = "text-danger"}) -->
-                                                                @Html.ValidationMessageFor(model => model.BudEstCurrFin,"*",new {@class = "text-danger"})
+                                                                 @Html.ValidationMessageFor(model => model.BudEstCurrFin,"",new {@class = "text-danger"})
                                                             </div>
                                                         }
                                                         </td>
@@ -1340,21 +1380,24 @@
                                                             var LedgerSumActPrevFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActPrevFin).Sum();
                                                             <div class="form-group">                                                                                                                             
                                                                 @Html.TextBox(@name2, LedgerSumActPrevFin!=null ? LedgerSumActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name2,  "",new {@class = "text-danger"})
+                                                                <!--  @Html.ValidationMessage(@name2,  "",new {@class = "text-danger"}) -->
+                                                                @Html.ValidationMessageFor(model => model.ActPrevFin,"",new {@class = "text-danger"})
                                                             </div>
                                                         }
                                                         else if(User.IsInRole("Admin")|| !DelegateEditStatus)
                                                         {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F"): " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name2,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name2,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.ActPrevFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                         }
                                                         else
                                                         {
                                                             <div class="form-group">
                                                                 @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2})
-                                                                @Html.ValidationMessage(@name2,  "*",new {@class = "text-danger"})
+                                                                <!-- @Html.ValidationMessage(@name2,  "*",new {@class = "text-danger"}) -->
+                                                                @Html.ValidationMessageFor(model => model.ActPrevFin,"",new {@class = "text-danger"})
                                                             </div>
                                                         }
                                                         </td>
@@ -1364,21 +1407,24 @@
                                                                 var LedgerSumActCurrFinTill2ndQuart = (from a in Model.Detailss where a.GroupNumber.Equals(@Subs.SubGroupNo) select a.ActCurrFinTill2ndQuart).Sum();
                                                              <div class="form-group">
                                                                 @Html.TextBox(@name3, LedgerSumActCurrFinTill2ndQuart!=null ? LedgerSumActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name3,  "",new {@class = "text-danger"})
+                                                                <!-- @Html.ValidationMessage(@name3,  "",new {@class = "text-danger"}) -->
+                                                                @Html.ValidationMessageFor(model => model.ActCurrFinTill2ndQuart,"",new {@class = "text-danger"})
                                                              </div>
                                                         }
                                                         else if(User.IsInRole("Admin") || !DelegateEditStatus)
                                                         {                                       
                                                               <div class="form-group">
                                                                 @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name3,  "",new {@class = "text-danger"})
+                                                                <!-- @Html.ValidationMessage(@name3,  "",new {@class = "text-danger"}) -->
+                                                                @Html.ValidationMessageFor(model => model.ActCurrFinTill2ndQuart,"",new {@class = "text-danger"})
                                                              </div>  
                                                         }
                                                         else
                                                         {
                                                             <div class="form-group">
                                                                 @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3})
-                                                                @Html.ValidationMessage(@name3,  "*",new {@class = "text-danger"})
+                                                                <!-- @Html.ValidationMessage(@name3,  "*",new {@class = "text-danger"}) -->
+                                                                @Html.ValidationMessageFor(model => model.ActCurrFinTill2ndQuart,"",new {@class = "text-danger"})
                                                             </div>
                                                         }
                                                         </td>
@@ -1388,7 +1434,8 @@
                                                                 var LedgerSumRevEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin ).Sum();
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name4, LedgerSumRevEstCurrFin!=null ? LedgerSumRevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.RevEstCurrFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                         }
                                                         else if (@Subs.RequireInput && !DelegateEditStatus)
@@ -1396,21 +1443,24 @@
                                                                 var LedgerSumRevEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.RevEstCurrFin).Sum();
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name4, LedgerSumRevEstCurrFin!=null ? LedgerSumRevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.RevEstCurrFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                         }
                                                         else if(User.IsInRole("Admin") || !DelegateEditStatus)
                                                         {
                                                               <div class="form-group">
                                                                 @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"})
+                                                                <!-- @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"}) -->
+                                                                @Html.ValidationMessageFor(model => model.RevEstCurrFin,"",new {@class = "text-danger"})
                                                               </div>  
                                                         }
                                                         else
                                                         {
                                                             <div class="form-group">
                                                                 @Html.TextBox(@name4, PrevYearApp!=null ? PrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name4})
-                                                                @Html.ValidationMessage(@name4,  "*",new {@class = "text-danger"})
+                                                                <!-- @Html.ValidationMessage(@name4,  "*",new {@class = "text-danger"}) -->
+                                                                @Html.ValidationMessageFor(model => model.RevEstCurrFin,"",new {@class = "text-danger"})
                                                             </div>
                                                         }
                                                         </td>
@@ -1421,7 +1471,8 @@
                                                           var PastYearSumBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();                                                                                                                           
                                                               <div class="form-group">
                                                                     @Html.TextBox(@name5, PastYearSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? (Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F"))- Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")))/Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"})
+                                                                <!-- @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"}) -->
+                                                                @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin,"",new {@class = "text-danger"})
                                                               </div>
                                                         }
                                                         else if(@Subs.RequireInput && !DelegateEditStatus)
@@ -1430,7 +1481,8 @@
                                                             var LedgerSumBudEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstCurrFin).Sum();
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name5, LedgerSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? (Convert.ToDecimal(LedgerSumRevEstCurrFin.ToString("F"))- Convert.ToDecimal(LedgerSumBudEstCurrFin.ToString("F")))/Convert.ToDecimal(LedgerSumBudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                         }
 
@@ -1438,14 +1490,16 @@
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name5, (details!=null) ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")) : " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                             else
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name5, (PrevYearApp!=null) ? (Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")) : " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                         </td>
@@ -1455,7 +1509,8 @@
                                                             <td>
                                                               <div class="form-group">
                                                                     @Html.TextBox(@name6, LedgerSumACAndBWPropRECurrFin!=null ? LedgerSumACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name6,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name6,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin,"",new {@class = "text-danger"})
                                                               </div>
                                                             </td>
                                                         }
@@ -1464,7 +1519,8 @@
                                                             <td>
                                                                 <div class="form-group">
                                                                 @Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6})
-                                                                @Html.ValidationMessage(@name6,  "*",new {@class = "text-danger"})
+                                                                <!-- @Html.ValidationMessage(@name6,  "*",new {@class = "text-danger"}) -->
+                                                                @Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
                                                         }
@@ -1472,8 +1528,9 @@
                                                         {
                                                             <td>
                                                                 <div class="form-group">
-                                                                @Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6, @readonly="readonly"})
-                                                                @Html.ValidationMessage(@name6,  "*",new {@class = "text-danger"})
+                                                                    @Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6, @readonly="readonly"})
+                                                                    <!-- @Html.ValidationMessage(@name6,  "*",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
                                                         }
@@ -1483,7 +1540,8 @@
                                                                 var PastYearBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name7, PastYearBudEstCurrFin!=null ? PastYearBudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.BudgEstNexFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                             else if (@Subs.RequireInput && !DelegateEditStatus)
@@ -1491,21 +1549,24 @@
                                                                 var ThisYearBudEstNextFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudgEstNexFin).Sum();
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name7, ThisYearBudEstNextFin!=null ? ThisYearBudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.BudgEstNexFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                             else if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.BudgEstNexFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                             else
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name7, PrevYearApp!=null ? PrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name7})
-                                                                    @Html.ValidationMessage(@name7,  "*",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.BudgEstNexFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                         </td>
@@ -1516,7 +1577,8 @@
                                                                 var PastYearSumBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name8, PastYearSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? (Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F"))- Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")))/Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name8,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name8,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                             else if (@Subs.RequireInput && !DelegateEditStatus)
@@ -1525,7 +1587,8 @@
                                                                 var LedgerSumBudEstNextFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudgEstNexFin).Sum();
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name8, LedgerSumBudEstNextFin!=Convert.ToDecimal(0.00) ? (Convert.ToDecimal(LedgerSumBudEstNextFin.ToString("F"))- Convert.ToDecimal(LedgerSumRevEstCurrFin.ToString("F")))/Convert.ToDecimal(LedgerSumRevEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name8,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name8,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             }
 
@@ -1533,14 +1596,16 @@
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name8, (details!=null) ? (Convert.ToDecimal(details.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(details.RevEstCurrFin.ToString("F")) : " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name8,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name8,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                             else
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name8, (PrevYearApp!=null) ? (Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")) : " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name8,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name8,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                         </td>
@@ -1550,7 +1615,8 @@
                                                             <td>
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name9, LedgerSumACAndBWPropRENxtFin!=null ? LedgerSumACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name9,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name9,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
                                                         }
@@ -1559,7 +1625,8 @@
                                                             <td>
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9})
-                                                                    @Html.ValidationMessage(@name9,  "*",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name9,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
                                                         }
@@ -1568,7 +1635,8 @@
                                                             <td>
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9, @readonly="readonly"})
-                                                                    @Html.ValidationMessage(@name9,  "*",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name9,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
                                                         }
@@ -1577,7 +1645,8 @@
                                                         {
                                                             <div class="form-group">
                                                                 @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name10,  "",new {@class = "text-danger"})
+                                                                <!-- @Html.ValidationMessage(@name10,  "",new {@class = "text-danger"}) -->
+                                                                @Html.ValidationMessageFor(model => model.Justification,"",new {@class = "text-danger"})
                                                             </div>
                                                         }
                                                         @*else if(User.IsInRole("Admin") || !DelegateEditStatus)
@@ -1591,7 +1660,8 @@
                                                         {                                                                                                             
                                                             <div class="form-group">
                                                                 @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10})
-                                                                @Html.ValidationMessage(@name10,  "*",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name10,  "",new {@class = "text-danger"}) -->
+                                                                @Html.ValidationMessageFor(model => model.Justification,"",new {@class = "text-danger"})
                                                             </div>
                                                         }
                                                         </td>
@@ -1902,7 +1972,8 @@
 
                                                                                             @Html.TextBox(@name1+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1+@Ledgers.LedgerNo, @readonly = "readonly"})
 
-                                                                                            @Html.ValidationMessage(@name1+@Ledgers.LedgerNo,  "",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name1+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+                                                                                            @Html.ValidationMessageFor(model => model.BudEstCurrFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                     else
@@ -1911,7 +1982,8 @@
 
                                                                                             @Html.TextBox(@name1+@Ledgers.LedgerNo, LedPrevYearApp!=null?LedPrevYearApp.BudEstNextFin.ToString("F")  : " ", new { @class = "form-control", @id = @name1+@Ledgers.LedgerNo, @name=@name1, @readonly = "readonly"})
 
-                                                                                            @Html.ValidationMessage(@name1+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name1+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"}) -->
+                                                                                                @Html.ValidationMessageFor(model => model.BudEstCurrFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                 </td>
@@ -1922,7 +1994,8 @@
 
                                                                                             @Html.TextBox(@name2+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2+@Ledgers.LedgerNo, @readonly = "readonly"})
 
-                                                                                            @Html.ValidationMessage(@name2+@Ledgers.LedgerNo,  "",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name2+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+                                                                                                @Html.ValidationMessageFor(model => model.ActPrevFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                     else
@@ -1931,7 +2004,8 @@
 
                                                                                             @Html.TextBox(@name2+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2+@Ledgers.LedgerNo})
 
-                                                                                            @Html.ValidationMessage(@name2+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                                <!-- @Html.ValidationMessage(@name2+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+                                                                                            @Html.ValidationMessageFor(model => model.ActPrevFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                 </td>
@@ -1940,9 +2014,10 @@
                                                                                     {
                                                                                         <div class="form-group">
 
-                                                                                            @Html.TextBox(@name3+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                            @Html.TextBox(@name3+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3+@Ledgers.LedgerNo, @readonly = "readonly"}) 
 
-                                                                                            @Html.ValidationMessage(@name3+@Ledgers.LedgerNo,  "",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name3+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+                                                                                            @Html.ValidationMessageFor(model => model.ActCurrFinTill2ndQuart,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                     else
@@ -1951,7 +2026,8 @@
 
                                                                                             @Html.TextBox(@name3+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3+@Ledgers.LedgerNo})
 
-                                                                                            @Html.ValidationMessage(@name3+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                                <!-- @Html.ValidationMessage(@name3+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+                                                                                               @Html.ValidationMessageFor(model => model.ActCurrFinTill2ndQuart,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                 </td>
@@ -1962,7 +2038,8 @@
 
                                                                                             @Html.TextBox(@name4+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4+@Ledgers.LedgerNo, @readonly = "readonly"})
 
-                                                                                            @Html.ValidationMessage(@name4+@Ledgers.LedgerNo,  "",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name4+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+                                                                                            @Html.ValidationMessageFor(model => model.RevEstCurrFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                     else
@@ -1971,7 +2048,8 @@
 
                                                                                             @Html.TextBox(@name4+@Ledgers.LedgerNo, LedPrevYearApp!=null ? LedPrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name4+@Ledgers.LedgerNo})
 
-                                                                                            @Html.ValidationMessage(@name4+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                                <!-- @Html.ValidationMessage(@name4+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+                                                                                             @Html.ValidationMessageFor(model => model.RevEstCurrFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                 </td>
@@ -1982,7 +2060,8 @@
 
                                                                                                 @Html.TextBox(@name5+@Ledgers.LedgerNo, (Ledgerdetails!=null) ? (Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @readonly = "readonly"})
 
-                                                                                            @Html.ValidationMessage(@name5+@Ledgers.LedgerNo,  "",new {@class = "text-danger"})
+                                                                                                <!-- @Html.ValidationMessage(@name5+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+                                                                                                @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                         else
@@ -1991,7 +2070,8 @@
 
                                                                                                 @Html.TextBox(@name5+@Ledgers.LedgerNo, LedPrevYearApp!=null ? (Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : " ", new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @readonly = "readonly"})
 
-                                                                                                @Html.ValidationMessage(@name5+@Ledgers.LedgerNo,  "",new {@class = "text-danger"})
+                                                                                                <!-- @Html.ValidationMessage(@name5+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+                                                                                                @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin,"",new {@class = "text-danger"})
                                                                                             </div>
                                                                                         }
                                                                                 </td>
@@ -2002,7 +2082,8 @@
 
                                                                                             @Html.TextBox(@name6+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6+@Ledgers.LedgerNo})
 
-                                                                                            @Html.ValidationMessage(@name6+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name6+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"}) -->
+                                                                                             @Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     </td>
                                                                                 }
@@ -2013,7 +2094,8 @@
 
                                                                                             @Html.TextBox(@name6+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6+@Ledgers.LedgerNo, @readonly = "readonly"})
 
-                                                                                            @Html.ValidationMessage(@name6+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                                <!-- @Html.ValidationMessage(@name6+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"}) -->
+                                                                                             @Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     </td>
                                                                                 }
@@ -2024,7 +2106,8 @@
 
                                                                                             @Html.TextBox(@name7+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.BudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7+@Ledgers.LedgerNo, @readonly = "readonly"})
 
-                                                                                            @Html.ValidationMessage(@name7+@Ledgers.LedgerNo,  "",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name7+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+                                                                                                @Html.ValidationMessageFor(model => model.BudgEstNexFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                     else
@@ -2033,7 +2116,8 @@
 
                                                                                                 @Html.TextBox(@name7+@Ledgers.LedgerNo, PrevYearApp!=null ? PrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name7+@Ledgers.LedgerNo})
 
-                                                                                            @Html.ValidationMessage(@name7+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                                <!-- @Html.ValidationMessage(@name7+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+                                                                                                @Html.ValidationMessageFor(model => model.BudgEstNexFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                 </td>
@@ -2044,7 +2128,8 @@
 
                                                                                                 @Html.TextBox(@name8+@Ledgers.LedgerNo, (Ledgerdetails!=null) ? (Convert.ToDecimal(Ledgerdetails.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @readonly = "readonly"})
 
-                                                                                                @Html.ValidationMessage(@name8+@Ledgers.LedgerNo,  "",new {@class = "text-danger"})
+                                                                                                <!-- @Html.ValidationMessage(@name8+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+                                                                                                @Html.ValidationMessageFor(model => model.BudgEstNexFin,"",new {@class = "text-danger"})
                                                                                             </div>
                                                                                         }
                                                                                         else
@@ -2053,7 +2138,8 @@
 
                                                                                                 @Html.TextBox(@name8+@Ledgers.LedgerNo, LedPrevYearApp!=null ? (Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : " ", new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @readonly = "readonly"})
 
-                                                                                                @Html.ValidationMessage(@name8+@Ledgers.LedgerNo,  "",new {@class = "text-danger"})
+                                                                                                <!-- @Html.ValidationMessage(@name8+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+                                                                                                @Html.ValidationMessageFor(model => model.BudgEstNexFin,"",new {@class = "text-danger"})
                                                                                             </div>
                                                                                         }
                                                                                     </td>
@@ -2064,7 +2150,8 @@
 
                                                                                             @Html.TextBox(@name9+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9+@Ledgers.LedgerNo})
 
-                                                                                            @Html.ValidationMessage(@name9+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name9+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"}) -->
+                                                                                            @Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     </td>
                                                                                 }
@@ -2075,7 +2162,8 @@
 
                                                                                             @Html.TextBox(@name9+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9+@Ledgers.LedgerNo, @readonly = "readonly"})
 
-                                                                                            @Html.ValidationMessage(@name9+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                                <!-- @Html.ValidationMessage(@name9+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"}) -->
+                                                                                                @Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     </td>
                                                                                 }
@@ -2086,7 +2174,8 @@
 
                                                                                             @Html.TextArea(@name10+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.Justification.ToString() : " ", new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @readonly = "readonly"})
 
-                                                                                            @Html.ValidationMessage(@name10+@Ledgers.LedgerNo,  "",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name10+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+                                                                                            @Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                     else
@@ -2097,7 +2186,8 @@
 
                                                                                             @Html.TextArea(@name10+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.Justification.ToString() : " ", new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo})
 
-                                                                                            @Html.ValidationMessage(@name10+@Ledgers.LedgerNo,  "",new {@class = "text-danger"})
+                                                                                                <!-- @Html.ValidationMessage(@name10+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+                                                                                                @Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                 </td>
@@ -2133,7 +2223,8 @@
                                                             var LedgerPastYearAppBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();                                                                                                                            
                                                             <div class="form-group">
                                                                     @Html.TextBox(@name1, LedgerPastYearAppBudEstCurrFin!=null ? LedgerPastYearAppBudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.BudEstCurrFin,"",new {@class = "text-danger"})
                                                             </div>
                                                         }
                                                         else if (@Subs.RequireInput && !DelegateEditStatus)
@@ -2141,22 +2232,24 @@
                                                             var LedgerSumBudEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstCurrFin).Sum();                                                                                                                            
                                                             <div class="form-group">
                                                                 @Html.TextBox(@name1, LedgerSumBudEstCurrFin!=null ? LedgerSumBudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"}) -->
+                                                                @Html.ValidationMessageFor(model => model.BudEstCurrFin,"",new {@class = "text-danger"})
                                                             </div>
                                                         }
                                                             else if(User.IsInRole("Admin") || !DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name1, details!=null?details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.BudEstCurrFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                             else
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name1, PrevYearApp!=null?PrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @name=@name1, @readonly = "readonly"})
-                                                                    <!-- @Html.ValidationMessage(@name1,  "*",new {@class = "text-danger"}) -->
-                                                                    @Html.ValidationMessageFor(model => model.BudEstCurrFin,"*",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name1,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.BudEstCurrFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                         </td>
@@ -2166,21 +2259,24 @@
                                                                 var LedgerSumActPrevFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActPrevFin).Sum();
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name2, LedgerSumActPrevFin!=null ? LedgerSumActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name2,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name2,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.ActPrevFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                             else if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F"): " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name2,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name2,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.ActPrevFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                             else
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2})
-                                                                    @Html.ValidationMessage(@name2,  "*",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name2,  "*",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.ActPrevFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                         </td>
@@ -2190,21 +2286,24 @@
                                                                 var LedgerSumActCurrFinTill2ndQuart = (from a in Model.Detailss where a.GroupNumber.Equals(@Subs.SubGroupNo) select a.ActCurrFinTill2ndQuart).Sum();
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name3, LedgerSumActCurrFinTill2ndQuart!=null ? LedgerSumActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name3,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name3,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.ActCurrFinTill2ndQuart,"",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                             else if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name3,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name3,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.ActCurrFinTill2ndQuart,"",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                             else
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3})
-                                                                    @Html.ValidationMessage(@name3,  "*",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name3,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.ActCurrFinTill2ndQuart,"",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                         </td>
@@ -2214,7 +2313,8 @@
                                                             var LedgerSumRevEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin ).Sum();
                                                             <div class="form-group">
                                                                 @Html.TextBox(@name4, LedgerSumRevEstCurrFin!=null ? LedgerSumRevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"})
+                                                                <!-- @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"}) -->
+                                                                @Html.ValidationMessageFor(model => model.RevEstCurrFin,"",new {@class = "text-danger"})
                                                             </div>
                                                         }
                                                         else if (@Subs.RequireInput && !DelegateEditStatus)
@@ -2222,21 +2322,25 @@
                                                                 var LedgerSumRevEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.RevEstCurrFin).Sum();
                                                             <div class="form-group">
                                                                 @Html.TextBox(@name4, LedgerSumRevEstCurrFin!=null ? LedgerSumRevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"})
+                                                                <!-- @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"}) -->
+                                                                @Html.ValidationMessageFor(model => model.RevEstCurrFin,"",new {@class = "text-danger"})
+
                                                             </div>
                                                         }
                                                             else if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.RevEstCurrFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                             else
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name4, PrevYearApp!=null ? PrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name4})
-                                                                    @Html.ValidationMessage(@name4,  "*",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name4,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.RevEstCurrFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                         </td>
@@ -2247,7 +2351,8 @@
                                                           var PastYearSumBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();                                                                                                                           
                                                               <div class="form-group">
                                                                     @Html.TextBox(@name5, PastYearSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? (Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F"))- Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")))/Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"})
+                                                                <!-- @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"}) -->
+                                                                @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin,"",new {@class = "text-danger"})
                                                               </div>
                                                         }
                                                         else if(@Subs.RequireInput && !DelegateEditStatus)
@@ -2256,7 +2361,8 @@
                                                             var LedgerSumBudEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstCurrFin).Sum();
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name5, LedgerSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? (Convert.ToDecimal(LedgerSumRevEstCurrFin.ToString("F"))- Convert.ToDecimal(LedgerSumBudEstCurrFin.ToString("F")))/Convert.ToDecimal(LedgerSumBudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                         }                                                     
                                                         
@@ -2264,14 +2370,16 @@
                                                         {
                                                             <div class="form-group">
                                                                 @Html.TextBox(@name5, (details!=null) ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")) : " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"}) -->
+                                                                @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin,"",new {@class = "text-danger"})
                                                             </div>
                                                         }
                                                         else
                                                         {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name5, (PrevYearApp!=null) ? (Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")) : " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name5,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                         </td>
@@ -2281,7 +2389,8 @@
                                                             <td>
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name6, LedgerSumACAndBWPropRECurrFin!=null ? LedgerSumACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name6,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name6,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
                                                         }
@@ -2290,7 +2399,8 @@
                                                             <td>
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6})
-                                                                    @Html.ValidationMessage(@name6,  "*",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name6,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
                                                         }
@@ -2299,41 +2409,19 @@
                                                             <td>
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6, @readonly="readonly"})
-                                                                    @Html.ValidationMessage(@name6,  "*",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name6,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
-                                                        }
-                                                        <td>
-                                                            @if (@Subs.RequireInput)
-                                                            {
-                                                                var LedgerSumBudgEstNexFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudgEstNexFin).Sum();
-                                                                <div class="form-group">
-                                                                    @Html.TextBox(@name7, LedgerSumBudgEstNexFin!=null ? LedgerSumBudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else if (User.IsInRole("Admin") || !DelegateEditStatus)
-                                                            {
-                                                                <div class="form-group">
-                                                                    @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="form-group">
-                                                                    @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7})
-                                                                    @Html.ValidationMessage(@name7,  "*",new {@class = "text-danger"})
-                                                                </div>
-                                                            }
-                                                        </td>
+                                                        }                          
                                                         <td>
                                                         @if (@Subs.RequireInput && DelegateEditStatus)
                                                         {
                                                                 var PastYearBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin ).Sum();
                                                             <div class="form-group">
                                                                 @Html.TextBox(@name7, PastYearBudEstCurrFin!=null ? PastYearBudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"})
+                                                                <!-- @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"}) -->
+                                                                @Html.ValidationMessageFor(model => model.BudgEstNexFin,"",new {@class = "text-danger"})
                                                             </div>
                                                         }
                                                         else if (@Subs.RequireInput && !DelegateEditStatus)
@@ -2341,21 +2429,24 @@
                                                                 var ThisYearBudEstNextFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudgEstNexFin).Sum();
                                                             <div class="form-group">
                                                                 @Html.TextBox(@name7, ThisYearBudEstNextFin!=null ? ThisYearBudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"}) -->
+                                                                @Html.ValidationMessageFor(model => model.BudgEstNexFin,"",new {@class = "text-danger"})
                                                             </div>
                                                         }
                                                         else if(User.IsInRole("Admin") || !DelegateEditStatus)
                                                         {
                                                               <div class="form-group">
                                                                 @Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"})
+                                                                <!-- @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"}) -->
+                                                                @Html.ValidationMessageFor(model => model.BudgEstNexFin,"",new {@class = "text-danger"})
                                                               </div>  
                                                         }
                                                         else
                                                         {
                                                             <div class="form-group">
                                                                 @Html.TextBox(@name7, PrevYearApp!=null ? PrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name7})
-                                                                @Html.ValidationMessage(@name7,  "*",new {@class = "text-danger"})
+                                                                <!-- @Html.ValidationMessage(@name7,  "",new {@class = "text-danger"}) -->
+                                                                @Html.ValidationMessageFor(model => model.BudgEstNexFin,"",new {@class = "text-danger"})
                                                             </div>
                                                         }
                                                         </td>
@@ -2366,7 +2457,8 @@
                                                                 var PastYearSumBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name8, PastYearSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? (Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F"))- Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")))/Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name8,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name8,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                             else if (@Subs.RequireInput && !DelegateEditStatus)
@@ -2375,7 +2467,8 @@
                                                                 var LedgerSumBudEstNextFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudgEstNexFin).Sum();
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name8, LedgerSumBudEstNextFin!=Convert.ToDecimal(0.00) ? (Convert.ToDecimal(LedgerSumBudEstNextFin.ToString("F"))- Convert.ToDecimal(LedgerSumRevEstCurrFin.ToString("F")))/Convert.ToDecimal(LedgerSumRevEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name8,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name8,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             }
 
@@ -2383,14 +2476,16 @@
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name8, (details!=null) ? (Convert.ToDecimal(details.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(details.RevEstCurrFin.ToString("F")) : " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name8,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name8,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                             else
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name8, (PrevYearApp!=null) ? (Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")) : " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name8,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name8,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                         </td>
@@ -2400,7 +2495,8 @@
                                                             <td>
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name9, LedgerSumACAndBWPropRENxtFin!=null ? LedgerSumACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name9,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name9,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
                                                         }
@@ -2409,7 +2505,8 @@
                                                             <td>
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9})
-                                                                    @Html.ValidationMessage(@name9,  "*",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name9,  "",new {@class = "text-danger"}) -->
+                                        @Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
                                                         }
@@ -2418,7 +2515,8 @@
                                                             <td>
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name9,  "*",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name9,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
                                                         }
@@ -2427,7 +2525,8 @@
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name10,  "",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name10,  "",new {@class = "text-danger"}) -->
+                                        @Html.ValidationMessageFor(model => model.Justification,"",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                             @*else if (User.IsInRole("Admin") || !DelegateEditStatus)
@@ -2441,7 +2540,8 @@
                                                             {
                                                                 <div class="form-group">
                                                                     @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10})
-                                                                    @Html.ValidationMessage(@name10,  "*",new {@class = "text-danger"})
+                                                                    <!-- @Html.ValidationMessage(@name10,  "",new {@class = "text-danger"}) -->
+                                                                    @Html.ValidationMessageFor(model => model.Justification,"",new {@class = "text-danger"})
                                                                 </div>
                                                             }
                                                         </td>
@@ -2608,7 +2708,8 @@
 
                                                                                             @Html.TextBox(@name1+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1+@Ledgers.LedgerNo, @readonly = "readonly"})
 
-                                                                                            @Html.ValidationMessage(@name1+@Ledgers.LedgerNo,  "",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name1+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+                                                                                          @Html.ValidationMessageFor(model => model.BudEstCurrFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                     else
@@ -2617,7 +2718,8 @@
 
                                                                                             @Html.TextBox(@name1+@Ledgers.LedgerNo, LedPrevYearApp!=null ? LedPrevYearApp.BudEstNextFin.ToString("F")  : " ", new { @class = "form-control", @id = @name1+@Ledgers.LedgerNo, @name=@name1, @readonly = "readonly"})
 
-                                                                                            @Html.ValidationMessage(@name1+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                                <!-- @Html.ValidationMessage(@name1+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+                                                                                                @Html.ValidationMessageFor(model => model.BudEstCurrFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                 </td>
@@ -2628,7 +2730,8 @@
 
                                                                                             @Html.TextBox(@name2+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2+@Ledgers.LedgerNo, @readonly = "readonly"})
 
-                                                                                            @Html.ValidationMessage(@name2+@Ledgers.LedgerNo,  "",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name2+@Ledgers.LedgerNo,  "",new {@class = "text-danger"})-->
+                                                                                                @Html.ValidationMessageFor(model => model.ActPrevFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                     else
@@ -2637,7 +2740,8 @@
 
                                                                                             @Html.TextBox(@name2+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2+@Ledgers.LedgerNo})
 
-                                                                                            @Html.ValidationMessage(@name2+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name2+@Ledgers.LedgerNo,  "",new {@class = "text-danger"})-->
+                                                                                            @Html.ValidationMessageFor(model => model.ActPrevFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                 </td>
@@ -2648,7 +2752,8 @@
 
                                                                                             @Html.TextBox(@name3+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3+@Ledgers.LedgerNo, @readonly = "readonly"})
 
-                                                                                            @Html.ValidationMessage(@name3+@Ledgers.LedgerNo,  "",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name3+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+                                                                                            @Html.ValidationMessageFor(model => model.ActCurrFinTill2ndQuart,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                     else
@@ -2657,7 +2762,8 @@
 
                                                                                             @Html.TextBox(@name3+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3+@Ledgers.LedgerNo})
 
-                                                                                            @Html.ValidationMessage(@name3+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name3+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+                                                                                            @Html.ValidationMessageFor(model => model.ActCurrFinTill2ndQuart,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                 </td>
@@ -2668,7 +2774,8 @@
 
                                                                                             @Html.TextBox(@name4+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4+@Ledgers.LedgerNo, @readonly = "readonly"})
 
-                                                                                            @Html.ValidationMessage(@name4+@Ledgers.LedgerNo,  "",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name4+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+                                                                                            @Html.ValidationMessageFor(model => model.RevEstCurrFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                     else
@@ -2677,7 +2784,8 @@
 
                                                                                             @Html.TextBox(@name4+@Ledgers.LedgerNo, LedPrevYearApp!=null ? LedPrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name4+@Ledgers.LedgerNo})
 
-                                                                                            @Html.ValidationMessage(@name4+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name4+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+                                                                                            @Html.ValidationMessageFor(model => model.RevEstCurrFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                 </td>
@@ -2689,14 +2797,16 @@
 
                                                                                                 @Html.TextBox(@name5+@Ledgers.LedgerNo, (Ledgerdetails!=null) ? (Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @readonly = "readonly"})
 
-                                                                                            @Html.ValidationMessage(@name5+@Ledgers.LedgerNo,  "",new {@class = "text-danger"})
+                                                                                            <!-- @Html.ValidationMessage(@name5+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+                                                                                            @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                     else
                                                                                     {
                                                                                         <div class="form-group">
                                                                                            @Html.TextBox(@name5+@Ledgers.LedgerNo, LedPrevYearApp!=null ? (Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : " ", new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @readonly = "readonly"})
-                                                                                           @Html.ValidationMessage(@name5+@Ledgers.LedgerNo,  "",new {@class = "text-danger"})
+                                                                                                <!-- @Html.ValidationMessage(@name5+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+                                                        @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin,"",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
                                                                                 </td>
@@ -2861,7 +2971,7 @@
                                                                 <div class="form-group">
                                                                     @Html.TextBox(@name1, PrevYearApp!=null ? PrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @name=@name1, @readonly = "readonly"})
                                                                     <!-- @Html.ValidationMessage(@name1,  "*",new {@class = "text-danger"}) -->
-                                                                    @Html.ValidationMessageFor(model => model.BudEstCurrFin,"*",new {@class = "text-danger"})
+                                                                    @Html.ValidationMessageFor(model => model.BudEstCurrFin,"",new {@class = "text-danger"})
                                                                 </div>
                                                         }
                                                         </td>
