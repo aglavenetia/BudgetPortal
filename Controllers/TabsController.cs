@@ -358,12 +358,12 @@ namespace BudgetPortal.Controllers
                                      .Select(x => x.DivisionID).FirstOrDefault();
             }
 
-            var Month = DateTime.Now.Month;
+            //var Month = DateTime.Now.Month;
 
-            if (Month > 0 && Month < 4)
-            {
-                Year = DateTime.Now.Year - 1;
-            }
+            //if (Month > 0 && Month < 4)
+            //{
+            //    Year = DateTime.Now.Year - 1;
+            //}
             var AcademicYear = String.Concat(Year, "-", (Year + 1));
             var mymodel = new MultipleData();
             mymodel.Sectionss = _context.BudgetSections.ToList();
@@ -400,6 +400,7 @@ namespace BudgetPortal.Controllers
                         Value = x.Id.ToString()
 
                     }).ToList();
+            ViewBag.SelectedAcademicYearID = mymodel.AcademicYears;
             mymodel.AcademicYears.Where(x => x.Text.Equals(AcademicYear)).Single().Selected = true;
             //mymodel.SelectedAcademicYear = String.Concat(Year.ToString(),"-",(Year+1).ToString());
             if (username.Equals( "admin@test.com"))

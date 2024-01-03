@@ -33,40 +33,49 @@ namespace BudgetPortal.ViewModel
 
         [Required(ErrorMessage = "Please enter BudgetEstimates for the Current Financial Year")]
         [Column(TypeName = "money")]
-        public List<Decimal> BudEstCurrFin { get; set; }
+        //public List<Decimal> BudEstCurrFin { get; set; }
+        public Decimal BudEstCurrFin { get; set; }
 
         [Required(ErrorMessage = "Please enter Actual for the Previous Financial Year")]
         [Column(TypeName = "money")]
-        public List<Decimal> ActPrevFin { get; set; }
+        //public List<Decimal> ActPrevFin { get; set; }
+        public Decimal ActPrevFin { get; set; }
 
         [Required(ErrorMessage = "Please enter Actual for the Current Financial Year Till 2nd Quarter")]
         [Column(TypeName = "money")]
-        public List<Decimal> ActCurrFinTill2ndQuart { get; set; }
+        //public List<Decimal> ActCurrFinTill2ndQuart { get; set; }
+        public Decimal ActCurrFinTill2ndQuart { get; set; }
 
         [Required(ErrorMessage = "Please enter Revised Estimates for the Current Financial Year")]
         [Column(TypeName = "money")]
-        public List<Decimal> RevEstCurrFin { get; set; }
+        //public List<Decimal> RevEstCurrFin { get; set; }
+        public Decimal RevEstCurrFin { get; set; }
 
-        
         [Column(TypeName = "decimal(4,2)")]
-        public List<Decimal> PerVarRevEstOverBudgEstCurrFin { get; set; }
+        //public List<Decimal> PerVarRevEstOverBudgEstCurrFin { get; set; }
+        public Decimal PerVarRevEstOverBudgEstCurrFin { get; set; }
 
         [Required(ErrorMessage = "Please enter the values")]
         [Column(TypeName = "money")]
-        public List<Decimal> ACAndBWPropRECurrFin { get; set; }
+        //public List<Decimal> ACAndBWPropRECurrFin { get; set; }
+        public Decimal ACAndBWPropRECurrFin { get; set; }
 
         [Required(ErrorMessage = "Please enter Budget Estimates for the Next Financial Year")]
         [Column(TypeName = "money")]
-        public List<Decimal> BudgEstNexFin { get; set; }
+        //public List<Decimal> BudgEstNexFin { get; set; }
+        public Decimal BudgEstNexFin { get; set; }
 
         [Column(TypeName = "decimal(4,2)")]
-        public List<Decimal> PerVarRevEstOverBudgEstNxtFin { get; set; }
+        //public List<Decimal> PerVarRevEstOverBudgEstNxtFin { get; set; }
+        public Decimal PerVarRevEstOverBudgEstNxtFin { get; set; }
 
         [Required(ErrorMessage = "Please enter the values")]
         [Column(TypeName = "money")]
-        public List<Decimal> ACAndBWPropRENxtFin { get; set; }
+        //public List<Decimal> ACAndBWPropRENxtFin { get; set; }
+        public Decimal ACAndBWPropRENxtFin { get; set; }
 
-        public List<String> Justification { get; set; }
+        //public List<String> Justification { get; set; }
+        public String Justification { get; set; }
 
         public IEnumerable<BudgetReports> Reports { get; set; }
         public IEnumerable<SelectListItem> ReportNames { get; set; }
