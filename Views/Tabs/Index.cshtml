@@ -22,6 +22,8 @@
 <br />
 
  <div id="outerdiv">
+     @using(Html.BeginForm(null, null, FormMethod.Post, new { @action = "", enctype = "multipart/form-data", id = "AppForm" })) 
+    {
       <div style = "float:right">
         
             @Html.AntiForgeryToken()
@@ -43,7 +45,8 @@
            {
              <td>
                    @Html.DropDownListFor(Model => Model.SelectedDivisionID, Model.DivisionNames,"--Please select any Division--", new { @class = "form-control", @id="Division" })
-                   @Html.ValidationMessageFor(Model => Model.DivisionNames,  "", new { @class = "text-danger" })
+                   @Html.ValidationMessageFor(Model => Model.SelectedDivisionID,  "", new { @class = "text-danger" })
+                   @*Html.ValidationMessageFor(Model => Model.DivisionNames,  "", new { @class = "text-danger" })*@
                   
                    @*Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName)*@
                         
@@ -51,8 +54,8 @@
            }       
              <td>
               @Html.DropDownListFor(Model => Model.SelectedAcademicYearID, Model.AcademicYears,"--Please select any Academic Year--",new { @class = "form-control", @id="AcademicYear" })
-              @Html.ValidationMessageFor(Model => Model.AcademicYears,  "", new { @class = "text-danger" }) 
-
+              @Html.ValidationMessageFor(Model => Model.SelectedAcademicYearID,  "", new { @class = "text-danger" }) 
+              @*Html.ValidationMessageFor(Model => Model.AcademicYears,  "", new { @class = "text-danger" })*@ 
               @*Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear)*@
               
              </td>
@@ -65,8 +68,7 @@
       <br />
       <br />
       <br />
-    @using(Html.BeginForm(null, null, FormMethod.Post, new { @action = "", enctype = "multipart/form-data", id = "AppForm" })) 
-    {
+    
 
         @Html.AntiForgeryToken()
 
@@ -619,8 +621,10 @@
                                                                                 <td>
                                                                                         @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
-                                                                                        <div class="form-group">
-
+                                                                                            <div class="form-group">
+                                                                                                @{
+                                                                                                    Model.Justification = Ledgerdetails != null ? Ledgerdetails.Justification.ToString(): "";
+                                                                                                }
                                                                                    <!--     @Html.TextArea(@name10+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.Justification.ToString() : " ", new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @readonly = "readonly"})                                                                                           
                                                                                             @Html.ValidationMessage(@name10+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
                                                                                             @Html.TextAreaFor(model => model.Justification, new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @readonly = "readonly"})
@@ -632,7 +636,9 @@
 
 
                                                                                         <div class="form-group">
-
+                                                                                            @{
+                                                                                                    Model.Justification = Ledgerdetails != null ? Ledgerdetails.Justification.ToString(): "";
+                                                                                                }
                                                                                   <!--      @Html.TextArea(@name10+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.Justification.ToString() : " ", new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo})                                   
                                                                                             @Html.ValidationMessage(@name10+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
                                                                                             @Html.TextAreaFor(model => model.Justification, new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo})
@@ -1105,6 +1111,9 @@
                                                             @if (@Subs.RequireInput || User.IsInRole("Admin") || !DelegateEditStatus)
                                                         {
                                                             <div class="form-group">
+                                                                @{
+                                                                    Model.Justification = details != null ? details.Justification.ToString(): "";
+                                                                 }
                                                             <!--@Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10, @readonly = "readonly"})
                                                                 @Html.ValidationMessage(@name10,  "",new {@class = "text-danger"}) -->
                                                                 @Html.TextAreaFor(model => model.Justification , new { @class = "form-control", @id = @name10, @readonly = "readonly"})
@@ -1121,6 +1130,9 @@
                                                         else
                                                         {                                                                                                             
                                                             <div class="form-group">
+                                                                @{
+                                                                     Model.Justification = details != null ? details.Justification.ToString(): "";
+                                                                 }
                                                           <!--   @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10})
                                                                  @Html.ValidationMessage(@name10,  "",new {@class = "text-danger"}) -->
                                                                  @Html.TextAreaFor(model => model.Justification , new { @class = "form-control", @id = @name10 })
@@ -1529,6 +1541,9 @@
                                                                                         @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
+                                                                                            @{
+                                                                                               Model.Justification = Ledgerdetails != null ? Ledgerdetails.Justification.ToString(): "";
+                                                                                             }
 
                                                                                            <!-- @Html.TextArea(@name10+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.Justification.ToString() : " ", new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                                 @Html.ValidationMessage(@name10+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
@@ -1541,6 +1556,9 @@
 
 
                                                                                         <div class="form-group">
+                                                                                            @{
+                                                                                               Model.Justification = Ledgerdetails != null ? Ledgerdetails.Justification.ToString(): "";
+                                                                                             }
 
                                                                                          <!-- @Html.TextArea(@name10+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.Justification.ToString() : " ", new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo})
                                                                                               @Html.ValidationMessage(@name10+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"}) -->
@@ -2010,6 +2028,9 @@
                                                         @if (@Subs.RequireInput || User.IsInRole("Admin") || !DelegateEditStatus)
                                                         {
                                                             <div class="form-group">
+                                                                @{
+                                                                     Model.Justification = details != null ? details.Justification.ToString(): "";
+                                                                 }
                                                            <!-- @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10, @readonly = "readonly"})
                                                                 @Html.ValidationMessage(@name10,  "",new {@class = "text-danger"}) -->
                                                                 @Html.TextAreaFor(model => model.Justification, new { @class = "form-control", @id = @name10, @readonly = "readonly"})
@@ -2026,6 +2047,9 @@
                                                         else
                                                         {                                                                                                             
                                                             <div class="form-group">
+                                                                @{
+                                                                   Model.Justification = details != null ? details.Justification.ToString(): "";
+                                                                 }
                                                         <!--    @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10})
                                                                 @Html.ValidationMessage(@name10,  "",new {@class = "text-danger"}) -->
                                                                 @Html.TextAreaFor(model => model.Justification, new { @class = "form-control", @id = @name10})
@@ -2575,7 +2599,9 @@
                                                                                     @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
-
+                                                                                            @{
+                                                                                                Model.Justification = Ledgerdetails != null ? Ledgerdetails.Justification.ToString(): "";
+                                                                                             }
                                                                                     <!--    @Html.TextArea(@name10+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.Justification.ToString() : " ", new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                             @Html.ValidationMessage(@name10+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
                                                                                             @Html.TextAreaFor(model => model.Justification, new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @readonly = "readonly"})
@@ -2587,6 +2613,9 @@
 
 
                                                                                         <div class="form-group">
+                                                                                            @{
+                                                                                              Model.Justification = Ledgerdetails != null ? Ledgerdetails.Justification.ToString(): "";
+                                                                                            }
 
                                                                                      <!--       @Html.TextArea(@name10+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.Justification.ToString() : " ", new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo})
                                                                                                 @Html.ValidationMessage(@name10+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
@@ -3056,6 +3085,9 @@
                                                             @if (@Subs.RequireInput || User.IsInRole("Admin") || !DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
+                                                                    @{
+                                                                        Model.Justification = details != null ? details.Justification.ToString(): "";
+                                                                     }
                                                                <!--  @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10, @readonly = "readonly"})
                                                                      @Html.ValidationMessage(@name10,  "",new {@class = "text-danger"}) -->
                                                                     @Html.TextAreaFor(model => model.Justification,   new { @class = "form-control", @id = @name10, @readonly = "readonly"}) 
@@ -3072,6 +3104,9 @@
                                                             else
                                                             {
                                                                 <div class="form-group">
+                                                                    @{
+                                                                        Model.Justification = details != null ? details.Justification.ToString(): "";
+                                                                     }
                                                             <!--    @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10})
                                                                      @Html.ValidationMessage(@name10,  "",new {@class = "text-danger"}) -->
                                                                     @Html.TextAreaFor(model => model.Justification,   new { @class = "form-control", @id = @name10}) 
@@ -3497,6 +3532,9 @@
                                                                                     @if (User.IsInRole("Admin") || !DelegateEditStatus )
                                                                                     {
                                                                                         <div class="form-group">
+                                                                                            @{
+                                                                                                Model.Justification = Ledgerdetails != null ? Ledgerdetails.Justification.ToString(): "";
+                                                                                             }
 
                                                                                       <!--  @Html.TextArea(@name10+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.Justification.ToString() : " ", new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @readonly = "readonly"})
 
@@ -3510,10 +3548,12 @@
 
 
                                                                                         <div class="form-group">
-
+                                                                                            @{
+                                                                                               Model.Justification = Ledgerdetails != null ? Ledgerdetails.Justification.ToString(): "";
+                                                                                             }
                                                                                                 <!--        @Html.TextArea(@name10+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.Justification.ToString() : " ", new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo})
 
-                                                                                             @Html.ValidationMessage(@name10+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
+                                                                                            @Html.ValidationMessage(@name10+@Ledgers.LedgerNo,  "",new {@class = "text-danger"}) -->
                                                                                             @Html.TextAreaFor(model => model.Justification, new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo})
                                                                                             @Html.ValidationMessageFor(model => model.Justification,"",new {@class = "text-danger"})
                                                                                         </div>
@@ -3999,6 +4039,9 @@
                                                             else
                                                             {
                                                                 <div class="form-group">
+                                                                    @{
+                                                                        Model.Justification = details != null ? details.Justification.ToString(): "";
+                                                                     }
                                                                     <!--           @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10})
                                                                      @Html.ValidationMessage(@name10,  "",new {@class = "text-danger"}) -->
                                                                     @Html.TextAreaFor(model => model.Justification, new { @class = "form-control", @id = @name10})

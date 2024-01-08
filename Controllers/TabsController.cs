@@ -339,6 +339,9 @@ namespace BudgetPortal.Controllers
         [HttpGet]
         public IActionResult GetDetails(int Year, String Division)
         {
+
+
+           
             var username = User.Identity.Name;
             var LoggedInDivisionID = 0;
             var DivName = _context.Users
@@ -364,50 +367,53 @@ namespace BudgetPortal.Controllers
             //{
             //    Year = DateTime.Now.Year - 1;
             //}
-            var AcademicYear = String.Concat(Year, "-", (Year + 1));
-            var mymodel = new MultipleData();
-            mymodel.Sectionss = _context.BudgetSections.ToList();
-            mymodel.Groupss = _context.BudgetGroups.ToList();
-            mymodel.SubGroupss = _context.BudgetSubGroups.ToList();
-            mymodel.Ledgerss = _context.BudgetLedgers.ToList();
-            mymodel.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
-                                .Where(x => x.FinancialYear1 == Year).ToList();
-            mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == LoggedInDivisionID)
-                                         .Where(x => x.FinancialYear1 == (Year - 1)).ToList();
-            if (username != "admin@test.com")
-            {
-                mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
-                                .Where(x => x.FinancialYear1 == Year).Where(x => x.SectionNumber != Convert.ToInt32(0)).ToList();
-            }
-            else
-            {
-                mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
-                                .Where(x => x.FinancialYear1 == Year).Where(x => x.SectionNumber == Convert.ToInt32(0)).ToList();
-            }
-            mymodel.DivisionNames = _context.Division.AsEnumerable().Select(x =>
-                    new SelectListItem()
-                    {
-                        Selected = false,
-                        Text = x.DivisionName,
-                        Value = x.DivisionID.ToString()
+            
+                var AcademicYear = String.Concat(Year, "-", (Year + 1));
+                var mymodel = new MultipleData();
+                mymodel.Sectionss = _context.BudgetSections.ToList();
+                mymodel.Groupss = _context.BudgetGroups.ToList();
+                mymodel.SubGroupss = _context.BudgetSubGroups.ToList();
+                mymodel.Ledgerss = _context.BudgetLedgers.ToList();
+                mymodel.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
+                                    .Where(x => x.FinancialYear1 == Year).ToList();
+                mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == LoggedInDivisionID)
+                                             .Where(x => x.FinancialYear1 == (Year - 1)).ToList();
+                if (username != "admin@test.com")
+                {
+                    mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
+                                    .Where(x => x.FinancialYear1 == Year).Where(x => x.SectionNumber != Convert.ToInt32(0)).ToList();
+                }
+                else
+                {
+                    mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
+                                    .Where(x => x.FinancialYear1 == Year).Where(x => x.SectionNumber == Convert.ToInt32(0)).ToList();
+                }
+                mymodel.DivisionNames = _context.Division.AsEnumerable().Select(x =>
+                        new SelectListItem()
+                        {
+                            Selected = false,
+                            Text = x.DivisionName,
+                            Value = x.DivisionID.ToString()
 
-                    }).ToList();
-            mymodel.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
-                    new SelectListItem()
-                    {
-                        Selected = false,
-                        Text = x.Year1 + "-" + x.Year2,
-                        Value = x.Id.ToString()
+                        }).ToList();
+                mymodel.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
+                        new SelectListItem()
+                        {
+                            Selected = false,
+                            Text = x.Year1 + "-" + x.Year2,
+                            Value = x.Id.ToString()
 
-                    }).ToList();
-            ViewBag.SelectedAcademicYearID = mymodel.AcademicYears;
-            mymodel.AcademicYears.Where(x => x.Text.Equals(AcademicYear)).Single().Selected = true;
-            //mymodel.SelectedAcademicYear = String.Concat(Year.ToString(),"-",(Year+1).ToString());
-            if (username.Equals( "admin@test.com"))
-            {
-                mymodel.DivisionNames.Where(x => x.Text.Equals(Division)).Single().Selected = true;
-            }
-               return View("Index", mymodel);
+                        }).ToList();
+                //ViewBag.SelectedAcademicYearID = mymodel.AcademicYears;
+                mymodel.AcademicYears.Where(x => x.Text.Equals(AcademicYear)).Single().Selected = true;
+                //mymodel.SelectedAcademicYearID = String.Concat(Year.ToString(),"-",(Year+1).ToString());
+                if (username.Equals("admin@test.com"))
+                {
+
+                    mymodel.DivisionNames.Where(x => x.Text.Equals(Division)).Single().Selected = true;
+                }
+                return View("Index", mymodel);
+            
         }
 
 

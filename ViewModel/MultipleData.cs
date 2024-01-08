@@ -82,8 +82,9 @@ namespace BudgetPortal.ViewModel
         public String SelectedReportID { get; set; }
         public String SelectedReportName { get; set; }
 
-        [Required(ErrorMessage = "Please select a Division Name")]
         public IEnumerable<Division> Divisionss { get; set; }
+
+        [Required(ErrorMessage = "Please select a Division Name")]
         public IEnumerable<SelectListItem> DivisionNames { get; set; }
         public String SelectedDivisionID { get; set; }
         public String SelectedDivisionName { get; set; }
