@@ -75,7 +75,7 @@ namespace BudgetPortal.Controllers
             //ViewData["SelectedAcademicID"] = mymodel.AcademicYears;
 
             mymodel.AcademicYears.Where(x => x.Text.Equals(AcademicYear)).Single().Selected = true;
-            mymodel.SelectedAcademicYearID = mymodel.AcademicYears.Where(x => x.Selected.Equals(true)).Select(x => x.Value).FirstOrDefault();
+           //mymodel.SelectedAcademicYearID = mymodel.AcademicYears.Where(x => x.Selected.Equals(true)).Select(x => x.Value).FirstOrDefault();
 
             return View(mymodel);
         }
