@@ -86,12 +86,14 @@
         Boolean AdminEditStatus = true;
         Boolean DelegateEditStatus = true;
 
-        @if ((from a in Model.Statuss select a.AdminEditStatus).Count() > 0 && User.IsInRole("Admin"))
+        if ((from a in Model.Statuss select a.AdminEditStatus).Count() > 0 && User.IsInRole("Admin"))
+        {
             AdminEditStatus = false;
+        }
         
 
         
-        @if (User.IsInRole("Admin") && AdminEditStatus)
+        if (User.IsInRole("Admin") && AdminEditStatus)
         {
             <input id="Submit" class="FinalSubmit" formaction="~/Tabs/FinalSubmit" value="Finalise Budget" type="submit" style="align-self:center"/>
             @*Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = "FinalSubmit-SelectedAcademicYear" })
@@ -108,7 +110,7 @@
 
             
 
-        @if (OuterHeaderCount == 0)
+        if (OuterHeaderCount == 0)
         {
                 <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="@inneridenti-nav" data-bs-toggle="tab" data-bs-target="#@inneridenti" type="button" role="tab" aria-controls="@inneridenti" aria-selected="true">@item.SectionName</button>
@@ -155,7 +157,7 @@
 
             @* Boolean AdminEditStatus = false; *@
 
-           @if (OuterBodyCount == 0)
+           if (OuterBodyCount == 0)
            {
             <div id="@inneridenti" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="true">
               
@@ -252,7 +254,7 @@
                     {                           
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
                         
-                        @if (CountHeader == 0)
+                        if (CountHeader == 0)
                         {
                             <li class="nav-item" role="presentation">
                                         <button class="nav-link active" id="@identi-nav" data-bs-toggle="tab" data-bs-target="#@identi" type="button" role="tab" aria-controls="@identi" aria-selected="true">@item.GroupName</button>
@@ -275,10 +277,14 @@
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
 
-                        @if ((from a in Model.Statuss where (a.SectionNumber==@inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.DelegateEditStatus).Count() > 0 && !User.IsInRole("Admin"))
-                                      DelegateEditStatus = false;
+                        if ((from a in Model.Statuss where (a.SectionNumber==@inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.DelegateEditStatus).Count() > 0 && !User.IsInRole("Admin"))
+                        {                  
+                             DelegateEditStatus = false;
+                        }
                         else
+                        {
                             DelegateEditStatus = true;
+                        }
 
                         int TableCount = 0;
                         var Submit = String.Concat("Submit", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -294,7 +300,7 @@
                          var SumPerVarRevEstOverBudgEstNxtFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.PerVarRevEstOverBudgEstNxtFin).Sum();
                          var SumACAndBWPropRENxtFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ACAndBWPropRENxtFin).Sum();
                          
-                        @if (CounterBody == 0)
+                        if (CounterBody == 0)
                         {
                             <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
                              
@@ -2286,7 +2292,7 @@
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
-                        @if (CountHeader == 0)
+                        if (CountHeader == 0)
                         {
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="@identi-nav" data-bs-toggle="tab" data-bs-target="#@identi" type="button" role="tab" aria-controls="@identi" aria-selected="true">@item.GroupName</button>
@@ -2307,10 +2313,14 @@
                     <br />
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
-                        @if ((from a in Model.Statuss where a.SectionNumber==@inner.SectionNo where a.GroupNumber.Equals(@item.GroupNo) select a.DelegateEditStatus).Count() > 0 && !User.IsInRole("Admin"))
-                             DelegateEditStatus = false;
+                        if ((from a in Model.Statuss where a.SectionNumber==@inner.SectionNo where a.GroupNumber.Equals(@item.GroupNo) select a.DelegateEditStatus).Count() > 0 && !User.IsInRole("Admin"))
+                        {     
+                           DelegateEditStatus = false;
+                         }
                         else
+                        {
                              DelegateEditStatus = true;
+                         }
 
                           int TableCount = 0;
                           var Submit = String.Concat("Submit", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -2327,7 +2337,7 @@
                             var SumACAndBWPropRENxtFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ACAndBWPropRENxtFin).Sum();
 
 
-                          @if (CounterBody == 0)
+                          if (CounterBody == 0)
                           {
                               <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
                                   
