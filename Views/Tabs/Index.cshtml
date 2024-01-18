@@ -16,6 +16,8 @@
     int OuterBodyCount = 0;
     int CountHeader = 0;
     int CounterBody = 0;
+
+    Model.SubGroupNameOrLedgerName = new List<String>();
     Model.BudEstCurrFin = new List<Decimal>();
     Model.ActPrevFin = new List<Decimal>();
     Model.ActCurrFinTill2ndQuart = new List<Decimal>();
@@ -26,6 +28,7 @@
     Model.PerVarRevEstOverBudgEstNxtFin = new List<Decimal>();
     Model.ACAndBWPropRENxtFin = new List<Decimal>();
     Model.Justification = new List<String>();
+    
 
     @*int TableCount = 0;*@
     
@@ -33,8 +36,8 @@
 <br />
 
  <div id="outerdiv">
-  @using(Html.BeginForm(null, null, FormMethod.Post, new { @action = "", enctype = "multipart/form-data", id = "AppForm" })) 
- {   
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { @action = "", enctype = "multipart/form-data", id = "AppForm" }))
+    {
       <div style = "float:right">
         
             @Html.AntiForgeryToken()
@@ -79,8 +82,8 @@
       <br />
       <br />
       <br />
-    
-    
+
+       
         @Html.AntiForgeryToken()
 
         Boolean AdminEditStatus = true;
@@ -394,7 +397,16 @@
                                                                          var Ledgerdetails = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();
                                                                          var LedPrevYearApp = (from a in Model.Approved where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();                       
                                                                             <tr>
-                                                                                <td>@Ledgers.LedgerNo</td>
+                                                                                <td>
+                                                                                    @{
+                                                                                        Model.SubGroupNameOrLedgerName.Insert(LedgerNo, Ledgers.LedgerNo);
+                                                                                     }
+
+                                                                                     @Html.DisplayFor(model => model.SubGroupNameOrLedgerName[LedgerNo])
+
+
+                                                                                        @Html.HiddenFor(model => model.SubGroupNameOrLedgerName[LedgerNo])
+                                                                                 </td>
                                                                                 <td>@Ledgers.LedgerName</td>
                                                                                 <td>
                                                                                     @if (User.IsInRole("Admin") || !DelegateEditStatus)
@@ -702,7 +714,9 @@
                                                                       @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
                                                                       {
                                                                         <tr>
-                                                                            <td>@Ledgers.LedgerNo</td>
+                                                                            <td>
+                                                                                @Ledgers.LedgerNo
+                                                                            </td>
                                                                             <td>@Ledgers.LedgerName</td>
                                                                         </tr>
                                                                       }
@@ -714,13 +728,11 @@
                                                         </td>
                                                         <td>
                                                             @{
-                                                              Model.SubGroupNo.Insert(Count, @Subs != null ? Convert.ToString(@Subs.SubGroupNo) : String.Empty);
+                                                              Model.SubGroupNameOrLedgerName.Insert(Count, Subs.SubGroupNo);
                                                              }
 
-                                                            @Html.DisplayFor(model => model.SubGroupNo[Count]);
-
-
-                                                            @Html.HiddenFor(model => model.SubGroupNo[Count]);
+                                                            @Html.DisplayFor(model => model.SubGroupNameOrLedgerName[Count])
+                                                            @Html.HiddenFor(model => model.SubGroupNameOrLedgerName[Count])
                                                         </td>
                                                         <td>
                                                             @Subs.subGroupName
@@ -1365,7 +1377,13 @@
 
                                                                             
                                                                             <tr>
-                                                                                <td>@Ledgers.LedgerNo</td>
+                                                                                <td>
+                                                                                    @{
+                                                                                       Model.SubGroupNameOrLedgerName.Insert(LedgerNo, Ledgers.LedgerNo);
+                                                                                     }
+                                                                                     @Html.DisplayFor(model => model.SubGroupNameOrLedgerName[LedgerNo])
+                                                                                     @Html.HiddenFor(model => model.SubGroupNameOrLedgerName[LedgerNo])
+                                                                                </td>
                                                                                 <td>@Ledgers.LedgerName</td>
                                                                                 <td>
                                                                                     @if (User.IsInRole("Admin") || !DelegateEditStatus)
@@ -1660,7 +1678,11 @@
                                                             }
                                                         </td>
                                                         <td>
-                                                            @Subs.SubGroupNo
+                                                            @{
+                                                                Model.SubGroupNameOrLedgerName.Insert(Count, Subs.SubGroupNo);
+                                                             }
+                                                             @Html.DisplayFor(model => model.SubGroupNameOrLedgerName[Count])
+                                                             @Html.HiddenFor(model => model.SubGroupNameOrLedgerName[Count])
                                                         </td>
                                                         <td>
                                                             @Subs.subGroupName
@@ -2434,7 +2456,13 @@
                                                                             var LedPrevYearApp = (from a in Model.Approved where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();                       
 
                                                                             <tr>
-                                                                                <td>@Ledgers.LedgerNo</td>
+                                                                                <td>
+                                                                                    @{
+                                                                                       Model.SubGroupNameOrLedgerName.Insert(Count, Ledgers.LedgerNo);
+                                                                                     }
+                                                                                     @Html.DisplayFor(model => model.SubGroupNameOrLedgerName[Count])
+                                                                                     @Html.HiddenFor(model => model.SubGroupNameOrLedgerName[Count])
+                                                                                </td>
                                                                                 <td>@Ledgers.LedgerName</td>
                                                                                 <td>
                                                                                     @if (User.IsInRole("Admin") || !DelegateEditStatus)
@@ -2727,7 +2755,11 @@
                                                             }
                                                         </td>
                                                         <td>
-                                                            @Subs.SubGroupNo
+                                                            @{
+                                                                Model.SubGroupNameOrLedgerName.Insert(Count, Subs.SubGroupNo);
+                                                             }
+                                                             @Html.DisplayFor(model => model.SubGroupNameOrLedgerName[Count])
+                                                             @Html.HiddenFor(model => model.SubGroupNameOrLedgerName[Count])
                                                         </td>
                                                         <td>
                                                             @Subs.subGroupName
@@ -3352,7 +3384,13 @@
                                                                             var Ledgerdetails = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();
                                                                             var LedPrevYearApp = (from a in Model.Approved where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();
                                                                             <tr>
-                                                                                <td>@Ledgers.LedgerNo</td>
+                                                                                <td>
+                                                                                    @{
+                                                                                       Model.SubGroupNameOrLedgerName.Insert(LedgerNo, Ledgers.LedgerNo);
+                                                                                     }
+                                                                                     @Html.DisplayFor(model => model.SubGroupNameOrLedgerName[LedgerNo])
+                                                                                     @Html.HiddenFor(model => model.SubGroupNameOrLedgerName[LedgerNo])
+                                                                                </td>
                                                                                 <td>@Ledgers.LedgerName</td>
                                                                                 <td>
                                                                                     @if (User.IsInRole("Admin") || !DelegateEditStatus)
@@ -3666,7 +3704,11 @@
                                                             }
                                                         </td>
                                                         <td>
-                                                            @Subs.SubGroupNo
+                                                            @{
+                                                               Model.SubGroupNameOrLedgerName.Insert(Count, Subs.SubGroupNo);
+                                                             }
+                                                             @Html.DisplayFor(model => model.SubGroupNameOrLedgerName[Count])
+                                                             @Html.HiddenFor(model => model.SubGroupNameOrLedgerName[Count])
                                                         </td>
                                                         <td>
                                                             @Subs.subGroupName
