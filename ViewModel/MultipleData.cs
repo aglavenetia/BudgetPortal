@@ -28,8 +28,11 @@ namespace BudgetPortal.ViewModel
         public IEnumerable<BudgetDetailsApproved> Approved { get; set; }
 
         public String SectionName { get; set; }
+        
 
         public String GroupName { get; set; }
+        
+        public List<String> SubGroupNo { get; set; }
 
         [Required(ErrorMessage = "Please enter BudgetEstimates for the Current Financial Year")]
         [Column(TypeName = "money")]

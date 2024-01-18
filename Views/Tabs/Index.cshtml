@@ -707,7 +707,14 @@
                                                             }
                                                         </td>
                                                         <td>
-                                                            @Subs.SubGroupNo
+                                                            @{
+                                                              Model.SubGroupNo.Insert(Count, @Subs != null ? Convert.ToString(@Subs.SubGroupNo) : String.Empty);
+                                                             }
+
+                                                            @Html.DisplayFor(model => model.SubGroupNo[Count]);
+
+
+                                                            @Html.HiddenFor(model => model.SubGroupNo[Count]);
                                                         </td>
                                                         <td>
                                                             @Subs.subGroupName
