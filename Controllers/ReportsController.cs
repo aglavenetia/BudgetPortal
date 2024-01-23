@@ -32,7 +32,7 @@ namespace BudgetPortal.Controllers
                 Year = DateTime.Now.Year - 1;
             }
             var AcademicYear = String.Concat(Year, "-", (Year + 1));
-            var mymodel = new MultipleData();
+            var mymodel = new ReportView();
 
             mymodel.Sectionss = _context.BudgetSections.ToList();
             mymodel.Groupss = _context.BudgetGroups.ToList();
@@ -98,7 +98,7 @@ namespace BudgetPortal.Controllers
             }
             var AcademicYear = String.Concat(Year, "-", (Year + 1));
             
-            var mymodel = new MultipleData();
+            var mymodel = new ReportView();
 
             mymodel.Sectionss = _context.BudgetSections.ToList();
             mymodel.Groupss = _context.BudgetGroups.ToList();
