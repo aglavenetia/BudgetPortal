@@ -242,7 +242,7 @@ namespace BudgetPortal.Controllers
                                  .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber != Convert.ToInt32(0)).ToList();
                 MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == LoggedInDivisionID)
                                  .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
-
+                
                 MD.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                      new SelectListItem()
                      {
@@ -263,6 +263,7 @@ namespace BudgetPortal.Controllers
 
                 MD.AcademicYears.Where(x => x.Text.Equals(MD.SelectedAcademicYear.ToString())).Single().Selected = true;
 
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
 
                 if (ModelState.IsValid)
                 {
