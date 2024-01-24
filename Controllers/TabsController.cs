@@ -232,6 +232,7 @@ namespace BudgetPortal.Controllers
                 var LoggedInDivisionID = _context.Division
                                     .Where(d => d.DivisionName == DivName)
                                     .Select(x => x.DivisionID).FirstOrDefault();
+
                 MD.Sectionss = _context.BudgetSections.ToList();
                 MD.Groupss = _context.BudgetGroups.ToList();
                 MD.SubGroupss = _context.BudgetSubGroups.ToList();
@@ -263,7 +264,9 @@ namespace BudgetPortal.Controllers
 
                 MD.AcademicYears.Where(x => x.Text.Equals(MD.SelectedAcademicYear.ToString())).Single().Selected = true;
 
-                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                ModelState.Remove("SelectedDivisionID");
+                ModelState.Remove("ACAndBWPropRECurrFin");
+                ModelState.Remove("ACAndBWPropRENxtFin");
 
                 if (ModelState.IsValid)
                 {
@@ -283,8 +286,8 @@ namespace BudgetPortal.Controllers
                         {
                             for (int j = 0; j < Ledgers.Count(); j++)
                             {
-                                int index = MD.SubGroupNameOrLedgerName.IndexOf(Ledgers[j]);                            
-                                
+                                int index = MD.SubGroupNameOrLedgerName.IndexOf(Ledgers[j]);
+
                                 dataModel.DivisionID = Convert.ToInt32(SelectedDivisionID);
                                 dataModel.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
                                 dataModel.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
@@ -299,7 +302,7 @@ namespace BudgetPortal.Controllers
                                 dataModel.BudgEstNexFin = Convert.ToDecimal(MD.BudgEstNexFin[index]);
                                 //dataModel.Justification = Convert.ToString(Form[String.Concat("Justification", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
                                 dataModel.Justification = MD.Justification[index].ToString();
-
+                                
                                 dataModel.SectionNumber = Convert.ToInt32(SectionNumber);
                                 dataModel.GroupNumber = GroupNumber;
                                 dataModel.SubGroupNumber = SubGroups[i];
@@ -334,6 +337,7 @@ namespace BudgetPortal.Controllers
                             dataModel.BudgEstNexFin = Convert.ToDecimal(MD.BudgEstNexFin[index]);
                             //dataModel.Justification = Convert.ToString(Form[String.Concat("Justification", SectionNumber, GroupNumber, i)]);
                             dataModel.Justification = MD.Justification[index].ToString();
+                            
 
                             dataModel.SectionNumber = Convert.ToInt32(SectionNumber);
                             dataModel.GroupNumber = GroupNumber;
