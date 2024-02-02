@@ -23,13 +23,25 @@ $(document).ready(function () {
             var elementid = $(this).attr("id");
             var newid = elementid.replace(/[^a-z]/gi, "");
             var total = 0;
-            $(this).closest("table").children("tr").each(
+            alert($(this).closest("table").children().children("tr").length);
+            $(this).closest("table").children().children("tr").each(
                 function ()
                 {
-                    var total = 0 + $("input[id^=newid]").attr("value");
+                    alert("Inside the children ");
+
+                    var attributevalue = $(this).find($("input[id^='" + newid +"']")).val();
+                    // var attributevalue = $(this).children().find("#"+newid+"*").attr("id");
+                    //var attributevalue = $(this).find($("input[id^='ActPrevFin']")).prop(tagName);
+                    alert(attributevalue); 
+                    total = parseInt(total+attributevalue);
                 }
             );
-            alert("This is a Child Table.Total of the column is: " + total);
+
+            alert(total);
+            var totalelement = $(this).closest("td[colspan='999']").closest("tr").prev("tr").find($("input[id^='" + newid + "']"));
+            
+            totalelement.val(total);
+           
         }
         else {
             var elementid = $(this).attr("id");
