@@ -33,7 +33,7 @@ $(document).ready(function () {
                     // var attributevalue = $(this).children().find("#"+newid+"*").attr("id");
                     //var attributevalue = $(this).find($("input[id^='ActPrevFin']")).prop(tagName);
                     alert(attributevalue); 
-                    total = parseInt(total+attributevalue);
+                    total = (parseInt(total)+parseInt(attributevalue));
                 }
             );
 
