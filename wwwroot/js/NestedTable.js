@@ -22,31 +22,77 @@ $(document).ready(function () {
 
             var elementid = $(this).attr("id");
             var newid = elementid.replace(/[^a-z]/gi, "");
+            var totalid = $(this).closest("table").closest("tbody").children("tr");
+            //alert(totalid);
             var total = 0;
-            alert($(this).closest("table").children().children("tr").length);
+            //alert($(this).closest("table").children().children("tr").length);
+            //alert(newid);
             $(this).closest("table").children().children("tr").each(
                 function ()
                 {
-                    alert("Inside the children ");
-
-                    var attributevalue = $(this).find($("input[id^='" + newid +"']")).val();
+                    var attributevalue = $(this).find($("input[id^='" + newid +"']")).val() || 0;
                     // var attributevalue = $(this).children().find("#"+newid+"*").attr("id");
                     //var attributevalue = $(this).find($("input[id^='ActPrevFin']")).prop(tagName);
-                    alert(attributevalue); 
-                    total = (parseInt(total)+parseInt(attributevalue));
+                    //alert(attributevalue); 
+                    total = parseFloat(total) + parseFloat(attributevalue);
+                    //alert("Total is : " + total);
                 }
             );
 
-            alert(total);
+            //alert(total);
             var totalelement = $(this).closest("td[colspan='999']").closest("tr").prev("tr").find($("input[id^='" + newid + "']"));
-            
+            //alert(totalelement.attr("id"));
             totalelement.val(total);
+
+
+
+            total = 0;
+            
+            totalid.each(
+                function ()
+                {
+
+                    var isnodelength = $(this).find($("td[colspan='999']")).length;
+                    //alert("Length of node :" + isnodelength);
+                   
+                    if (!$(this).find($("td[colspan='999']")).length)
+                    {
+                        var attributevalue = $(this).find($("input[id^='" + newid + "']")).val() || 0;
+                        //alert(attributevalue);
+                        total = parseFloat(total) + parseFloat(attributevalue);
+                    }
+
+                }
+            );
+            var Finaltotalelement = totalid.last("tr").find($("td[id^='" + newid + "']"));
+            Finaltotalelement.html(total);
            
         }
-        else {
+        else
+        {
             var elementid = $(this).attr("id");
             var newid = elementid.replace(/[^a-z]/gi, "");
-            alert("This is a Parent row. ID is " + newid);
+            var total = 0;
+            //alert("This is a Parent row. ID is " + newid);
+            //alert($(this).closest("tbody").children("tr").length);
+            $(this).closest("tbody").children("tr").each(
+                function () {
+
+                    //var isnodelength = $(this).find($("td[colspan='999']")).length;
+                    //alert("Length of node :" + isnodelength);
+                   
+                    if (!$(this).find($("td[colspan='999']")).length)
+                    {
+                        var attributevalue = $(this).find($("input[id^='" + newid + "']")).val() || 0;
+                        //alert(attributevalue);
+                        total = parseFloat(total) + parseFloat(attributevalue);
+                     }
+                    
+                }
+            );
+            //alert(total);
+            var totalelement = $(this).closest("tbody").last("tr").find($("td[id^='" + newid + "']"));
+            totalelement.html(total);
         }
     });
 });
