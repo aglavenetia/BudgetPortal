@@ -307,16 +307,17 @@
                          var SumPerVarRevEstOverBudgEstNxtFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.PerVarRevEstOverBudgEstNxtFin).Sum();
                          var SumACAndBWPropRENxtFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ACAndBWPropRENxtFin).Sum();
                          
-                         var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                         var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                         var name3 = String.Concat("ActCurrFinTillsecondQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                         var name4 = String.Concat("RevEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                         var name5 = String.Concat("PerVarRevEstOverBudgEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                         var name6 = String.Concat("ACAndBWPropRECurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                         var name7 = String.Concat("BudgEstNexFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                         var name8 = String.Concat("PerVarRevEstOverBudgEstNxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                         var name9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                         var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                            var Sumname1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                            var Sumname2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                            var Sumname3 = String.Concat("ActCurrFinTillsecondQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                            var Sumname4 = String.Concat("RevEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                            var Sumname5 = String.Concat("PerVarRevEstOverBudgEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                            var Sumname6 = String.Concat("ACAndBWPropRECurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                            var Sumname7 = String.Concat("BudgEstNexFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                            var Sumname8 = String.Concat("PerVarRevEstOverBudgEstNxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                            var Sumname9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                            var Sumname10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+
                         if (CounterBody == 0)
                         {
                             <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
@@ -324,7 +325,7 @@
                               @*using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
                               {
                               @Html.AntiForgeryToken()*@
-                                        <table id="@identi-outertable" class="table table-responsive table-hover">
+                                <table id="@identi-outertable" class="table table-responsive table-hover">
                                     <thead>
                                         <tr>
                                             <th></th>
@@ -377,9 +378,18 @@
                                         @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                         {
                                                     var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
-                                                    var PrevYearApp =  (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();                                           
-                                                    
-                                                    
+                                                    var PrevYearApp =  (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
+
+                                                    var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name3 = String.Concat("ActCurrFinTillsecondQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name4 = String.Concat("RevEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name5 = String.Concat("PerVarRevEstOverBudgEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name6 = String.Concat("ACAndBWPropRECurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name7 = String.Concat("BudgEstNexFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name8 = String.Concat("PerVarRevEstOverBudgEstNxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                     
@@ -1260,36 +1270,36 @@
                                                         Total
                                                     </td>
 
-                                                    <td id="@name1-Total">
+                                                    <td id="@Sumname1-Total">
                                                         @SumBudEstCurrFin.ToString("F")
                                                     </td>
-                                                    <td id="@name2-Total">
+                                                    <td id="@Sumname2-Total">
                                                        @SumActPrevFin.ToString("F")
                                                     </td>
-                                                    <td id="@name3-Total">
+                                                    <td id="@Sumname3-Total">
                                                         @SumActCurrFinTill2ndQuart.ToString("F")
                                                     </td>
-                                                    <td id="@name4-Total">
+                                                    <td id="@Sumname4-Total">
                                                        @SumRevEstCurrFin.ToString("F")
                                                     </td>
-                                                    <td id="@name5-Total">
+                                                    <td id="@Sumname5-Total">
                                                         @SumPerVarRevEstOverBudgEstCurrFin.ToString("F")
                                                     </td>
                                                     @if (User.IsInRole("Admin"))
                                                     {
-                                                        <td id="@name6-Total">
+                                                        <td id="@Sumname6-Total">
                                                             @SumACAndBWPropRECurrFin.ToString("F")
                                                         </td>
                                                     }
-                                                    <td id="@name7-Total">
+                                                    <td id="@Sumname7-Total">
                                                        @SumBudgEstNexFin.ToString("F")
                                                     </td>
-                                                    <td id="@name8-Total">
+                                                    <td id="@Sumname8-Total">
                                                         @SumPerVarRevEstOverBudgEstNxtFin.ToString("F")
                                                     </td>
                                                     @if (User.IsInRole("Admin"))
                                                     {
-                                                        <td id="@name9-Total">
+                                                        <td id="@Sumname9-Total">
                                                             @SumACAndBWPropRENxtFin.ToString("F")
                                                         </td>
                                                     }
@@ -1370,9 +1380,18 @@
                                                 @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                                 {
                                                     var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
-                                                    var PrevYearApp =  (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();                                           
+                                                    var PrevYearApp =  (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
 
-                                                    
+                                                    var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name3 = String.Concat("ActCurrFinTillsecondQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name4 = String.Concat("RevEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name5 = String.Concat("PerVarRevEstOverBudgEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name6 = String.Concat("ACAndBWPropRECurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name7 = String.Concat("BudgEstNexFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name8 = String.Concat("PerVarRevEstOverBudgEstNxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                     
@@ -2203,36 +2222,36 @@
                                                         Total
                                                     </td>
 
-                                                    <td id="@name1-Total">
+                                                    <td id="@Sumname1-Total">
                                                         @SumBudEstCurrFin.ToString("F")
                                                     </td>
-                                                    <td id="@name2-Total">
+                                                    <td id="@Sumname2-Total">
                                                         @SumActPrevFin.ToString("F")
                                                     </td>
-                                                    <td id="@name3-Total">
+                                                    <td id="@Sumname3-Total">
                                                         @SumActCurrFinTill2ndQuart.ToString("F")
                                                     </td>
-                                                    <td id="@name4-Total">
+                                                    <td id="@Sumname4-Total">
                                                         @SumRevEstCurrFin.ToString("F")
                                                     </td>
-                                                    <td id="@name5-Total">
+                                                    <td id="@Sumname5-Total">
                                                         @SumPerVarRevEstOverBudgEstCurrFin.ToString("F")
                                                     </td>
                                                     @if (User.IsInRole("Admin"))
                                                     {
-                                                        <td id="@name6-Total">
+                                                        <td id="@Sumname6-Total">
                                                             @SumACAndBWPropRECurrFin.ToString("F")
                                                         </td>
                                                     }
-                                                    <td id="@name7-Total">
+                                                    <td id="@Sumname7-Total">
                                                         @SumBudgEstNexFin.ToString("F")
                                                     </td>
-                                                    <td id="@name8-Total">
+                                                    <td id="@Sumname8-Total">
                                                         @SumPerVarRevEstOverBudgEstNxtFin.ToString("F")
                                                     </td>
                                                     @if (User.IsInRole("Admin"))
                                                     {
-                                                        <td id="@name9-Total">
+                                                        <td id="@Sumname9-Total">
                                                             @SumACAndBWPropRENxtFin.ToString("F")
                                                         </td>
                                                     }
@@ -2400,17 +2419,18 @@
                             var SumPerVarRevEstOverBudgEstNxtFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.PerVarRevEstOverBudgEstNxtFin).Sum();
                             var SumACAndBWPropRENxtFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ACAndBWPropRENxtFin).Sum();
 
+                                var Sumname1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                var Sumname2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                var Sumname3 = String.Concat("ActCurrFinTillsecondQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                var Sumname4 = String.Concat("RevEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                var Sumname5 = String.Concat("PerVarRevEstOverBudgEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                var Sumname6 = String.Concat("ACAndBWPropRECurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                var Sumname7 = String.Concat("BudgEstNexFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                var Sumname8 = String.Concat("PerVarRevEstOverBudgEstNxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                var Sumname9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                var Sumname10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
-                            var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                            var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                            var name3 = String.Concat("ActCurrFinTillsecondQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                            var name4 = String.Concat("RevEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                            var name5 = String.Concat("PerVarRevEstOverBudgEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                            var name6 = String.Concat("ACAndBWPropRECurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                            var name7 = String.Concat("BudgEstNexFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                            var name8 = String.Concat("PerVarRevEstOverBudgEstNxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                            var name9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                            var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                            
 
                           if (CounterBody == 0)
                           {
@@ -2473,7 +2493,16 @@
                                                     var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
                                                     var PrevYearApp =  (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();                                           
 
-                                                    
+                                                    var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name3 = String.Concat("ActCurrFinTillsecondQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name4 = String.Concat("RevEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name5 = String.Concat("PerVarRevEstOverBudgEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name6 = String.Concat("ACAndBWPropRECurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name7 = String.Concat("BudgEstNexFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name8 = String.Concat("PerVarRevEstOverBudgEstNxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                      
@@ -3301,36 +3330,36 @@
                                                         Total
                                                     </td>
 
-                                                    <td id="@name1-Total">
+                                                    <td id="@Sumname1-Total">
                                                         @SumBudEstCurrFin.ToString("F")
                                                     </td >
-                                                    <td id="@name2-Total">
+                                                    <td id="@Sumname2-Total">
                                                         @SumActPrevFin.ToString("F")
                                                     </td>
-                                                    <td id="@name3-Total">
+                                                    <td id="@Sumname3-Total">
                                                         @SumActCurrFinTill2ndQuart.ToString("F")
                                                     </td>
-                                                    <td id="@name4-Total">
+                                                    <td id="@Sumname4-Total">
                                                         @SumRevEstCurrFin.ToString("F")
                                                     </td>
-                                                    <td id="@name5-Total">
+                                                    <td id="@Sumname5-Total">
                                                         @SumPerVarRevEstOverBudgEstCurrFin.ToString("F")
                                                     </td>
                                                     @if (User.IsInRole("Admin"))
                                                     {
-                                                        <td id="@name6-Total">
+                                                        <td id="@Sumname6-Total">
                                                             @SumACAndBWPropRECurrFin.ToString("F")
                                                         </td>
                                                     }
-                                                    <td id="@name7-Total">
+                                                    <td id="@Sumname7-Total">
                                                         @SumBudgEstNexFin.ToString("F")
                                                     </td>
-                                                    <td id="@name8-Total">
+                                                    <td id="@Sumname8-Total">
                                                         @SumPerVarRevEstOverBudgEstNxtFin.ToString("F")
                                                     </td>
                                                     @if (User.IsInRole("Admin"))
                                                     {
-                                                        <td id="@name9-Total">
+                                                        <td id="@Sumname9-Total">
                                                             @SumACAndBWPropRENxtFin.ToString("F")
                                                         </td>
                                                     }
@@ -3413,7 +3442,16 @@
                                                     var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
                                                     var PrevYearApp =  (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();                                           
 
-                                                  
+                                                    var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name3 = String.Concat("ActCurrFinTillsecondQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name4 = String.Concat("RevEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name5 = String.Concat("PerVarRevEstOverBudgEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name6 = String.Concat("ACAndBWPropRECurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name7 = String.Concat("BudgEstNexFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name8 = String.Concat("PerVarRevEstOverBudgEstNxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                     
@@ -4261,36 +4299,36 @@
                                                         Total
                                                     </td>
 
-                                                    <td id="@name1-Total">
+                                                    <td id="@Sumname1-Total">
                                                         @SumBudEstCurrFin.ToString("F")
                                                     </td>
-                                                    <td id="@name2-Total">
+                                                    <td id="@Sumname2-Total">
                                                         @SumActPrevFin.ToString("F")
                                                     </td>
-                                                    <td id="@name3-Total">
+                                                    <td id="@Sumname3-Total">
                                                         @SumActCurrFinTill2ndQuart.ToString("F")
                                                     </td>
-                                                    <td id="@name4-Total">
+                                                    <td id="@Sumname4-Total">
                                                         @SumRevEstCurrFin.ToString("F")
                                                     </td>
-                                                    <td id="@name5-Total">
+                                                    <td id="@Sumname5-Total">
                                                         @SumPerVarRevEstOverBudgEstCurrFin.ToString("F")
                                                     </td>
                                                     @if (User.IsInRole("Admin"))
                                                     {
-                                                        <td id="@name6-Total">
+                                                        <td id="@Sumname6-Total">
                                                             @SumACAndBWPropRECurrFin.ToString("F")
                                                         </td>
                                                     }
-                                                    <td id="@name7-Total">
+                                                    <td id="@Sumname7-Total">
                                                         @SumBudgEstNexFin.ToString("F")
                                                     </td>
-                                                    <td id="@name8-Total">
+                                                    <td id="@Sumname8-Total">
                                                         @SumPerVarRevEstOverBudgEstNxtFin.ToString("F")
                                                     </td>
                                                     @if (User.IsInRole("Admin"))
                                                     {
-                                                        <td id="@name9-Total">
+                                                        <td id="@Sumname9-Total">
                                                             @SumACAndBWPropRENxtFin.ToString("F")
                                                         </td>
                                                     }
