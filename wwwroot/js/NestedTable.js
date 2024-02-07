@@ -40,33 +40,33 @@ $(document).ready(function () {
     });
 
     $("body").on("change","input[id^='RevEstCurrFin']",function () {
-        alert($(this).attr("id"));
+        //alert($(this).attr("id"));
         var elementid = $(this).closest("tr").find($("input[id^='BudEstCurrFin']"));
-        alert(elementid);
+        //alert(elementid);
         var Pervariationid = $(this).closest("tr").find($("input[id^='PerVarRevEstOverBudgEstCurrFin']"));
-        alert(Pervariationid);
+        //alert(Pervariationid);
         var PerVariation = (parseFloat($(this).val()) - parseFloat(elementid.val())) / parseFloat(elementid.val());
         Pervariationid.val(PerVariation);
 
         if (PerVariation > 0.1)
         {
-            $(this).closest("tr").find($("textarea[id^='Justification']")).prop('required', true).addClass("text-danger");;
+            $(this).closest("tr").find($("textarea[id^='Justification']")).prop('required', true);
        }
 
     });
 
     $("body").on("change","input[id^= 'BudgEstNexFin']",function () {
-        alert($(this).attr("id"));
+        //alert($(this).attr("id"));
         var elementid = $(this).closest("tr").find($("input[id^='RevEstCurrFin']"));
-        alert(elementid);
+        //alert(elementid);
         var Pervariationid = $(this).closest("tr").find($("input[id^='PerVarRevEstOverBudgEstNxtFin']"));
-        alert(Pervariationid);
+        //alert(Pervariationid);
         var PerVariation = (parseFloat($(this).val()) - parseFloat(elementid.val())) / parseFloat(elementid.val());
         Pervariationid.val(PerVariation);
 
        if (PerVariation > 0.1)
        {
-            $(this).closest("tr").find($("textarea[id^='Justification']")).prop('required', true).addClass("text-danger");
+            $(this).closest("tr").find($("textarea[id^='Justification']")).prop('required', true);
        }
     });
 

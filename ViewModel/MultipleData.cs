@@ -56,7 +56,7 @@ namespace BudgetPortal.ViewModel
         [Required(ErrorMessage = "Please enter Actual for the Current Financial Year Till 2nd Quarter")]
         [Column(TypeName = "money")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.####}")]
-        public List<Decimal> ActCurrFinTill2ndQuart { get; set; }
+        public List<Decimal> ActCurrFinTillsecondQuart { get; set; }
         //public Decimal ActCurrFinTill2ndQuart { get; set; }
 
         [Required(ErrorMessage = "Please enter Revised Estimates for the Current Financial Year")]
