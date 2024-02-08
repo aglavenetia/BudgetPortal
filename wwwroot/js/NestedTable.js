@@ -1,6 +1,6 @@
 ﻿
 $(document).ready(function () {
-    //Assign Click event to Plus Image.
+    //Assign Click event to Plus Image.On opening Child Table
     $("body").on("click", "img[src*='plus.png']", function () {
         $(this).closest("tr").after("<tr><td></td><td colspan = '999'>" + $(this).next().html() + "</td></tr>");
         $(this).attr("src", "/images/minus.png");
@@ -8,7 +8,7 @@ $(document).ready(function () {
         //alert("Opened");
     });
 
-    //Assign Click event to Minus Image.
+    //Assign Click event to Minus Image.On closing Child Table
     $("body").on("click", "img[src*='minus.png']", function () {
         $(this).next("div").prepend($(this).closest("tr").next().children().eq(1).html());
         $(this).attr("src", "/images/plus.png");
@@ -16,6 +16,7 @@ $(document).ready(function () {
         //alert("closed");
     });
 
+    //Calculating Total for each Section
     $("body").on("DOMSubtreeModified", "td[id^='-Total']", function () {
 
         //alert("Sum updated");
@@ -39,6 +40,7 @@ $(document).ready(function () {
 
     });
 
+    //Calculating Percentage variation for Revised Estimates of Current Financial Year
     $("body").on("change","input[id^='RevEstCurrFin']",function () {
         //alert($(this).attr("id"));
         var elementid = $(this).closest("tr").find($("input[id^='BudEstCurrFin']"));
@@ -55,7 +57,11 @@ $(document).ready(function () {
 
     });
 
-    $("body").on("change","input[id^= 'BudgEstNexFin']",function () {
+    //Calculating Percentage variation for Budget Estimates of Next Financial Year
+
+    $("body").on("change", "input[id^= 'BudgEstNexFin']",
+        function ()
+        {
         //alert($(this).attr("id"));
         var elementid = $(this).closest("tr").find($("input[id^='RevEstCurrFin']"));
         //alert(elementid);
@@ -68,11 +74,17 @@ $(document).ready(function () {
        {
             $(this).closest("tr").find($("textarea[id^='Justification']")).prop('required', true);
        }
-    });
+        }
+    );
 
-    $("body").on("change", "input", function () {
-        if ($(this).closest("table").hasClass("ChildGrid")) {
+    //Calculating total on entering values in a Textbox
+    $("body").on("change", "input", TotalCalculation());
 
+    //Calculating Total for each Group
+    function TotalCalculation()
+    {
+        if ($(this).closest("table").hasClass("ChildGrid"))
+        {
             var elementid = $(this).attr("id");
             var newid = elementid.replace(/[^a-z]/gi, "");
             var totalid = $(this).closest("table").closest("tbody").children("tr");
@@ -118,7 +130,8 @@ $(document).ready(function () {
             Finaltotalelement.html(total);
 
         }
-        else {
+        else
+        {
             var elementid = $(this).attr("id");
             var newid = elementid.replace(/[^a-z]/gi, "");
             var total = 0;
@@ -142,5 +155,5 @@ $(document).ready(function () {
             var totalelement = $(this).closest("tbody").last("tr").find($("td[id^='" + newid + "']"));
             totalelement.html(total);
         }
-    });
+    }
 });

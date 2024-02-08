@@ -462,8 +462,7 @@ namespace BudgetPortal.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult FinalSubmit(MultipleData MD, IFormCollection Form)
         {
-            if (ModelState.IsValid)
-            {
+            
                 var username = User.Identity.Name;
                 var DivName = MD.SelectedDivisionName.ToString();
                 var SelectedDivisionID = _context.Division
@@ -471,91 +470,157 @@ namespace BudgetPortal.Controllers
                                      .Select(x => x.DivisionID).FirstOrDefault();
                 var splitAcademicYear = MD.SelectedAcademicYear.ToString().Split("-");
 
-                var SectionNumber = _context.BudgetSections
-                                     .Where(x => x.SectionName.Equals(MD.SectionName))
-                                     .Select(x => x.SectionNo).First();
-                var GroupNumber = _context.BudgetGroups
-                            .Where(x => x.GroupName.Equals(MD.GroupName))
-                            .Select(x => x.GroupNo).First();
-                var SubGroups = _context.BudgetSubGroups
-                            .Where(x => x.GroupNo.Equals(GroupNumber))
-                            .Select(x => x.SubGroupNo).ToList();
-
                 //Update Budget Details for Admin User
                 if (User.Identity.Name.Equals("admin@test.com"))
                 {
-                    for (int i = 0; i < SubGroups.Count(); i++)
+
+                ModelState.Remove("SectionName");
+                ModelState.Remove("GroupName");
+                  if (ModelState.IsValid)
+                  {
+                    int i = 0;
+                    foreach (var itemSections in _context.BudgetSections)
                     {
-
-                        var result = new BudgetDetailsApproved();
-
-
-                        var LedgerStatus = _context.BudgetSubGroups
-                                  .Where(x => x.SubGroupNo.Equals(SubGroups[i]))
-                                  .Select(x => x.RequireInput).First();
-
-                        var Ledgers = _context.BudgetLedgers
-                              .Where(x => x.SubGroupNo.Equals(SubGroups[i]))
-                              .Select(x => x.LedgerNo).ToList();
-
-                        for (int l = 0; l < Ledgers.Count(); l++)
+                        int j = 0;
+                        foreach (var itemsGroups in _context.BudgetGroups.Where(d => d.SectionNo == itemSections.SectionNo))
                         {
-                            if (LedgerStatus)
+                            int k = 0;
+                            foreach (var itemsSubGroups in _context.BudgetSubGroups.Where(d => d.GroupNo.Equals(itemsGroups.GroupNo)))
                             {
-                                int index = MD.SubGroupNameOrLedgerName.IndexOf(Ledgers[l]);
-                                result.DivisionID = Convert.ToInt32(SelectedDivisionID);
-                                result.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
-                                result.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
-                                //result.BudEstCurrFinACandBW = Convert.ToDecimal(Form[String.Concat("ACAndBWPropRECurrFin", itemSections.SectionNo, itemsGroups.GroupNo, k, Ledgers[l])]);
-                                result.BudEstCurrFinACandBW = Convert.ToDecimal(MD.ACAndBWPropRECurrFin[index]);
-                                result.RevEstCurrFinACandBW = Convert.ToDecimal(0);
-                                //result.BudEstNextFin = Convert.ToDecimal(Form[String.Concat("ACAndBWPropRENxtFin", itemSections.SectionNo, itemsGroups.GroupNo, k, Ledgers[l])]);
-                                result.SectionNumber = Convert.ToInt32(SectionNumber);
-                                result.GroupNumber = GroupNumber;
-                                result.SubGroupNumber = SubGroups[i];
-                                result.LedgerNumber = Ledgers[l];
-
-                                _context.BudgetDetailsApproved.Add(result);
-                                _context.SaveChanges();
+                                var result = new BudgetDetailsApproved();
 
 
+                                var LedgerStatus = _context.BudgetSubGroups
+                                          .Where(x => x.SubGroupNo.Equals(itemsSubGroups.SubGroupNo))
+                                          .Select(x => x.RequireInput).First();
+
+                                var Ledgers = _context.BudgetLedgers
+                                      .Where(x => x.SubGroupNo.Equals(itemsSubGroups.SubGroupNo))
+                                      .Select(x => x.LedgerNo).ToList();
+
+                                if (LedgerStatus)
+                                {
+                                    for (int l = 0; l < Ledgers.Count(); l++)
+                                    {
+                                        int index = MD.SubGroupNameOrLedgerName.IndexOf(Ledgers[j]);
+                                        result.DivisionID = Convert.ToInt32(SelectedDivisionID);
+                                        result.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
+                                        result.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
+                                        result.BudEstCurrFinACandBW = Convert.ToDecimal(Form[String.Concat("ACAndBWPropRECurrFin", itemSections.SectionNo, itemsGroups.GroupNo, k, Ledgers[l])]);
+                                        result.RevEstCurrFinACandBW = Convert.ToDecimal(0);
+                                        result.BudEstNextFin = Convert.ToDecimal(Form[String.Concat("ACAndBWPropRENxtFin", itemSections.SectionNo, itemsGroups.GroupNo, k, Ledgers[l])]);
+                                        result.SectionNumber = Convert.ToInt32(itemSections.SectionNo);
+                                        result.GroupNumber = itemsGroups.GroupNo;
+                                        result.SubGroupNumber = itemsSubGroups.SubGroupNo;
+                                        result.LedgerNumber = Ledgers[l];
+
+                                        _context.BudgetDetailsApproved.Add(result);
+                                        _context.SaveChanges();
+
+
+                                    }
+                                }
+                                else
+                                {
+                                    int index = MD.SubGroupNameOrLedgerName.IndexOf(itemsSubGroups.SubGroupNo);
+
+                                    result.DivisionID = Convert.ToInt32(SelectedDivisionID);
+                                    result.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
+                                    result.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
+                                    result.BudEstCurrFinACandBW = Convert.ToDecimal(MD.ACAndBWPropRECurrFin[index]);
+                                    result.RevEstCurrFinACandBW = Convert.ToDecimal(0);
+                                    result.BudEstNextFin = Convert.ToDecimal(MD.ACAndBWPropRENxtFin[index]);
+                                    result.SectionNumber = Convert.ToInt32(itemSections.SectionNo);
+                                    result.GroupNumber = itemsGroups.GroupNo;
+                                    result.SubGroupNumber = itemsSubGroups.SubGroupNo;
+                                    result.LedgerNumber = Convert.ToDecimal(0).ToString();
+
+                                    _context.BudgetDetailsApproved.Add(result);
+                                    _context.SaveChanges();
+                                }
+
+                                k++;
                             }
-
-                            else
-                            {
-                                int index = MD.SubGroupNameOrLedgerName.IndexOf(SubGroups[i]);
-                                result.DivisionID = Convert.ToInt32(SelectedDivisionID);
-                                result.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
-                                result.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
-                                //result.BudEstCurrFinACandBW = Convert.ToDecimal(Form[String.Concat("ACAndBWPropRECurrFin", itemSections.SectionNo, itemsGroups.GroupNo, k)]);
-                                result.BudEstCurrFinACandBW = Convert.ToDecimal(MD.ACAndBWPropRECurrFin[index]);
-                                result.RevEstCurrFinACandBW = Convert.ToDecimal(0);
-                                //result.BudEstNextFin = Convert.ToDecimal(Form[String.Concat("ACAndBWPropRENxtFin", itemSections.SectionNo, itemsGroups.GroupNo, k)]);
-                                result.BudEstNextFin = Convert.ToDecimal(MD.ACAndBWPropRENxtFin[index]);
-                                result.SectionNumber = Convert.ToInt32(SectionNumber);
-                                result.GroupNumber = GroupNumber;
-                                result.SubGroupNumber = SubGroups[i];
-                                result.LedgerNumber = Ledgers[l];
-
-                                _context.BudgetDetailsApproved.Add(result);
-                                _context.SaveChanges();
-                            }
+                            j++;
                         }
-                    }       
+                        i++;
+                    }
+
+                    var adminstatus = new BudgetdetailsStatus();
+
+                    adminstatus.DivisionID = Convert.ToInt32(SelectedDivisionID);
+                    adminstatus.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
+                    adminstatus.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
+                    adminstatus.SectionNumber = Convert.ToInt32(0);
+                    adminstatus.GroupNumber = 0.ToString();
+                    adminstatus.DelegateEditStatus = false;
+                    adminstatus.AdminEditStatus = false;
+
+                    _context.BudgetdetailsStatus.Add(adminstatus);
+                    _context.SaveChanges();
+
+
                 }
+                /* for (int i = 0; i < SubGroups.Count(); i++)
+                  {
 
-                var adminstatus = new BudgetdetailsStatus();
+                      var result = new BudgetDetailsApproved();
 
-                adminstatus.DivisionID = Convert.ToInt32(SelectedDivisionID);
-                adminstatus.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
-                adminstatus.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
-                adminstatus.SectionNumber = Convert.ToInt32(0);
-                adminstatus.GroupNumber = 0.ToString();
-                adminstatus.DelegateEditStatus = false;
-                adminstatus.AdminEditStatus = false;
 
-                _context.BudgetdetailsStatus.Add(adminstatus);
-                _context.SaveChanges();
+                      var LedgerStatus = _context.BudgetSubGroups
+                                .Where(x => x.SubGroupNo.Equals(SubGroups[i]))
+                                .Select(x => x.RequireInput).First();
+
+                      var Ledgers = _context.BudgetLedgers
+                            .Where(x => x.SubGroupNo.Equals(SubGroups[i]))
+                            .Select(x => x.LedgerNo).ToList();
+
+                      for (int l = 0; l < Ledgers.Count(); l++)
+                      {
+                          if (LedgerStatus)
+                          {
+                              int index = MD.SubGroupNameOrLedgerName.IndexOf(Ledgers[l]);
+                              result.DivisionID = Convert.ToInt32(SelectedDivisionID);
+                              result.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
+                              result.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
+                              //result.BudEstCurrFinACandBW = Convert.ToDecimal(Form[String.Concat("ACAndBWPropRECurrFin", itemSections.SectionNo, itemsGroups.GroupNo, k, Ledgers[l])]);
+                              result.BudEstCurrFinACandBW = Convert.ToDecimal(MD.ACAndBWPropRECurrFin[index]);
+                              result.RevEstCurrFinACandBW = Convert.ToDecimal(0);
+                              //result.BudEstNextFin = Convert.ToDecimal(Form[String.Concat("ACAndBWPropRENxtFin", itemSections.SectionNo, itemsGroups.GroupNo, k, Ledgers[l])]);
+                              result.SectionNumber = Convert.ToInt32(SectionNumber);
+                              result.GroupNumber = GroupNumber;
+                              result.SubGroupNumber = SubGroups[i];
+                              result.LedgerNumber = Ledgers[l];
+
+                              _context.BudgetDetailsApproved.Add(result);
+                              _context.SaveChanges();
+
+
+                          }
+
+                          else
+                          {
+                              int index = MD.SubGroupNameOrLedgerName.IndexOf(SubGroups[i]);
+                              result.DivisionID = Convert.ToInt32(SelectedDivisionID);
+                              result.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
+                              result.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
+                              //result.BudEstCurrFinACandBW = Convert.ToDecimal(Form[String.Concat("ACAndBWPropRECurrFin", itemSections.SectionNo, itemsGroups.GroupNo, k)]);
+                              result.BudEstCurrFinACandBW = Convert.ToDecimal(MD.ACAndBWPropRECurrFin[index]);
+                              result.RevEstCurrFinACandBW = Convert.ToDecimal(0);
+                              //result.BudEstNextFin = Convert.ToDecimal(Form[String.Concat("ACAndBWPropRENxtFin", itemSections.SectionNo, itemsGroups.GroupNo, k)]);
+                              result.BudEstNextFin = Convert.ToDecimal(MD.ACAndBWPropRENxtFin[index]);
+                              result.SectionNumber = Convert.ToInt32(SectionNumber);
+                              result.GroupNumber = GroupNumber;
+                              result.SubGroupNumber = SubGroups[i];
+                              result.LedgerNumber = Ledgers[l];
+
+                              _context.BudgetDetailsApproved.Add(result);
+                              _context.SaveChanges();
+                          }
+                      }
+                  }       
+              }*/
+
 
                 //_context.BudgetdetailsStatus.Update(adminstatus);
                 //_context.SaveChanges();
