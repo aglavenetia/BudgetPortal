@@ -17,12 +17,13 @@ $(document).ready(function () {
     });
 
     //Calculating Total for each Section
-    $("body").on("DOMSubtreeModified", "td[id^='-Total']", function () {
+    $("body").addEventListener("DOMSubtreeModified", "td[id^='-Total']", function ()
+    {
 
-        //alert("Sum updated");
+        alert("Sum updated");
         var elementid = $(this).attr("id");
         var newid = elementid.split(".");
-        //alert(newid[0]);
+        alert(newid[0]);
         var FinalIDReplace = elementid.split(/[^a-z]/gi);
         //alert(FinalIDReplace[0]);
         var Finaltotalid = $("#Sum" + FinalIDReplace[0]);
@@ -78,82 +79,80 @@ $(document).ready(function () {
     );
 
     //Calculating total on entering values in a Textbox
-    $("body").on("change", "input", TotalCalculation());
+    $("body").on("change", "input", function ()
+
+    {
 
     //Calculating Total for each Group
-    function TotalCalculation()
-    {
-        if ($(this).closest("table").hasClass("ChildGrid"))
-        {
-            var elementid = $(this).attr("id");
-            var newid = elementid.replace(/[^a-z]/gi, "");
-            var totalid = $(this).closest("table").closest("tbody").children("tr");
-            //alert(totalid);
-            var total = 0;
-            //alert($(this).closest("table").children().children("tr").length);
-            //alert(newid);
-            $(this).closest("table").children().children("tr").each(
-                function () {
-                    var attributevalue = $(this).find($("input[id^='" + newid + "']")).val() || 0;
-                    // var attributevalue = $(this).children().find("#"+newid+"*").attr("id");
-                    //var attributevalue = $(this).find($("input[id^='ActPrevFin']")).prop(tagName);
-                    //alert(attributevalue); 
-                    total = parseFloat(total) + parseFloat(attributevalue);
-                    //alert("Total is : " + total);
-                }
-            );
-
-            //alert(total);
-            var totalelement = $(this).closest("td[colspan='999']").closest("tr").prev("tr").find($("input[id^='" + newid + "']"));
-            //alert(totalelement.attr("id"));
-            totalelement.val(total);
-
-
-
-            total = 0;
-
-            totalid.each(
-                function () {
-
-                    var isnodelength = $(this).find($("td[colspan='999']")).length;
-                    //alert("Length of node :" + isnodelength);
-
-                    if (!$(this).find($("td[colspan='999']")).length) {
+            if ($(this).closest("table").hasClass("ChildGrid")) {
+                var elementid = $(this).attr("id");
+                var newid = elementid.replace(/[^a-z]/gi, "");
+                var totalid = $(this).closest("table").closest("tbody").children("tr");
+                alert(totalid);
+                var total = 0;
+                //alert($(this).closest("table").children().children("tr").length);
+                //alert(newid);
+                $(this).closest("table").children().children("tr").each(
+                    function () {
                         var attributevalue = $(this).find($("input[id^='" + newid + "']")).val() || 0;
-                        //alert(attributevalue);
+                        // var attributevalue = $(this).children().find("#"+newid+"*").attr("id");
+                        //var attributevalue = $(this).find($("input[id^='ActPrevFin']")).prop(tagName);
+                        //alert(attributevalue); 
                         total = parseFloat(total) + parseFloat(attributevalue);
+                        //alert("Total is : " + total);
                     }
+                );
 
-                }
-            );
-            var Finaltotalelement = totalid.last("tr").find($("td[id^='" + newid + "']"));
-            Finaltotalelement.html(total);
+                //alert(total);
+                var totalelement = $(this).closest("td[colspan='999']").closest("tr").prev("tr").find($("input[id^='" + newid + "']"));
+                //alert(totalelement.attr("id"));
+                totalelement.val(total);
 
-        }
-        else
-        {
-            var elementid = $(this).attr("id");
-            var newid = elementid.replace(/[^a-z]/gi, "");
-            var total = 0;
-            //alert("This is a Parent row. ID is " + newid);
-            //alert($(this).closest("tbody").children("tr").length);
-            $(this).closest("tbody").children("tr").each(
-                function () {
 
-                    //var isnodelength = $(this).find($("td[colspan='999']")).length;
-                    //alert("Length of node :" + isnodelength);
 
-                    if (!$(this).find($("td[colspan='999']")).length) {
-                        var attributevalue = $(this).find($("input[id^='" + newid + "']")).val() || 0;
-                        //alert(attributevalue);
-                        total = parseFloat(total) + parseFloat(attributevalue);
+                total = 0;
+
+                totalid.each(
+                    function () {
+
+                        var isnodelength = $(this).find($("td[colspan='999']")).length;
+                        //alert("Length of node :" + isnodelength);
+
+                        if (!$(this).find($("td[colspan='999']")).length) {
+                            var attributevalue = $(this).find($("input[id^='" + newid + "']")).val() || 0;
+                            //alert(attributevalue);
+                            total = parseFloat(total) + parseFloat(attributevalue);
+                        }
+
                     }
+                );
+                var Finaltotalelement = totalid.last("tr").find($("td[id^='" + newid + "']"));
+                Finaltotalelement.html(total);
 
-                }
-            );
-            //alert(total);
-            var totalelement = $(this).closest("tbody").last("tr").find($("td[id^='" + newid + "']"));
-            totalelement.html(total);
-        }
-    }
+            }
+            else {
+                var elementid = $(this).attr("id");
+                var newid = elementid.replace(/[^a-z]/gi, "");
+                var total = 0;
+                //alert("This is a Parent row. ID is " + newid);
+                //alert($(this).closest("tbody").children("tr").length);
+                $(this).closest("tbody").children("tr").each(
+                    function () {
+
+                        //var isnodelength = $(this).find($("td[colspan='999']")).length;
+                        //alert("Length of node :" + isnodelength);
+
+                        if (!$(this).find($("td[colspan='999']")).length) {
+                            var attributevalue = $(this).find($("input[id^='" + newid + "']")).val() || 0;
+                            //alert(attributevalue);
+                            total = parseFloat(total) + parseFloat(attributevalue);
+                        }
+
+                    }
+                );
+                //alert(total);
+                var totalelement = $(this).closest("tbody").last("tr").find($("td[id^='" + newid + "']"));
+                totalelement.html(total);
+            }
+      });
 });

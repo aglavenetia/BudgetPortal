@@ -164,9 +164,21 @@ namespace BudgetPortal.Controllers
                         _context.SaveChanges();
                     }
 
+                    var Status = new BudgetdetailsStatus();
+                    Status = _context.BudgetdetailsStatus
+                                      .Where(b => (b.DivisionID == SelectedDivisionID)
+                                               && (b.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0]))
+                                               && (b.SectionNumber == SectionNumber)
+                                               && (b.GroupNumber == GroupNumber)).FirstOrDefault();
 
+                    Status.AdminEditStatus = false;
+
+                    _context.BudgetdetailsStatus.Update(Status);
+                    _context.SaveChanges();
                 }
-                    var DivisionID = _context.Division
+               
+
+                var DivisionID = _context.Division
                                              .Where(d => d.DivisionName == DivName)
                                              .Select(x => x.DivisionID).FirstOrDefault();
                     MD.Sectionss = _context.BudgetSections.ToList();
@@ -366,11 +378,27 @@ namespace BudgetPortal.Controllers
                     _context.BudgetdetailsStatus.Add(Status);
                     _context.SaveChanges();
 
-                }
+                    var FinalSubmitStatus = new BudgetdetailsStatus();
+                    FinalSubmitStatus = _context.BudgetdetailsStatus
+                                      .Where(b => (b.DivisionID == SelectedDivisionID)
+                                               && (b.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0]))
+                                               && (b.SectionNumber == 0)).FirstOrDefault();
 
-                    
+                    if(FinalSubmitStatus == null)
+                    {
+                        FinalSubmitStatus.DivisionID = Convert.ToInt32(SelectedDivisionID);
+                        FinalSubmitStatus.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
+                        FinalSubmitStatus.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
+                        FinalSubmitStatus.SectionNumber = Convert.ToInt32(0);
+                        FinalSubmitStatus.GroupNumber = Convert.ToString(0);
+                        FinalSubmitStatus.DelegateEditStatus = false;
+                        FinalSubmitStatus.AdminEditStatus = true;
 
-                    
+                        _context.BudgetdetailsStatus.Add(FinalSubmitStatus);
+                        _context.SaveChanges();
+                    }
+
+                }                   
               return View("Index", MD);
             }
         }
@@ -378,10 +406,7 @@ namespace BudgetPortal.Controllers
         //Displays details while changing values in DropDownList
         [HttpGet]
         public IActionResult GetDetails(int Year, String Division)
-        {
-
-
-           
+        {         
             var username = User.Identity.Name;
             var LoggedInDivisionID = 0;
             var DivName = _context.Users
