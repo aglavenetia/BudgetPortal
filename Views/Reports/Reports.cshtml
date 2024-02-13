@@ -214,7 +214,7 @@
                                 var SelectedDivisionTypeName = (from a in Model.DivisionTypeNames where a.Selected == true select a.Text).FirstOrDefault();
                                 var ReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
                                 var SelectedAcademicYear = (from a in Model.AcademicYears where a.Selected == true select a.Text).FirstOrDefault();
-
+                                var Report = @ReportName.Contains("Budget") ? @ReportName : @ReportName + " "+@SelectedAcademicYear;
 
                                 var SumGroupReport = 0.00;
                              
@@ -243,13 +243,13 @@
                                                               where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
                                                               select a.RevEstCurrFin).Sum();
                                 }
-                                else if (ReportName.Equals("Budget Estimates"))
+                                else if (ReportName.Equals("Budget Estimates "+@SelectedAcademicYear))
                                 {
                                     //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.BudgEstNexFin).Sum();
                                     SumGroupReport = (Double)(from a in Model.Detailss
                                                               join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                               where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
-                                                              select a.BudgEstNexFin).Sum();
+                                                              select a.BudEstCurrFin).Sum();
                                 
                                 }
 
@@ -267,7 +267,7 @@
                                                         SubGroupName
                                                     </th>
                                                     <th >
-                                                       @ReportName @SelectedAcademicYear
+                                                       @Report
                                                     </th>
 
                                                     @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
@@ -484,6 +484,7 @@
                                 var SelectedDivisionTypeName = (from a in Model.DivisionTypeNames where a.Selected == true select a.Text).FirstOrDefault();
                                 var ReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
                                 var SelectedAcademicYear = (from a in Model.AcademicYears where a.Selected == true select a.Text).FirstOrDefault();
+                                var Report = @ReportName.Contains("Budget") ? @ReportName : @ReportName + " " + @SelectedAcademicYear;
 
                                 var SumGroupReport = 0.00;
 
@@ -512,13 +513,13 @@
                                                               where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
                                                               select a.RevEstCurrFin).Sum();
                                 }
-                                else if (ReportName.Equals("Budget Estimates"))
+                                else if (ReportName.Equals("Budget Estimates "+@SelectedAcademicYear))
                                 {
                                     //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.BudgEstNexFin).Sum();
                                     SumGroupReport = (Double)(from a in Model.Detailss
                                                               join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                               where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
-                                                              select a.BudgEstNexFin).Sum();
+                                                              select a.BudEstCurrFin).Sum();
 
                                 }
                                 <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
@@ -535,7 +536,7 @@
                                                         SubGroupName
                                                     </th>
                                                     <th >
-                                                    @ReportName @SelectedAcademicYear
+                                                    @Report
                                                     </th>
                                                     @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
                                                     {
@@ -576,13 +577,13 @@
                                                                                  where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
                                                                                  select a.RevEstCurrFin).Sum();
                                                 }
-                                                else if (ReportName.Equals("Budget Estimates"))
+                                                else if (ReportName.Equals("Budget Estimates "+@SelectedAcademicYear))
                                                 {
                                                     //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudgEstNexFin).Sum();
                                                     SumSubGroupReport = (Double)(from a in Model.Detailss
                                                                                  join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                                                  where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
-                                                                                 select a.BudgEstNexFin).Sum();
+                                                                                 select a.BudEstCurrFin).Sum();
                                                 }
                                                     
                                                  var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();   
@@ -796,6 +797,7 @@
                                 var SelectedDivisionTypeName = (from a in Model.DivisionTypeNames where a.Selected == true select a.Text).FirstOrDefault();
                                 var ReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
                                 var SelectedAcademicYear = (from a in Model.AcademicYears where a.Selected == true select a.Text).FirstOrDefault();
+                                var Report = @ReportName.Contains("Budget") ? @ReportName : @ReportName + " " + @SelectedAcademicYear;
 
                                 var SumGroupReport = 0.00;
 
@@ -824,13 +826,13 @@
                                                               where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
                                                               select a.RevEstCurrFin).Sum();
                                 }
-                                else if (ReportName.Equals("Budget Estimates"))
+                                else if (ReportName.Equals("Budget Estimates "+@SelectedAcademicYear))
                                 {
                                     //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.BudgEstNexFin).Sum();
                                     SumGroupReport = (Double)(from a in Model.Detailss
                                                               join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                               where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
-                                                              select a.BudgEstNexFin).Sum();
+                                                              select a.BudEstCurrFin).Sum();
 
                                 }
 
@@ -847,7 +849,7 @@
                                                         SubGroupName
                                                     </th>
                                                 <th >
-                                                    @ReportName @SelectedAcademicYear
+                                                    @Report
                                                     </th>
                                                     @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
                                                     {
@@ -888,13 +890,13 @@
                                                                                  where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
                                                                                  select a.RevEstCurrFin).Sum();
                                                 }
-                                                else if (ReportName.Equals("Budget Estimates"))
+                                                else if (ReportName.Equals("Budget Estimates "+@SelectedAcademicYear))
                                                 {
                                                     //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudgEstNexFin).Sum();
                                                     SumSubGroupReport = (Double)(from a in Model.Detailss
                                                                                  join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                                                  where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
-                                                                                 select a.BudgEstNexFin).Sum();
+                                                                                 select a.BudEstCurrFin).Sum();
                                                 }
                                                     <tr>
                                                         <td class="w-20">
@@ -1058,6 +1060,7 @@
                                 var SelectedDivisionTypeName = (from a in Model.DivisionTypeNames where a.Selected == true select a.Text).FirstOrDefault();
                                 var ReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
                                 var SelectedAcademicYear = (from a in Model.AcademicYears where a.Selected == true select a.Text).FirstOrDefault();
+                                var Report = @ReportName.Contains("Budget") ? @ReportName : @ReportName + " " + @SelectedAcademicYear;
 
                                 var SumGroupReport = 0.00;
 
@@ -1086,13 +1089,13 @@
                                                               where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
                                                               select a.RevEstCurrFin).Sum();
                                 }
-                                else if (ReportName.Equals("Budget Estimates"))
+                                else if (ReportName.Equals("Budget Estimates "+@SelectedAcademicYear))
                                 {
                                     //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.BudgEstNexFin).Sum();
                                     SumGroupReport = (Double)(from a in Model.Detailss
                                                               join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                               where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
-                                                              select a.BudgEstNexFin).Sum();
+                                                              select a.BudEstCurrFin).Sum();
 
                                 }
 
@@ -1110,7 +1113,8 @@
                                                         SubGroupName
                                                     </th>
                                                     <th >
-                                                        @ReportName @SelectedAcademicYear
+                                                         
+                                                         @Report
                                                     </th>
                                                     @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
                                                     {
@@ -1151,13 +1155,13 @@
                                                                                  where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
                                                                                  select a.RevEstCurrFin).Sum();
                                                 }
-                                                else if (ReportName.Equals("Budget Estimates"))
+                                                else if (ReportName.Equals("Budget Estimates "+@SelectedAcademicYear))
                                                 {
                                                     //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudgEstNexFin).Sum();
                                                     SumSubGroupReport = (Double)(from a in Model.Detailss
                                                                                  join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                                                  where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
-                                                                                 select a.BudgEstNexFin).Sum();
+                                                                                 select a.BudEstCurrFin).Sum();
                                                 }
                                                     
                                                     <tr>
@@ -1397,12 +1401,13 @@
 
             $("#SelectedReportName").val($("#Reports option:selected").text().trim());
             var SelectedReport = $("#SelectedReportName").val();
+            alert(SelectedReport);
 
             $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
             var academicyear = $("#SelectedAcademicYear").val();
 
             var year = academicyear.split('-');
-            //alert(year[0]);
+            alert(year[0]);
 
             var sectionnoid = $('#outerTab li button.active').attr('id');
 

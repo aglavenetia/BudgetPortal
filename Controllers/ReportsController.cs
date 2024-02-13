@@ -32,6 +32,7 @@ namespace BudgetPortal.Controllers
                 Year = DateTime.Now.Year - 1;
             }
             var AcademicYear = String.Concat(Year, "-", (Year + 1));
+            var NextAcademicYear = String.Concat((Year+1), "-", (Year + 2));
             var mymodel = new ReportView();
 
             mymodel.Sectionss = _context.BudgetSections.ToList();
@@ -66,7 +67,7 @@ namespace BudgetPortal.Controllers
                     new SelectListItem()
                     {
                         Selected = false,
-                        Text = x.ReportName,
+                        Text = x.ReportID.ToString().Equals("4") ? x.ReportName + " " + AcademicYear : x.ReportID.ToString().Equals("6") ? x.ReportName + " " + NextAcademicYear : x.ReportName,
                         Value = x.ReportID.ToString()
 
                     }).ToList();
@@ -92,12 +93,12 @@ namespace BudgetPortal.Controllers
         {
             var Month = DateTime.Now.Month;
 
-            if (Month > 0 && Month < 4)
-            {
-                Year = DateTime.Now.Year - 1;
-            }
+            //if (Month > 0 && Month < 4)
+            //{
+            //    Year = Year - 1;
+            //}
             var AcademicYear = String.Concat(Year, "-", (Year + 1));
-            
+            var NextAcademicYear = String.Concat((Year+1), "-", (Year + 2));
             var mymodel = new ReportView();
 
             mymodel.Sectionss = _context.BudgetSections.ToList();
@@ -131,7 +132,7 @@ namespace BudgetPortal.Controllers
                     new SelectListItem()
                     {
                         Selected = false,
-                        Text = x.ReportName,
+                        Text = x.ReportID.ToString().Equals("4") ? x.ReportName+" "+ AcademicYear : x.ReportID.ToString().Equals("6") ? x.ReportName + " " + NextAcademicYear :  x.ReportName ,
                         Value = x.ReportID.ToString()
 
                     }).ToList();
