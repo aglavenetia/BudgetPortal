@@ -1828,7 +1828,7 @@
                                                         <td>
                                                         @if (@Subs.RequireInput)
                                                         {
-                                                                var LedgerSumActCurrFinTill2ndQuart = (from a in Model.Detailss where a.GroupNumber.Equals(@Subs.SubGroupNo) select a.ActCurrFinTill2ndQuart).Sum();
+                                                                var LedgerSumActCurrFinTill2ndQuart = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActCurrFinTill2ndQuart).Sum();
                                                              <div class="form-group">
                                                              @{
                                                                 Model.ActCurrFinTillsecondQuart.Insert(Count, LedgerSumActCurrFinTill2ndQuart!=null ? Convert.ToDecimal(LedgerSumActCurrFinTill2ndQuart.ToString("F"))  : Convert.ToDecimal(0.00));
@@ -4376,7 +4376,8 @@
          function() 
          {
               onceDocReady();
-        
+              //resumeActiveTab();
+
                 $('body').on('change',"#Division",
                     function (evt) {
                         $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
@@ -4390,10 +4391,11 @@
                         var year = academicyear.split('-');
                         //alert(year[0]);
                         var sectionnoid = $('#outerTab li button.active').attr('id');
+                        alert(sectionnoid);
                         var section = sectionnoid.split('-');
 
                         var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
-                        //alert(groupnoid);
+                        alert(groupnoid);
                         var group = groupnoid.split('-');
                         //alert(group[0]);
 
@@ -4413,8 +4415,22 @@
                                     //onceDocReady();
 
                                     $("#outerdiv").html($("#outerdiv",data).html());
-
+                                    
                                     onceDocReady();
+                                 
+                                    //alert("Yes");
+                                    //var activesectionid = $('#outerTab li button.active').attr('id');
+                                    //alert("Not active : "+activesectionid);
+
+                                    //$('#'+activesectionid).removeClass("active");
+                                    //$('#'+sectionnoid).addClass("active");
+                                    //alert("Active : "+sectionnoid);
+
+                                    //var splitsection = activesectionid.split('-');
+
+                                    //var activegroupnoid = $('#' + splitsection[0] + ' ul li button.active').attr('id');
+                                    //$('#'+activegroupnoid).removeClass("active");
+                                    //$('#'+groupnoid).addClass("active");
                                 },
                                 error: function (jqXHR, textStatus, errorThrown) {
                                     alert(errorThrown);
@@ -4459,14 +4475,29 @@
                                 {
                                     //Whatever result you have got from your controller with html partial view replace with a specific html.
                                     //alert("Inside Ajax");
-                                    alert("Inside Function");
+                                    //alert("Inside Function");
  
                                     //$("#outerdiv").html(data);// HTML DOM replace
                                     
                                     //$("#outerdiv").html(data);
                                     $("#outerdiv").html($("#outerdiv", data).html());
-                                    alert("Function Completed");
+                                    //alert("Function Completed");
+                                    
                                     onceDocReady();
+                                   
+                                    //var activesectionid = $('#outerTab li button.active').attr('id');
+                                    //alert("Not active : "+activesectionid);
+
+                                    //$('#'+activesectionid).removeClass("active");
+                                    //$('#'+sectionnoid).addClass("active");
+                                    //alert("Active : "+sectionnoid);
+
+                                    //var splitsection = activesectionid.split('-');
+
+                                    //var activegroupnoid = $('#' + splitsection[0] + ' ul li button.active').attr('id');
+                                    //$('#'+activegroupnoid).removeClass("active");
+                                    //$('#'+groupnoid).addClass("active");
+                                    //alert("Active : "+groupnoid);
                                   
                                 },
                                 error: function (jqXHR, textStatus, errorThrown)
@@ -4482,77 +4513,32 @@
                 $('body').on('click',".Submit",
                     function () {
                         var sectionnoid = $('#outerTab li button.active').attr('id');
-                        //alert(sectionnoid);
+                        
                         var section = sectionnoid.split('-');
-                        //alert(section[0]);
-
-
+                        
                         var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
-                        //alert(groupnoid);
-                        //var group = groupnoid.split('-');
-                        //alert(group[0]);
-
-                        //var hiddensectionid = group[0].concat('-SectionName');
-                        //alert(hiddensectionid);
-                        //var hiddengroupid = group[0].concat('-GroupName');
-                        //alert(hiddengroupid);
-
-                        //var hiddenSelectedYear = group[0].concat('-SelectedAcademicYear');
-                        //alert(hiddenSelectedYear);
-
-                        //var hiddenSelectedDivision = group[0].concat('-SelectedDivisionName');
-                        //alert(hiddenSelectedDivision);
+                        
 
                         $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
                         alert($("#SelectedAcademicYear").val());
-                        //var academicyear = $("#SelectedAcademicYear").val();
+                       
 
                         $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
                         alert($("#SelectedDivisionName").val());
-                        //var divisionname = $("#SelectedDivisionName").val();
-
-                        //$('#' + hiddenSelectedYear).val($("#AcademicYear option:selected").text().trim());
                         
-                        //alert($('#' + hiddenSelectedYear).val());
-                        //$('#' + hiddensectionid).val($('#' + sectionnoid).text());
                         $('#SectionName').val($('#' + sectionnoid).text());
                         alert($('#SectionName').val());
-                        //$('#' + hiddengroupid).val($('#' + groupnoid).text());
+                        
                         $('#GroupName').val($('#' + groupnoid).text());
                         alert($('#GroupName').val());
-                        //$('#' + hiddenSelectedDivision).val($("#Division option:selected").text().trim());
-                        //alert($('#' + hiddenSelectedDivision).val());
-
-                        //var subgroupcount = $('#' + group[0] + ' #outertable tbody').closest('tr').length;
-                        //alert(subgroupcount);
-
-                        //for (i = 0; i < subgroupcount; i++) {
-                            //var subgroupnorow = $('#' + group[0] + ' #outertable tbody').closest('tr').text();
-                            // alert(subgroupnorow);
-                            //var subgroupno = subgroupnorow.eq(2).text();
-                            //alert(subgroupno);
-                        //}
-
-                        //alert(subtext);
+                        
                     });
                 
                 $('body').on('click',".FinalSubmit",
                     function () {
                         
-                        //var hiddenSelectedYear = group[0].concat('-SelectedAcademicYear');
-                        
-
-                        //var hiddenSelectedDivision = group[0].concat('-SelectedDivisionName');
-                        
-
-                        //$('#' + hiddenSelectedYear).val($("#AcademicYear option:selected").text().trim());
-                        
-                        //$('#' + hiddenSelectedDivision).val($("#Division option:selected").text().trim());
-
                         $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
                         alert($("#SelectedDivisionName").val());
-
-                       // var divisionname = $("#SelectedDivisionName").val();
 
                         $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
                         alert($("#SelectedAcademicYear").val());
@@ -4579,7 +4565,42 @@
                  $(".VariationInBudgetEstimates").text('% Variation in BE ' + Number.parseInt(year[1]) + '-' + (Number.parseInt(year[1]) + Number.parseInt(1)) + 'over the RE ' + $("#SelectedAcademicYear").val());
                  $(".ACBWProposalForBudgetEstimates").text('AC & BW Proposal for BE ' + Number.parseInt(year[1]) + '-' + (Number.parseInt(year[1]) + Number.parseInt(1)));
                  $(".Justification").text('Justification');
-        }  
+
+
+                        
+        } 
+        
+        function resumeActiveTab()
+        {
+            var SectionName =  $('#SectionName').val();
+              alert("Stored Section Name : "+SectionName);
+                        
+           var GroupName = $('#GroupName').val();
+               alert("Stored Group Name :"+ GroupName);
+                        
+           var activesectionno = $('#outerTab li button.active').attr('id');
+
+            var section = activesectionno.split('-');
+                        
+            var activegroupno = $('#' + section[0] + ' ul li button.active').attr('id');
+
+              alert("Active Section Name :"+activesectionno);
+              alert("Active Group Name :"+activegroupno);
+
+             if(SectionName!=' ' && SectionName!=activesectionno)
+             {
+                   $('#'+activesectionno).removeClass("active");
+                   $('#'+SectionName).addClass("active");
+                   alert("Section class updated");
+             }
+                        
+             if(GroupName!=' ' && GroupName!=activegroupno)
+             {
+                    $('#'+activegroupno).removeClass("active");
+                    $('#' + GroupName).addClass("active");
+                    alert("Group class updated");
+             }
+        }
     </script>
 }
 

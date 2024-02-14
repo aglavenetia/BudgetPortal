@@ -91,14 +91,10 @@ namespace BudgetPortal.Controllers
         [HttpGet]
         public IActionResult GetDetails(int Year, String DivisionType, String Report)
         {
-            var Month = DateTime.Now.Month;
-
-            //if (Month > 0 && Month < 4)
-            //{
-            //    Year = Year - 1;
-            //}
             var AcademicYear = String.Concat(Year, "-", (Year + 1));
             var NextAcademicYear = String.Concat((Year+1), "-", (Year + 2));
+
+
             var mymodel = new ReportView();
 
             mymodel.Sectionss = _context.BudgetSections.ToList();
@@ -136,7 +132,8 @@ namespace BudgetPortal.Controllers
                         Value = x.ReportID.ToString()
 
                     }).ToList();
-            mymodel.ReportNames.Where(x => x.Text.Equals(Report)).Single().Selected = true;
+            
+
             //mymodel.SelectedReportName = mymodel.ReportNames.Where(x => x.Selected == true).ToString();
 
             mymodel.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
@@ -150,7 +147,10 @@ namespace BudgetPortal.Controllers
             mymodel.AcademicYears.Where(x => x.Text.Equals(AcademicYear)).Single().Selected = true;
             //mymodel.SelectedAcademicYear = String.Concat(Year.ToString(),"-",(Year+1).ToString());
             
+            mymodel.ReportNames.Where(x => x.Text.Equals(Report)).Single().Selected = true;
+
             return View("Reports", mymodel);
+            
         }
     }
 }
