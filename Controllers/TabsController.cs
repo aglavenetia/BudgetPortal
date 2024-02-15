@@ -46,8 +46,17 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.FinancialYear1 == (Year-1)).ToList();
             if (username != "admin@test.com")
             {
-                mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
-                                .Where(x => x.FinancialYear1 == Year).Where(x => x.SectionNumber != Convert.ToInt32(0)).ToList();
+                //mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
+                                //.Where(x => x.FinancialYear1 == Year).Where(x => x.SectionNumber != Convert.ToInt32(0)).ToList();
+
+
+                mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => 
+                                           (x.DivisionID == LoggedInDivisionID &&
+                                           x.FinancialYear1 == Year && 
+                                           x.SectionNumber != Convert.ToInt32(0)) ||
+                                           (x.DivisionID == LoggedInDivisionID &&
+                                           x.FinancialYear1 == (Year-1) &&
+                                           x.SectionNumber == Convert.ToInt32(0))).ToList();
             }
             else
             {

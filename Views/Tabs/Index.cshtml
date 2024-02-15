@@ -90,17 +90,17 @@
        
         @Html.AntiForgeryToken()
 
-        Boolean AdminEditStatus = true;
-        Boolean DelegateEditStatus = true;
+        Boolean AdminEditStatus ;
+        Boolean DelegateEditStatus;
 
-        if ((from a in Model.Statuss select a.AdminEditStatus).Count() > 0 && User.IsInRole("Admin"))
+       @*  if ((from a in Model.Statuss select a.AdminEditStatus).Count() > 0 && User.IsInRole("Admin"))
         {
             AdminEditStatus = false;
-        }
+        }*@
         
-
+       Boolean FinalAdminEditStatus = (from a in Model.Statuss where a.SectionNumber.Equals(0) select a.AdminEditStatus).FirstOrDefault();
         
-        if (User.IsInRole("Admin") && AdminEditStatus == false && DelegateEditStatus == false)
+        if (User.IsInRole("Admin") && FinalAdminEditStatus)
         {
             <input id="Submit" class="FinalSubmit" formaction="~/Tabs/FinalSubmit" value="Finalise Budget" type="submit" style="align-self:center"/>
             @*Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = "FinalSubmit-SelectedAcademicYear" })
@@ -284,15 +284,13 @@
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
 
-                        if ((from a in Model.Statuss where (a.SectionNumber==@inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.DelegateEditStatus).Count() > 0 && !User.IsInRole("Admin"))
-                        {                  
-                             DelegateEditStatus = false;
-                        }
-                        else
-                        {
-                            DelegateEditStatus = true;
-                        }
+                        DelegateEditStatus = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.DelegateEditStatus).FirstOrDefault();
+                        AdminEditStatus = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.AdminEditStatus).FirstOrDefault();
 
+                        if(!DelegateEditStatus && !AdminEditStatus && !User.IsInRole("Admin"))
+                        {
+                                    DelegateEditStatus = true;
+                        }
                         int TableCount = 0;
                         var Submit = String.Concat("Submit", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
@@ -2396,14 +2394,13 @@
                     <br />
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
-                        if ((from a in Model.Statuss where a.SectionNumber==@inner.SectionNo where a.GroupNumber.Equals(@item.GroupNo) select a.DelegateEditStatus).Count() > 0 && !User.IsInRole("Admin"))
-                        {     
-                           DelegateEditStatus = false;
-                         }
-                        else
+                        DelegateEditStatus = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.DelegateEditStatus).FirstOrDefault();
+                        AdminEditStatus = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.AdminEditStatus).FirstOrDefault();
+
+                        if(!DelegateEditStatus && !AdminEditStatus && !User.IsInRole("Admin"))
                         {
-                             DelegateEditStatus = true;
-                         }
+                                    DelegateEditStatus = true;
+                        }
 
                           int TableCount = 0;
                           var Submit = String.Concat("Submit", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
