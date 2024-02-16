@@ -35,9 +35,10 @@ namespace BudgetPortal.ViewModel
         public String GroupName { get; set; }
         public String? SelectedDivisionName { get; set; }
         public String? SelectedAcademicYear { get; set; }
+
         public Boolean? AdminEditStatus { get; set; }
         public Boolean? DelegateEditStatus { get; set; }
-
+        public Boolean? PreviousYearAdminEditStatus { get; set; }
 
         public List<String> SubGroupNameOrLedgerName { get; set; }
 

@@ -44,25 +44,21 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.FinancialYear1 == Year).ToList();
             mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == LoggedInDivisionID)
                                 .Where(x => x.FinancialYear1 == (Year-1)).ToList();
-            if (username != "admin@test.com")
-            {
-                //mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
-                                //.Where(x => x.FinancialYear1 == Year).Where(x => x.SectionNumber != Convert.ToInt32(0)).ToList();
+          //  if (username != "admin@test.com")
+          //  {
+         //       mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
+         //                       .Where(x => x.FinancialYear1 == Year).Where(x => x.SectionNumber != Convert.ToInt32(0)).ToList();
 
-
-                mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => 
-                                           (x.DivisionID == LoggedInDivisionID &&
-                                           x.FinancialYear1 == Year && 
-                                           x.SectionNumber != Convert.ToInt32(0)) ||
-                                           (x.DivisionID == LoggedInDivisionID &&
-                                           x.FinancialYear1 == (Year-1) &&
-                                           x.SectionNumber == Convert.ToInt32(0))).ToList();
-            }
-            else
-            {
+         //       mymodel.PreviousYearAdminEditStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
+          //                      .Where(x => x.FinancialYear1 == Year-1).Where(x => x.SectionNumber == Convert.ToInt32(0)).Select(x => x.AdminEditStatus).FirstOrDefault();
+          //  }
+          //  else
+          //  {
                 mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
-                                .Where(x => x.FinancialYear1 == Year).Where(x => x.SectionNumber == Convert.ToInt32(0)).ToList();
-            }
+                                .Where(x => x.FinancialYear1 == Year).ToList();
+                mymodel.PreviousYearAdminEditStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
+                                .Where(x => x.FinancialYear1 == Year - 1).Where(x => x.SectionNumber == Convert.ToInt32(0)).Select(x => x.AdminEditStatus).FirstOrDefault();
+           // }
             mymodel.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                     new SelectListItem()
                     {
@@ -197,8 +193,12 @@ namespace BudgetPortal.Controllers
                     MD.Ledgerss = _context.BudgetLedgers.ToList();
                     MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == DivisionID)
                                         .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+                    //MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
+                                       // .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).ToList();
                     MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
-                                        .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).ToList();
+                            .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+                    MD.PreviousYearAdminEditStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0]) - 1).Where(x => x.SectionNumber == Convert.ToInt32(0)).Select(x => x.AdminEditStatus).FirstOrDefault();
                     MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == DivisionID)
                                          .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
                     MD.DivisionNames = _context.Division.AsEnumerable().Select(x =>
@@ -261,8 +261,14 @@ namespace BudgetPortal.Controllers
                 MD.Ledgerss = _context.BudgetLedgers.ToList();
                 MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
                                  .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+                //MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
+                                 //.Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber != Convert.ToInt32(0)).ToList();
                 MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
-                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber != Convert.ToInt32(0)).ToList();
+                            .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+                MD.PreviousYearAdminEditStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
+                            .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0]) - 1).Where(x => x.SectionNumber == Convert.ToInt32(0)).Select(x => x.AdminEditStatus).FirstOrDefault();
+
+
                 MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == LoggedInDivisionID)
                                  .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
                 
@@ -388,25 +394,25 @@ namespace BudgetPortal.Controllers
                     _context.BudgetdetailsStatus.Add(Status);
                     _context.SaveChanges();
 
-                    var FinalSubmitStatus = new BudgetdetailsStatus();
-                    FinalSubmitStatus = _context.BudgetdetailsStatus
-                                      .Where(b => (b.DivisionID == SelectedDivisionID)
-                                               && (b.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0]))
-                                               && (b.SectionNumber == 0)).FirstOrDefault();
+                    //var FinalSubmitStatus = new BudgetdetailsStatus();
+                   // FinalSubmitStatus = _context.BudgetdetailsStatus
+                    //                  .Where(b => (b.DivisionID == SelectedDivisionID)
+                   //                            && (b.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0]))
+                   //                            && (b.SectionNumber == 0)).FirstOrDefault();
 
-                    if(FinalSubmitStatus == null)
-                    {
-                        FinalSubmitStatus.DivisionID = Convert.ToInt32(SelectedDivisionID);
-                        FinalSubmitStatus.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
-                        FinalSubmitStatus.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
-                        FinalSubmitStatus.SectionNumber = Convert.ToInt32(0);
-                        FinalSubmitStatus.GroupNumber = Convert.ToString(0);
-                        FinalSubmitStatus.DelegateEditStatus = false;
-                        FinalSubmitStatus.AdminEditStatus = true;
+                   // if(FinalSubmitStatus == null)
+                   // {
+                   //     FinalSubmitStatus.DivisionID = Convert.ToInt32(SelectedDivisionID);
+                  //      FinalSubmitStatus.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
+                  //      FinalSubmitStatus.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
+                  //      FinalSubmitStatus.SectionNumber = Convert.ToInt32(0);
+                  //      FinalSubmitStatus.GroupNumber = Convert.ToString(0);
+                  //      FinalSubmitStatus.DelegateEditStatus = false;
+                 //       FinalSubmitStatus.AdminEditStatus = true;
 
-                        _context.BudgetdetailsStatus.Add(FinalSubmitStatus);
-                        _context.SaveChanges();
-                    }
+                  //      _context.BudgetdetailsStatus.Add(FinalSubmitStatus);
+                  //      _context.SaveChanges();
+                   // }
 
                 }                   
               return View("Index", MD);
@@ -453,17 +459,11 @@ namespace BudgetPortal.Controllers
                                     .Where(x => x.FinancialYear1 == Year).ToList();
                 mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == LoggedInDivisionID)
                                              .Where(x => x.FinancialYear1 == (Year - 1)).ToList();
-                if (username != "admin@test.com")
-                {
-                    mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
-                                    .Where(x => x.FinancialYear1 == Year).Where(x => x.SectionNumber != Convert.ToInt32(0)).ToList();
-                }
-                else
-                {
-                    mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
-                                    .Where(x => x.FinancialYear1 == Year).Where(x => x.SectionNumber == Convert.ToInt32(0)).ToList();
-                }
-                mymodel.DivisionNames = _context.Division.AsEnumerable().Select(x =>
+               mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
+                        .Where(x => x.FinancialYear1 == Convert.ToInt32(Year)).ToList();
+               mymodel.PreviousYearAdminEditStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
+                        .Where(x => x.FinancialYear1 == Convert.ToInt32(Year - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Select(x => x.AdminEditStatus).FirstOrDefault();
+            mymodel.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                         new SelectListItem()
                         {
                             Selected = false,
@@ -557,6 +557,8 @@ namespace BudgetPortal.Controllers
                                 }
                                 else
                                 {
+                                    if(itemSections.SectionNo!=null && itemsGroups.GroupNo!=null && itemsSubGroups.SubGroupNo!=null)
+                                    { 
                                     int index = MD.SubGroupNameOrLedgerName.IndexOf(itemsSubGroups.SubGroupNo);
 
                                     result.DivisionID = Convert.ToInt32(SelectedDivisionID);
@@ -572,6 +574,7 @@ namespace BudgetPortal.Controllers
 
                                     _context.BudgetDetailsApproved.Add(result);
                                     _context.SaveChanges();
+                                    }
                                 }
 
                                 k++;
@@ -583,82 +586,25 @@ namespace BudgetPortal.Controllers
 
                     var adminstatus = new BudgetdetailsStatus();
 
-                    adminstatus.DivisionID = Convert.ToInt32(SelectedDivisionID);
-                    adminstatus.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
-                    adminstatus.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
-                    adminstatus.SectionNumber = Convert.ToInt32(0);
-                    adminstatus.GroupNumber = 0.ToString();
-                    adminstatus.DelegateEditStatus = false;
+                    adminstatus = _context.BudgetdetailsStatus
+                                      .Where(b => (b.DivisionID == SelectedDivisionID)
+                                               && (b.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0]))
+                                               && (b.SectionNumber == 0)).FirstOrDefault();
+
+
+                   // adminstatus.DivisionID = Convert.ToInt32(SelectedDivisionID);
+                   // adminstatus.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
+                   // adminstatus.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
+                   // adminstatus.SectionNumber = Convert.ToInt32(0);
+                   // adminstatus.GroupNumber = 0.ToString();
+                   // adminstatus.DelegateEditStatus = false;
                     adminstatus.AdminEditStatus = false;
 
-                    _context.BudgetdetailsStatus.Add(adminstatus);
+                    _context.BudgetdetailsStatus.Update(adminstatus);
                     _context.SaveChanges();
 
 
                 }
-                /* for (int i = 0; i < SubGroups.Count(); i++)
-                  {
-
-                      var result = new BudgetDetailsApproved();
-
-
-                      var LedgerStatus = _context.BudgetSubGroups
-                                .Where(x => x.SubGroupNo.Equals(SubGroups[i]))
-                                .Select(x => x.RequireInput).First();
-
-                      var Ledgers = _context.BudgetLedgers
-                            .Where(x => x.SubGroupNo.Equals(SubGroups[i]))
-                            .Select(x => x.LedgerNo).ToList();
-
-                      for (int l = 0; l < Ledgers.Count(); l++)
-                      {
-                          if (LedgerStatus)
-                          {
-                              int index = MD.SubGroupNameOrLedgerName.IndexOf(Ledgers[l]);
-                              result.DivisionID = Convert.ToInt32(SelectedDivisionID);
-                              result.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
-                              result.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
-                              //result.BudEstCurrFinACandBW = Convert.ToDecimal(Form[String.Concat("ACAndBWPropRECurrFin", itemSections.SectionNo, itemsGroups.GroupNo, k, Ledgers[l])]);
-                              result.BudEstCurrFinACandBW = Convert.ToDecimal(MD.ACAndBWPropRECurrFin[index]);
-                              result.RevEstCurrFinACandBW = Convert.ToDecimal(0);
-                              //result.BudEstNextFin = Convert.ToDecimal(Form[String.Concat("ACAndBWPropRENxtFin", itemSections.SectionNo, itemsGroups.GroupNo, k, Ledgers[l])]);
-                              result.SectionNumber = Convert.ToInt32(SectionNumber);
-                              result.GroupNumber = GroupNumber;
-                              result.SubGroupNumber = SubGroups[i];
-                              result.LedgerNumber = Ledgers[l];
-
-                              _context.BudgetDetailsApproved.Add(result);
-                              _context.SaveChanges();
-
-
-                          }
-
-                          else
-                          {
-                              int index = MD.SubGroupNameOrLedgerName.IndexOf(SubGroups[i]);
-                              result.DivisionID = Convert.ToInt32(SelectedDivisionID);
-                              result.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
-                              result.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
-                              //result.BudEstCurrFinACandBW = Convert.ToDecimal(Form[String.Concat("ACAndBWPropRECurrFin", itemSections.SectionNo, itemsGroups.GroupNo, k)]);
-                              result.BudEstCurrFinACandBW = Convert.ToDecimal(MD.ACAndBWPropRECurrFin[index]);
-                              result.RevEstCurrFinACandBW = Convert.ToDecimal(0);
-                              //result.BudEstNextFin = Convert.ToDecimal(Form[String.Concat("ACAndBWPropRENxtFin", itemSections.SectionNo, itemsGroups.GroupNo, k)]);
-                              result.BudEstNextFin = Convert.ToDecimal(MD.ACAndBWPropRENxtFin[index]);
-                              result.SectionNumber = Convert.ToInt32(SectionNumber);
-                              result.GroupNumber = GroupNumber;
-                              result.SubGroupNumber = SubGroups[i];
-                              result.LedgerNumber = Ledgers[l];
-
-                              _context.BudgetDetailsApproved.Add(result);
-                              _context.SaveChanges();
-                          }
-                      }
-                  }       
-              }*/
-
-
-                //_context.BudgetdetailsStatus.Update(adminstatus);
-                //_context.SaveChanges();
 
                 var DivisionID = _context.Division
                                            .Where(d => d.DivisionName == DivName)
@@ -669,8 +615,13 @@ namespace BudgetPortal.Controllers
                 MD.Ledgerss = _context.BudgetLedgers.ToList();
                 MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == DivisionID)
                                     .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+                //MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
+                //                    .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).ToList();
+
                 MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
-                                    .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).ToList();
+                        .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+                MD.PreviousYearAdminEditStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
+                         .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Select(x => x.AdminEditStatus).FirstOrDefault();
                 MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == DivisionID)
                                              .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
                 MD.DivisionNames = _context.Division.AsEnumerable().Select(x =>

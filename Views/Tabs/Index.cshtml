@@ -30,7 +30,11 @@
     Model.PerVarRevEstOverBudgEstNxtFin = new List<Decimal>();
     Model.ACAndBWPropRENxtFin = new List<Decimal>();
     Model.Justification = new List<String>();
+     
+    Boolean AdminEditStatus = false ;
+    Boolean DelegateEditStatus = false;
 
+    Boolean FinalAdminEditStatus = (from a in Model.Statuss where (a.SectionNumber == 0 && a.GroupNumber.Equals("0")) select a.AdminEditStatus).FirstOrDefault();
     //Model.Detailss = new List<BudgetDetails>();
 
 
@@ -90,26 +94,27 @@
        
         @Html.AntiForgeryToken()
 
-        Boolean AdminEditStatus ;
-        Boolean DelegateEditStatus;
+       
 
        @*  if ((from a in Model.Statuss select a.AdminEditStatus).Count() > 0 && User.IsInRole("Admin"))
         {
             AdminEditStatus = false;
         }*@
         
-       Boolean FinalAdminEditStatus = (from a in Model.Statuss where a.SectionNumber.Equals(0) select a.AdminEditStatus).FirstOrDefault();
+       
         
         if (User.IsInRole("Admin") && FinalAdminEditStatus)
         {
             <input id="Submit" class="FinalSubmit" formaction="~/Tabs/FinalSubmit" value="Finalise Budget" type="submit" style="align-self:center"/>
             @*Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = "FinalSubmit-SelectedAcademicYear" })
             @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = "FinalSubmit-SelectedDivisionName" })*@
+            <br /><br/>
+        
         }
 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-       <br />
+       
     <ul id="outerTab" class="nav nav-tabs" role="tablist" >    
       @foreach (var item in Model.Sectionss)
       {
@@ -283,13 +288,23 @@
 
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
-
-                        DelegateEditStatus = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.DelegateEditStatus).FirstOrDefault();
-                        AdminEditStatus = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.AdminEditStatus).FirstOrDefault();
-
-                        if(!DelegateEditStatus && !AdminEditStatus && !User.IsInRole("Admin"))
+                       var StatusRowCount = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.DelegateEditStatus).Count();
+                       var AdminStatus = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.AdminEditStatus).FirstOrDefault();
+                       
+                        if (StatusRowCount == 0 && Model.PreviousYearAdminEditStatus.Equals(false) && !User.IsInRole("Admin"))
                         {
                                     DelegateEditStatus = true;
+                                    AdminEditStatus = false;
+                        }
+                        else if (AdminStatus && Model.PreviousYearAdminEditStatus.Equals(false) && User.IsInRole("Admin"))
+                        {
+                                     DelegateEditStatus = false;
+                                    AdminEditStatus = true;
+                        }
+                         else
+                        {
+                                    DelegateEditStatus = false;
+                                    AdminEditStatus = false;
                         }
                         int TableCount = 0;
                         var Submit = String.Concat("Submit", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -2394,12 +2409,23 @@
                     <br />
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
-                        DelegateEditStatus = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.DelegateEditStatus).FirstOrDefault();
-                        AdminEditStatus = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.AdminEditStatus).FirstOrDefault();
-
-                        if(!DelegateEditStatus && !AdminEditStatus && !User.IsInRole("Admin"))
+                        var StatusRowCount = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.DelegateEditStatus).Count();
+                       var AdminStatus = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.AdminEditStatus).FirstOrDefault();
+                       
+                        if (StatusRowCount == 0 && Model.PreviousYearAdminEditStatus.Equals(false) && !User.IsInRole("Admin"))
                         {
                                     DelegateEditStatus = true;
+                                    AdminEditStatus = false;
+                        }
+                        else if (AdminStatus && Model.PreviousYearAdminEditStatus.Equals(false) && User.IsInRole("Admin"))
+                        {
+                                     DelegateEditStatus = false;
+                                    AdminEditStatus = true;
+                        }
+                        else
+                        {
+                                    DelegateEditStatus = false;
+                                    AdminEditStatus = false;
                         }
 
                           int TableCount = 0;
