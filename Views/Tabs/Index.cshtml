@@ -1058,12 +1058,27 @@
                                                                 </div>
                                                             </td>
                                                         }
-                                                        else if (User.IsInRole("Admin") && !AdminEditStatus)
+                                                        else if (User.IsInRole("Admin") && !@Subs.RequireInput && !AdminEditStatus)
                                                         {
                                                             <td>
                                                                 <div class="form-group">
                                                                     @{
                                                                         Model.ACAndBWPropRECurrFin.Insert(Count, details != null ? Convert.ToDecimal(details.ACAndBWPropRECurrFin) : Convert.ToDecimal(0.00));
+                                                                    }
+                                                                @*Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name6,  " ",new {@class = "text-danger"}) *@
+                                                                    @Html.TextBoxFor(model => model.ACAndBWPropRECurrFin[Count], new { @class = "form-control", @id = @name6, @readonly = "readonly" })
+                                                                    @*Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin[Count], "", new { @class = "text-danger" })*@
+                                                                </div>
+                                                            </td>
+                                                        }
+                                                        else if (User.IsInRole("Admin") && @Subs.RequireInput && !AdminEditStatus)
+                                                        {
+                                                            var LedgerSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
+                                                            <td>
+                                                                <div class="form-group">
+                                                                    @{
+                                                                        Model.ACAndBWPropRECurrFin.Insert(Count, LedgerSumACAndBWPropRECurrFin!=null ? Convert.ToDecimal(LedgerSumACAndBWPropRECurrFin) : Convert.ToDecimal(0.00));
                                                                     }
                                                                 @*Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6, @readonly = "readonly"})
                                                                 @Html.ValidationMessage(@name6,  " ",new {@class = "text-danger"}) *@
@@ -1214,7 +1229,7 @@
                                                                 </div>
                                                             </td>
                                                         }
-                                                        else if (User.IsInRole("Admin") && !AdminEditStatus) 
+                                                        else if (User.IsInRole("Admin") && !@Subs.RequireInput && !AdminEditStatus) 
                                                         {
                                                             <td>
                                                                 <div class="form-group">
@@ -1227,6 +1242,21 @@
                                                                     @*Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin[Count]," ",new {@class = "text-danger"})*@
                                                                 </div>
                                                                 
+                                                            </td>
+                                                        }
+                                                        else if (User.IsInRole("Admin") && @Subs.RequireInput && !AdminEditStatus)
+                                                        {
+                                                            var LedgerSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
+                                                            <td>
+                                                                <div class="form-group">
+                                                               @{
+                                                                  Model.ACAndBWPropRENxtFin.Insert(Count, LedgerSumACAndBWPropRENxtFin!=null ? Convert.ToDecimal(LedgerSumACAndBWPropRENxtFin.ToString("F"))  : Convert.ToDecimal(0.00));
+                                                                }
+                                                              @*Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9, @readonly = "readonly"})
+                                                                    @Html.ValidationMessage(@name9,  " ",new {@class = "text-danger"}) *@
+                                                                    @Html.TextBoxFor(model => model.ACAndBWPropRENxtFin[Count],   new { @class = "form-control", @id = @name9, @readonly = "readonly"})
+                                                                    @*Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin[Count]," ",new {@class = "text-danger"})*@
+                                                                </div>
                                                             </td>
                                                         }
                                                         else
@@ -2013,7 +2043,7 @@
                                                                 </div>
                                                             </td>
                                                         }
-                                                         else if (User.IsInRole("Admin") && !AdminEditStatus)
+                                                         else if (User.IsInRole("Admin") && !@Subs.RequireInput && !AdminEditStatus)
                                                         {
                                                             <td>
                                                                 <div class="form-group">
@@ -2024,6 +2054,21 @@
                                                                      @Html.ValidationMessage(@name6,  "*",new {@class = "text-danger"}) *@
                                                                      @Html.TextBoxFor(model => model.ACAndBWPropRECurrFin[Count], new { @class = "form-control", @id = @name6, @readonly="readonly"})
                                                                      @Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin[Count]," ",new {@class = "text-danger"})
+                                                                </div>
+                                                            </td>
+                                                        }
+                                                        else if (User.IsInRole("Admin") && @Subs.RequireInput && !AdminEditStatus)
+                                                        {
+                                                            var LedgerSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
+                                                            <td>
+                                                                <div class="form-group">
+                                                                    @{
+                                                                        Model.ACAndBWPropRECurrFin.Insert(Count, LedgerSumACAndBWPropRECurrFin!=null ? Convert.ToDecimal(LedgerSumACAndBWPropRECurrFin) : Convert.ToDecimal(0.00));
+                                                                    }
+                                                                @*Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name6,  " ",new {@class = "text-danger"}) *@
+                                                                    @Html.TextBoxFor(model => model.ACAndBWPropRECurrFin[Count], new { @class = "form-control", @id = @name6, @readonly = "readonly" })
+                                                                    @*Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin[Count], "", new { @class = "text-danger" })*@
                                                                 </div>
                                                             </td>
                                                         }
@@ -2167,7 +2212,7 @@
                                                                 </div>
                                                             </td>
                                                         }
-                                                        else if (User.IsInRole("Admin") && !AdminEditStatus) 
+                                                        else if (User.IsInRole("Admin") && !@Subs.RequireInput && !AdminEditStatus) 
                                                         {
                                                             <td>
                                                                 <div class="form-group">
@@ -2178,6 +2223,21 @@
                                                                     @Html.ValidationMessage(@name9,  " ",new {@class = "text-danger"}) *@
                                                                     @Html.TextBoxFor(model => model.ACAndBWPropRENxtFin[Count], new { @class = "form-control", @id = @name9, @readonly="readonly"})
                                                                     @Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin[Count]," ",new {@class = "text-danger"})
+                                                                </div>
+                                                            </td>
+                                                        }
+                                                        else if (User.IsInRole("Admin") && @Subs.RequireInput && !AdminEditStatus)
+                                                        {
+                                                            var LedgerSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
+                                                            <td>
+                                                                <div class="form-group">
+                                                               @{
+                                                                  Model.ACAndBWPropRENxtFin.Insert(Count, LedgerSumACAndBWPropRENxtFin!=null ? Convert.ToDecimal(LedgerSumACAndBWPropRENxtFin.ToString("F"))  : Convert.ToDecimal(0.00));
+                                                                }
+                                                              @*Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9, @readonly = "readonly"})
+                                                                    @Html.ValidationMessage(@name9,  " ",new {@class = "text-danger"}) *@
+                                                                    @Html.TextBoxFor(model => model.ACAndBWPropRENxtFin[Count],   new { @class = "form-control", @id = @name9, @readonly = "readonly"})
+                                                                    @*Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin[Count]," ",new {@class = "text-danger"})*@
                                                                 </div>
                                                             </td>
                                                         }
@@ -3131,7 +3191,7 @@
                                                                 </div>
                                                             </td>
                                                         }
-                                                        else if (User.IsInRole("Admin") && !AdminEditStatus)
+                                                        else if (User.IsInRole("Admin") && !@Subs.RequireInput && !AdminEditStatus)
                                                         {
                                                             <td>
                                                                 <div class="form-group">
@@ -3145,6 +3205,22 @@
                                                                 </div>
                                                             </td>
                                                         } 
+                                                        else if (User.IsInRole("Admin") && @Subs.RequireInput && !AdminEditStatus)
+                                                        {
+                                                            var LedgerSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
+                                                            <td>
+                                                                <div class="form-group">
+                                                                    @{
+                                                                        Model.ACAndBWPropRECurrFin.Insert(Count, LedgerSumACAndBWPropRECurrFin!=null ? Convert.ToDecimal(LedgerSumACAndBWPropRECurrFin) : Convert.ToDecimal(0.00));
+                                                                    }
+                                                                @*Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name6,  " ",new {@class = "text-danger"}) *@
+                                                                    @Html.TextBoxFor(model => model.ACAndBWPropRECurrFin[Count], new { @class = "form-control", @id = @name6, @readonly = "readonly" })
+                                                                    @*Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin[Count], "", new { @class = "text-danger" })*@
+                                                                </div>
+                                                            </td>
+                                                        }
+
                                                         else
                                                         {
                                                            Model.ACAndBWPropRECurrFin.Insert(Count, Convert.ToDecimal(0.00));
@@ -3286,12 +3362,27 @@
                                                                 </div>
                                                             </td>
                                                         }
-                                                        else if (User.IsInRole("Admin") && !AdminEditStatus)
+                                                        else if (User.IsInRole("Admin") && !@Subs.RequireInput && !AdminEditStatus)
                                                         {
                                                             <td>
                                                                 <div class="form-group">
                                                                @{
                                                                   Model.ACAndBWPropRENxtFin.Insert(Count, details!=null ? Convert.ToDecimal(details.ACAndBWPropRENxtFin.ToString("F"))   : Convert.ToDecimal(0.00));
+                                                                }
+                                                              @*Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9, @readonly = "readonly"})
+                                                                    @Html.ValidationMessage(@name9,  " ",new {@class = "text-danger"}) *@
+                                                                    @Html.TextBoxFor(model => model.ACAndBWPropRENxtFin[Count],   new { @class = "form-control", @id = @name9, @readonly = "readonly"})
+                                                                    @*Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin[Count]," ",new {@class = "text-danger"})*@
+                                                                </div>
+                                                            </td>
+                                                        }
+                                                        else if (User.IsInRole("Admin") && @Subs.RequireInput && !AdminEditStatus)
+                                                        {
+                                                            var LedgerSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
+                                                            <td>
+                                                                <div class="form-group">
+                                                               @{
+                                                                  Model.ACAndBWPropRENxtFin.Insert(Count, LedgerSumACAndBWPropRENxtFin!=null ? Convert.ToDecimal(LedgerSumACAndBWPropRENxtFin.ToString("F"))  : Convert.ToDecimal(0.00));
                                                                 }
                                                               @*Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name9,  " ",new {@class = "text-danger"}) *@
@@ -4102,7 +4193,7 @@
                                                                 </div>
                                                             </td>
                                                         }
-                                                        else if (User.IsInRole("Admin") && !AdminEditStatus)
+                                                        else if (User.IsInRole("Admin") && !@Subs.RequireInput && !AdminEditStatus)
                                                         {
                                                             <td>
                                                                 <div class="form-group">
@@ -4113,6 +4204,21 @@
                                                                      @Html.ValidationMessage(@name6,  " ",new {@class = "text-danger"}) *@
                                                                      @Html.TextBoxFor(model => model.ACAndBWPropRECurrFin[Count], new { @class = "form-control", @id = @name6, @readonly = "readonly"})
                                                                     @*Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin[Count]," ",new {@class = "text-danger"})*@
+                                                                </div>
+                                                            </td>
+                                                        }
+                                                        else if (User.IsInRole("Admin") && @Subs.RequireInput && !AdminEditStatus)
+                                                        {
+                                                            var LedgerSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
+                                                            <td>
+                                                                <div class="form-group">
+                                                                    @{
+                                                                        Model.ACAndBWPropRECurrFin.Insert(Count, LedgerSumACAndBWPropRECurrFin!=null ? Convert.ToDecimal(LedgerSumACAndBWPropRECurrFin) : Convert.ToDecimal(0.00));
+                                                                    }
+                                                                @*Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6, @readonly = "readonly"})
+                                                                @Html.ValidationMessage(@name6,  " ",new {@class = "text-danger"}) *@
+                                                                    @Html.TextBoxFor(model => model.ACAndBWPropRECurrFin[Count], new { @class = "form-control", @id = @name6, @readonly = "readonly" })
+                                                                    @*Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin[Count], "", new { @class = "text-danger" })*@
                                                                 </div>
                                                             </td>
                                                         }
@@ -4257,7 +4363,7 @@
                                                                 </div>
                                                             </td>
                                                         }
-                                                         else if (User.IsInRole("Admin") && !AdminEditStatus)
+                                                         else if (User.IsInRole("Admin") && !@Subs.RequireInput && !AdminEditStatus)
                                                         {
                                                             <td>
                                                                 <div class="form-group">
@@ -4267,6 +4373,21 @@
                                                             @*Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name9,  " ",new {@class = "text-danger"}) *@
                                                                     @Html.TextBoxFor(model => model.ACAndBWPropRENxtFin[Count], new { @class = "form-control", @id = @name9, @readonly = "readonly"})
+                                                                    @*Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin[Count]," ",new {@class = "text-danger"})*@
+                                                                </div>
+                                                            </td>
+                                                        }
+                                                        else if (User.IsInRole("Admin") && @Subs.RequireInput && !AdminEditStatus)
+                                                        {
+                                                            var LedgerSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
+                                                            <td>
+                                                                <div class="form-group">
+                                                               @{
+                                                                  Model.ACAndBWPropRENxtFin.Insert(Count, LedgerSumACAndBWPropRENxtFin!=null ? Convert.ToDecimal(LedgerSumACAndBWPropRENxtFin.ToString("F"))  : Convert.ToDecimal(0.00));
+                                                                }
+                                                              @*Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9, @readonly = "readonly"})
+                                                                    @Html.ValidationMessage(@name9,  " ",new {@class = "text-danger"}) *@
+                                                                    @Html.TextBoxFor(model => model.ACAndBWPropRENxtFin[Count],   new { @class = "form-control", @id = @name9, @readonly = "readonly"})
                                                                     @*Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin[Count]," ",new {@class = "text-danger"})*@
                                                                 </div>
                                                             </td>

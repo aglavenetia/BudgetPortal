@@ -82,8 +82,7 @@ $(document).ready(function () {
     $("body").on("change", "input", function ()
 
     {
-
-    //Calculating Total for each Group
+         //Calculating Total for each Group
             if ($(this).closest("table").hasClass("ChildGrid")) {
                 var elementid = $(this).attr("id");
                 var newid = elementid.replace(/[^a-z]/gi, "");
