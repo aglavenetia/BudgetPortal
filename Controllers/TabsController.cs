@@ -463,6 +463,9 @@ namespace BudgetPortal.Controllers
                         .Where(x => x.FinancialYear1 == Convert.ToInt32(Year)).ToList();
                mymodel.PreviousYearAdminEditStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
                         .Where(x => x.FinancialYear1 == Convert.ToInt32(Year - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Select(x => x.AdminEditStatus).FirstOrDefault();
+            mymodel.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
+                     .Where(x => x.FinancialYear1 == Convert.ToInt32(Year - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Select(x => x.AdminEditStatus).Count();
+
             mymodel.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                         new SelectListItem()
                         {
@@ -537,13 +540,13 @@ namespace BudgetPortal.Controllers
                                 {
                                     for (int l = 0; l < Ledgers.Count(); l++)
                                     {
-                                        int index = MD.SubGroupNameOrLedgerName.IndexOf(Ledgers[j]);
+                                        int index = MD.SubGroupNameOrLedgerName.IndexOf(Ledgers[l]);
                                         result.DivisionID = Convert.ToInt32(SelectedDivisionID);
                                         result.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
                                         result.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
-                                        result.BudEstCurrFinACandBW = Convert.ToDecimal(Form[String.Concat("ACAndBWPropRECurrFin", itemSections.SectionNo, itemsGroups.GroupNo, k, Ledgers[l])]);
+                                        result.BudEstCurrFinACandBW = Convert.ToDecimal(MD.ACAndBWPropRECurrFin[index]);
                                         result.RevEstCurrFinACandBW = Convert.ToDecimal(0);
-                                        result.BudEstNextFin = Convert.ToDecimal(Form[String.Concat("ACAndBWPropRENxtFin", itemSections.SectionNo, itemsGroups.GroupNo, k, Ledgers[l])]);
+                                        result.BudEstNextFin = Convert.ToDecimal(MD.ACAndBWPropRENxtFin[index]);
                                         result.SectionNumber = Convert.ToInt32(itemSections.SectionNo);
                                         result.GroupNumber = itemsGroups.GroupNo;
                                         result.SubGroupNumber = itemsSubGroups.SubGroupNo;

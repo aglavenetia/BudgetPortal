@@ -2472,12 +2472,12 @@
                         var StatusRowCount = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.DelegateEditStatus).Count();
                        var AdminStatus = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.AdminEditStatus).FirstOrDefault();
                        
-                        if (StatusRowCount == 0 && Model.PreviousYearAdminEditStatus.Equals(false) && !User.IsInRole("Admin"))
+                        if (StatusRowCount == 0 && Model.PreviousYearAdminEditStatus.Equals(false) && (Model.PreviousYearAdminCount > 0) && !User.IsInRole("Admin"))
                         {
                                     DelegateEditStatus = true;
                                     AdminEditStatus = false;
                         }
-                        else if (AdminStatus && Model.PreviousYearAdminEditStatus.Equals(false) && User.IsInRole("Admin"))
+                        else if (AdminStatus && Model.PreviousYearAdminEditStatus.Equals(false) && (Model.PreviousYearAdminCount > 0) && User.IsInRole("Admin"))
                         {
                                      DelegateEditStatus = false;
                                     AdminEditStatus = true;
@@ -4687,6 +4687,8 @@
                         $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
                         alert($("#SelectedAcademicYear").val());
                     });
+
+                
          });
         
         function onceDocReady()

@@ -40,6 +40,8 @@ namespace BudgetPortal.ViewModel
         public Boolean? DelegateEditStatus { get; set; }
         public Boolean? PreviousYearAdminEditStatus { get; set; }
 
+        public int PreviousYearAdminCount { get; set; }
+
         public List<String> SubGroupNameOrLedgerName { get; set; }
 
         [Required(ErrorMessage = "Please enter BudgetEstimates for the Current Financial Year")]
