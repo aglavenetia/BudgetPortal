@@ -149,6 +149,8 @@
 
        @foreach (var inner in Model.Sectionss)
        {
+           var GroupsStatRowCount = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo) select a.DelegateEditStatus).Count();
+
            var inneridenti = String.Concat("Budget", @inner.SectionNo.ToString());
            CountHeader = 0;
            CounterBody = 0;
@@ -159,12 +161,22 @@
             var SectionSumActPrevFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ActPrevFin).Sum();
             var SectionSumActCurrFinTill2ndQuart = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ActCurrFinTill2ndQuart).Sum();
             var SectionSumRevEstCurrFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.RevEstCurrFin).Sum();
-            var SectionSumPerVarRevEstOverBudgEstCurrFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.PerVarRevEstOverBudgEstCurrFin).Sum();
             var SectionSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ACAndBWPropRECurrFin).Sum();
             var SectionSumBudgEstNexFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.BudgEstNexFin).Sum();
-            var SectionSumPerVarRevEstOverBudgEstNxtFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.PerVarRevEstOverBudgEstNxtFin).Sum();
             var SectionSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ACAndBWPropRENxtFin).Sum();
+            var SectionSumPerVarRevEstOverBudgEstCurrFin = 0.00;
+            var SectionSumPerVarRevEstOverBudgEstNxtFin = 0.00;
 
+            @if(Model.PreviousYearAdminCount > 0 && GroupsStatRowCount > 0 )
+            {
+                SectionSumPerVarRevEstOverBudgEstCurrFin = Convert.ToDouble((SectionSumRevEstCurrFin - SectionSumBudEstCurrFin) / SectionSumBudEstCurrFin);
+                SectionSumPerVarRevEstOverBudgEstNxtFin = Convert.ToDouble((SectionSumBudgEstNexFin - SectionSumRevEstCurrFin) / SectionSumRevEstCurrFin);
+            }
+            else
+            {
+                 SectionSumPerVarRevEstOverBudgEstCurrFin = Convert.ToDouble(0.00);
+                 SectionSumPerVarRevEstOverBudgEstNxtFin = Convert.ToDouble(0.00);
+            }
             var GroupsCount = (from a in Model.Groupss where a.SectionNo.Equals(@inner.SectionNo) select a.GroupNo).Count();
 
             @* Boolean AdminEditStatus = false; *@
@@ -288,15 +300,15 @@
 
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
-                       var StatusRowCount = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.DelegateEditStatus).Count();
+                       var GroupsStatusRowCount = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.DelegateEditStatus).Count();
                        var AdminStatus = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.AdminEditStatus).FirstOrDefault();
                        
-                        if (StatusRowCount == 0 && Model.PreviousYearAdminEditStatus.Equals(false) && !User.IsInRole("Admin"))
+                        if (GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0 )
                         {
                                     DelegateEditStatus = true;
                                     AdminEditStatus = false;
                         }
-                        else if (AdminStatus && Model.PreviousYearAdminEditStatus.Equals(false) && User.IsInRole("Admin"))
+                                else if (AdminStatus && Model.PreviousYearAdminCount > 0)
                         {
                                      DelegateEditStatus = false;
                                     AdminEditStatus = true;
@@ -314,12 +326,23 @@
                          var SumActPrevFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ActPrevFin).Sum();
                          var SumActCurrFinTill2ndQuart = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ActCurrFinTill2ndQuart).Sum();
                          var SumRevEstCurrFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.RevEstCurrFin).Sum();
-                         var SumPerVarRevEstOverBudgEstCurrFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.PerVarRevEstOverBudgEstCurrFin).Sum();
                          var SumACAndBWPropRECurrFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ACAndBWPropRECurrFin).Sum();
                          var SumBudgEstNexFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.BudgEstNexFin).Sum();
-                         var SumPerVarRevEstOverBudgEstNxtFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.PerVarRevEstOverBudgEstNxtFin).Sum();
                          var SumACAndBWPropRENxtFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ACAndBWPropRENxtFin).Sum();
-                         
+                         var SumPerVarRevEstOverBudgEstCurrFin = 0.00;
+                         var SumPerVarRevEstOverBudgEstNxtFin = 0.00;
+
+                         @if(Model.PreviousYearAdminCount > 0 && GroupsStatusRowCount > 0)
+                         {
+                             SumPerVarRevEstOverBudgEstCurrFin = Convert.ToDouble((SectionSumRevEstCurrFin - SectionSumBudEstCurrFin) / SectionSumBudEstCurrFin);
+                             SumPerVarRevEstOverBudgEstNxtFin = Convert.ToDouble((SectionSumBudgEstNexFin - SectionSumRevEstCurrFin) / SectionSumRevEstCurrFin);
+                         }
+                         else
+                         {
+                               SumPerVarRevEstOverBudgEstCurrFin = Convert.ToDouble(0.00);
+                               SumPerVarRevEstOverBudgEstNxtFin = Convert.ToDouble(0.00);
+                         }
+
                             var Sumname1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                             var Sumname2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                             var Sumname3 = String.Concat("ActCurrFinTillsecondQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -437,7 +460,7 @@
                                                                                  </td>
                                                                                 <td>@Ledgers.LedgerName</td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    @if (!DelegateEditStatus)
                                                                                     {
                                                                                             <div class="form-group">
                                                                                                 @{
@@ -467,7 +490,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    @if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                             @{
@@ -496,7 +519,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    @if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                           @{
@@ -524,7 +547,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    @if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                           @{
@@ -552,7 +575,7 @@
                                                                                     }
                                                                                 </td>
                                                                                     <td>
-                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                        @if (!DelegateEditStatus)
                                                                                         {
                                                                                             <div class="form-group">
                                                                                             @{
@@ -617,7 +640,7 @@
 
                                                                                 
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus )
+                                                                                    @if (!DelegateEditStatus )
                                                                                     {
                                                                                         <div class="form-group">
                                                                                         @{
@@ -645,7 +668,7 @@
                                                                                     }
                                                                                 </td>
                                                                                     <td>
-                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                        @if (!DelegateEditStatus)
                                                                                         {
                                                                                             <div class="form-group">
                                                                                             @{
@@ -707,7 +730,7 @@
                                                                                         Model.ACAndBWPropRENxtFin.Insert(LedgerNo, Convert.ToDecimal(0.00));
                                                                                     }
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    @if (!DelegateEditStatus)
                                                                                     {
                                                                                             <div class="form-group">
                                                                                                 @{
@@ -805,7 +828,7 @@
                                                                 </div>
                                                                 
                                                             }
-                                                            else if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                            else if (!DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
                                                                     @{
@@ -851,7 +874,7 @@
                                                             </div>
                                                             
                                                         }
-                                                        else if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                        else if (!DelegateEditStatus)
                                                         {
                                                                 <div class="form-group">
                                                                     @{
@@ -894,7 +917,7 @@
                                                                 </div>
                                                                 
                                                             }
-                                                        else if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                        else if (!DelegateEditStatus)
                                                         {                                       
                                                               <div class="form-group">
                                                                 @{
@@ -949,7 +972,7 @@
                                                                 @*Html.ValidationMessageFor(model => model.RevEstCurrFin[Count]," ",new {@class = "text-danger"})*@
                                                             </div>
                                                         }
-                                                        else if(User.IsInRole("Admin") || !DelegateEditStatus)
+                                                        else if(!DelegateEditStatus)
                                                         {
                                                               <div class="form-group">
                                                                     @{
@@ -1004,7 +1027,7 @@
                                                                 </div>
                                                         }                                                     
                                                         
-                                                        else if(User.IsInRole("Admin")||!DelegateEditStatus)
+                                                        else if(!DelegateEditStatus)
                                                         {
                                                             <div class="form-group">
                                                                 @{
@@ -1119,7 +1142,7 @@
                                                                 @*Html.ValidationMessageFor(model => model.BudgEstNexFin[Count]," ",new {@class = "text-danger"})*@
                                                             </div>
                                                         }
-                                                        else if(User.IsInRole("Admin") || !DelegateEditStatus)
+                                                        else if(!DelegateEditStatus)
                                                         {
                                                               <div class="form-group">
                                                                @{
@@ -1175,7 +1198,7 @@
                                                                 </div>
                                                             }
 
-                                                            else if(User.IsInRole("Admin")||!DelegateEditStatus)
+                                                            else if(!DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
                                                                     @{
@@ -1464,7 +1487,7 @@
                                                                                 </td>
                                                                                 <td>@Ledgers.LedgerName</td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    @if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                         @{
@@ -1492,7 +1515,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    @if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                         @{
@@ -1518,7 +1541,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                        @if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                         @{
@@ -1544,7 +1567,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    @if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                         @{
@@ -1570,7 +1593,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    @if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                         @{
@@ -1629,7 +1652,7 @@
                                                             
                                                                                 }
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    @if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                         @{
@@ -1655,7 +1678,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    @if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                         @{
@@ -1714,7 +1737,7 @@
 
                                                                                     }
                                                                                 <td>
-                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                        @if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                             @{
@@ -2337,7 +2360,7 @@
                                         @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })*@
-                                        @if ((User.IsInRole("Admin") && AdminEditStatus) || (!User.IsInRole("Admin") && DelegateEditStatus))
+                                        @if ((User.IsInRole("Admin") && AdminEditStatus && Model.PreviousYearAdminCount>0) || (!User.IsInRole("Admin") && DelegateEditStatus) && Model.PreviousYearAdminCount > 0)
                                         {
                                             <input id="@Submit" class="Submit" formaction="~/Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
                                         }
@@ -2469,15 +2492,15 @@
                     <br />
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
-                        var StatusRowCount = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.DelegateEditStatus).Count();
+                        var GroupsStatusRowCount = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.DelegateEditStatus).Count();
                        var AdminStatus = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.AdminEditStatus).FirstOrDefault();
                        
-                        if (StatusRowCount == 0 && Model.PreviousYearAdminEditStatus.Equals(false) && (Model.PreviousYearAdminCount > 0) && !User.IsInRole("Admin"))
+                        if (GroupsStatusRowCount == 0 && (Model.PreviousYearAdminCount > 0))
                         {
                                     DelegateEditStatus = true;
                                     AdminEditStatus = false;
                         }
-                        else if (AdminStatus && Model.PreviousYearAdminEditStatus.Equals(false) && (Model.PreviousYearAdminCount > 0) && User.IsInRole("Admin"))
+                        else if (AdminStatus && (Model.PreviousYearAdminCount > 0))
                         {
                                      DelegateEditStatus = false;
                                     AdminEditStatus = true;
@@ -2496,12 +2519,23 @@
                             var SumActPrevFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ActPrevFin).Sum();
                             var SumActCurrFinTill2ndQuart = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ActCurrFinTill2ndQuart).Sum();
                             var SumRevEstCurrFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.RevEstCurrFin).Sum();
-                            var SumPerVarRevEstOverBudgEstCurrFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.PerVarRevEstOverBudgEstCurrFin).Sum();
                             var SumACAndBWPropRECurrFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ACAndBWPropRECurrFin).Sum();
                             var SumBudgEstNexFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.BudgEstNexFin).Sum();
-                            var SumPerVarRevEstOverBudgEstNxtFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.PerVarRevEstOverBudgEstNxtFin).Sum();
                             var SumACAndBWPropRENxtFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ACAndBWPropRENxtFin).Sum();
+                            var SumPerVarRevEstOverBudgEstCurrFin = 0.00;
+                            var SumPerVarRevEstOverBudgEstNxtFin = 0.00;
 
+                            @if(Model.PreviousYearAdminCount > 0 && GroupsStatusRowCount > 0)
+                            {
+                               SumPerVarRevEstOverBudgEstCurrFin = Convert.ToDouble((SectionSumRevEstCurrFin - SectionSumBudEstCurrFin) / SectionSumBudEstCurrFin);
+                               SumPerVarRevEstOverBudgEstNxtFin = Convert.ToDouble((SectionSumBudgEstNexFin - SectionSumRevEstCurrFin) / SectionSumRevEstCurrFin);
+                            }
+                            else
+                            {
+                               SumPerVarRevEstOverBudgEstCurrFin = Convert.ToDouble(0.00);
+                               SumPerVarRevEstOverBudgEstNxtFin = Convert.ToDouble(0.00);
+                             }
+                                
                                 var Sumname1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                 var Sumname2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                 var Sumname3 = String.Concat("ActCurrFinTillsecondQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -2614,7 +2648,7 @@
                                                                                 </td>
                                                                                 <td>@Ledgers.LedgerName</td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    @if (!DelegateEditStatus)
                                                                                     {
                                                                                             <div class="form-group">
                                                                                                 @{
@@ -2640,7 +2674,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    @if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                         @{
@@ -2666,7 +2700,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    @if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                         @{
@@ -2692,7 +2726,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    @if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                         @{
@@ -2718,7 +2752,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    @if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                         @{
@@ -2777,7 +2811,7 @@
 
                                                                                 }
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    @if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                         @{
@@ -2803,7 +2837,7 @@
                                                                                     }
                                                                                 </td>
                                                                                     <td>
-                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                        @if (!DelegateEditStatus)
                                                                                         {
                                                                                             <div class="form-group">
                                                                                                 @{
@@ -2862,7 +2896,7 @@
 
                                                                                 }
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    @if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                             @{
@@ -3486,7 +3520,7 @@
                                         @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })*@
-                                        @if ((User.IsInRole("Admin") && AdminEditStatus) || (!User.IsInRole("Admin") && DelegateEditStatus))
+                                        @if ((User.IsInRole("Admin") && AdminEditStatus && Model.PreviousYearAdminCount>0) || (!User.IsInRole("Admin") && DelegateEditStatus) && Model.PreviousYearAdminCount > 0)
                                         {
                                             <input id="@Submit" class="Submit" formaction="~/Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
                                         }
@@ -3593,7 +3627,7 @@
                                                                                 </td>
                                                                                 <td>@Ledgers.LedgerName</td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    @if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                         @{
@@ -3619,7 +3653,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    @if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                        @{
@@ -3647,7 +3681,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    @if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                                 @{
@@ -3674,7 +3708,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                   @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                   @if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                           @{
@@ -3703,7 +3737,7 @@
                                                                                 </td>
                                                                                 <td>
 
-                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                        @if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                             @{
@@ -3767,7 +3801,7 @@
 
                                                                                 }
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    @if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                             @{
@@ -3796,7 +3830,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                        @if (!DelegateEditStatus)
                                                                                         {
                                                                                             <div class="form-group">
                                                                                                 @{
@@ -3861,7 +3895,7 @@
 
                                                                                     }
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus )
+                                                                                    @if (!DelegateEditStatus )
                                                                                     {
                                                                                         <div class="form-group">
                                                                                             @{
@@ -4485,7 +4519,7 @@
                                         @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })*@
-                                        @if ((User.IsInRole("Admin") && AdminEditStatus) || (!User.IsInRole("Admin") && DelegateEditStatus))
+                                        @if ((User.IsInRole("Admin") && AdminEditStatus && Model.PreviousYearAdminCount>0) || (!User.IsInRole("Admin") && DelegateEditStatus) && Model.PreviousYearAdminCount > 0)
                                         {
                                             <input id="@Submit" class="Submit" formaction="~/Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
                                         }
