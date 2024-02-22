@@ -490,7 +490,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (!DelegateEditStatus)
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                             @{
@@ -519,7 +519,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (!DelegateEditStatus)
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                           @{
@@ -547,7 +547,20 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (!DelegateEditStatus)
+                                                                                     @if(User.IsInRole("Admin") && DelegateEditStatus)
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                        @{
+                                                                                            Model.RevEstCurrFin.Insert(LedgerNo, LedPrevYearApp != null ? Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : Convert.ToDecimal(0.00));
+                                                                                         }      
+                                                                                     @*Html.TextBox(@name4+@Ledgers.LedgerNo, LedPrevYearApp!=null ? LedPrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name4+@Ledgers.LedgerNo})                                                                                            
+                                                                                            @Html.ValidationMessage(@name4+@Ledgers.LedgerNo,  " ",new {@class = "text-danger"}) *@
+                                                                                            @Html.TextBoxFor(model => model.RevEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name4+@Ledgers.LedgerNo, @readonly = "readonly"}) 
+                                                                                            @Html.ValidationMessageFor(model => model.RevEstCurrFin[LedgerNo]," ",new {@class = "text-danger"})
+                                                                                        </div>
+                                                                                        
+                                                                                    }
+                                                                                    else if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                           @{
@@ -575,7 +588,7 @@
                                                                                     }
                                                                                 </td>
                                                                                     <td>
-                                                                                        @if (!DelegateEditStatus)
+                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                         {
                                                                                             <div class="form-group">
                                                                                             @{
@@ -640,7 +653,20 @@
 
                                                                                 
                                                                                 <td>
-                                                                                    @if (!DelegateEditStatus )
+                                                                                    @if (User.IsInRole("Admin") && DelegateEditStatus )
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                        @{
+                                                                                            Model.BudgEstNexFin.Insert(LedgerNo, LedPrevYearApp!=null ? Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : Convert.ToDecimal(0.00));
+                                                                                         }    
+                                                                                            @*Html.TextBox(@name7+@Ledgers.LedgerNo, PrevYearApp!=null ? PrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name7+@Ledgers.LedgerNo})
+                                                                                            @Html.ValidationMessage(@name7+@Ledgers.LedgerNo,  " ",new {@class = "text-danger"}) *@
+                                                                                            @Html.TextBoxFor(model => model.BudgEstNexFin[LedgerNo], new { @class = "form-control", @id = @name7+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.BudgEstNexFin[LedgerNo]," ",new {@class = "text-danger"})
+                                                                                        </div>
+                                                                                      
+                                                                                    }
+                                                                                    else if (!DelegateEditStatus )
                                                                                     {
                                                                                         <div class="form-group">
                                                                                         @{
@@ -668,7 +694,7 @@
                                                                                     }
                                                                                 </td>
                                                                                     <td>
-                                                                                        @if (!DelegateEditStatus)
+                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                         {
                                                                                             <div class="form-group">
                                                                                             @{
@@ -730,7 +756,7 @@
                                                                                         Model.ACAndBWPropRENxtFin.Insert(LedgerNo, Convert.ToDecimal(0.00));
                                                                                     }
                                                                                 <td>
-                                                                                    @if (!DelegateEditStatus)
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                             <div class="form-group">
                                                                                                 @{
@@ -828,6 +854,7 @@
                                                                 </div>
                                                                 
                                                             }
+
                                                             else if (!DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
@@ -874,7 +901,7 @@
                                                             </div>
                                                             
                                                         }
-                                                        else if (!DelegateEditStatus)
+                                                        else if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                         {
                                                                 <div class="form-group">
                                                                     @{
@@ -917,7 +944,7 @@
                                                                 </div>
                                                                 
                                                             }
-                                                        else if (!DelegateEditStatus)
+                                                        else if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                         {                                       
                                                               <div class="form-group">
                                                                 @{
@@ -970,6 +997,18 @@
                                                                 @Html.ValidationMessage(@name4,  " ",new {@class = "text-danger"}) *@
                                                                 @Html.TextBoxFor(model => model.RevEstCurrFin[Count], new { @class = "form-control", @id = @name4, @readonly = "readonly"})
                                                                 @*Html.ValidationMessageFor(model => model.RevEstCurrFin[Count]," ",new {@class = "text-danger"})*@
+                                                            </div>
+                                                        }
+                                                        else if(User.IsInRole("Admin") && DelegateEditStatus)
+                                                        {
+                                                            <div class="form-group">
+                                                                @{
+                                                                        Model.RevEstCurrFin.Insert(Count, PrevYearApp != null ? Convert.ToDecimal(PrevYearApp.BudEstNextFin) : Convert.ToDecimal(0.00));
+                                                                 }
+                                                                @*Html.TextBox(@name4, PrevYearApp!=null ? PrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name4})
+                                                                @Html.ValidationMessage(@name4,  " ",new {@class = "text-danger"}) *@
+                                                                @Html.TextBoxFor(model => model.RevEstCurrFin[Count], new { @class = "form-control", @id = @name4, @readonly = "readonly"})
+                                                                @Html.ValidationMessageFor(model => model.RevEstCurrFin[Count]," ",new {@class = "text-danger"})
                                                             </div>
                                                         }
                                                         else if(!DelegateEditStatus)
@@ -1027,7 +1066,7 @@
                                                                 </div>
                                                         }                                                     
                                                         
-                                                        else if(!DelegateEditStatus)
+                                                        else if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                         {
                                                             <div class="form-group">
                                                                 @{
@@ -1142,7 +1181,20 @@
                                                                 @*Html.ValidationMessageFor(model => model.BudgEstNexFin[Count]," ",new {@class = "text-danger"})*@
                                                             </div>
                                                         }
-                                                        else if(!DelegateEditStatus)
+                                                        else if (User.IsInRole("Admin") && DelegateEditStatus)
+                                                        {
+                                                            <div class="form-group">
+                                                                    @{
+                                                                        Model.BudgEstNexFin.Insert(Count, PrevYearApp != null ? Convert.ToDecimal(PrevYearApp.BudEstNextFin) : Convert.ToDecimal(0.00));
+                                                                    }
+                                                                @*Html.TextBox(@name7, PrevYearApp!=null ? PrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name7})
+                                                                @Html.ValidationMessage(@name7,  " ",new {@class = "text-danger"}) *@
+                                                                @Html.TextBoxFor(model => model.BudgEstNexFin[Count],new { @class = "form-control", @id = @name7, @readonly = "readonly"})
+                                                                @Html.ValidationMessageFor(model => model.BudgEstNexFin[Count]," ",new {@class = "text-danger"})
+                                                            </div>
+                                                           
+                                                        }
+                                                        else if (!DelegateEditStatus)
                                                         {
                                                               <div class="form-group">
                                                                @{
@@ -1198,7 +1250,7 @@
                                                                 </div>
                                                             }
 
-                                                            else if(!DelegateEditStatus)
+                                                            else if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
                                                                     @{
@@ -1515,7 +1567,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (!DelegateEditStatus)
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                         @{
@@ -1541,7 +1593,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                        @if (!DelegateEditStatus)
+                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                         @{
@@ -1567,7 +1619,19 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (!DelegateEditStatus)
+                                                                                    @if (User.IsInRole("Admin") && DelegateEditStatus)
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                                @{
+                                                                                                    Model.RevEstCurrFin.Insert(LedgerNo, LedPrevYearApp!=null ? Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : Convert.ToDecimal(0.00));
+                                                                                                }
+                                                                                             @*Html.TextBox(@name4+@Ledgers.LedgerNo, LedPrevYearApp!=null ? LedPrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name4+@Ledgers.LedgerNo})
+                                                                                             @Html.ValidationMessage(@name4+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"}) *@
+                                                                                             @Html.TextBoxFor(model => model.RevEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name4+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                             @Html.ValidationMessageFor(model => model.RevEstCurrFin[LedgerNo]," ",new {@class = "text-danger"})
+                                                                                        </div>
+                                                                                    }
+                                                                                    else if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                         @{
@@ -1593,7 +1657,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (!DelegateEditStatus)
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                         @{
@@ -1652,7 +1716,19 @@
                                                             
                                                                                 }
                                                                                 <td>
-                                                                                    @if (!DelegateEditStatus)
+                                                                                    @if (User.IsInRole("Admin") && DelegateEditStatus)
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                                @{
+                                                                                                    Model.BudgEstNexFin.Insert(LedgerNo, LedPrevYearApp!=null ? Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : Convert.ToDecimal(0.00));
+                                                                                                }
+                                                                                            @*Html.TextBox(@name7+@Ledgers.LedgerNo, LedPrevYearApp!=null ? LedPrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name7+@Ledgers.LedgerNo})
+                                                                                            @Html.ValidationMessage(@name7+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"}) *@
+                                                                                            @Html.TextBoxFor(model => model.BudgEstNexFin[LedgerNo], new { @class = "form-control", @id = @name7+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.BudgEstNexFin[LedgerNo]," ",new {@class = "text-danger"})
+                                                                                        </div>
+                                                                                    }
+                                                                                    else if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                         @{
@@ -1678,7 +1754,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (!DelegateEditStatus)
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                         @{
@@ -1737,7 +1813,7 @@
 
                                                                                     }
                                                                                 <td>
-                                                                                        @if (!DelegateEditStatus)
+                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                             @{
@@ -1827,7 +1903,7 @@
                                                             </div>
                                                         }
                                                         
-                                                        else if(User.IsInRole("Admin") || !DelegateEditStatus) 
+                                                        else if(!DelegateEditStatus) 
                                                         {  
                                                              <div class="form-group">
                                                              @{
@@ -1957,7 +2033,19 @@
                                                                      @*Html.ValidationMessageFor(model => model.RevEstCurrFin[Count]," ",new {@class = "text-danger"})*@
                                                                 </div>
                                                         }
-                                                        else if(User.IsInRole("Admin") || !DelegateEditStatus)
+                                                        else if(User.IsInRole("Admin") && DelegateEditStatus)
+                                                        {
+                                                            <div class="form-group">
+                                                            @{
+                                                                   Model.RevEstCurrFin.Insert(Count, PrevYearApp!=null ? Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")) : Convert.ToDecimal(0.00));
+                                                                 }
+                                                          @*Html.TextBox(@name4, PrevYearApp!=null ? PrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name4})
+                                                                @Html.ValidationMessage(@name4,  "*",new {@class = "text-danger"}) *@
+                                                                @Html.TextBoxFor(model => model.RevEstCurrFin[Count], new { @class = "form-control", @id = @name4, @readonly = "readonly"})
+                                                                @Html.ValidationMessageFor(model => model.RevEstCurrFin[Count]," ",new {@class = "text-danger"})
+                                                            </div>
+                                                        }
+                                                        else if(!DelegateEditStatus)
                                                         {
                                                               <div class="form-group">
                                                               @{
@@ -2126,7 +2214,19 @@
                                                                      @*Html.ValidationMessageFor(model => model.BudgEstNexFin[Count]," ",new {@class = "text-danger"})*@
                                                                 </div>
                                                             }
-                                                            else if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                            else if (User.IsInRole("Admin") && DelegateEditStatus)
+                                                            {
+                                                                <div class="form-group">
+                                                                @{
+                                                                   Model.BudgEstNexFin.Insert(Count, PrevYearApp!=null ? Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))   : Convert.ToDecimal(0.00));
+                                                                 }
+                                                               @*Html.TextBox(@name7, PrevYearApp!=null ? PrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name7})
+                                                                    @Html.ValidationMessage(@name7,  " ",new {@class = "text-danger"}) *@
+                                                                    @Html.TextBoxFor(model => model.BudgEstNexFin[Count], new { @class = "form-control", @id = @name7, @readonly = "readonly"})
+                                                                    @Html.ValidationMessageFor(model => model.BudgEstNexFin[Count]," ",new {@class = "text-danger"})
+                                                                </div>
+                                                            }
+                                                            else if (!DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
                                                                 @{
@@ -2674,7 +2774,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (!DelegateEditStatus)
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                         @{
@@ -2700,7 +2800,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (!DelegateEditStatus)
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                         @{
@@ -2726,6 +2826,18 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
+                                                                                    @if (User.IsInRole("Admin") && DelegateEditStatus)
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                        @{
+                                                                                            Model.RevEstCurrFin.Insert(LedgerNo, LedPrevYearApp!=null ? Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))  : Convert.ToDecimal(0.00));
+                                                                                         }
+                                                                                     @*Html.TextBox(@name4+@Ledgers.LedgerNo, LedPrevYearApp!=null ? LedPrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name4+@Ledgers.LedgerNo})
+                                                                                                @Html.ValidationMessage(@name4+@Ledgers.LedgerNo,  " ",new {@class = "text-danger"}) *@
+                                                                                                @Html.TextBoxFor(model => model.RevEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name4+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                                @Html.ValidationMessageFor(model => model.RevEstCurrFin[LedgerNo]," ",new {@class = "text-danger"})
+                                                                                        </div>
+                                                                                    }
                                                                                     @if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
@@ -2752,7 +2864,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (!DelegateEditStatus)
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                         @{
@@ -2811,7 +2923,19 @@
 
                                                                                 }
                                                                                 <td>
-                                                                                    @if (!DelegateEditStatus)
+                                                                                    @if (User.IsInRole("Admin") && DelegateEditStatus)
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                                @{
+                                                                                                    Model.BudgEstNexFin.Insert(LedgerNo, LedPrevYearApp!=null ? Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : Convert.ToDecimal(0.00));
+                                                                                                }
+                                                                                       @*Html.TextBox(@name7+@Ledgers.LedgerNo, PrevYearApp!=null ? PrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name7+@Ledgers.LedgerNo})
+                                                                                                @Html.ValidationMessage(@name7+@Ledgers.LedgerNo,  " ",new {@class = "text-danger"}) *@
+                                                                                                @Html.TextBoxFor(model => model.BudgEstNexFin[LedgerNo], new { @class = "form-control", @id = @name7+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                                @Html.ValidationMessageFor(model => model.BudgEstNexFin[LedgerNo]," ",new {@class = "text-danger"})
+                                                                                        </div>
+                                                                                    }
+                                                                                    else if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                         @{
@@ -2837,7 +2961,7 @@
                                                                                     }
                                                                                 </td>
                                                                                     <td>
-                                                                                        @if (!DelegateEditStatus)
+                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                         {
                                                                                             <div class="form-group">
                                                                                                 @{
@@ -2896,7 +3020,7 @@
 
                                                                                 }
                                                                                 <td>
-                                                                                    @if (!DelegateEditStatus)
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                             @{
@@ -2985,7 +3109,7 @@
                                                                     @*Html.ValidationMessageFor(model => model.BudEstCurrFin[Count]," ",new {@class = "text-danger"})*@
                                                             </div>
                                                         }
-                                                            else if(User.IsInRole("Admin") || !DelegateEditStatus)
+                                                            else if(!DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
                                                                 @{
@@ -3116,7 +3240,19 @@
 
                                                             </div>
                                                         }
-                                                            else if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                        else if (User.IsInRole("Admin") && DelegateEditStatus)
+                                                            {
+                                                                <div class="form-group">
+                                                                @{
+                                                                   Model.RevEstCurrFin.Insert(Count, PrevYearApp!=null ? Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))  : Convert.ToDecimal(0.00));
+                                                                 }
+                                                                 @*Html.TextBox(@name4, PrevYearApp!=null ? PrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name4})
+                                                                      @Html.ValidationMessage(@name4,  " ",new {@class = "text-danger"}) *@
+                                                                      @Html.TextBoxFor(model => model.RevEstCurrFin[Count],   new { @class = "form-control", @id = @name4, @readonly = "readonly"})
+                                                                      @Html.ValidationMessageFor(model => model.RevEstCurrFin[Count]," ",new {@class = "text-danger"})
+                                                                </div>
+                                                            }
+                                                            else if (!DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
                                                                 @{
@@ -3287,7 +3423,19 @@
                                                                 @*Html.ValidationMessageFor(model => model.BudgEstNexFin[Count]," ",new {@class = "text-danger"})*@
                                                             </div>
                                                         }
-                                                        else if(User.IsInRole("Admin") || !DelegateEditStatus)
+                                                        else if(User.IsInRole("Admin") && DelegateEditStatus)
+                                                        {
+                                                            <div class="form-group">
+                                                            @{
+                                                                Model.BudgEstNexFin.Insert(Count, PrevYearApp!=null ? Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))   : Convert.ToDecimal(0.00));
+                                                             }
+                                                           @*Html.TextBox(@name7, PrevYearApp!=null ? PrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name7})
+                                                                 @Html.ValidationMessage(@name7,  " ",new {@class = "text-danger"}) *@
+                                                                @Html.TextBoxFor(model => model.BudgEstNexFin[Count],   new { @class = "form-control", @id = @name7, @readonly = "readonly"})
+                                                                @Html.ValidationMessageFor(model => model.BudgEstNexFin[Count]," ",new {@class = "text-danger"})
+                                                            </div>
+                                                        }
+                                                        else if(!DelegateEditStatus)
                                                         {
                                                               <div class="form-group">
                                                             @{
@@ -3653,7 +3801,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (!DelegateEditStatus)
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                        @{
@@ -3681,7 +3829,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (!DelegateEditStatus)
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                                 @{
@@ -3708,7 +3856,20 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                   @if (!DelegateEditStatus)
+                                                                                    @if (User.IsInRole("Admin") && DelegateEditStatus)
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                                @{
+                                                                                                    Model.RevEstCurrFin.Insert(LedgerNo, LedPrevYearApp!=null ? Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))  : Convert.ToDecimal(0.00));
+                                                                                                }
+
+                                                                                     @*Html.TextBox(@name4+@Ledgers.LedgerNo, LedPrevYearApp!=null ? LedPrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name4+@Ledgers.LedgerNo})
+                                                                                             @Html.ValidationMessage(@name4+@Ledgers.LedgerNo,  " ",new {@class = "text-danger"}) *@
+                                                                                              @Html.TextBoxFor(model => model.RevEstCurrFin[LedgerNo],new { @class = "form-control", @id = @name4+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.RevEstCurrFin[LedgerNo]," ",new {@class = "text-danger"})
+                                                                                        </div>
+                                                                                    }
+                                                                                   else if (!DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                           @{
@@ -3737,7 +3898,7 @@
                                                                                 </td>
                                                                                 <td>
 
-                                                                                        @if (!DelegateEditStatus)
+                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                             @{
@@ -3801,7 +3962,7 @@
 
                                                                                 }
                                                                                 <td>
-                                                                                    @if (!DelegateEditStatus)
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                             @{
@@ -3830,7 +3991,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                        @if (!DelegateEditStatus)
+                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                         {
                                                                                             <div class="form-group">
                                                                                                 @{
@@ -3985,7 +4146,7 @@
                                                                 @*Html.ValidationMessageFor(model => model.BudEstCurrFin[Count]," ",new {@class = "text-danger"})*@
                                                             </div>
                                                         }
-                                                        else if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                        else if (!DelegateEditStatus)
                                                         {
                                                                 <div class="form-group">
                                                                 @{
@@ -4115,7 +4276,19 @@
                                                                 @*Html.ValidationMessageFor(model => model.RevEstCurrFin[Count]," ",new {@class = "text-danger"})*@
                                                             </div>
                                                         }
-                                                            else if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                         else if (User.IsInRole("Admin") && DelegateEditStatus)
+                                                            {
+                                                                <div class="form-group">
+                                                                    @{
+                                                                        Model.RevEstCurrFin.Insert(Count, PrevYearApp!=null ? Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")) : Convert.ToDecimal(0.00));
+                                                                    }
+                                                               @*Html.TextBox(@name4, PrevYearApp!=null ? PrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name4})
+                                                                     @Html.ValidationMessage(@name4,  " ",new {@class = "text-danger"}) *@
+                                                                     @Html.TextBoxFor(model => model.RevEstCurrFin[Count], new { @class = "form-control", @id = @name4})
+                                                                    @Html.ValidationMessageFor(model => model.RevEstCurrFin[Count]," ",new {@class = "text-danger"})
+                                                                </div>
+                                                            }
+                                                            else if (!DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
                                                                     @{
@@ -4288,7 +4461,19 @@
                                                                     @*Html.ValidationMessageFor(model => model.BudgEstNexFin[Count]," ",new {@class = "text-danger"})*@
                                                                 </div>
                                                             }
-                                                            else if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                            else if (User.IsInRole("Admin") && DelegateEditStatus)
+                                                            {
+                                                                <div class="form-group">
+                                                                    @{
+                                                                        Model.BudgEstNexFin.Insert(Count, PrevYearApp!=null ? Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))  : Convert.ToDecimal(0.00));
+                                                                    }
+                                                             @*Html.TextBox(@name7, PrevYearApp!=null ? PrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name7})
+                                                                    @Html.ValidationMessage(@name7,  " ",new {@class = "text-danger"}) *@
+                                                                    @Html.TextBoxFor(model => model.BudgEstNexFin[Count], new { @class = "form-control", @id = @name7, @readonly = "readonly"})
+                                                                    @Html.ValidationMessageFor(model => model.BudgEstNexFin[Count]," ",new {@class = "text-danger"})
+                                                                </div>
+                                                            }
+                                                            else if (!DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
                                                                     @{
