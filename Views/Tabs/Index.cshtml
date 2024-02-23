@@ -36,7 +36,8 @@
 
     Boolean FinalAdminEditStatus = (from a in Model.Statuss where (a.SectionNumber == 0 && a.GroupNumber.Equals("0")) select a.AdminEditStatus).FirstOrDefault();
     //Model.Detailss = new List<BudgetDetails>();
-
+    
+    int FinalAdminEditCount =  (from a in Model.Statuss where (a.SectionNumber == 0 && a.GroupNumber.Equals("0")) select a.AdminEditStatus).Count();
 
     @*int TableCount = 0;*@
     
@@ -208,7 +209,7 @@
                                             <th class="VariationInRevisedEstimates">
                                                         
                                             </th>
-                                            @if (User.IsInRole("Admin"))
+                                            @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                              {
                                                <th class="ACBWProposalForRevisedEstimates">
                                                   
@@ -220,7 +221,7 @@
                                             <th class="VariationInBudgetEstimates">
                                                 
                                             </th>
-                                            @if (User.IsInRole("Admin"))
+                                        @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                              {
                                                <th class="ACBWProposalForBudgetEstimates">
                                                    
@@ -250,7 +251,7 @@
                                                     <td id="SumPerVarRevEstOverBudgEstCurrFin">
                                                         @SectionSumPerVarRevEstOverBudgEstCurrFin.ToString("F")
                                                     </td>
-                                                    @if (User.IsInRole("Admin"))
+                                                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                     {
                                                         <td id="SumACAndBWPropRECurrFin">
                                                             @SectionSumACAndBWPropRECurrFin.ToString("F")
@@ -262,7 +263,7 @@
                                                     <td id="SumPerVarRevEstOverBudgEstNxtFin">
                                                        @SectionSumPerVarRevEstOverBudgEstNxtFin.ToString("F")
                                                     </td>
-                                                    @if (User.IsInRole("Admin"))
+                                                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                     {
                                             <td id="SumACAndBWPropRENxtFin">
                                                             @SectionSumACAndBWPropRENxtFin.ToString("F")
@@ -386,7 +387,7 @@
                                             <th class="VariationInRevisedEstimates w-50" >
                                                        
                                             </th>
-                                            @if (User.IsInRole("Admin"))
+                                            @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                              {
                                                <th class="ACBWProposalForRevisedEstimates w-50" >
                                                  
@@ -398,7 +399,7 @@
                                                     <th class="VariationInBudgetEstimates w-50">
                                                 
                                             </th>
-                                            @if (User.IsInRole("Admin"))
+                                            @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                              {
                                                         <th class="ACBWProposalForBudgetEstimates w-50">
                                                    
@@ -631,7 +632,7 @@
                                                                                            
                                                                                         </td>
                                                                                     }
-                                                                                    else if (User.IsInRole("Admin") && !AdminEditStatus)
+                                                                                    else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                                                     {
                                                                                       <td>
                                                                                         <div class="form-group">
@@ -736,7 +737,7 @@
                                                                                         
                                                                                     </td>
                                                                                 }
-                                                                                else if (User.IsInRole("Admin") && !AdminEditStatus)
+                                                                                else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                                                 {
                                                                                     <td>
                                                                                         <div class="form-group">
@@ -1091,7 +1092,7 @@
                                                                 </div>
                                                             }
                                                         </td>
-                                                        @if (User.IsInRole("Admin") && @Subs.RequireInput && AdminEditStatus)
+                                                        @if (((User.IsInRole("Admin") && (AdminEditStatus||!AdminEditStatus))||(!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0) ) && @Subs.RequireInput)
                                                         {
                                                             var LedgerSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
                                                             <td>
@@ -1120,7 +1121,7 @@
                                                                 </div>
                                                             </td>
                                                         }
-                                                        else if (User.IsInRole("Admin") && !@Subs.RequireInput && !AdminEditStatus)
+                                                        else if (((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0) ) && !@Subs.RequireInput )
                                                         {
                                                             <td>
                                                                 <div class="form-group">
@@ -1149,6 +1150,7 @@
                                                                 </div>
                                                             </td>
                                                         }
+                                                       
                                                         else
                                                         {
                                                            Model.ACAndBWPropRECurrFin.Insert(Count, Convert.ToDecimal(0.00));                                                    
@@ -2306,7 +2308,7 @@
                                                                 </div>
                                                             }
                                                         </td>
-                                                        @if (User.IsInRole("Admin") && @Subs.RequireInput && AdminEditStatus)
+                                                        @if (((User.IsInRole("Admin") && (AdminEditStatus||!AdminEditStatus)) || (!User.IsInRole("Admin") && FinalAdminEditStatus && FinalAdminEditCount > 0) ) && @Subs.RequireInput)
                                                         {
                                                             var LedgerSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
                                                             <td>
@@ -2335,7 +2337,7 @@
                                                                 </div>
                                                             </td>
                                                         }
-                                                        else if (User.IsInRole("Admin") && !@Subs.RequireInput && !AdminEditStatus) 
+                                                        else if (((User.IsInRole("Admin") && !AdminEditStatus)|| (!User.IsInRole("Admin") && FinalAdminEditStatus && FinalAdminEditCount > 0)  ) && !@Subs.RequireInput ) 
                                                         {
                                                             <td>
                                                                 <div class="form-group">
@@ -2433,7 +2435,7 @@
                                                     <td id="@Sumname5-Total">
                                                         @SumPerVarRevEstOverBudgEstCurrFin.ToString("F")
                                                     </td>
-                                                    @if (User.IsInRole("Admin"))
+                                                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                     {
                                                         <td id="@Sumname6-Total">
                                                             @SumACAndBWPropRECurrFin.ToString("F")
@@ -2445,7 +2447,7 @@
                                                     <td id="@Sumname8-Total">
                                                         @SumPerVarRevEstOverBudgEstNxtFin.ToString("F")
                                                     </td>
-                                                    @if (User.IsInRole("Admin"))
+                                                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                     {
                                                         <td id="@Sumname9-Total">
                                                             @SumACAndBWPropRENxtFin.ToString("F")

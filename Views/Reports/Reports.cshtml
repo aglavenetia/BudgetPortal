@@ -83,12 +83,12 @@
             var SectionSumBudEstCurrFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.BudEstCurrFin).Sum();
             var SectionSumActPrevFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ActPrevFin).Sum();
             var SectionSumActCurrFinTill2ndQuart = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ActCurrFinTill2ndQuart).Sum();
-            var SectionSumRevEstCurrFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.RevEstCurrFin).Sum();
-            var SectionSumPerVarRevEstOverBudgEstCurrFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.PerVarRevEstOverBudgEstCurrFin).Sum();
             var SectionSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ACAndBWPropRECurrFin).Sum();
-            var SectionSumBudgEstNexFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.BudgEstNexFin).Sum();
-            var SectionSumPerVarRevEstOverBudgEstNxtFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.PerVarRevEstOverBudgEstNxtFin).Sum();
+            var SectionSumPerVarRevEstOverBudgEstCurrFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.PerVarRevEstOverBudgEstCurrFin).Sum();
+            //var SectionSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ACAndBWPropRECurrFin).Sum();
             var SectionSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ACAndBWPropRENxtFin).Sum();
+            var SectionSumPerVarRevEstOverBudgEstNxtFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.PerVarRevEstOverBudgEstNxtFin).Sum();
+            /*var SectionSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ACAndBWPropRENxtFin).Sum();*/
 
             if (OuterBodyCount == 0)
             {
@@ -152,7 +152,7 @@
                                     @SectionSumActCurrFinTill2ndQuart.ToString()
                                 </td>
                                 <td class="w-20">
-                                    @SectionSumRevEstCurrFin.ToString()
+                                    @SectionSumACAndBWPropRECurrFin.ToString()
                                 </td>
                                 <td class="w-20">
                                     @SectionSumPerVarRevEstOverBudgEstCurrFin.ToString()
@@ -164,7 +164,7 @@
                                     </td>
                                 }
                                 <td class="w-20">
-                                    @SectionSumBudgEstNexFin.ToString()
+                                    @SectionSumACAndBWPropRENxtFin.ToString()
                                 </td>
                                 <td class="w-20">
                                     @SectionSumPerVarRevEstOverBudgEstNxtFin.ToString()
@@ -238,15 +238,15 @@
                                 }
                                 else if(ReportName.Equals("Revised Estimates"))
                                 {
-                                    //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.RevEstCurrFin).Sum();
+                                    //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.ACAndBWPropRECurrFin).Sum();
                                     SumGroupReport = (Double)(from a in Model.Detailss
                                                               join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                               where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
-                                                              select a.RevEstCurrFin).Sum();
+                                                              select a.ACAndBWPropRECurrFin).Sum();
                                 }
                                 else if (ReportName.Equals("Budget Estimates "+@SelectedAcademicYear))
                                 {
-                                    //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.BudgEstNexFin).Sum();
+                                    //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.ACAndBWPropRENxtFin).Sum();
                                     SumGroupReport = (Double)(from a in Model.Detailss
                                                               join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                               where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
@@ -255,11 +255,11 @@
                                 }
                                 else if (ReportName.Equals("Budget Estimates "+@NextAcademicYear))
                                 {
-                                    //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.BudgEstNexFin).Sum();
+                                    //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.ACAndBWPropRENxtFin).Sum();
                                     SumGroupReport = (Double)(from a in Model.Detailss
                                                               join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                               where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
-                                                              select a.BudgEstNexFin).Sum();
+                                                              select a.ACAndBWPropRENxtFin).Sum();
                                 
                                 }
 
@@ -318,23 +318,23 @@
                                                             }
                                                             else if(ReportName.Equals("Revised Estimates"))
                                                             {
-                                                                //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.RevEstCurrFin).Sum();
+                                                                //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
                                                                 SumSubGroupReport = (Double)(from a in Model.Detailss
                                                                                  join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                                                  where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
-                                                                                 select a.RevEstCurrFin).Sum();
+                                                                                 select a.ACAndBWPropRECurrFin).Sum();
                                                             }
                                                             else if (ReportName.Equals("Budget Estimates "+@NextAcademicYear))
                                                             {
-                                                                 //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudgEstNexFin).Sum();
+                                                                 //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
                                                                  SumSubGroupReport = (Double)(from a in Model.Detailss
                                                                                  join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                                                  where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
-                                                                                 select a.BudgEstNexFin).Sum();
+                                                                                 select a.ACAndBWPropRENxtFin).Sum();
                                                             }
                                                             else if (ReportName.Equals("Budget Estimates "+@SelectedAcademicYear))
                                                             {
-                                                                 //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudgEstNexFin).Sum();
+                                                                 //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
                                                                  SumSubGroupReport = (Double)(from a in Model.Detailss
                                                                                  join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                                                  where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
@@ -414,7 +414,7 @@
                                                             {
                                                                 if(Subs.RequireInput)
                                                                 {
-                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.RevEstCurrFin).Sum();
+                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ACAndBWPropRECurrFin).Sum();
                                                                   
                                                                   <td align="right" class="w-20">
                                                                     @Html.Label("Revised Estimates" + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
@@ -423,7 +423,7 @@
                                                                 else
                                                                 {
                                                                   <td align="right" class="w-20">
-                                                                     @Html.Label("Revised Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.RevEstCurrFin).ToString("F") : "-")
+                                                                     @Html.Label("Revised Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRECurrFin).ToString("F") : "-")
                                                                   </td>
                                                                 }
                                                             }
@@ -431,7 +431,7 @@
                                                             {
                                                                 if(Subs.RequireInput)
                                                                 {
-                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.BudgEstNexFin).Sum();
+                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ACAndBWPropRENxtFin).Sum();
                                                                   
                                                                   <td align="right" class="w-20">
                                                                     @Html.Label("Budget Estimates" +@NextAcademicYear+ Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
@@ -440,7 +440,7 @@
                                                                 else
                                                                 {
                                                                    <td align="right" class="w-20">
-                                                                      @Html.Label("Budget Estimates"+@NextAcademicYear+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.BudgEstNexFin).ToString("F") : "-")
+                                                                      @Html.Label("Budget Estimates"+@NextAcademicYear+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRENxtFin).ToString("F") : "-")
                                                                    </td>
                                                                 }
                                                             }
@@ -497,7 +497,7 @@
                                                     }
                                                     else if (ReportName.Equals("Revised Estimates"))
                                                     {
-                                                        var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.RevEstCurrFin).Sum();
+                                                        var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ACAndBWPropRECurrFin).Sum();
                                                         <td align="right" class="w-20">
                                                             @Html.Label("Revised Estimates Sum" + Regions.DivisionName, result!=0.00 ? Convert.ToDecimal(result).ToString("F") : "-")
 
@@ -505,7 +505,7 @@
                                                     }
                                                     else if (ReportName.Equals("Budget Estimates "+@NextAcademicYear))
                                                     {
-                                                        var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.BudgEstNexFin).Sum();
+                                                        var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ACAndBWPropRENxtFin).Sum();
                                                         <td align="right" class="w-20">
                                                             @Html.Label("Budget Estimates Sum "+@NextAcademicYear+ Regions.DivisionName, result!=0.00 ? Convert.ToDecimal(result).ToString("F") : "-")
                                                         </td>
@@ -554,15 +554,15 @@
                                 }
                                 else if (ReportName.Equals("Revised Estimates"))
                                 {
-                                    //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.RevEstCurrFin).Sum();
+                                    //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.ACAndBWPropRECurrFin).Sum();
                                     SumGroupReport = (Double)(from a in Model.Detailss
                                                               join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                               where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
-                                                              select a.RevEstCurrFin).Sum();
+                                                              select a.ACAndBWPropRECurrFin).Sum();
                                 }
                                 else if (ReportName.Equals("Budget Estimates "+@SelectedAcademicYear))
                                 {
-                                    //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.BudgEstNexFin).Sum();
+                                    //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.ACAndBWPropRENxtFin).Sum();
                                     SumGroupReport = (Double)(from a in Model.Detailss
                                                               join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                               where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
@@ -571,11 +571,11 @@
                                 }
                                 else if (ReportName.Equals("Budget Estimates "+@NextAcademicYear))
                                 {
-                                    //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.BudgEstNexFin).Sum();
+                                    //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.ACAndBWPropRENxtFin).Sum();
                                     SumGroupReport = (Double)(from a in Model.Detailss
                                                               join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                               where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
-                                                              select a.BudgEstNexFin).Sum();
+                                                              select a.ACAndBWPropRENxtFin).Sum();
                                 
                                 }
                                 <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
@@ -627,15 +627,15 @@
                                                 }
                                                 else if (ReportName.Equals("Revised Estimates"))
                                                 {
-                                                    //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.RevEstCurrFin).Sum();
+                                                    //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
                                                     SumSubGroupReport = (Double)(from a in Model.Detailss
                                                                                  join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                                                  where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
-                                                                                 select a.RevEstCurrFin).Sum();
+                                                                                 select a.ACAndBWPropRECurrFin).Sum();
                                                 }
                                                 else if (ReportName.Equals("Budget Estimates "+@SelectedAcademicYear))
                                                 {
-                                                    //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudgEstNexFin).Sum();
+                                                    //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
                                                     SumSubGroupReport = (Double)(from a in Model.Detailss
                                                                                  join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                                                  where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
@@ -643,11 +643,11 @@
                                                 }
                                                 else if (ReportName.Equals("Budget Estimates "+@NextAcademicYear))
                                                 {
-                                                    //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudgEstNexFin).Sum();
+                                                    //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
                                                     SumSubGroupReport = (Double)(from a in Model.Detailss
                                                                                  join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                                                  where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
-                                                                                 select a.BudgEstNexFin).Sum();
+                                                                                 select a.ACAndBWPropRENxtFin).Sum();
                                                 }
                                                     
                                                  var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();   
@@ -724,7 +724,7 @@
                                                         {
                                                             if (Subs.RequireInput)
                                                             {
-                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.RevEstCurrFin).Sum();
+                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ACAndBWPropRECurrFin).Sum();
 
                                                                 <td align="right" class="w-20">
                                                                     @Html.Label("Revised Estimates" + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
@@ -733,7 +733,7 @@
                                                             else
                                                             {
                                                                 <td align="right" class="w-20">
-                                                                    @Html.Label("Revised Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.RevEstCurrFin).ToString("F") : "-")
+                                                                    @Html.Label("Revised Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRECurrFin).ToString("F") : "-")
                                                                 </td>
                                                             }
                                                         }
@@ -741,7 +741,7 @@
                                                         {
                                                             if (Subs.RequireInput)
                                                             {
-                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.BudgEstNexFin).Sum();
+                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ACAndBWPropRENxtFin).Sum();
 
                                                                 <td align="right" class="w-20">
                                                                     @Html.Label("Budget Estimates " +@NextAcademicYear + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
@@ -750,7 +750,7 @@
                                                             else
                                                             {
                                                                 <td align="right" class="w-20">
-                                                                    @Html.Label("Budget Estimates "+@NextAcademicYear+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.BudgEstNexFin).ToString("F") : "-")
+                                                                    @Html.Label("Budget Estimates "+@NextAcademicYear+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRENxtFin).ToString("F") : "-")
                                                                 </td>
                                                             }
                                                         }
@@ -807,7 +807,7 @@
                                                     }
                                                     else if (ReportName.Equals("Revised Estimates"))
                                                     {
-                                                        var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.RevEstCurrFin).Sum();
+                                                        var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ACAndBWPropRECurrFin).Sum();
                                                         <td align="right" class="w-20">
                                                             @Html.Label("Revised Estimates Sum" + Regions.DivisionName, result!=0.00 ? Convert.ToDecimal(result).ToString("F") : "-")
 
@@ -815,7 +815,7 @@
                                                     }
                                                     else if (ReportName.Equals("Budget Estimates "+@NextAcademicYear))
                                                     {
-                                                        var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.BudgEstNexFin).Sum();
+                                                        var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ACAndBWPropRENxtFin).Sum();
                                                         <td align="right" class="w-20">
                                                             @Html.Label("Budget Estimates Sum "+@NextAcademicYear+ Regions.DivisionName, result!=0.00 ? Convert.ToDecimal(result).ToString("F") : "-")
                                                         </td>
@@ -910,15 +910,15 @@
                                 }
                                 else if (ReportName.Equals("Revised Estimates"))
                                 {
-                                    //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.RevEstCurrFin).Sum();
+                                    //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.ACAndBWPropRECurrFin).Sum();
                                     SumGroupReport = (Double)(from a in Model.Detailss
                                                               join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                               where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
-                                                              select a.RevEstCurrFin).Sum();
+                                                              select a.ACAndBWPropRECurrFin).Sum();
                                 }
                                 else if (ReportName.Equals("Budget Estimates "+@SelectedAcademicYear))
                                 {
-                                    //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.BudgEstNexFin).Sum();
+                                    //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.ACAndBWPropRENxtFin).Sum();
                                     SumGroupReport = (Double)(from a in Model.Detailss
                                                               join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                               where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
@@ -927,11 +927,11 @@
                                 }
                                 else if (ReportName.Equals("Budget Estimates "+@NextAcademicYear))
                                 {
-                                    //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.BudgEstNexFin).Sum();
+                                    //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.ACAndBWPropRENxtFin).Sum();
                                     SumGroupReport = (Double)(from a in Model.Detailss
                                                               join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                               where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
-                                                              select a.BudgEstNexFin).Sum();
+                                                              select a.ACAndBWPropRENxtFin).Sum();
                                 
                                 }
                                 <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
@@ -982,15 +982,15 @@
                                                 }
                                                 else if (ReportName.Equals("Revised Estimates"))
                                                 {
-                                                    //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.RevEstCurrFin).Sum();
+                                                    //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
                                                     SumSubGroupReport = (Double)(from a in Model.Detailss
                                                                                  join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                                                  where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
-                                                                                 select a.RevEstCurrFin).Sum();
+                                                                                 select a.ACAndBWPropRECurrFin).Sum();
                                                 }
                                                 else if (ReportName.Equals("Budget Estimates "+@SelectedAcademicYear))
                                                 {
-                                                    //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudgEstNexFin).Sum();
+                                                    //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
                                                     SumSubGroupReport = (Double)(from a in Model.Detailss
                                                                                  join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                                                  where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
@@ -998,11 +998,11 @@
                                                 }
                                                 else if (ReportName.Equals("Budget Estimates "+@NextAcademicYear))
                                                 {
-                                                    //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudgEstNexFin).Sum();
+                                                    //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
                                                     SumSubGroupReport = (Double)(from a in Model.Detailss
                                                                                  join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                                                  where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
-                                                                                 select a.BudgEstNexFin).Sum();
+                                                                                 select a.ACAndBWPropRENxtFin).Sum();
                                                 }
                                                     <tr>
                                                         <td class="w-20">
@@ -1074,7 +1074,7 @@
                                                         {
                                                             if (Subs.RequireInput)
                                                             {
-                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.RevEstCurrFin).Sum();
+                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ACAndBWPropRECurrFin).Sum();
 
                                                                 <td align="right" class="w-20">
                                                                     @Html.Label("Revised Estimates" + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
@@ -1083,7 +1083,7 @@
                                                             else
                                                             {
                                                                 <td align="right" class="w-20">
-                                                                    @Html.Label("Revised Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.RevEstCurrFin).ToString("F") : "-")
+                                                                    @Html.Label("Revised Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRECurrFin).ToString("F") : "-")
                                                                 </td>
                                                             }
                                                         }
@@ -1091,7 +1091,7 @@
                                                         {
                                                             if (Subs.RequireInput)
                                                             {
-                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.BudgEstNexFin).Sum();
+                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ACAndBWPropRENxtFin).Sum();
 
                                                                 <td align="right" class="w-20">
                                                                     @Html.Label("Budget Estimates "+@NextAcademicYear + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
@@ -1100,7 +1100,7 @@
                                                             else
                                                             {
                                                                 <td align="right" class="w-20">
-                                                                    @Html.Label("Budget Estimates "+@NextAcademicYear+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.BudgEstNexFin).ToString("F") : "-")
+                                                                    @Html.Label("Budget Estimates "+@NextAcademicYear+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRENxtFin).ToString("F") : "-")
                                                                 </td>
                                                             }
                                                         }
@@ -1157,7 +1157,7 @@
                                                     }
                                                     else if (ReportName.Equals("Revised Estimates"))
                                                     {
-                                                        var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.RevEstCurrFin).Sum();
+                                                        var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ACAndBWPropRECurrFin).Sum();
                                                         <td align="right" class="w-20">
                                                             @Html.Label("Revised Estimates Sum" + Regions.DivisionName, result!=0.00 ? Convert.ToDecimal(result).ToString("F") : "-")
 
@@ -1165,7 +1165,7 @@
                                                     }
                                                     else if (ReportName.Equals("Budget Estimates "+@NextAcademicYear))
                                                     {
-                                                        var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.BudgEstNexFin).Sum();
+                                                        var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ACAndBWPropRENxtFin).Sum();
                                                         <td align="right" class="w-20">
                                                             @Html.Label("Budget Estimates Sum "+@NextAcademicYear+ Regions.DivisionName, result!=0.00 ? Convert.ToDecimal(result).ToString("F") : "-")
                                                         </td>
@@ -1215,15 +1215,15 @@
                                 }
                                 else if (ReportName.Equals("Revised Estimates"))
                                 {
-                                    //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.RevEstCurrFin).Sum();
+                                    //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.ACAndBWPropRECurrFin).Sum();
                                     SumGroupReport = (Double)(from a in Model.Detailss
                                                               join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                               where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
-                                                              select a.RevEstCurrFin).Sum();
+                                                              select a.ACAndBWPropRECurrFin).Sum();
                                 }
                                 else if (ReportName.Equals("Budget Estimates "+@SelectedAcademicYear))
                                 {
-                                    //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.BudgEstNexFin).Sum();
+                                    //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.ACAndBWPropRENxtFin).Sum();
                                     SumGroupReport = (Double)(from a in Model.Detailss
                                                               join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                               where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
@@ -1232,11 +1232,11 @@
                                 }
                                 else if (ReportName.Equals("Budget Estimates "+@NextAcademicYear))
                                 {
-                                    //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.BudgEstNexFin).Sum();
+                                    //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.ACAndBWPropRENxtFin).Sum();
                                     SumGroupReport = (Double)(from a in Model.Detailss
                                                               join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                               where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
-                                                              select a.BudgEstNexFin).Sum();
+                                                              select a.ACAndBWPropRENxtFin).Sum();
                                 
                                 }
 
@@ -1290,15 +1290,15 @@
                                                 }
                                                 else if (ReportName.Equals("Revised Estimates"))
                                                 {
-                                                    //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.RevEstCurrFin).Sum();
+                                                    //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
                                                     SumSubGroupReport = (Double)(from a in Model.Detailss
                                                                                  join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                                                  where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
-                                                                                 select a.RevEstCurrFin).Sum();
+                                                                                 select a.ACAndBWPropRECurrFin).Sum();
                                                 }
                                                 else if (ReportName.Equals("Budget Estimates "+@SelectedAcademicYear))
                                                 {
-                                                    //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudgEstNexFin).Sum();
+                                                    //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
                                                     SumSubGroupReport = (Double)(from a in Model.Detailss
                                                                                  join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                                                  where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
@@ -1306,11 +1306,11 @@
                                                 }
                                                 else if (ReportName.Equals("Budget Estimates "+@NextAcademicYear))
                                                 {
-                                                    //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudgEstNexFin).Sum();
+                                                    //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
                                                     SumSubGroupReport = (Double)(from a in Model.Detailss
                                                                                  join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                                                  where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
-                                                                                 select a.BudgEstNexFin).Sum();
+                                                                                 select a.ACAndBWPropRENxtFin).Sum();
                                                 }
                                                     
                                                     <tr>
@@ -1383,7 +1383,7 @@
                                                         {
                                                             if (Subs.RequireInput)
                                                             {
-                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.RevEstCurrFin).Sum();
+                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ACAndBWPropRECurrFin).Sum();
 
                                                                 <td align="right" class="w-20">
                                                                     @Html.Label("Revised Estimates" + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
@@ -1392,7 +1392,7 @@
                                                             else
                                                             {
                                                                 <td align="right" class="w-20">
-                                                                    @Html.Label("Revised Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.RevEstCurrFin).ToString("F") : "-")
+                                                                    @Html.Label("Revised Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRECurrFin).ToString("F") : "-")
                                                                 </td>
                                                             }
                                                         }
@@ -1400,7 +1400,7 @@
                                                         {
                                                             if (Subs.RequireInput)
                                                             {
-                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.BudgEstNexFin).Sum();
+                                                                var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ACAndBWPropRENxtFin).Sum();
 
                                                                 <td align="right" class="w-20">
                                                                     @Html.Label("Budget Estimates " +@NextAcademicYear+ Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
@@ -1409,7 +1409,7 @@
                                                             else
                                                             {
                                                                 <td align="right" class="w-20">
-                                                                    @Html.Label("Budget Estimates "+@NextAcademicYear+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.BudgEstNexFin).ToString("F") : "-")
+                                                                    @Html.Label("Budget Estimates "+@NextAcademicYear+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRENxtFin).ToString("F") : "-")
                                                                 </td>
                                                             }
                                                         }
@@ -1466,7 +1466,7 @@
                                                     }
                                                     else if (ReportName.Equals("Revised Estimates"))
                                                     {
-                                                        var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.RevEstCurrFin).Sum();
+                                                        var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ACAndBWPropRECurrFin).Sum();
                                                         <td align="right" class="w-20">
                                                             @Html.Label("Revised Estimates Sum" + Regions.DivisionName, result!=0.00 ? Convert.ToDecimal(result).ToString("F") : "-")
 
@@ -1474,7 +1474,7 @@
                                                     }
                                                     else if (ReportName.Equals("Budget Estimates "+@NextAcademicYear))
                                                     {
-                                                        var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.BudgEstNexFin).Sum();
+                                                        var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ACAndBWPropRENxtFin).Sum();
                                                         <td align="right" class="w-20">
                                                             @Html.Label("Budget Estimates Sum "+@NextAcademicYear+ Regions.DivisionName, result!=0.00 ? Convert.ToDecimal(result).ToString("F") : "-")
                                                         </td>
