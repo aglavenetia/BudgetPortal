@@ -405,7 +405,10 @@
                                                    
                                                 </th>
                                              }
-                                                    <th class="Justification w-50">
+                                            <th class="Justification w-50">
+                                                       
+                                            </th>
+                                            <th class="UploadDocuments w-50">
                                                        
                                             </th>
                                         </tr>
@@ -785,6 +788,15 @@
                                                                                         </div>
                                                                                             
                                                                                     }
+                                                                                </td>
+
+                                                                                <td>  
+                                                            
+                                                                                   <div class="form-group">  
+                                                                                      <div class="col-md-10">  
+                                                                                         <input type="file" name="ImageFile" required />  
+                                                                                      </div>  
+                                                                                   </div>  
                                                                                 </td>
                                                                                 </tr>
                                                                             
@@ -1375,6 +1387,16 @@
                                                         }
                                                         </td>
 
+                                                        <td>  
+                                                         @if(!@Subs.RequireInput) 
+                                                         {
+                                                           <div class="form-group">  
+                                                                <div class="col-md-10">  
+                                                                        <input type="file" name="ImageFile" required />  
+                                                                 </div>  
+                                                           </div>
+                                                            }
+                                                        </td>
                                                     </tr>
 
                                                     Count++;
@@ -1423,8 +1445,8 @@
                                                             @SumACAndBWPropRENxtFin.ToString("F")
                                                         </td>
                                                     }
-                                                    <td>
-                                                    </td>
+                                                    <td></td>
+                                                    <td></td>
                                                 </tr>
                                     </tbody>
                                 </table>
@@ -1491,9 +1513,8 @@
 
                                                         </th>
                                                     }
-                                                    <th class="Justification w-50">
-
-                                                    </th>
+                                                    <th class="Justification w-50"></th>
+                                                    <th class="UploadDocuments w-50"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -1844,6 +1865,14 @@
                                                                                         </div>
                                                                                     }
                                                                                 </td>
+                                                                                <td>  
+                                                            
+                                                                                   <div class="form-group">  
+                                                                                      <div class="col-md-10">  
+                                                                                         <input type="file" name="ImageFile" required />  
+                                                                                      </div>  
+                                                                                   </div>  
+                                                                                </td>
                                                                                 </tr>
 
                                                                                 LedgerNo ++;
@@ -2127,7 +2156,7 @@
                                                                 </div>
                                                             }
                                                         </td>
-                                                        @if (((User.IsInRole("Admin") && (AdminEditStatus || !AdminEditStatus)) || (!User.IsInRole("Admin") && FinalAdminEditStatus && FinalAdminEditCount > 0)) && @Subs.RequireInput)
+                                                        @if (((User.IsInRole("Admin") && (AdminEditStatus || !AdminEditStatus)) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0)) && @Subs.RequireInput)
                                                         {
                                                             var LedgerSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
                                                             <td>
@@ -2156,7 +2185,7 @@
                                                                 </div>
                                                             </td>
                                                         }
-                                                         else if (((User.IsInRole("Admin")  && !AdminEditStatus) || (!User.IsInRole("Admin") && FinalAdminEditStatus && FinalAdminEditCount > 0)) && !@Subs.RequireInput)
+                                                         else if (((User.IsInRole("Admin")  && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0)) && !@Subs.RequireInput)
                                                         {
                                                             <td>
                                                                 <div class="form-group">
@@ -2308,7 +2337,7 @@
                                                                 </div>
                                                             }
                                                         </td>
-                                                        @if (((User.IsInRole("Admin") && (AdminEditStatus || !AdminEditStatus)) || (!User.IsInRole("Admin") && FinalAdminEditStatus && FinalAdminEditCount > 0)) && @Subs.RequireInput) 
+                                                        @if (((User.IsInRole("Admin") && (AdminEditStatus || !AdminEditStatus)) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0)) && @Subs.RequireInput) 
                                                         {
                                                             var LedgerSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
                                                             <td>
@@ -2337,7 +2366,7 @@
                                                                 </div>
                                                             </td>
                                                         }
-                                                        else if (((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && FinalAdminEditStatus && FinalAdminEditCount > 0)) && !@Subs.RequireInput) 
+                                                        else if (((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0)) && !@Subs.RequireInput) 
                                                         {
                                                             <td>
                                                                 <div class="form-group">
@@ -2405,6 +2434,16 @@
                                                         }
                                                         </td>
 
+                                                        <td>  
+                                                            @if (!@Subs.RequireInput)
+                                                            {
+                                                                <div class="form-group">  
+                                                                    <div class="col-md-10">  
+                                                                        <input type="file" name="ImageFile" required />  
+                                                                    </div>  
+                                                                </div>
+                                                            }
+                                                        </td>
                                                     </tr>
 
                                                     Count++;
@@ -2453,8 +2492,8 @@
                                                             @SumACAndBWPropRENxtFin.ToString("F")
                                                         </td>
                                                     }
-                                                    <td>
-                                                    </td>
+                                                    <td></td>
+                                                    <td></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -2704,6 +2743,8 @@
                                                     <th class="Justification w-50">
 
                                                     </th>
+                                                    <th class="UploadDocuments w-50"></th>   
+
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -3049,6 +3090,13 @@
                                                                                                 @Html.ValidationMessageFor(model => model.Justification[LedgerNo]," ",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
+                                                                                </td>
+                                                                                <td>
+                                                                                     <div class="form-group">  
+                                                                                      <div class="col-md-10">  
+                                                                                        <input type="file" name="ImageFile" required />  
+                                                                                      </div>  
+                                                                                     </div>  
                                                                                 </td>
                                                                                 </tr>
 
@@ -3613,6 +3661,16 @@
                                                                 </div>
                                                             }
                                                         </td>
+                                                        <td>
+                                                            @if (!@Subs.RequireInput)
+                                                            {
+                                                                <div class="form-group">  
+                                                                    <div class="col-md-10">  
+                                                                        <input type="file" name="ImageFile" required />  
+                                                                    </div>  
+                                                                </div>
+                                                            }
+                                                        </td>
 
                                                     </tr>
                                                     Count++;
@@ -3663,6 +3721,7 @@
                                                     }
                                                     <td>
                                                     </td>
+                                                    <td></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -3732,6 +3791,7 @@
                                                     <th class="Justification w-50">
 
                                                     </th>
+                                                    <th class="UploadDocuments w-50"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -4087,6 +4147,13 @@
                                                                                             @Html.ValidationMessageFor(model => model.Justification[LedgerNo]," ",new {@class = "text-danger"})
                                                                                         </div>
                                                                                     }
+                                                                                </td>
+                                                                                <td>
+                                                                                     <div class="form-group">  
+                                                                                           <div class="col-md-10">  
+                                                                                               <input type="file" name="ImageFile" required />  
+                                                                                           </div>  
+                                                                                     </div>  
                                                                                 </td>
                                                                                 </tr>
                                                                          LedgerNo++;
@@ -4649,7 +4716,16 @@
                                                                 </div>
                                                             }
                                                         </td>
-
+                                                        <td>
+                                                            @if (!@Subs.RequireInput)
+                                                            {
+                                                                <div class="form-group">  
+                                                                    <div class="col-md-10">  
+                                                                        <input type="file" name="ImageFile" required />  
+                                                                    </div>  
+                                                                </div>
+                                                            }
+                                                        </td>
                                                     </tr>
                                                     Count++;
                                                     TableCount++;
@@ -4699,6 +4775,7 @@
                                                     }
                                                     <td>
                                                     </td>
+                                                    <td></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -4932,6 +5009,7 @@
                  $(".VariationInBudgetEstimates").text('% Variation in BE ' + Number.parseInt(year[1]) + '-' + (Number.parseInt(year[1]) + Number.parseInt(1)) + 'over the RE ' + $("#SelectedAcademicYear").val());
                  $(".ACBWProposalForBudgetEstimates").text('AC & BW Proposal for BE ' + Number.parseInt(year[1]) + '-' + (Number.parseInt(year[1]) + Number.parseInt(1)));
                  $(".Justification").text('Justification');
+                 $(".UploadDocuments").text('Upload Documents');
 
 
                         
