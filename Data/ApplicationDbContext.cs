@@ -86,6 +86,10 @@ namespace BudgetPortal.Data
                 .ToTable(b => b.HasTrigger("trUpdateFinalSubmitStatus"))
                 .Property(b => b.CreatedDateTime)
                 .HasDefaultValueSql("GETDATE()");
+
+            modelBuilder.Entity<BudgetFiles>()
+                .Property(b => b.UploadedDateTime)
+                .HasDefaultValueSql("GETDATE()");
         }
 
  
@@ -100,6 +104,7 @@ namespace BudgetPortal.Data
         public DbSet<BudgetReports> BudgetReports { get; set;}
         public DbSet<BudgetDetailsApproved> BudgetDetailsApproved { get; set; }
         public DbSet<BudgetdetailsStatus> BudgetdetailsStatus { get; set; }
+        public DbSet<BudgetFiles> BudgetFiles { get; set; }
     }
 
 

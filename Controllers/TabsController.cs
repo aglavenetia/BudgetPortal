@@ -231,7 +231,7 @@ namespace BudgetPortal.Controllers
                   
                 }
 
-                //Save Budget Details to Database
+                //Add Budget Details to Database for a Delegate
                 else
                 {
                 

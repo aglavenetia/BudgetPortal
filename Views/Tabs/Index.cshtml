@@ -430,6 +430,8 @@
                                                     var name8 = String.Concat("PerVarRevEstOverBudgEstNxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name11 = String.Concat("UploadFile", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var upload = String.Concat("UploadButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                     
@@ -559,7 +561,7 @@
                                                                                          }      
                                                                                      @*Html.TextBox(@name4+@Ledgers.LedgerNo, LedPrevYearApp!=null ? LedPrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name4+@Ledgers.LedgerNo})                                                                                            
                                                                                             @Html.ValidationMessage(@name4+@Ledgers.LedgerNo,  " ",new {@class = "text-danger"}) *@
-                                                                                            @Html.TextBoxFor(model => model.RevEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name4+@Ledgers.LedgerNo, @readonly = "readonly"}) 
+                                                                                            @Html.TextBoxFor(model => model.RevEstCurrFin[LedgerNo], new { @type = "number", @class = "form-control", @id = @name4+@Ledgers.LedgerNo, @readonly = "readonly"}) 
                                                                                             @Html.ValidationMessageFor(model => model.RevEstCurrFin[LedgerNo]," ",new {@class = "text-danger"})
                                                                                         </div>
                                                                                         
@@ -791,12 +793,11 @@
                                                                                 </td>
 
                                                                                 <td>  
-                                                            
-                                                                                   <div class="form-group">  
-                                                                                      <div class="col-md-10">  
-                                                                                         <input type="file" name="ImageFile" required />  
-                                                                                      </div>  
-                                                                                   </div>  
+                                                                                
+                                                                                    @Html.TextBoxFor(m => m.Path, new { type = "file", @id = @name11 })
+                                                                                    <br/>
+                                                                                    <input id="@upload" class="Submit" formaction="~/Tabs/Index" type="submit" value="Upload"/>
+                                                                                  
                                                                                 </td>
                                                                                 </tr>
                                                                             
@@ -1313,7 +1314,7 @@
                                                                     }
                                                                     @*Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9})
                                                                     @Html.ValidationMessage(@name9,  " ",new {@class = "text-danger"}) *@
-                                                                    @Html.TextBoxFor(model => model.ACAndBWPropRENxtFin[Count], new { @class = "form-control", @id = @name9})
+                                                                    @Html.TextBoxFor(model => model.ACAndBWPropRENxtFin[Count], new {@class = "form-control", @id = @name9})
                                                                     @Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin[Count]," ",new {@class = "text-danger"})
                                                                 </div>
                                                             </td>
@@ -1327,7 +1328,7 @@
                                                                     }
                                                                     @*Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name9,  " ",new {@class = "text-danger"}) *@
-                                                                    @Html.TextBoxFor(model => model.ACAndBWPropRENxtFin[Count], new { @class = "form-control", @id = @name9, @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.ACAndBWPropRENxtFin[Count], new {@class = "form-control", @id = @name9, @readonly = "readonly"})
                                                                     @*Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin[Count]," ",new {@class = "text-danger"})*@
                                                                 </div>
                                                                 
@@ -1390,12 +1391,10 @@
                                                         <td>  
                                                          @if(!@Subs.RequireInput) 
                                                          {
-                                                           <div class="form-group">  
-                                                                <div class="col-md-10">  
-                                                                        <input type="file" name="ImageFile" required />  
-                                                                 </div>  
-                                                           </div>
-                                                            }
+                                                              @Html.TextBoxFor(m => m.Path, new { type = "file", @id = @name11 })
+                                                              <br/>
+                                                             <input id="@upload" class="Submit" formaction="~/Tabs/Index" type="submit" value="Upload"/>
+                                                         }
                                                         </td>
                                                     </tr>
 
@@ -1533,7 +1532,9 @@
                                                     var name8 = String.Concat("PerVarRevEstOverBudgEstNxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-
+                                                    var name11 = String.Concat("UploadFile", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var upload = String.Concat("UploadButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                     
                                                     <tr>
@@ -1866,12 +1867,12 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>  
-                                                            
-                                                                                   <div class="form-group">  
-                                                                                      <div class="col-md-10">  
-                                                                                         <input type="file" name="ImageFile" required />  
-                                                                                      </div>  
-                                                                                   </div>  
+                                                                                   @if(!@Subs.RequireInput) 
+                                                                                   {
+                                                                                       @Html.TextBoxFor(m => m.Path, new { type = "file", @id = @name11 }) 
+                                                                                       <br/>
+                                                                                       <input id="@upload" class="Submit" formaction="~/Tabs/Index" type="submit" value="Upload"/>
+                                                                                   }
                                                                                 </td>
                                                                                 </tr>
 
@@ -2435,13 +2436,11 @@
                                                         </td>
 
                                                         <td>  
-                                                            @if (!@Subs.RequireInput)
-                                                            {
-                                                                <div class="form-group">  
-                                                                    <div class="col-md-10">  
-                                                                        <input type="file" name="ImageFile" required />  
-                                                                    </div>  
-                                                                </div>
+                                                           @if(!@Subs.RequireInput) 
+                                                           {
+                                                               @Html.TextBoxFor(m => m.Path, new { type = "file", @id = @name11 }) 
+                                                               <br/>
+                                                               <input id="@upload" class="Submit" formaction="~/Tabs/Index" type="submit" value="Upload"/>
                                                             }
                                                         </td>
                                                     </tr>
@@ -2763,6 +2762,8 @@
                                                     var name8 = String.Concat("PerVarRevEstOverBudgEstNxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name11 = String.Concat("UploadFile", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var upload = String.Concat("UploadButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                      
@@ -3092,11 +3093,11 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                     <div class="form-group">  
-                                                                                      <div class="col-md-10">  
-                                                                                        <input type="file" name="ImageFile" required />  
-                                                                                      </div>  
-                                                                                     </div>  
+                                                                                 
+                                                                                      @Html.TextBoxFor(m => m.Path, new { type = "file", @id = @name11 })
+                                                                                      <br/>
+                                                                                      <input id="@upload" class="Submit" formaction="~/Tabs/Index" type="submit" value="Upload"/>
+                                                                                    
                                                                                 </td>
                                                                                 </tr>
 
@@ -3662,13 +3663,11 @@
                                                             }
                                                         </td>
                                                         <td>
-                                                            @if (!@Subs.RequireInput)
-                                                            {
-                                                                <div class="form-group">  
-                                                                    <div class="col-md-10">  
-                                                                        <input type="file" name="ImageFile" required />  
-                                                                    </div>  
-                                                                </div>
+                                                           @if(!@Subs.RequireInput) 
+                                                           {
+                                                              @Html.TextBoxFor(m => m.Path, new { type = "file", @id = @name11 }) 
+                                                              <br/>
+                                                              <input id="@upload" class="Submit" formaction="~/Tabs/Index" type="submit" value="Upload"/>
                                                             }
                                                         </td>
 
@@ -3810,6 +3809,8 @@
                                                     var name8 = String.Concat("PerVarRevEstOverBudgEstNxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name11 = String.Concat("UploadFile", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var upload = String.Concat("UploadButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                     
@@ -4149,11 +4150,11 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                     <div class="form-group">  
-                                                                                           <div class="col-md-10">  
-                                                                                               <input type="file" name="ImageFile" required />  
-                                                                                           </div>  
-                                                                                     </div>  
+                                                                                
+                                                                                    @Html.TextBoxFor(m => m.Path, new { type = "file", @id = @name11 }) 
+                                                                                    <br/>
+                                                                                    <input id="@upload" class="Submit" formaction="~/Tabs/Index" type="submit" value="Upload"/>
+                                                                                 
                                                                                 </td>
                                                                                 </tr>
                                                                          LedgerNo++;
@@ -4717,13 +4718,11 @@
                                                             }
                                                         </td>
                                                         <td>
-                                                            @if (!@Subs.RequireInput)
-                                                            {
-                                                                <div class="form-group">  
-                                                                    <div class="col-md-10">  
-                                                                        <input type="file" name="ImageFile" required />  
-                                                                    </div>  
-                                                                </div>
+                                                           @if(!@Subs.RequireInput) 
+                                                           {
+                                                               @Html.TextBoxFor(m => m.Path, new { type = "file", @id = @name11 }) 
+                                                               <br/>
+                                                               <input id="@upload" class="Submit" formaction="~/Tabs/Index" type="submit" value="Upload"/>
                                                             }
                                                         </td>
                                                     </tr>

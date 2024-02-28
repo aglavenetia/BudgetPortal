@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.SqlTypes;
+using System.Web;
 
 namespace BudgetPortal.Entities
 {
@@ -72,8 +72,7 @@ namespace BudgetPortal.Entities
 
         public DateTime CreatedDateTime { get; set; }
         public string Justification { get; set; }
-
-        public string? SupportingDocumentPath { get; set; }
+        public String? SupportingDocumentPath { get; set; }
 
     }
 }

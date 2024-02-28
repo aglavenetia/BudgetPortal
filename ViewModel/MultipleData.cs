@@ -98,23 +98,23 @@ namespace BudgetPortal.ViewModel
         public List<String>? Justification { get; set; }
         //public String Justification { get; set; }
 
-        
+
         public IEnumerable<SelectListItem>? DivisionNames { get; set; }
 
         [Required(ErrorMessage = "Please select a Division Name")]
         public String? SelectedDivisionID { get; set; }
-        
-        
 
-        
+
+
+
         [Display(Name = "Financial Year")]
         public IEnumerable<SelectListItem>? AcademicYears { get; set; }
 
         [Required(ErrorMessage = "Please select the Academic Year")]
         public String? SelectedAcademicYearID { get; set; }
-        
 
-        
-        
+        public IFormFile Path {get; set;}
+
+
     }
 }
