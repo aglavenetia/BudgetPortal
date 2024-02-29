@@ -357,6 +357,21 @@
 
                         if (CounterBody == 0)
                         {
+                                                    @if (Model.IsResponse)
+                                                     {
+                                                         @if (Model.IsSuccess)
+                                                         {
+                                                             <div class="alert alert-success">
+                                                                     @Model.Message
+                                                             </div>
+                                                         }
+                                                         else
+                                                         {
+                                                               <div class="alert alert-danger">
+                                                                   @Model.Message
+                                                               </div>
+                                                         }
+                                                     }
                             <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
                              
                               @*using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
@@ -435,7 +450,7 @@
 
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                     
-
+                                                     
                                                     <tr>
                                                         
                                                         <td>
@@ -794,9 +809,9 @@
 
                                                                                 <td>  
                                                                                 
-                                                                                    @Html.TextBoxFor(m => m.Path, new { type = "file", @id = @name11 })
+                                                                                    @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11 })
                                                                                     <br/>
-                                                                                    <input id="@upload" class="Submit" formaction="~/Tabs/Index" type="submit" value="Upload"/>
+                                                                                    <input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
                                                                                   
                                                                                 </td>
                                                                                 </tr>
@@ -1391,9 +1406,9 @@
                                                         <td>  
                                                          @if(!@Subs.RequireInput) 
                                                          {
-                                                              @Html.TextBoxFor(m => m.Path, new { type = "file", @id = @name11 })
+                                                              @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11 })
                                                               <br/>
-                                                             <input id="@upload" class="Submit" formaction="~/Tabs/Index" type="submit" value="Upload"/>
+                                                             <input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
                                                          }
                                                         </td>
                                                     </tr>
@@ -1463,6 +1478,21 @@
                         }
                         else
                         {
+                                                     @if (Model.IsResponse)
+                                                     {
+                                                         @if (Model.IsSuccess)
+                                                         {
+                                                             <div class="alert alert-success">
+                                                                     @Model.Message
+                                                             </div>
+                                                         }
+                                                         else
+                                                         {
+                                                               <div class="alert alert-danger">
+                                                                   @Model.Message
+                                                               </div>
+                                                         }
+                                                     }
                             <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
                                 <br />
                                 
@@ -1869,9 +1899,9 @@
                                                                                 <td>  
                                                                                    @if(!@Subs.RequireInput) 
                                                                                    {
-                                                                                       @Html.TextBoxFor(m => m.Path, new { type = "file", @id = @name11 }) 
+                                                                                       @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11 }) 
                                                                                        <br/>
-                                                                                       <input id="@upload" class="Submit" formaction="~/Tabs/Index" type="submit" value="Upload"/>
+                                                                                       <input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
                                                                                    }
                                                                                 </td>
                                                                                 </tr>
@@ -2438,9 +2468,9 @@
                                                         <td>  
                                                            @if(!@Subs.RequireInput) 
                                                            {
-                                                               @Html.TextBoxFor(m => m.Path, new { type = "file", @id = @name11 }) 
+                                                               @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11 }) 
                                                                <br/>
-                                                               <input id="@upload" class="Submit" formaction="~/Tabs/Index" type="submit" value="Upload"/>
+                                                               <input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
                                                             }
                                                         </td>
                                                     </tr>
@@ -2691,6 +2721,21 @@
 
                           if (CounterBody == 0)
                           {
+                                                     @if (Model.IsResponse)
+                                                     {
+                                                         @if (Model.IsSuccess)
+                                                         {
+                                                             <div class="alert alert-success">
+                                                                     @Model.Message
+                                                             </div>
+                                                         }
+                                                         else
+                                                         {
+                                                               <div class="alert alert-danger">
+                                                                   @Model.Message
+                                                               </div>
+                                                         }
+                                                     }
                               <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
                                   
                                  @*using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
@@ -3094,9 +3139,9 @@
                                                                                 </td>
                                                                                 <td>
                                                                                  
-                                                                                      @Html.TextBoxFor(m => m.Path, new { type = "file", @id = @name11 })
+                                                                                      @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11 })
                                                                                       <br/>
-                                                                                      <input id="@upload" class="Submit" formaction="~/Tabs/Index" type="submit" value="Upload"/>
+                                                                                      <input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
                                                                                     
                                                                                 </td>
                                                                                 </tr>
@@ -3665,9 +3710,9 @@
                                                         <td>
                                                            @if(!@Subs.RequireInput) 
                                                            {
-                                                              @Html.TextBoxFor(m => m.Path, new { type = "file", @id = @name11 }) 
+                                                              @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11 }) 
                                                               <br/>
-                                                              <input id="@upload" class="Submit" formaction="~/Tabs/Index" type="submit" value="Upload"/>
+                                                              <input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
                                                             }
                                                         </td>
 
@@ -3738,6 +3783,21 @@
                          }
                         else
                         {  
+                                                     @if (Model.IsResponse)
+                                                     {
+                                                         @if (Model.IsSuccess)
+                                                         {
+                                                             <div class="alert alert-success">
+                                                                     @Model.Message
+                                                             </div>
+                                                         }
+                                                         else
+                                                         {
+                                                               <div class="alert alert-danger">
+                                                                   @Model.Message
+                                                               </div>
+                                                         }
+                                                     }
                              <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
                                 <br />
                               
@@ -4151,9 +4211,9 @@
                                                                                 </td>
                                                                                 <td>
                                                                                 
-                                                                                    @Html.TextBoxFor(m => m.Path, new { type = "file", @id = @name11 }) 
+                                                                                    @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11 }) 
                                                                                     <br/>
-                                                                                    <input id="@upload" class="Submit" formaction="~/Tabs/Index" type="submit" value="Upload"/>
+                                                                                    <input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
                                                                                  
                                                                                 </td>
                                                                                 </tr>
@@ -4720,9 +4780,9 @@
                                                         <td>
                                                            @if(!@Subs.RequireInput) 
                                                            {
-                                                               @Html.TextBoxFor(m => m.Path, new { type = "file", @id = @name11 }) 
+                                                               @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11 }) 
                                                                <br/>
-                                                               <input id="@upload" class="Submit" formaction="~/Tabs/Index" type="submit" value="Upload"/>
+                                                               <input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
                                                             }
                                                         </td>
                                                     </tr>

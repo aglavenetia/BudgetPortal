@@ -9,10 +9,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations.Schema;
+using BudgetPortal.Models;
 
 namespace BudgetPortal.ViewModel
 {
-    public class MultipleData
+    public class MultipleData : ReponseModel
     {
         public IEnumerable<BudgetSections>? Sectionss { get; set; }
         public IEnumerable<BudgetGroups>? Groupss { get; set; }
@@ -113,7 +114,12 @@ namespace BudgetPortal.ViewModel
         [Required(ErrorMessage = "Please select the Academic Year")]
         public String? SelectedAcademicYearID { get; set; }
 
-        public IFormFile Path {get; set;}
+
+        [Required(ErrorMessage = "Please enter file name")]
+        public string FileName { get; set; }
+
+        [Required(ErrorMessage = "Please select file")]
+        public IFormFile File { get; set; }
 
 
     }

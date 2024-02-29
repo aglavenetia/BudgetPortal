@@ -5,6 +5,7 @@ using BudgetPortal.ViewModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
 
+
 namespace BudgetPortal.Controllers
 {
     public class TabsController : Controller
@@ -92,11 +93,103 @@ namespace BudgetPortal.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(MultipleData MD, IFormCollection Form)
+        public ActionResult Upload(MultipleData MD)
         {
+          
+               
+                    MD.IsResponse = true;
+
+                    string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files");
+
+                    //create folder if not exist
+                    if (!Directory.Exists(path))
+                        Directory.CreateDirectory(path);
+
+                    //get file extension
+                    FileInfo fileInfo = new FileInfo(MD.File.FileName);
+                    string fileName = MD.File.FileName + fileInfo.Extension;
+
+                    string fileNameWithPath = Path.Combine(path, fileName);
+
+                    using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                    {
+                        MD.File.CopyTo(stream);
+                    }
+
+                    MD.IsSuccess = true;
+                    MD.Message = "Saved";
+
+            //return View("Index", MD);
+            var username = User.Identity.Name;
+            var DivName = " ";
+            var DivisionID = " ";
+            if (User.Identity.Name.Equals("admin@test.com"))
+            {
+                DivName = MD.SelectedDivisionName.ToString();
+                DivisionID = _context.Division
+                                     .Where(d => d.DivisionName == DivName)
+                                     .Select(x => x.DivisionID).FirstOrDefault().ToString();
+            }
+            else
+            {
+                 DivName = _context.Users
+                             .Where(x => x.UserName.Equals(username))
+                             .Select(x => x.BranchName).First();
+                DivisionID = _context.Division
+                                    .Where(d => d.DivisionName == DivName)
+                                    .Select(x => x.DivisionID).FirstOrDefault().ToString();
+            }
             
-                //Update Budget Details for Admin User
-                if (User.Identity.Name.Equals("admin@test.com"))
+            var splitAcademicYear = MD.SelectedAcademicYear.ToString().Split("-");
+            MD.Sectionss = _context.BudgetSections.ToList();
+            MD.Groupss = _context.BudgetGroups.ToList();
+            MD.SubGroupss = _context.BudgetSubGroups.ToList();
+            MD.Ledgerss = _context.BudgetLedgers.ToList();
+            MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+            //MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
+            //                    .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).ToList();
+
+            MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                    .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+
+            MD.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                 .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Select(x => x.AdminEditStatus).Count();
+
+            MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                         .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
+            MD.DivisionNames = _context.Division.AsEnumerable().Select(x =>
+                    new SelectListItem()
+                    {
+                        Selected = false,
+                        Text = x.DivisionName,
+                        Value = x.DivisionID.ToString()
+
+                    }).ToList();
+
+            MD.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
+                new SelectListItem()
+                {
+                    Selected = false,
+                    Text = x.Year1 + "-" + x.Year2,
+                    Value = x.Id.ToString()
+
+                }).ToList();
+            MD.AcademicYears.Where(x => x.Text.Equals(MD.SelectedAcademicYear.ToString())).Single().Selected = true;
+
+            //MD.DivisionNames.Where(x => x.Text.Equals(MD.SelectedDivisionName.ToString())).Single().Selected = true;
+
+            return View("Index", MD);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public IActionResult Index(MultipleData MD, String Button)
+        {
+           
+            //Update Budget Details for Admin User
+             if (User.Identity.Name.Equals("admin@test.com"))
                 {
                   
                     var username = User.Identity.Name;
@@ -118,6 +211,9 @@ namespace BudgetPortal.Controllers
 
                 if (ModelState.IsValid)
                 {
+
+                    
+
                     for (int i = 0; i < SubGroups.Count(); i++)
                     {
                         var result = new BudgetDetails();
@@ -184,6 +280,8 @@ namespace BudgetPortal.Controllers
 
                     _context.BudgetdetailsStatus.Update(Status);
                     _context.SaveChanges();
+
+                    
                 }
                
 
@@ -226,8 +324,14 @@ namespace BudgetPortal.Controllers
                     MD.AcademicYears.Where(x => x.Text.Equals(MD.SelectedAcademicYear.ToString())).Single().Selected = true;
 
                     MD.DivisionNames.Where(x => x.Text.Equals(MD.SelectedDivisionName.ToString())).Single().Selected = true;
-                
-                    return View("Index", MD);
+
+                MD.IsResponse = true;
+                MD.IsSuccess = true;
+                MD.Message = "Budget Details Submitted successfully";
+
+
+
+                return View("Index", MD);
                   
                 }
 
@@ -423,6 +527,10 @@ namespace BudgetPortal.Controllers
                              .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
                     MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
                                  .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+
+                    MD.IsResponse = true;
+                    MD.IsSuccess = true;
+                    MD.Message = "Budget Details Submitted successfully";
 
                 }
                 return View("Index", MD);
