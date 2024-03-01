@@ -107,7 +107,9 @@ namespace BudgetPortal.Controllers
 
                     //get file extension
                     FileInfo fileInfo = new FileInfo(MD.File.FileName);
-                    string fileName = MD.File.FileName + fileInfo.Extension;
+                    string[] Name = (MD.File.FileName).Split('.');
+                    DateTime currentDateTime = DateTime.Now;
+                    string fileName = Name[0] +"_"+ currentDateTime.ToString("dd-MM-yyyy_HH_mm_ss") + fileInfo.Extension;
 
                     string fileNameWithPath = Path.Combine(path, fileName);
 
@@ -119,10 +121,31 @@ namespace BudgetPortal.Controllers
                     MD.IsSuccess = true;
                     MD.Message = "Saved";
 
-            //return View("Index", MD);
+            
             var username = User.Identity.Name;
             var DivName = " ";
             var DivisionID = " ";
+            var SectionNumber = _context.BudgetSections
+                                  .Where(x => x.SectionName.Equals(MD.SectionName))
+                                  .Select(x => x.SectionNo).First();
+            var GroupNumber = _context.BudgetGroups
+                     .Where(x => x.GroupName.Equals(MD.GroupName))
+                     .Select(x => x.GroupNo).First();
+            var SubGroups = _context.BudgetSubGroups
+                     .Where(x => x.GroupNo.Equals(GroupNumber))
+                     .Select(x => x.SubGroupNo).ToList();
+            //var LedgerStatus = _context.BudgetSubGroups
+            //                      .Where(x => x.SubGroupNo.Equals(SubGroups[i]))
+            //                      .Select(x => x.RequireInput).First();
+
+            //var Ledgers = _context.BudgetLedgers
+            //      .Where(x => x.SubGroupNo.Equals(SubGroups[i]))
+            //      .Select(x => x.LedgerNo).ToList();
+
+            //if (LedgerStatus)
+            //{
+            //}
+
             if (User.Identity.Name.Equals("admin@test.com"))
             {
                 DivName = MD.SelectedDivisionName.ToString();
@@ -141,6 +164,16 @@ namespace BudgetPortal.Controllers
             }
             
             var splitAcademicYear = MD.SelectedAcademicYear.ToString().Split("-");
+
+            var result = new BudgetDetails();
+            //result = _context.BudgetDetails
+            //                          .Where(b => (b.DivisionID == DivisionID)
+            //                                   && (b.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0]))
+            //                                   && (b.SectionNumber == SectionNumber)
+            //                                   && (b.GroupNumber == GroupNumber)
+             //                                  && (b.SubGroupNumber == SubGroups[i])
+             //                                  && (b.LedgerNumber == Ledgers[j])).FirstOrDefault();
+
             MD.Sectionss = _context.BudgetSections.ToList();
             MD.Groupss = _context.BudgetGroups.ToList();
             MD.SubGroupss = _context.BudgetSubGroups.ToList();

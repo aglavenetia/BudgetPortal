@@ -34,6 +34,10 @@ namespace BudgetPortal.ViewModel
 
         public String SectionName { get; set; }
         public String GroupName { get; set; }
+
+        public String SubGroupName { get; set; }
+
+        public String LedgerName { get; set; }
         public String? SelectedDivisionName { get; set; }
         public String? SelectedAcademicYear { get; set; }
 

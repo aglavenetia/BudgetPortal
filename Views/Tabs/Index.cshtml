@@ -145,6 +145,8 @@
        <br />  
        @Html.Hidden("SectionName",Model.SectionName, new{@id = "SectionName" })
        @Html.Hidden("GroupName",Model.GroupName,  new{@id = "GroupName" })
+       @Html.Hidden("SubGroupName",Model.SubGroupName,  new{@id = "SubGroupName" })
+       @Html.Hidden("LedgerName",Model.LedgerName,  new{@id = "LedgerName" })
        @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = "SelectedAcademicYear" })
        @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = "SelectedDivisionName" })
 
@@ -809,9 +811,9 @@
 
                                                                                 <td>  
                                                                                 
-                                                                                    @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11 })
+                                                                                    @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo })
                                                                                     <br/>
-                                                                                    <input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
+                                                                                    <input id="@upload@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
                                                                                   
                                                                                 </td>
                                                                                 </tr>
@@ -1899,9 +1901,9 @@
                                                                                 <td>  
                                                                                    @if(!@Subs.RequireInput) 
                                                                                    {
-                                                                                       @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11 }) 
+                                                                                       @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo }) 
                                                                                        <br/>
-                                                                                       <input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
+                                                                                       <input id="@upload@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
                                                                                    }
                                                                                 </td>
                                                                                 </tr>
@@ -3139,9 +3141,9 @@
                                                                                 </td>
                                                                                 <td>
                                                                                  
-                                                                                      @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11 })
+                                                                                      @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo })
                                                                                       <br/>
-                                                                                      <input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
+                                                                                      <input id="@upload@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
                                                                                     
                                                                                 </td>
                                                                                 </tr>
@@ -4211,9 +4213,9 @@
                                                                                 </td>
                                                                                 <td>
                                                                                 
-                                                                                    @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11 }) 
+                                                                                    @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo }) 
                                                                                     <br/>
-                                                                                    <input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
+                                                                                    <input id="@upload@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
                                                                                  
                                                                                 </td>
                                                                                 </tr>
@@ -4892,11 +4894,11 @@
                         var year = academicyear.split('-');
                         //alert(year[0]);
                         var sectionnoid = $('#outerTab li button.active').attr('id');
-                        alert(sectionnoid);
+                        //alert(sectionnoid);
                         var section = sectionnoid.split('-');
 
                         var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
-                        alert(groupnoid);
+                        //alert(groupnoid);
                         var group = groupnoid.split('-');
                         //alert(group[0]);
 
@@ -4955,7 +4957,7 @@
                         var divisionname = $("#SelectedDivisionName").val();
 
                         var year = academicyear.split('-');
-                        alert(year[0]);
+                        //alert(year[0]);
 
                         var sectionnoid = $('#outerTab li button.active').attr('id');
 
@@ -5019,19 +5021,21 @@
                         
                         var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
                         
+                        var Ledgerid = $(this).closest('tr').html();
+                        alert(Ledgerid);
 
                         $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
-                        alert($("#SelectedAcademicYear").val());
+                        //alert($("#SelectedAcademicYear").val());
                        
 
                         $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
-                        alert($("#SelectedDivisionName").val());
+                        //alert($("#SelectedDivisionName").val());
                         
                         $('#SectionName').val($('#' + sectionnoid).text());
-                        alert($('#SectionName').val());
+                        //alert($('#SectionName').val());
                         
                         $('#GroupName').val($('#' + groupnoid).text());
-                        alert($('#GroupName').val());
+                        //alert($('#GroupName').val());
                         
                     });
                 
@@ -5039,10 +5043,10 @@
                     function () {
                         
                         $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
-                        alert($("#SelectedDivisionName").val());
+                        //alert($("#SelectedDivisionName").val());
 
                         $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
-                        alert($("#SelectedAcademicYear").val());
+                        //alert($("#SelectedAcademicYear").val());
                     });
 
                 
