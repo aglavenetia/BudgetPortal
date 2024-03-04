@@ -125,26 +125,28 @@ namespace BudgetPortal.Controllers
             var username = User.Identity.Name;
             var DivName = " ";
             var DivisionID = " ";
+            
             var SectionNumber = _context.BudgetSections
                                   .Where(x => x.SectionName.Equals(MD.SectionName))
                                   .Select(x => x.SectionNo).First();
             var GroupNumber = _context.BudgetGroups
                      .Where(x => x.GroupName.Equals(MD.GroupName))
                      .Select(x => x.GroupNo).First();
-            var SubGroups = _context.BudgetSubGroups
-                     .Where(x => x.GroupNo.Equals(GroupNumber))
-                     .Select(x => x.SubGroupNo).ToList();
-            //var LedgerStatus = _context.BudgetSubGroups
-            //                      .Where(x => x.SubGroupNo.Equals(SubGroups[i]))
-            //                      .Select(x => x.RequireInput).First();
 
-            //var Ledgers = _context.BudgetLedgers
-            //      .Where(x => x.SubGroupNo.Equals(SubGroups[i]))
-            //      .Select(x => x.LedgerNo).ToList();
+            var SubGroupNumber = _context.BudgetSubGroups
+                     .Where(x => x.SubGroupNo.Equals(MD.SubGroupLedgerName))
+                     .Select(x => x.SubGroupNo).FirstOrDefault();
 
-            //if (LedgerStatus)
-            //{
-            //}
+            var LedgerNumber = _context.BudgetLedgers
+                     .Where(x => x.LedgerName.Equals(MD.SubGroupLedgerName))
+                     .Select(x => x.LedgerNo).FirstOrDefault();
+
+            if(LedgerNumber!=null)
+            {
+                 SubGroupNumber = _context.BudgetLedgers
+                     .Where(x => x.LedgerName.Equals(MD.SubGroupLedgerName))
+                     .Select(x => x.SubGroupNo).FirstOrDefault();
+            }
 
             if (User.Identity.Name.Equals("admin@test.com"))
             {
@@ -165,14 +167,19 @@ namespace BudgetPortal.Controllers
             
             var splitAcademicYear = MD.SelectedAcademicYear.ToString().Split("-");
 
-            var result = new BudgetDetails();
-            //result = _context.BudgetDetails
-            //                          .Where(b => (b.DivisionID == DivisionID)
-            //                                   && (b.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0]))
-            //                                   && (b.SectionNumber == SectionNumber)
-            //                                   && (b.GroupNumber == GroupNumber)
-             //                                  && (b.SubGroupNumber == SubGroups[i])
-             //                                  && (b.LedgerNumber == Ledgers[j])).FirstOrDefault();
+            var result = new BudgetFiles();
+            
+            result.DivisionID = Convert.ToInt32(DivisionID);
+            result.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
+            result.FinancialYear2 = Convert.ToInt32(splitAcademicYear[0]) + Convert.ToInt32(1);
+            result.SectionNumber = Convert.ToInt32(SectionNumber);
+            result.GroupNumber = GroupNumber;
+            result.SubGroupNumber = SubGroupNumber;
+            result.LedgerNumber = LedgerNumber;
+            result.SupportingDocumentPath = fileNameWithPath;
+
+            _context.BudgetFiles.Add(result);
+            _context.SaveChanges();
 
             MD.Sectionss = _context.BudgetSections.ToList();
             MD.Groupss = _context.BudgetGroups.ToList();
@@ -482,6 +489,10 @@ namespace BudgetPortal.Controllers
                                 dataModel.SubGroupNumber = SubGroups[i];
                                 dataModel.LedgerNumber = Ledgers[j];
 
+                                dataModel.SupportingDocumentPath = _context.BudgetFiles
+                                                                    .Where(x => (x.LedgerNumber.Equals(Ledgers[j]) && x.DivisionID == Convert.ToInt32(SelectedDivisionID) && x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])))
+                                                                    .Select(x => x.SupportingDocumentPath).FirstOrDefault();
+                                
                                 _context.BudgetDetails.Add(dataModel);
                                 _context.SaveChanges();
 
@@ -518,7 +529,11 @@ namespace BudgetPortal.Controllers
                             dataModel.GroupNumber = GroupNumber;
                             dataModel.SubGroupNumber = SubGroups[i];
                             dataModel.LedgerNumber = Convert.ToDecimal(0).ToString();
-                            
+
+                            dataModel.SupportingDocumentPath = _context.BudgetFiles
+                                                              .Where(x => (x.SubGroupNumber.Equals(SubGroups[i]) && x.DivisionID == Convert.ToInt32(SelectedDivisionID) && x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])))
+                                                              .Select(x => x.SupportingDocumentPath).FirstOrDefault();
+
                             _context.BudgetDetails.Add(dataModel);
                             _context.SaveChanges();
 

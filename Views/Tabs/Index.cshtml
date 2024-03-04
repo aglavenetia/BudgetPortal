@@ -145,8 +145,8 @@
        <br />  
        @Html.Hidden("SectionName",Model.SectionName, new{@id = "SectionName" })
        @Html.Hidden("GroupName",Model.GroupName,  new{@id = "GroupName" })
-       @Html.Hidden("SubGroupName",Model.SubGroupName,  new{@id = "SubGroupName" })
-       @Html.Hidden("LedgerName",Model.LedgerName,  new{@id = "LedgerName" })
+       @Html.Hidden("SubGroupLedgerName",Model.SubGroupLedgerName,  new{@id = "SubGroupLedgerName" })
+       
        @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = "SelectedAcademicYear" })
        @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = "SelectedDivisionName" })
 
@@ -5021,8 +5021,11 @@
                         
                         var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
                         
-                        var Ledgerid = $(this).closest('tr').html();
-                        alert(Ledgerid);
+                        var Ledgerid = $(this).closest('tr').children('td').eq(1);
+
+                       // Ledgerid.replace(/[\r\n]+/gm, " ");
+                        
+                        //alert(Ledgerid);
 
                         $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
                         //alert($("#SelectedAcademicYear").val());
@@ -5036,6 +5039,8 @@
                         
                         $('#GroupName').val($('#' + groupnoid).text());
                         //alert($('#GroupName').val());
+
+                        $('#SubGroupLedgerName').val(Ledgerid.text().trim());
                         
                     });
                 
