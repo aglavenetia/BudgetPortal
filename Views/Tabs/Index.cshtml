@@ -311,7 +311,7 @@
                                     DelegateEditStatus = true;
                                     AdminEditStatus = false;
                         }
-                                else if (AdminStatus && Model.PreviousYearAdminCount > 0)
+                        else if (AdminStatus && Model.PreviousYearAdminCount > 0)
                         {
                                      DelegateEditStatus = false;
                                     AdminEditStatus = true;
@@ -359,21 +359,7 @@
 
                         if (CounterBody == 0)
                         {
-                                                    @if (Model.IsResponse)
-                                                     {
-                                                         @if (Model.IsSuccess)
-                                                         {
-                                                             <div class="alert alert-success">
-                                                                     @Model.Message
-                                                             </div>
-                                                         }
-                                                         else
-                                                         {
-                                                               <div class="alert alert-danger">
-                                                                   @Model.Message
-                                                               </div>
-                                                         }
-                                                     }
+                                                   
                             <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
                              
                               @*using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
@@ -436,6 +422,7 @@
                                         {
                                                     var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
                                                     var PrevYearApp =  (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
+                                                    
 
                                                     var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -449,6 +436,7 @@
                                                     var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name11 = String.Concat("UploadFile", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var upload = String.Concat("UploadButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var delete = String.Concat("DeleteButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                     
@@ -469,7 +457,8 @@
                                                                        {
 
                                                                          var Ledgerdetails = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();
-                                                                         var LedPrevYearApp = (from a in Model.Approved where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();                       
+                                                                         var LedPrevYearApp = (from a in Model.Approved where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault(); 
+                                                                          
                                                                             <tr>
                                                                                 <td>
                                                                                     @{
@@ -810,12 +799,47 @@
                                                                                 </td>
 
                                                                                 <td>  
-                                                                                
-                                                                                    @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo })
-                                                                                    <br/>
-                                                                                    <input id="@upload@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
-                                                                                  
-                                                                                </td>
+                                                                                     @if (Model.IsResponse)
+                                                                                     {
+                                                                                           @if (Model.IsSuccess)
+                                                                                           {
+                                                                                                 <div class="alert alert-success">
+                                                                                                      @Model.Message
+                                                                                                 </div>
+                                                                                           }
+                                                                                           else
+                                                                                           {
+                                                                                                 <div class="alert alert-danger">
+                                                                                                       @Model.Message
+                                                                                                 </div>
+                                                                                           }
+                                                                                     }
+                                                                                   @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0)
+                                                                                        {
+                                                                                            @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo })
+                                                                                            <br/>
+                                                                                            <input id="@upload@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
+                                                                                        }
+                                                                                        <table class="table">
+                                                                                    <thead> </thead>
+                                                                                    <tbody>
+                                                                                    @foreach(var LedgerFiles in Model.Filess.Where (a => (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo))))
+                                                                                    {
+                                                                                                    <tr>
+                                                                                                        @if ((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
+                                                                                                        {
+                                                                                                            <td> @Html.ActionLink(@LedgerFiles.FileName," "," ",new{@class = "View"})</td>
+                                                                                                        }
+                                                                                        @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
+                                                                                        {
+                                                                                         <td><input id="@delete@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
+                                                                                        }
+                                                                                     </tr>      
+                                                                                         
+                                                                                    }
+                                                                                    </tbody>
+                                                                                    </table>
+                                                                                    </td>
                                                                                 </tr>
                                                                             
                                                                         LedgerNo++;
@@ -1405,12 +1429,49 @@
                                                         }
                                                         </td>
 
-                                                        <td>  
+                                                        <td> 
+                                                                                     @if (Model.IsResponse)
+                                                                                     {
+                                                                                           @if (Model.IsSuccess)
+                                                                                           {
+                                                                                                 <div class="alert alert-success">
+                                                                                                      @Model.Message
+                                                                                                 </div>
+                                                                                           }
+                                                                                           else
+                                                                                           {
+                                                                                                 <div class="alert alert-danger">
+                                                                                                       @Model.Message
+                                                                                                 </div>
+                                                                                           }
+                                                                                     }
                                                          @if(!@Subs.RequireInput) 
                                                          {
+                                                              @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0)
+                                                              {
                                                               @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11 })
                                                               <br/>
                                                              <input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
+                                                              }
+                                                             <table class="table">
+                                                                       <thead> </thead>
+                                                                              <tbody>
+                                                                                    @foreach(var Files in Model.Filess.Where(a => a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                                                                    {
+                                                                                     <tr>
+                                                                                      @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
+                                                                                      {
+                                                                                        <td> @Html.ActionLink(@Files.FileName," "," ",new{@class = "View"})</td>
+                                                                                      }
+                                                                                        @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
+                                                                                        {
+                                                                                           <td><input id="@delete" class="Submit" formaction="~/Tabs/Delete" type="submit" value="Delete"/></td>
+                                                                                        }
+                                                                                     </tr>      
+                                                                                         
+                                                                                    }
+                                                                              </tbody>
+                                                             </table>
                                                          }
                                                         </td>
                                                     </tr>
@@ -1480,21 +1541,7 @@
                         }
                         else
                         {
-                                                     @if (Model.IsResponse)
-                                                     {
-                                                         @if (Model.IsSuccess)
-                                                         {
-                                                             <div class="alert alert-success">
-                                                                     @Model.Message
-                                                             </div>
-                                                         }
-                                                         else
-                                                         {
-                                                               <div class="alert alert-danger">
-                                                                   @Model.Message
-                                                               </div>
-                                                         }
-                                                     }
+                                                    
                             <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
                                 <br />
                                 
@@ -1566,6 +1613,7 @@
                                                     var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name11 = String.Concat("UploadFile", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var upload = String.Concat("UploadButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var delete = String.Concat("DeleteButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                     
@@ -1583,7 +1631,6 @@
                                                                         {
                                                                             var Ledgerdetails = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();
                                                                             var LedPrevYearApp = (from a in Model.Approved where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();                       
-
                                                                             
                                                                             <tr>
                                                                                 <td>
@@ -1901,9 +1948,32 @@
                                                                                 <td>  
                                                                                    @if(!@Subs.RequireInput) 
                                                                                    {
-                                                                                       @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo }) 
-                                                                                       <br/>
-                                                                                       <input id="@upload@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
+                                                                                            @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0)
+                                                                                            {
+                                                                                                @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo }) 
+                                                                                                <br/>
+                                                                                                <input id="@upload@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
+                                                                                            }
+                                                                                    <table class="table">
+                                                                                    <thead> </thead>
+                                                                                    <tbody>
+                                                                                    @foreach(var LedgerFiles in Model.Filess.Where (a => (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo))))
+                                                                                    {
+                                                                                     <tr>
+                                                                                      @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
+                                                                                      {
+                                                                                        <td> @Html.ActionLink(@LedgerFiles.FileName," "," ",new{@class = "View"})</td>
+                                                                                      }
+                                                                                        @if(!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
+                                                                                        {
+                                                                                         <td><input id="@delete@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Delete" type="submit" value="Delete" /> </td>
+                                                                                        }
+                                                                                     </tr>      
+                                                                                         
+                                                                                    }
+                                                                                    </tbody>
+                                                                                    </table>
+                                                                                   
                                                                                    }
                                                                                 </td>
                                                                                 </tr>
@@ -2468,11 +2538,48 @@
                                                         </td>
 
                                                         <td>  
+                                                             @if (Model.IsResponse)
+                                                             {
+                                                                   @if (Model.IsSuccess)
+                                                                   {
+                                                                        <div class="alert alert-success">
+                                                                         @Model.Message
+                                                                        </div>
+                                                                   }
+                                                                   else
+                                                                   {
+                                                                         <div class="alert alert-danger">
+                                                                             @Model.Message
+                                                                         </div>
+                                                                   }
+                                                             }
                                                            @if(!@Subs.RequireInput) 
                                                            {
-                                                               @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11 }) 
-                                                               <br/>
-                                                               <input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
+                                                                @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0)
+                                                                {
+                                                                    @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11 }) 
+                                                                    <br/>
+                                                                    <input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
+                                                                }
+                                                                <table class="table">
+                                                                         <thead> </thead>
+                                                                              <tbody>
+                                                                                    @foreach(var Files in Model.Filess.Where (a => a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                                                                    {
+                                                                                     <tr>
+                                                                                        @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
+                                                                                        {
+                                                                                        <td> @Html.ActionLink(@Files.FileName," "," ",new{@class = "View"})</td>
+                                                                                        }
+                                                                                        @if(!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
+                                                                                        {
+                                                                                           <td> <input id="@delete" class="Submit" formaction="~/Tabs/Delete" type="submit" value="Delete"/>  </td>
+                                                                                        }
+                                                                                     </tr>      
+                                                                                         
+                                                                                    }
+                                                                             </tbody>
+                                                                  </table>
                                                             }
                                                         </td>
                                                     </tr>
@@ -2811,6 +2918,7 @@
                                                     var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name11 = String.Concat("UploadFile", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var upload = String.Concat("UploadButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var delete = String.Concat("DeleteButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                      
@@ -3140,11 +3248,46 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                 
-                                                                                      @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo })
-                                                                                      <br/>
-                                                                                      <input id="@upload@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
-                                                                                    
+                                                                                        @if (Model.IsResponse)
+                                                                                        {
+                                                                                               @if (Model.IsSuccess)
+                                                                                               {
+                                                                                                  <div class="alert alert-success">
+                                                                                                    @Model.Message
+                                                                                                  </div>
+                                                                                               }
+                                                                                               else
+                                                                                               {
+                                                                                                   <div class="alert alert-danger">
+                                                                                                      @Model.Message
+                                                                                                   </div>
+                                                                                               }
+                                                                                        }
+                                                                                     @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0)
+                                                                                     {
+                                                                                            @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo })
+                                                                                            <br/>
+                                                                                            <input id="@upload@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
+                                                                                     }
+                                                                                    <table class="table">
+                                                                                    <thead> </thead>
+                                                                                    <tbody>
+                                                                                    @foreach(var LedgerFiles in Model.Filess.Where (a => (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo))))
+                                                                                    {
+                                                                                     <tr>
+                                                                                      @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
+                                                                                      {
+                                                                                        <td> @Html.ActionLink(@LedgerFiles.FileName," "," ",new{@class = "View"})</td>
+                                                                                      }
+                                                                                        @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
+                                                                                        {
+                                                                                          <td><input id="@delete@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
+                                                                                        }
+                                                                                     </tr>      
+                                                                                         
+                                                                                    }
+                                                                                    </tbody>
+                                                                                    </table>
                                                                                 </td>
                                                                                 </tr>
 
@@ -3710,11 +3853,48 @@
                                                             }
                                                         </td>
                                                         <td>
+                                                                 @if (Model.IsResponse)
+                                                                 {
+                                                                          @if (Model.IsSuccess)
+                                                                          {
+                                                                               <div class="alert alert-success">
+                                                                                   @Model.Message
+                                                                               </div>
+                                                                          }
+                                                                          else
+                                                                          {
+                                                                             <div class="alert alert-danger">
+                                                                                @Model.Message
+                                                                             </div>
+                                                                          }
+                                                                 }
                                                            @if(!@Subs.RequireInput) 
                                                            {
+                                                             @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0)
+                                                             {
                                                               @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11 }) 
                                                               <br/>
                                                               <input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
+                                                             }
+                                                              <table class="table">
+                                                                                    <thead> </thead>
+                                                                                    <tbody>
+                                                                                    @foreach(var Files in Model.Filess.Where (a => a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                                                                    {
+                                                                            <tr>
+                                                                                @if ((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
+                                                                                {
+                                                                                    <td> @Html.ActionLink(@Files.FileName," "," ",new{@class = "View"})</td>
+                                                                                }
+                                                                                @if(!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
+                                                                                        {
+                                                                                     <td><input id="@delete" class="Submit" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
+                                                                                        }
+                                                                                     </tr>      
+                                                                                         
+                                                                                    }
+                                                                                    </tbody>
+                                                                                    </table>
                                                             }
                                                         </td>
 
@@ -3785,21 +3965,7 @@
                          }
                         else
                         {  
-                                                     @if (Model.IsResponse)
-                                                     {
-                                                         @if (Model.IsSuccess)
-                                                         {
-                                                             <div class="alert alert-success">
-                                                                     @Model.Message
-                                                             </div>
-                                                         }
-                                                         else
-                                                         {
-                                                               <div class="alert alert-danger">
-                                                                   @Model.Message
-                                                               </div>
-                                                         }
-                                                     }
+                                                     
                              <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
                                 <br />
                               
@@ -3873,6 +4039,7 @@
                                                     var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name11 = String.Concat("UploadFile", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var upload = String.Concat("UploadButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var delete = String.Concat("DeleteButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                     
@@ -3890,6 +4057,7 @@
                                                                         {
                                                                             var Ledgerdetails = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();
                                                                             var LedPrevYearApp = (from a in Model.Approved where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();
+
                                                                             <tr>
                                                                                 <td>
                                                                                     @{
@@ -4212,11 +4380,46 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                
-                                                                                    @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo }) 
-                                                                                    <br/>
-                                                                                    <input id="@upload@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
-                                                                                 
+                                                                                                   @if (Model.IsResponse)
+                                                                                                   {
+                                                                                                        @if (Model.IsSuccess)
+                                                                                                        {
+                                                                                                            <div class="alert alert-success">
+                                                                                                             @Model.Message
+                                                                                                            </div>
+                                                                                                        }
+                                                                                                        else
+                                                                                                        {
+                                                                                                            <div class="alert alert-danger">
+                                                                                                               @Model.Message
+                                                                                                            </div>
+                                                                                                        }
+                                                                                                    }
+                                                                                   @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0)
+                                                                                   {
+                                                                                            @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo }) 
+                                                                                            <br/>
+                                                                                            <input id="@upload@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
+                                                                                    }
+                                                                                        <table class="table">
+                                                                                    <thead> </thead>
+                                                                                    <tbody>
+                                                                                    @foreach(var LedgerFiles in Model.Filess.Where (a => (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo))))
+                                                                                    {
+                                                                                     <tr>
+                                                                                       @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
+                                                                                       {
+                                                                                        <td> @Html.ActionLink(@LedgerFiles.FileName," "," ",new{@class = "View"})</td>
+                                                                                       }
+                                                                                        @if(!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
+                                                                                        {
+                                                                                            <td><input id="@delete@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
+                                                                                        }
+                                                                                     </tr>      
+                                                                                         
+                                                                                    }
+                                                                                    </tbody>
+                                                                                    </table>
                                                                                 </td>
                                                                                 </tr>
                                                                          LedgerNo++;
@@ -4780,11 +4983,48 @@
                                                             }
                                                         </td>
                                                         <td>
+                                                                               @if (Model.IsResponse)
+                                                                               {
+                                                                                                        @if (Model.IsSuccess)
+                                                                                                        {
+                                                                                                            <div class="alert alert-success">
+                                                                                                             @Model.Message
+                                                                                                            </div>
+                                                                                                        }
+                                                                                                        else
+                                                                                                        {
+                                                                                                            <div class="alert alert-danger">
+                                                                                                               @Model.Message
+                                                                                                            </div>
+                                                                                                        }
+                                                                               }
                                                            @if(!@Subs.RequireInput) 
                                                            {
+                                                                @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0)
+                                                              {
                                                                @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11 }) 
                                                                <br/>
                                                                <input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/>
+                                                              }
+                                                               <table class="table">
+                                                                        <thead> </thead>
+                                                                        <tbody>
+                                                                                    @foreach(var Files in Model.Filess.Where (a => a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                                                                    {
+                                                                                     <tr>
+                                                                                      @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
+                                                                                      {
+                                                                                        <td> @Html.ActionLink(@Files.FileName," "," ",new{@class = "View"})</td>
+                                                                                      }
+                                                                                        @if(!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
+                                                                                        {
+                                                                                         <td><input id="@delete" class="Submit" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
+                                                                                        }
+                                                                                     </tr>      
+                                                                                         
+                                                                                    }
+                                                                        </tbody>
+                                                               </table>
                                                             }
                                                         </td>
                                                     </tr>
@@ -5020,15 +5260,19 @@
                         var section = sectionnoid.split('-');
                         
                         var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
-                        
-                        var Ledgerid = $(this).closest('tr').children('td').eq(1);
-
-                       // Ledgerid.replace(/[\r\n]+/gm, " ");
-                        
-                        //alert(Ledgerid);
-
+                        alert($(this).val());
+                        if($(this).val()=="Delete")
+                        {
+                            var Ledgerid = $(this).closest('tr').closest('td').closest('tr').children('td').eq(1);
+                            alert(Ledgerid.text());
+                        }
+                        else
+                        {
+                           var Ledgerid = $(this).closest('tr').children('td').eq(1);
+                           alert(Ledgerid);
+                        }
                         $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
-                        //alert($("#SelectedAcademicYear").val());
+                        alert($("#SelectedAcademicYear").val());
                        
 
                         $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
@@ -5053,7 +5297,8 @@
                         $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
                         //alert($("#SelectedAcademicYear").val());
                     });
-
+                
+                 
                 
          });
         

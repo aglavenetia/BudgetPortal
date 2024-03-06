@@ -33,6 +33,7 @@ namespace BudgetPortal.Entities
         [Required]
         public int SectionNumber { get; set; }
 
+        public String? FileName { get; set; }
         public String? SupportingDocumentPath { get; set; }
         public DateTime UploadedDateTime { get; set; }
 

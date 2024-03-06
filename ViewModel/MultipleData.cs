@@ -32,6 +32,7 @@ namespace BudgetPortal.ViewModel
 
         public IEnumerable<AcademicYears>? AcademicYearss { get; set; }
 
+        public IEnumerable<BudgetFiles>? Filess { get; set; }
         public String SectionName { get; set; }
         public String GroupName { get; set; }
         public String SubGroupLedgerName { get; set; }
