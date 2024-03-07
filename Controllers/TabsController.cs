@@ -98,6 +98,8 @@ namespace BudgetPortal.Controllers
         public ActionResult Delete(MultipleData MD)
         {
 
+            
+
             var username = User.Identity.Name;
             var DivName = " ";
             var DivisionID = " ";
@@ -151,9 +153,17 @@ namespace BudgetPortal.Controllers
                                                && (b.GroupNumber == GroupNumber)
                                                && (b.SubGroupNumber == SubGroupNumber)
                                                && (b.LedgerNumber == LedgerNumber)).FirstOrDefault();
-            
+
+
+            if(result.SupportingDocumentPath!= null)
+            {
+                System.IO.File.Delete(result.SupportingDocumentPath);
+            }
+
             _context.BudgetFiles.Remove(result);
             _context.SaveChanges();
+
+            
 
             MD.Sectionss = _context.BudgetSections.ToList();
             MD.Groupss = _context.BudgetGroups.ToList();
@@ -196,12 +206,71 @@ namespace BudgetPortal.Controllers
             return View("Index",MD);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult ViewFile()
+        public ActionResult ViewFile(MultipleData MD)
         {
-            return LocalRedirect();
+            var username = User.Identity.Name;
+            var DivName = " ";
+            var DivisionID = " ";
+
+            var SectionNumber = _context.BudgetSections
+                                  .Where(x => x.SectionName.Equals(MD.SectionName))
+                                  .Select(x => x.SectionNo).First();
+            var GroupNumber = _context.BudgetGroups
+                     .Where(x => x.GroupName.Equals(MD.GroupName))
+                     .Select(x => x.GroupNo).First();
+
+            var SubGroupNumber = _context.BudgetSubGroups
+                     .Where(x => x.SubGroupNo.Equals(MD.SubGroupLedgerName))
+                     .Select(x => x.SubGroupNo).FirstOrDefault();
+
+            var LedgerNumber = _context.BudgetLedgers
+                     .Where(x => x.LedgerName.Equals(MD.SubGroupLedgerName))
+                     .Select(x => x.LedgerNo).FirstOrDefault();
+
+            if (LedgerNumber != null)
+            {
+                SubGroupNumber = _context.BudgetLedgers
+                    .Where(x => x.LedgerName.Equals(MD.SubGroupLedgerName))
+                    .Select(x => x.SubGroupNo).FirstOrDefault();
+            }
+
+            if (User.Identity.Name.Equals("admin@test.com"))
+            {
+                DivName = MD.SelectedDivisionName.ToString();
+                DivisionID = _context.Division
+                                     .Where(d => d.DivisionName == DivName)
+                                     .Select(x => x.DivisionID).FirstOrDefault().ToString();
+            }
+            else
+            {
+                DivName = _context.Users
+                            .Where(x => x.UserName.Equals(username))
+                            .Select(x => x.BranchName).First();
+                DivisionID = _context.Division
+                                    .Where(d => d.DivisionName == DivName)
+                                    .Select(x => x.DivisionID).FirstOrDefault().ToString();
+            }
+
+            var splitAcademicYear = MD.SelectedAcademicYear.ToString().Split("-");
+
+            var result = new BudgetFiles();
+            result = _context.BudgetFiles
+                                      .Where(b => (b.DivisionID == Convert.ToInt32(DivisionID))
+                                               && (b.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0]))
+                                               && (b.SectionNumber == SectionNumber)
+                                               && (b.GroupNumber == GroupNumber)
+                                               && (b.SubGroupNumber == SubGroupNumber)
+                                               && (b.LedgerNumber == LedgerNumber)).FirstOrDefault();
+
+            using (var stream = new FileStream(result.SupportingDocumentPath, FileMode.Open, FileAccess.Read))
+            {
+                MD.File.CopyTo(stream);
+            }
+
+            return window.open(result.SupportingDocumentPath, "_blank");
         }
 
         [HttpPost]

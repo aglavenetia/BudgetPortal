@@ -437,6 +437,7 @@
                                                     var name11 = String.Concat("UploadFile", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var upload = String.Concat("UploadButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var delete = String.Concat("DeleteButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var view = String.Concat("ViewButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                     
@@ -828,11 +829,12 @@
                                                                                                     <tr>
                                                                                                         @if ((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
                                                                                                         {
-                                                                                                            <td> @Html.ActionLink(@LedgerFiles.FileName," "," ",new{@class = "View"})</td>
+                                                                                                            /*<td>@Html.ActionLink(@LedgerFiles.FileName,null,null,new{href =@LedgerFiles.SupportingDocumentPath},new{target = "_blank"} )</td>*/
+                                                                                                            <td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>
                                                                                                         }
                                                                                         @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
                                                                                         {
-                                                                                         <td><input id="@delete@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
+                                                                                         <td><input id="@delete@Ledgers.LedgerNo" class="Submit btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
                                                                                         }
                                                                                      </tr>      
                                                                                          
@@ -1461,11 +1463,12 @@
                                                                                      <tr>
                                                                                       @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
                                                                                       {
-                                                                                        <td> @Html.ActionLink(@Files.FileName," "," ",new{@class = "View"})</td>
+                                                                                    /*<td>@Html.ActionLink(@Files.FileName,null,null,new{href =@Files.SupportingDocumentPath},new{target = "_blank"} )</td>*/
+                                                                                       <td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@Files.FileName" /></td>
                                                                                       }
                                                                                         @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
                                                                                         {
-                                                                                           <td><input id="@delete" class="Submit" formaction="~/Tabs/Delete" type="submit" value="Delete"/></td>
+                                                                                           <td><input id="@delete" class="Submit  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete"/></td>
                                                                                         }
                                                                                      </tr>      
                                                                                          
@@ -1614,6 +1617,7 @@
                                                     var name11 = String.Concat("UploadFile", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var upload = String.Concat("UploadButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var delete = String.Concat("DeleteButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var view = String.Concat("ViewButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                     
@@ -1962,11 +1966,12 @@
                                                                                      <tr>
                                                                                       @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
                                                                                       {
-                                                                                        <td> @Html.ActionLink(@LedgerFiles.FileName," "," ",new{@class = "View"})</td>
+                                                                                        /*<td>@Html.ActionLink(@LedgerFiles.FileName,null,null,new{href =@LedgerFiles.SupportingDocumentPath},new{target = "_blank"} )</td>*/
+                                                                                       <td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>
                                                                                       }
                                                                                         @if(!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
                                                                                         {
-                                                                                         <td><input id="@delete@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Delete" type="submit" value="Delete" /> </td>
+                                                                                         <td><input id="@delete@Ledgers.LedgerNo" class="Submit  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete" /> </td>
                                                                                         }
                                                                                      </tr>      
                                                                                          
@@ -2569,11 +2574,12 @@
                                                                                      <tr>
                                                                                         @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
                                                                                         {
-                                                                                        <td> @Html.ActionLink(@Files.FileName," "," ",new{@class = "View"})</td>
+                                                                                    /*<td>@Html.ActionLink(@Files.FileName,null,null,new{href =@Files.SupportingDocumentPath},new{target = "_blank"} )</td>*/
+                                                                                         <td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@Files.FileName" /></td>
                                                                                         }
                                                                                         @if(!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
                                                                                         {
-                                                                                           <td> <input id="@delete" class="Submit" formaction="~/Tabs/Delete" type="submit" value="Delete"/>  </td>
+                                                                                    <td> <input id="@delete" class="Submit  btn-link" style="border:none; outline:none; background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete" />  </td>
                                                                                         }
                                                                                      </tr>      
                                                                                          
@@ -2919,6 +2925,7 @@
                                                     var name11 = String.Concat("UploadFile", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var upload = String.Concat("UploadButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var delete = String.Concat("DeleteButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var view = String.Concat("ViewButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                      
@@ -3277,11 +3284,12 @@
                                                                                      <tr>
                                                                                       @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
                                                                                       {
-                                                                                        <td> @Html.ActionLink(@LedgerFiles.FileName," "," ",new{@class = "View"})</td>
+                                                                                                            /*<td>@Html.ActionLink(@LedgerFiles.FileName,null,null,new{href =@LedgerFiles.SupportingDocumentPath},new{target = "_blank"} )</td>*/
+                                                                                        <td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>
                                                                                       }
                                                                                         @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
                                                                                         {
-                                                                                          <td><input id="@delete@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
+                                                                                          <td><input id="@delete@Ledgers.LedgerNo" class="Submit  btn-link" style="border:none; outline:none; background-color:  transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
                                                                                         }
                                                                                      </tr>      
                                                                                          
@@ -3884,11 +3892,12 @@
                                                                             <tr>
                                                                                 @if ((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
                                                                                 {
-                                                                                    <td> @Html.ActionLink(@Files.FileName," "," ",new{@class = "View"})</td>
+                                                                                  /*<td>@Html.ActionLink(@Files.FileName,null,null,new{href =@Files.SupportingDocumentPath},new{target = "_blank"} )</td>*/
+                                                                                 <td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@Files.FileName" /></td>
                                                                                 }
                                                                                 @if(!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
                                                                                         {
-                                                                                     <td><input id="@delete" class="Submit" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
+                                                                                     <td><input id="@delete" class="Submit  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
                                                                                         }
                                                                                      </tr>      
                                                                                          
@@ -4040,6 +4049,7 @@
                                                     var name11 = String.Concat("UploadFile", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var upload = String.Concat("UploadButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var delete = String.Concat("DeleteButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var view = String.Concat("ViewButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                     
@@ -4409,11 +4419,12 @@
                                                                                      <tr>
                                                                                        @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
                                                                                        {
-                                                                                        <td> @Html.ActionLink(@LedgerFiles.FileName," "," ",new{@class = "View"})</td>
+                                                                                         /*<td>@Html.ActionLink(@LedgerFiles.FileName,null,null,new{href =@LedgerFiles.SupportingDocumentPath},new{target = "_blank"} )</td>*/
+                                                                                         <td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>
                                                                                        }
                                                                                         @if(!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
                                                                                         {
-                                                                                            <td><input id="@delete@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
+                                                                                            <td><input id="@delete@Ledgers.LedgerNo" class="Submit  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
                                                                                         }
                                                                                      </tr>      
                                                                                          
@@ -5014,11 +5025,12 @@
                                                                                      <tr>
                                                                                       @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
                                                                                       {
-                                                                                        <td> @Html.ActionLink(@Files.FileName," "," ",new{@class = "View"})</td>
+                                                                                       /*<td>@Html.ActionLink(@Files.FileName,null,null,new{href =@Files.SupportingDocumentPath},new{target = "_blank"} )</td>*/
+                                                                                       <td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@Files.FileName" /></td>
                                                                                       }
                                                                                         @if(!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
                                                                                         {
-                                                                                         <td><input id="@delete" class="Submit" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
+                                                                                         <td><input id="@delete" class="Submit  btn-link" style="border:none; outline:none; background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
                                                                                         }
                                                                                      </tr>      
                                                                                          
@@ -5271,6 +5283,34 @@
                            var Ledgerid = $(this).closest('tr').children('td').eq(1);
                            alert(Ledgerid);
                         }
+                        $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
+                        alert($("#SelectedAcademicYear").val());
+                       
+
+                        $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
+                        //alert($("#SelectedDivisionName").val());
+                        
+                        $('#SectionName').val($('#' + sectionnoid).text());
+                        //alert($('#SectionName').val());
+                        
+                        $('#GroupName').val($('#' + groupnoid).text());
+                        //alert($('#GroupName').val());
+
+                        $('#SubGroupLedgerName').val(Ledgerid.text().trim());
+                        
+                    });
+                $('body').on('click',".ViewFile",
+                    function () {
+                        var sectionnoid = $('#outerTab li button.active').attr('id');
+                        
+                        var section = sectionnoid.split('-');
+                        
+                        var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
+                        alert($(this).val());
+                        
+                        var Ledgerid = $(this).closest('tr').closest('td').closest('tr').children('td').eq(1);
+                        alert(Ledgerid.text());
+                        
                         $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
                         alert($("#SelectedAcademicYear").val());
                        
