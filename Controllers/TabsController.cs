@@ -97,9 +97,6 @@ namespace BudgetPortal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(MultipleData MD)
         {
-
-            
-
             var username = User.Identity.Name;
             var DivName = " ";
             var DivisionID = " ";
@@ -154,10 +151,13 @@ namespace BudgetPortal.Controllers
                                                && (b.SubGroupNumber == SubGroupNumber)
                                                && (b.LedgerNumber == LedgerNumber)).FirstOrDefault();
 
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files");
+            string fileNameWithPath = Path.Combine(path, result.FileName.ToString());
+            //string FilePath = path.Concat();
 
-            if(result.SupportingDocumentPath!= null)
+            if (result.SupportingDocumentPath!= null)
             {
-                System.IO.File.Delete(result.SupportingDocumentPath);
+               System.IO.File.Delete(fileNameWithPath);
             }
 
             _context.BudgetFiles.Remove(result);
@@ -206,73 +206,7 @@ namespace BudgetPortal.Controllers
             return View("Index",MD);
         }
 
-        [HttpPost]
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        public ActionResult ViewFile(MultipleData MD)
-        {
-            var username = User.Identity.Name;
-            var DivName = " ";
-            var DivisionID = " ";
-
-            var SectionNumber = _context.BudgetSections
-                                  .Where(x => x.SectionName.Equals(MD.SectionName))
-                                  .Select(x => x.SectionNo).First();
-            var GroupNumber = _context.BudgetGroups
-                     .Where(x => x.GroupName.Equals(MD.GroupName))
-                     .Select(x => x.GroupNo).First();
-
-            var SubGroupNumber = _context.BudgetSubGroups
-                     .Where(x => x.SubGroupNo.Equals(MD.SubGroupLedgerName))
-                     .Select(x => x.SubGroupNo).FirstOrDefault();
-
-            var LedgerNumber = _context.BudgetLedgers
-                     .Where(x => x.LedgerName.Equals(MD.SubGroupLedgerName))
-                     .Select(x => x.LedgerNo).FirstOrDefault();
-
-            if (LedgerNumber != null)
-            {
-                SubGroupNumber = _context.BudgetLedgers
-                    .Where(x => x.LedgerName.Equals(MD.SubGroupLedgerName))
-                    .Select(x => x.SubGroupNo).FirstOrDefault();
-            }
-
-            if (User.Identity.Name.Equals("admin@test.com"))
-            {
-                DivName = MD.SelectedDivisionName.ToString();
-                DivisionID = _context.Division
-                                     .Where(d => d.DivisionName == DivName)
-                                     .Select(x => x.DivisionID).FirstOrDefault().ToString();
-            }
-            else
-            {
-                DivName = _context.Users
-                            .Where(x => x.UserName.Equals(username))
-                            .Select(x => x.BranchName).First();
-                DivisionID = _context.Division
-                                    .Where(d => d.DivisionName == DivName)
-                                    .Select(x => x.DivisionID).FirstOrDefault().ToString();
-            }
-
-            var splitAcademicYear = MD.SelectedAcademicYear.ToString().Split("-");
-
-            var result = new BudgetFiles();
-            result = _context.BudgetFiles
-                                      .Where(b => (b.DivisionID == Convert.ToInt32(DivisionID))
-                                               && (b.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0]))
-                                               && (b.SectionNumber == SectionNumber)
-                                               && (b.GroupNumber == GroupNumber)
-                                               && (b.SubGroupNumber == SubGroupNumber)
-                                               && (b.LedgerNumber == LedgerNumber)).FirstOrDefault();
-
-            using (var stream = new FileStream(result.SupportingDocumentPath, FileMode.Open, FileAccess.Read))
-            {
-                MD.File.CopyTo(stream);
-            }
-
-            return window.open(result.SupportingDocumentPath, "_blank");
-        }
-
+        
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
@@ -280,7 +214,7 @@ namespace BudgetPortal.Controllers
         {
           
                
-                    MD.IsResponse = true;
+                    //MD.IsResponse = true;
 
                     string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files");
 
@@ -296,13 +230,15 @@ namespace BudgetPortal.Controllers
 
                     string fileNameWithPath = Path.Combine(path, fileName);
 
+
+
                     using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
                     {
                         MD.File.CopyTo(stream);
                     }
 
-                    MD.IsSuccess = true;
-                    MD.Message = "Saved";
+                    //MD.IsSuccess = true;
+                    //MD.Message = "Saved";
 
             
             var username = User.Identity.Name;
@@ -359,7 +295,7 @@ namespace BudgetPortal.Controllers
             result.GroupNumber = GroupNumber;
             result.SubGroupNumber = SubGroupNumber;
             result.LedgerNumber = LedgerNumber;
-            result.SupportingDocumentPath = fileNameWithPath;
+            result.SupportingDocumentPath = "/Files/"+fileName;
             result.FileName = fileName;
 
             _context.BudgetFiles.Add(result);
@@ -553,9 +489,9 @@ namespace BudgetPortal.Controllers
 
                     MD.DivisionNames.Where(x => x.Text.Equals(MD.SelectedDivisionName.ToString())).Single().Selected = true;
 
-                MD.IsResponse = true;
-                MD.IsSuccess = true;
-                MD.Message = "Budget Details Submitted successfully";
+               // MD.IsResponse = true;
+                //MD.IsSuccess = true;
+                //MD.Message = "Budget Details Submitted successfully";
 
 
 
@@ -598,8 +534,10 @@ namespace BudgetPortal.Controllers
                 MD.Ledgerss = _context.BudgetLedgers.ToList();
                 MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
                                  .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+                MD.Filess = _context.BudgetFiles.Where(x => x.DivisionID == LoggedInDivisionID)
+                                    .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
                 //MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
-                                 //.Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber != Convert.ToInt32(0)).ToList();
+                //.Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber != Convert.ToInt32(0)).ToList();
                 MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
                             .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
                 
@@ -633,6 +571,11 @@ namespace BudgetPortal.Controllers
                 ModelState.Remove("SelectedDivisionID");
                 ModelState.Remove("ACAndBWPropRECurrFin");
                 ModelState.Remove("ACAndBWPropRENxtFin");
+                ModelState.Remove("Message");
+                ModelState.Remove("File");
+                ModelState.Remove("FileName");
+                ModelState.Remove("SubGroupLedgerName");
+
 
                 if (ModelState.IsValid)
                 {
@@ -755,9 +698,9 @@ namespace BudgetPortal.Controllers
                     MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
                                  .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
 
-                    MD.IsResponse = true;
-                    MD.IsSuccess = true;
-                    MD.Message = "Budget Details Submitted successfully";
+                   // MD.IsResponse = true;
+                   // MD.IsSuccess = true;
+                   // MD.Message = "Budget Details Submitted successfully";
 
                 }
                 return View("Index", MD);

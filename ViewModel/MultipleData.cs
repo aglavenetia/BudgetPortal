@@ -47,6 +47,7 @@ namespace BudgetPortal.ViewModel
 
         public List<String> SubGroupNameOrLedgerName { get; set; }
 
+
         [Required(ErrorMessage = "Please enter BudgetEstimates for the Current Financial Year")]
         [Column(TypeName = "money")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.####}")]
@@ -108,20 +109,12 @@ namespace BudgetPortal.ViewModel
         [Required(ErrorMessage = "Please select a Division Name")]
         public String? SelectedDivisionID { get; set; }
 
-
-
-
         [Display(Name = "Financial Year")]
         public IEnumerable<SelectListItem>? AcademicYears { get; set; }
 
         [Required(ErrorMessage = "Please select the Academic Year")]
         public String? SelectedAcademicYearID { get; set; }
-
-
-        [Required(ErrorMessage = "Please enter file name")]
         public string FileName { get; set; }
-
-        [Required(ErrorMessage = "Please select file")]
         public IFormFile File { get; set; }
 
 

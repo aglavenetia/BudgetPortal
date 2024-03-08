@@ -800,8 +800,8 @@
                                                                                 </td>
 
                                                                                 <td>  
-                                                                                     @if (Model.IsResponse)
-                                                                                     {
+                                                                                   @*if (Model.IsResponse)
+                                                                                    {
                                                                                            @if (Model.IsSuccess)
                                                                                            {
                                                                                                  <div class="alert alert-success">
@@ -814,7 +814,7 @@
                                                                                                        @Model.Message
                                                                                                  </div>
                                                                                            }
-                                                                                     }
+                                                                                        }*@
                                                                                    @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0)
                                                                                         {
                                                                                             @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo })
@@ -829,8 +829,8 @@
                                                                                                     <tr>
                                                                                                         @if ((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
                                                                                                         {
-                                                                                                            /*<td>@Html.ActionLink(@LedgerFiles.FileName,null,null,new{href =@LedgerFiles.SupportingDocumentPath},new{target = "_blank"} )</td>*/
-                                                                                                            <td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>
+                                                                                                            <td>@Html.ActionLink(@LedgerFiles.FileName,null,null,null,new{href =@LedgerFiles.SupportingDocumentPath, target = "_blank"} )</td>
+                                                                                                            /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>*/
                                                                                                         }
                                                                                         @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
                                                                                         {
@@ -1432,7 +1432,7 @@
                                                         </td>
 
                                                         <td> 
-                                                                                     @if (Model.IsResponse)
+                                                                                     @*if (Model.IsResponse)
                                                                                      {
                                                                                            @if (Model.IsSuccess)
                                                                                            {
@@ -1446,7 +1446,7 @@
                                                                                                        @Model.Message
                                                                                                  </div>
                                                                                            }
-                                                                                     }
+                                                                                     }*@
                                                          @if(!@Subs.RequireInput) 
                                                          {
                                                               @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0)
@@ -1463,8 +1463,8 @@
                                                                                      <tr>
                                                                                       @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
                                                                                       {
-                                                                                    /*<td>@Html.ActionLink(@Files.FileName,null,null,new{href =@Files.SupportingDocumentPath},new{target = "_blank"} )</td>*/
-                                                                                       <td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@Files.FileName" /></td>
+                                                                                       <td>@Html.ActionLink(@Files.FileName,null,null,null,new{href =@Files.SupportingDocumentPath, target = "_blank"} )</td>
+                                                                                       /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@Files.FileName" /></td>*/
                                                                                       }
                                                                                         @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
                                                                                         {
@@ -1950,9 +1950,8 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>  
-                                                                                   @if(!@Subs.RequireInput) 
-                                                                                   {
-                                                                                            @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0)
+                                                                                  
+                                                                                   @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0)
                                                                                             {
                                                                                                 @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo }) 
                                                                                                 <br/>
@@ -1966,8 +1965,8 @@
                                                                                      <tr>
                                                                                       @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
                                                                                       {
-                                                                                        /*<td>@Html.ActionLink(@LedgerFiles.FileName,null,null,new{href =@LedgerFiles.SupportingDocumentPath},new{target = "_blank"} )</td>*/
-                                                                                       <td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>
+                                                                                        <td>@Html.ActionLink(@LedgerFiles.FileName,null,null,null,new{href =@LedgerFiles.SupportingDocumentPath, target = "_blank"} )</td>
+                                                                                       /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>*/
                                                                                       }
                                                                                         @if(!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
                                                                                         {
@@ -1979,7 +1978,7 @@
                                                                                     </tbody>
                                                                                     </table>
                                                                                    
-                                                                                   }
+                                                                                   
                                                                                 </td>
                                                                                 </tr>
 
@@ -2543,7 +2542,7 @@
                                                         </td>
 
                                                         <td>  
-                                                             @if (Model.IsResponse)
+                                                             @*if (Model.IsResponse)
                                                              {
                                                                    @if (Model.IsSuccess)
                                                                    {
@@ -2557,7 +2556,7 @@
                                                                              @Model.Message
                                                                          </div>
                                                                    }
-                                                             }
+                                                             }*@
                                                            @if(!@Subs.RequireInput) 
                                                            {
                                                                 @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0)
@@ -2574,8 +2573,8 @@
                                                                                      <tr>
                                                                                         @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
                                                                                         {
-                                                                                    /*<td>@Html.ActionLink(@Files.FileName,null,null,new{href =@Files.SupportingDocumentPath},new{target = "_blank"} )</td>*/
-                                                                                         <td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@Files.FileName" /></td>
+                                                                                           <td>@Html.ActionLink(@Files.FileName,null,null,null,new{href =@Files.SupportingDocumentPath, target = "_blank"} )</td>
+                                                                                         /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@Files.FileName" /></td>*/
                                                                                         }
                                                                                         @if(!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
                                                                                         {
@@ -2836,7 +2835,7 @@
 
                           if (CounterBody == 0)
                           {
-                                                     @if (Model.IsResponse)
+                                                     @*if (Model.IsResponse)
                                                      {
                                                          @if (Model.IsSuccess)
                                                          {
@@ -2850,7 +2849,7 @@
                                                                    @Model.Message
                                                                </div>
                                                          }
-                                                     }
+                                                     }*@
                               <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
                                   
                                  @*using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
@@ -3255,7 +3254,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                        @if (Model.IsResponse)
+                                                                                        @*if (Model.IsResponse)
                                                                                         {
                                                                                                @if (Model.IsSuccess)
                                                                                                {
@@ -3269,7 +3268,7 @@
                                                                                                       @Model.Message
                                                                                                    </div>
                                                                                                }
-                                                                                        }
+                                                                                        }*@
                                                                                      @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0)
                                                                                      {
                                                                                             @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo })
@@ -3284,8 +3283,8 @@
                                                                                      <tr>
                                                                                       @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
                                                                                       {
-                                                                                                            /*<td>@Html.ActionLink(@LedgerFiles.FileName,null,null,new{href =@LedgerFiles.SupportingDocumentPath},new{target = "_blank"} )</td>*/
-                                                                                        <td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>
+                                                                                        <td>@Html.ActionLink(@LedgerFiles.FileName,null,null,null,new{href =@LedgerFiles.SupportingDocumentPath, target = "_blank"} )</td>
+                                                                                        /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>*/
                                                                                       }
                                                                                         @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
                                                                                         {
@@ -3861,7 +3860,7 @@
                                                             }
                                                         </td>
                                                         <td>
-                                                                 @if (Model.IsResponse)
+                                                                 @*if (Model.IsResponse)
                                                                  {
                                                                           @if (Model.IsSuccess)
                                                                           {
@@ -3875,7 +3874,7 @@
                                                                                 @Model.Message
                                                                              </div>
                                                                           }
-                                                                 }
+                                                                 }*@
                                                            @if(!@Subs.RequireInput) 
                                                            {
                                                              @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0)
@@ -3892,8 +3891,8 @@
                                                                             <tr>
                                                                                 @if ((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
                                                                                 {
-                                                                                  /*<td>@Html.ActionLink(@Files.FileName,null,null,new{href =@Files.SupportingDocumentPath},new{target = "_blank"} )</td>*/
-                                                                                 <td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@Files.FileName" /></td>
+                                                                                   <td>@Html.ActionLink(@Files.FileName,null,null,null,new{href =@Files.SupportingDocumentPath, target = "_blank"} )</td>
+                                                                                 /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@Files.FileName" /></td>*/
                                                                                 }
                                                                                 @if(!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
                                                                                         {
@@ -4390,7 +4389,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                                   @if (Model.IsResponse)
+                                                                                                   @*if (Model.IsResponse)
                                                                                                    {
                                                                                                         @if (Model.IsSuccess)
                                                                                                         {
@@ -4404,7 +4403,7 @@
                                                                                                                @Model.Message
                                                                                                             </div>
                                                                                                         }
-                                                                                                    }
+                                                                                                    }*@
                                                                                    @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0)
                                                                                    {
                                                                                             @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo }) 
@@ -4419,8 +4418,8 @@
                                                                                      <tr>
                                                                                        @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
                                                                                        {
-                                                                                         /*<td>@Html.ActionLink(@LedgerFiles.FileName,null,null,new{href =@LedgerFiles.SupportingDocumentPath},new{target = "_blank"} )</td>*/
-                                                                                         <td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>
+                                                                                         <td>@Html.ActionLink(@LedgerFiles.FileName,null,null,null,new{href =@LedgerFiles.SupportingDocumentPath, target = "_blank"} )</td>
+                                                                                         /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>*/
                                                                                        }
                                                                                         @if(!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
                                                                                         {
@@ -4994,7 +4993,7 @@
                                                             }
                                                         </td>
                                                         <td>
-                                                                               @if (Model.IsResponse)
+                                                                               @*if (Model.IsResponse)
                                                                                {
                                                                                                         @if (Model.IsSuccess)
                                                                                                         {
@@ -5008,7 +5007,7 @@
                                                                                                                @Model.Message
                                                                                                             </div>
                                                                                                         }
-                                                                               }
+                                                                               }*@
                                                            @if(!@Subs.RequireInput) 
                                                            {
                                                                 @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0)
@@ -5025,8 +5024,8 @@
                                                                                      <tr>
                                                                                       @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
                                                                                       {
-                                                                                       /*<td>@Html.ActionLink(@Files.FileName,null,null,new{href =@Files.SupportingDocumentPath},new{target = "_blank"} )</td>*/
-                                                                                       <td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@Files.FileName" /></td>
+                                                                                        <td>@Html.ActionLink(@Files.FileName,null,null,null,new{href =@Files.SupportingDocumentPath, target = "_blank"} )</td>
+                                                                                       /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@Files.FileName" /></td>*/
                                                                                       }
                                                                                         @if(!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
                                                                                         {
@@ -5272,19 +5271,19 @@
                         var section = sectionnoid.split('-');
                         
                         var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
-                        alert($(this).val());
+                        //alert($(this).val());
                         if($(this).val()=="Delete")
                         {
                             var Ledgerid = $(this).closest('tr').closest('td').closest('tr').children('td').eq(1);
-                            alert(Ledgerid.text());
+                            //alert(Ledgerid.text());
                         }
                         else
                         {
                            var Ledgerid = $(this).closest('tr').children('td').eq(1);
-                           alert(Ledgerid);
+                           //alert(Ledgerid);
                         }
                         $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
-                        alert($("#SelectedAcademicYear").val());
+                        //alert($("#SelectedAcademicYear").val());
                        
 
                         $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
@@ -5306,13 +5305,13 @@
                         var section = sectionnoid.split('-');
                         
                         var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
-                        alert($(this).val());
+                        //alert($(this).val());
                         
                         var Ledgerid = $(this).closest('tr').closest('td').closest('tr').children('td').eq(1);
-                        alert(Ledgerid.text());
+                        //alert(Ledgerid.text());
                         
                         $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
-                        alert($("#SelectedAcademicYear").val());
+                        //alert($("#SelectedAcademicYear").val());
                        
 
                         $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
