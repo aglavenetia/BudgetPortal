@@ -20,7 +20,7 @@ namespace BudgetPortal.ViewModel
         public IEnumerable<BudgetSubGroups>? SubGroupss { get; set; }
 
         public IEnumerable<BudgetLedgers>? Ledgerss { get; set; }
-
+        public IEnumerable<BudgetDetailsApproved>? Approved { get; set; }
         public IEnumerable<BudgetDetails>? Detailss { get; set; }
         public IEnumerable<BudgetReports>? Reports { get; set; }
         public IEnumerable<Division>? Divisionss { get; set; }

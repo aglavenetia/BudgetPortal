@@ -371,6 +371,11 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.GroupNo.Equals(GroupNumber))
                                 .Select(x => x.SubGroupNo).ToList();
 
+                ModelState.Remove("Message");
+                ModelState.Remove("File");
+                ModelState.Remove("FileName");
+                ModelState.Remove("SubGroupLedgerName");
+                
                 if (ModelState.IsValid)
                 {
 
@@ -802,7 +807,11 @@ namespace BudgetPortal.Controllers
 
                 ModelState.Remove("SectionName");
                 ModelState.Remove("GroupName");
-                  if (ModelState.IsValid)
+                ModelState.Remove("Message");
+                ModelState.Remove("File");
+                ModelState.Remove("FileName");
+                ModelState.Remove("SubGroupLedgerName");
+                if (ModelState.IsValid)
                   {
                     int i = 0;
                     foreach (var itemSections in _context.BudgetSections)
