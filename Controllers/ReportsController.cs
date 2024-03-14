@@ -103,7 +103,8 @@ namespace BudgetPortal.Controllers
             mymodel.Ledgerss = _context.BudgetLedgers.ToList();
             mymodel.Detailss = _context.BudgetDetails.Where(x => x.FinancialYear1 == Year).ToList();
             mymodel.Divisionss = _context.Division.ToList();
-            
+            mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.FinancialYear1 == (Year - 1)).ToList();
+
             String[] DivisionTypes = _context.Division.Select(x => x.DivisionType).Distinct().ToArray();
 
             mymodel.DivisionTypeNames = new List<SelectListItem>();
