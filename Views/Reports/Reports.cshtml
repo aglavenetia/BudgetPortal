@@ -16,6 +16,12 @@
     int OuterBodyCount = 0;
     int CountHeader = 0;
     int CounterBody = 0;
+    var SumBudEstCurrFin = 0.00;
+    var SumActPrevFin= 0.00;
+    var SumActCurrFinTill2ndQuart = 0.00;
+    var SumRevEstCurrFin = 0.00; 
+    var SumBudgEstNexFin= 0.00;
+    var ReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
 }
 <br />
 
@@ -36,7 +42,8 @@
                     @Html.HiddenFor(m => m.SelectedAcademicYear, new {id="SelectedAcademicYear"}) 
                     @Html.ValidationMessageFor(Model => Model.SelectedAcademicYearID, "", new { @class = "text-danger" })
                 </td>
-                @if(m => m.SelectedReportName.NotEquals("Headwise Consolidation"))
+                
+                @if(ReportName != "Headwise Consolidation")
                 {
                 <td class="w-20">
                     @Html.DropDownListFor(m => m.SelectedDivisionTypeID, Model.DivisionTypeNames,"--Please select any DivisionType Name--",new { @class = "form-control", @id="DivisionType" })
@@ -133,29 +140,48 @@
                             var Sumname3 = String.Concat("ActCurrFinTillsecondQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                             var Sumname4 = String.Concat("RevEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                             var Sumname7 = String.Concat("BudgEstNexFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                            //var SelectReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
 
-                            var SumBudEstCurrFin = (from a in Model.Detailss 
+                            @if (ReportName.Equals("Headwise Consolidation"))
+                            {
+                                SumBudEstCurrFin = (double)(from a in Model.Detailss 
+                                                     where (a.GroupNumber.Equals(@item.GroupNo)) select a.BudEstCurrFin).Sum();
+                                SumActPrevFin = (double)(from a in Model.Detailss 
+                                                 where (a.GroupNumber.Equals(@item.GroupNo)) select a.ActPrevFin).Sum();
+                                SumActCurrFinTill2ndQuart = (double)(from a in Model.Detailss
+                                                                     where (a.GroupNumber.Equals(@item.GroupNo)) 
+                                                              select a.ActCurrFinTill2ndQuart).Sum();
+                                SumRevEstCurrFin = (double)(from a in Model.Detailss 
+                                                    where (a.GroupNumber.Equals(@item.GroupNo))
+                                                    select a.ACAndBWPropRECurrFin).Sum();
+                                SumBudgEstNexFin = (double)(from a in Model.Detailss 
+                                                     where (a.GroupNumber.Equals(@item.GroupNo)) 
+                                                     select a.ACAndBWPropRENxtFin).Sum();   
+                            }
+                            else
+                            {
+                             SumBudEstCurrFin = (double)(from a in Model.Detailss 
                                                      join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                      where (b.DivisionType.Equals(SelectedDivisionTypeName) &&  a.GroupNumber.Equals(@item.GroupNo)) select a.BudEstCurrFin).Sum();
-                            var SumActPrevFin = (from a in Model.Detailss 
+                             SumActPrevFin = (double)(from a in Model.Detailss 
                                                  join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                  where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo)) select a.ActPrevFin).Sum();
-                            var SumActCurrFinTill2ndQuart = (from a in Model.Detailss 
+                             SumActCurrFinTill2ndQuart = (double)(from a in Model.Detailss 
                                                             join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                               where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo)) 
                                                               select a.ActCurrFinTill2ndQuart).Sum();
-                            var SumRevEstCurrFin = (from a in Model.Detailss 
+                             SumRevEstCurrFin = (double)(from a in Model.Detailss 
                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                     where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
                                                     select a.ACAndBWPropRECurrFin).Sum();
-                            var SumBudgEstNexFin = (from a in Model.Detailss 
+                             SumBudgEstNexFin = (double)(from a in Model.Detailss 
                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                      where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo)) 
                                                      select a.ACAndBWPropRENxtFin).Sum();
-
+                           }
                             if (CounterBody == 0)
                             {
-                                var ReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
+                                //var ReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
                                 var SelectedAcademicYear = (from a in Model.AcademicYears where a.Selected == true select a.Text).FirstOrDefault();
                                 var Report = @ReportName.Contains("Budget") ? @ReportName : @ReportName + " "+@SelectedAcademicYear;
                                 var SplitAcademicYear = SelectedAcademicYear.Split("-");
@@ -242,25 +268,40 @@
 
                                                     @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                                     {
-                                                        var BudEstCurrFinSum = (from a in Model.Detailss 
-                                                                            join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                                            where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) 
+                                                        //var BudEstCurrFinSum = (from a in Model.Detailss 
+                                                       //                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                       //                     where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) 
+                                                       //                     select a.BudEstCurrFin).Sum();
+                                                    var BudEstCurrFinSum = (from a in Model.Detailss 
+                                                                            where (a.SubGroupNumber.Equals(@Subs.SubGroupNo))
                                                                             select a.BudEstCurrFin).Sum();
-                                                    var ActPrevFinSum = (from a in Model.Detailss 
-                                                                         join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                                         where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) 
+                                                    //var ActPrevFinSum = (from a in Model.Detailss 
+                                                    //                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                    //                     where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) 
+                                                    //                     select a.ActPrevFin).Sum();
+                                                    var ActPrevFinSum = (from a in Model.Detailss
+                                                                         where (a.SubGroupNumber.Equals(@Subs.SubGroupNo))
                                                                          select a.ActPrevFin).Sum();
+                                                    //var ActCurrFinTill2ndQuartSum = (from a in Model.Detailss 
+                                                    //                                 join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                    //                                 where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) 
+                                                    //                                 select a.ActCurrFinTill2ndQuart).Sum();
                                                     var ActCurrFinTill2ndQuartSum = (from a in Model.Detailss 
-                                                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                                                     where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) 
+                                                                                     where (a.SubGroupNumber.Equals(@Subs.SubGroupNo))
                                                                                      select a.ActCurrFinTill2ndQuart).Sum();
+                                                    //var RevEstCurrFinSum = (from a in Model.Detailss 
+                                                    //                        join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                    //                        where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) 
+                                                    //                        select a.ACAndBWPropRECurrFin).Sum();
                                                     var RevEstCurrFinSum = (from a in Model.Detailss 
-                                                                            join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                                            where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) 
+                                                                            where (a.SubGroupNumber.Equals(@Subs.SubGroupNo))
                                                                             select a.ACAndBWPropRECurrFin).Sum();
+                                                    //var BudgEstNexFinSum = (from a in Model.Detailss 
+                                                    //                        join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                    //                        where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) 
+                                                    //                        select a.ACAndBWPropRENxtFin).Sum();
                                                     var BudgEstNexFinSum = (from a in Model.Detailss 
-                                                                            join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                                            where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) 
+                                                                            where (a.SubGroupNumber.Equals(@Subs.SubGroupNo))
                                                                             select a.ACAndBWPropRENxtFin).Sum();
 
                                                         var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -653,7 +694,7 @@
                             else
                             {
                                 //var SelectedDivisionTypeName = (from a in Model.DivisionTypeNames where a.Selected == true select a.Text).FirstOrDefault();
-                                var ReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
+                                //var ReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
                                 var SelectedAcademicYear = (from a in Model.AcademicYears where a.Selected == true select a.Text).FirstOrDefault();
                                 var SplitAcademicYear = SelectedAcademicYear.Split("-");
                                 var NextAcademicYear = SplitAcademicYear[1]+"-"+(Convert.ToInt32(SplitAcademicYear[1])+Convert.ToInt32(1));
@@ -740,25 +781,40 @@
 
                                                     @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                                     {
-                                                    var BudEstCurrFinSum = (from a in Model.Detailss
-                                                                            join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                                            where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                                    //var BudEstCurrFinSum = (from a in Model.Detailss 
+                                                       //                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                       //                     where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) 
+                                                       //                     select a.BudEstCurrFin).Sum();
+                                                    var BudEstCurrFinSum = (from a in Model.Detailss 
+                                                                            where (a.SubGroupNumber.Equals(@Subs.SubGroupNo))
                                                                             select a.BudEstCurrFin).Sum();
+                                                    //var ActPrevFinSum = (from a in Model.Detailss 
+                                                    //                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                    //                     where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) 
+                                                    //                     select a.ActPrevFin).Sum();
                                                     var ActPrevFinSum = (from a in Model.Detailss
-                                                                         join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                                         where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                                                         where (a.SubGroupNumber.Equals(@Subs.SubGroupNo))
                                                                          select a.ActPrevFin).Sum();
-                                                    var ActCurrFinTill2ndQuartSum = (from a in Model.Detailss
-                                                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                                                     where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                                    //var ActCurrFinTill2ndQuartSum = (from a in Model.Detailss 
+                                                    //                                 join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                    //                                 where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) 
+                                                    //                                 select a.ActCurrFinTill2ndQuart).Sum();
+                                                    var ActCurrFinTill2ndQuartSum = (from a in Model.Detailss 
+                                                                                     where (a.SubGroupNumber.Equals(@Subs.SubGroupNo))
                                                                                      select a.ActCurrFinTill2ndQuart).Sum();
-                                                    var RevEstCurrFinSum = (from a in Model.Detailss
-                                                                            join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                                            where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                                    //var RevEstCurrFinSum = (from a in Model.Detailss 
+                                                    //                        join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                    //                        where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) 
+                                                    //                        select a.ACAndBWPropRECurrFin).Sum();
+                                                    var RevEstCurrFinSum = (from a in Model.Detailss 
+                                                                            where (a.SubGroupNumber.Equals(@Subs.SubGroupNo))
                                                                             select a.ACAndBWPropRECurrFin).Sum();
-                                                    var BudgEstNexFinSum = (from a in Model.Detailss
-                                                                            join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                                            where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                                    //var BudgEstNexFinSum = (from a in Model.Detailss 
+                                                    //                        join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                    //                        where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) 
+                                                    //                        select a.ACAndBWPropRENxtFin).Sum();
+                                                    var BudgEstNexFinSum = (from a in Model.Detailss 
+                                                                            where (a.SubGroupNumber.Equals(@Subs.SubGroupNo))
                                                                             select a.ACAndBWPropRENxtFin).Sum();
 
                                                         var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -1195,32 +1251,52 @@
                             var Sumname3 = String.Concat("ActCurrFinTillsecondQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                             var Sumname4 = String.Concat("RevEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                             var Sumname7 = String.Concat("BudgEstNexFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                            //var SelectReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
 
-                            var SumBudEstCurrFin = (from a in Model.Detailss
+                            @if (ReportName.Equals("Headwise Consolidation"))
+                            {
+                                SumBudEstCurrFin = (double)(from a in Model.Detailss 
+                                                     where (a.GroupNumber.Equals(@item.GroupNo)) select a.BudEstCurrFin).Sum();
+                                SumActPrevFin = (double)(from a in Model.Detailss 
+                                                 where (a.GroupNumber.Equals(@item.GroupNo)) select a.ActPrevFin).Sum();
+                                SumActCurrFinTill2ndQuart = (double)(from a in Model.Detailss 
+                                                              where (a.GroupNumber.Equals(@item.GroupNo)) 
+                                                              select a.ActCurrFinTill2ndQuart).Sum();
+                                SumRevEstCurrFin = (double)(from a in Model.Detailss 
+                                                    where (a.GroupNumber.Equals(@item.GroupNo))
+                                                    select a.ACAndBWPropRECurrFin).Sum();
+                                SumBudgEstNexFin = (double)(from a in Model.Detailss 
+                                                     where (a.GroupNumber.Equals(@item.GroupNo)) 
+                                                     select a.ACAndBWPropRENxtFin).Sum();   
+                            }
+                            else
+                            {
+                             SumBudEstCurrFin = (double)(from a in Model.Detailss
                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                     where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
                                                     select a.BudEstCurrFin).Sum();
-                            var SumActPrevFin = (from a in Model.Detailss
+                             SumActPrevFin = (double)(from a in Model.Detailss
                                                  join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                  where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
                                                  select a.ActPrevFin).Sum();
-                            var SumActCurrFinTill2ndQuart = (from a in Model.Detailss
+                             SumActCurrFinTill2ndQuart = (double)(from a in Model.Detailss
                                                              join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                              where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
                                                              select a.ActCurrFinTill2ndQuart).Sum();
-                            var SumRevEstCurrFin = (from a in Model.Detailss
+                             SumRevEstCurrFin = (double)(from a in Model.Detailss
                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                     where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
                                                     select a.ACAndBWPropRECurrFin).Sum();
-                            var SumBudgEstNexFin = (from a in Model.Detailss
+                             SumBudgEstNexFin = (double)(from a in Model.Detailss
                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                     where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
                                                     select a.ACAndBWPropRENxtFin).Sum();
+                            }
 
                             if (CounterBody == 0)
                             {
                                 
-                                var ReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
+                                //var ReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
                                 var SelectedAcademicYear = (from a in Model.AcademicYears where a.Selected == true select a.Text).FirstOrDefault();
                                 var SplitAcademicYear = SelectedAcademicYear.Split("-");
                                 var NextAcademicYear = SplitAcademicYear[1]+"-"+(Convert.ToInt32(SplitAcademicYear[1])+Convert.ToInt32(1));
@@ -1306,25 +1382,40 @@
 
                                                 @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                                 {
-                                                    var BudEstCurrFinSum = (from a in Model.Detailss 
-                                                                            join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                                            where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) 
+                                                    //var BudEstCurrFinSum = (from a in Model.Detailss
+                                                    //                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                    //                     where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                                    //                     select a.BudEstCurrFin).Sum();
+                                                    var BudEstCurrFinSum = (from a in Model.Detailss
+                                                                            where (a.SubGroupNumber.Equals(@Subs.SubGroupNo))
                                                                             select a.BudEstCurrFin).Sum();
-                                                    var ActPrevFinSum = (from a in Model.Detailss 
-                                                                         join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                                         where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) 
+                                                    //var ActPrevFinSum = (from a in Model.Detailss
+                                                    //                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                    //                     where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                                    //                     select a.ActPrevFin).Sum();
+                                                    var ActPrevFinSum = (from a in Model.Detailss
+                                                                         where (a.SubGroupNumber.Equals(@Subs.SubGroupNo))
                                                                          select a.ActPrevFin).Sum();
-                                                    var ActCurrFinTill2ndQuartSum = (from a in Model.Detailss 
-                                                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                                                     where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) 
+                                                    //var ActCurrFinTill2ndQuartSum = (from a in Model.Detailss
+                                                    //                                 join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                    //                                 where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                                    //                                 select a.ActCurrFinTill2ndQuart).Sum();
+                                                    var ActCurrFinTill2ndQuartSum = (from a in Model.Detailss
+                                                                                     where (a.SubGroupNumber.Equals(@Subs.SubGroupNo))
                                                                                      select a.ActCurrFinTill2ndQuart).Sum();
-                                                    var RevEstCurrFinSum = (from a in Model.Detailss 
-                                                                            join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                                            where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) 
+                                                    //var RevEstCurrFinSum = (from a in Model.Detailss
+                                                    //                        join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                    //                        where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                                    //                        select a.ACAndBWPropRECurrFin).Sum();
+                                                    var RevEstCurrFinSum = (from a in Model.Detailss
+                                                                            where (a.SubGroupNumber.Equals(@Subs.SubGroupNo))
                                                                             select a.ACAndBWPropRECurrFin).Sum();
-                                                    var BudgEstNexFinSum = (from a in Model.Detailss 
-                                                                            join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                                            where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) 
+                                                    //var BudgEstNexFinSum = (from a in Model.Detailss
+                                                    //                        join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                    //                        where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                                    //                        select a.ACAndBWPropRENxtFin).Sum();
+                                                    var BudgEstNexFinSum = (from a in Model.Detailss
+                                                                            where (a.SubGroupNumber.Equals(@Subs.SubGroupNo))
                                                                             select a.ACAndBWPropRENxtFin).Sum();
 
                                                     var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -1691,7 +1782,7 @@
                             else
                             {
                                 //var SelectedDivisionTypeName = (from a in Model.DivisionTypeNames where a.Selected == true select a.Text).FirstOrDefault();
-                                var ReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
+                                //var ReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
                                 var SelectedAcademicYear = (from a in Model.AcademicYears where a.Selected == true select a.Text).FirstOrDefault();
                                 var SplitAcademicYear = SelectedAcademicYear.Split("-");
                                 var NextAcademicYear = SplitAcademicYear[1]+"-"+(Convert.ToInt32(SplitAcademicYear[1])+Convert.ToInt32(1));
@@ -1779,25 +1870,40 @@
 
                                                 @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                                 {
+                                                    //var BudEstCurrFinSum = (from a in Model.Detailss
+                                                    //                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                    //                     where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                                    //                     select a.BudEstCurrFin).Sum();
                                                     var BudEstCurrFinSum = (from a in Model.Detailss
-                                                                            join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                                            where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                                                            where (a.SubGroupNumber.Equals(@Subs.SubGroupNo))
                                                                             select a.BudEstCurrFin).Sum();
+                                                    //var ActPrevFinSum = (from a in Model.Detailss
+                                                    //                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                    //                     where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                                    //                     select a.ActPrevFin).Sum();
                                                     var ActPrevFinSum = (from a in Model.Detailss
-                                                                         join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                                         where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                                                         where (a.SubGroupNumber.Equals(@Subs.SubGroupNo))
                                                                          select a.ActPrevFin).Sum();
+                                                    //var ActCurrFinTill2ndQuartSum = (from a in Model.Detailss
+                                                    //                                 join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                    //                                 where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                                    //                                 select a.ActCurrFinTill2ndQuart).Sum();
                                                     var ActCurrFinTill2ndQuartSum = (from a in Model.Detailss
-                                                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                                                     where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                                                                     where (a.SubGroupNumber.Equals(@Subs.SubGroupNo))
                                                                                      select a.ActCurrFinTill2ndQuart).Sum();
+                                                    //var RevEstCurrFinSum = (from a in Model.Detailss
+                                                    //                        join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                    //                        where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                                    //                        select a.ACAndBWPropRECurrFin).Sum();
                                                     var RevEstCurrFinSum = (from a in Model.Detailss
-                                                                            join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                                            where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                                                            where (a.SubGroupNumber.Equals(@Subs.SubGroupNo))
                                                                             select a.ACAndBWPropRECurrFin).Sum();
+                                                    //var BudgEstNexFinSum = (from a in Model.Detailss
+                                                    //                        join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                    //                        where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                                    //                        select a.ACAndBWPropRENxtFin).Sum();
                                                     var BudgEstNexFinSum = (from a in Model.Detailss
-                                                                            join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                                            where (b.DivisionType.Equals(SelectedDivisionTypeName) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                                                            where (a.SubGroupNumber.Equals(@Subs.SubGroupNo))
                                                                             select a.ACAndBWPropRENxtFin).Sum();
 
                                                     var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -2214,25 +2320,38 @@
 
                 $('body').on('change', "#Reports",
                     function (evt) {
+                       
                         dropdownchange();
                     });
 
                 $('body').on('change', "#AcademicYear",
                     function (evt) {
-                        $("#Reports").val(1);
-                        reportNamesChange();
-                        dropdownchange();  
+                        //$("#Reports").val(1);
+
+                        if($("#Reports option:selected").text().trim().indexOf("Budget Estimates") >=0 )
+                        {
+                            reportNamesChange();
+                            $("#Reports option:selected").removeAttr("selected");
+                            $("#Reports").find($("option[value ^= '6']")).attr("selected",true);
+                            alert($("#Reports option:selected").text().trim());
+                            dropdownchange(); 
+                        }
+                        else
+                        {
+                            reportNamesChange();
+                            dropdownchange();
+                        }
                     }
                 );
 
             });
         function reportNamesChange()
         {
+            $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
             var academicyear = $("#SelectedAcademicYear").val();
             var year = academicyear.split('-');
            // $("#Reports").find($("option[value^='4']")).html("Budget Estimates "+year[0]+"-"+year[1]);
             $("#Reports").find($("option[value^='6']")).html("Budget Estimates " + year[1] + "-" + (parseInt(year[1]) + parseInt(1)));
-
         }
         function onceDocReady() {
             $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
@@ -2265,17 +2384,10 @@
 
             $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
             var academicyear = $("#SelectedAcademicYear").val();
-
-            if(SelectedReport.Equals("Headwise Consolidation"))
-            {
-                var SelectedDiv = null;
-            }
-            else
-            {
-               $("#SelectedDivisionTypeName").val($("#DivisionType option:selected").text().trim());
-               var SelectedDiv = $("#SelectedDivisionTypeName").val();
-            }
-
+            
+            $("#SelectedDivisionTypeName").val($("#DivisionType option:selected").text().trim());
+            var SelectedDiv = $("#SelectedDivisionTypeName").val();
+            
             var year = academicyear.split('-');
             alert(year[0]);
 

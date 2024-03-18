@@ -123,9 +123,15 @@ namespace BudgetPortal.Controllers
                 Value = (DivisionTypes.Length + 1).ToString()
             });
 
-            mymodel.DivisionTypeNames.Where(x => x.Text.Equals(DivisionType)).Single().Selected = true;
-            //mymodel.SelectedDivisionTypeName = mymodel.DivisionTypeNames.Where(x => x.Selected == true).ToString();
-
+            if(DivisionType == null)
+            { 
+                 mymodel.DivisionTypeNames.Where(x => x.Text.Equals("Regional Office")).Single().Selected = true;
+                //mymodel.SelectedDivisionTypeName = mymodel.DivisionTypeNames.Where(x => x.Selected == true).ToString();
+            }
+            else
+            {
+                mymodel.DivisionTypeNames.Where(x => x.Text.Equals(DivisionType)).Single().Selected = true;
+            }
             mymodel.ReportNames = _context.BudgetReports.AsEnumerable().Select(x =>
                     new SelectListItem()
                     {
