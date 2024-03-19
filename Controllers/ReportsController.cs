@@ -54,11 +54,11 @@ namespace BudgetPortal.Controllers
                    Value = i.ToString()
                 });
             }
-            mymodel.DivisionTypeNames.Add(new SelectListItem
-            {
-                Text = "All",
-                Value = (DivisionTypes.Length + 1).ToString()
-            });
+            //mymodel.DivisionTypeNames.Add(new SelectListItem
+            //{
+            //    Text = "All",
+            //    Value = (DivisionTypes.Length + 1).ToString()
+            //});
 
             mymodel.DivisionTypeNames.Where(x => x.Text.Equals("Regional Office")).Single().Selected = true;
             //mymodel.SelectedDivisionTypeName = mymodel.DivisionTypeNames.Where(x => x.Selected == true).ToString();
@@ -117,11 +117,11 @@ namespace BudgetPortal.Controllers
                     Value = i.ToString()
                 });
             }
-            mymodel.DivisionTypeNames.Add(new SelectListItem
-            {
-                Text = "All",
-                Value = (DivisionTypes.Length + 1).ToString()
-            });
+           // mymodel.DivisionTypeNames.Add(new SelectListItem
+           // {
+           //     Text = "All",
+           //     Value = (DivisionTypes.Length + 1).ToString()
+           // });
 
             if(DivisionType == null)
             { 
@@ -130,7 +130,14 @@ namespace BudgetPortal.Controllers
             }
             else
             {
-                mymodel.DivisionTypeNames.Where(x => x.Text.Equals(DivisionType)).Single().Selected = true;
+                try
+                {
+                    mymodel.DivisionTypeNames.Where(x => x.Text.Equals(DivisionType)).Single().Selected = true;
+                }
+                catch(Exception ex)
+                {
+                    ModelState.AddModelError("SelectedDivisionTypeID", "Please select any DivisionType");
+                }
             }
             mymodel.ReportNames = _context.BudgetReports.AsEnumerable().Select(x =>
                     new SelectListItem()
@@ -152,11 +159,23 @@ namespace BudgetPortal.Controllers
                         Value = x.Id.ToString()
 
                     }).ToList();
-            mymodel.AcademicYears.Where(x => x.Text.Equals(AcademicYear)).Single().Selected = true;
+            try
+            {
+                mymodel.AcademicYears.Where(x => x.Text.Equals(AcademicYear)).Single().Selected = true;
+            }
+            catch(Exception ex) 
+            {
+                ModelState.AddModelError("SelectedAcademicYearID", "Please select any Academic Year");
+            }
             //mymodel.SelectedAcademicYear = String.Concat(Year.ToString(),"-",(Year+1).ToString());
-            
-            mymodel.ReportNames.Where(x => x.Text.Equals(Report)).Single().Selected = true;
-
+            try
+            {
+                mymodel.ReportNames.Where(x => x.Text.Equals(Report)).Single().Selected = true;
+            }
+            catch(Exception ex) 
+            {
+                ModelState.AddModelError("SelectedReportID", "Please select any Report");
+            }
             return View("Reports", mymodel);
             
         }

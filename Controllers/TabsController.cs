@@ -230,17 +230,17 @@ namespace BudgetPortal.Controllers
 
                     string fileNameWithPath = Path.Combine(path, fileName);
 
-
-
-                    using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
-                    {
-                        MD.File.CopyTo(stream);
+                    if(fileInfo.Extension.Equals("pdf") && MD.File.Length < 1000000 )
+                    { 
+                         using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                         {
+                             MD.File.CopyTo(stream);
+                         }
                     }
-
                     //MD.IsSuccess = true;
                     //MD.Message = "Saved";
 
-            
+
             var username = User.Identity.Name;
             var DivName = " ";
             var DivisionID = " ";
@@ -715,7 +715,8 @@ namespace BudgetPortal.Controllers
         //Displays details while changing values in DropDownList
         [HttpGet]
         public IActionResult GetDetails(int Year, String Division)
-        {         
+        {   
+            
             var username = User.Identity.Name;
             var LoggedInDivisionID = 0;
             var DivName = _context.Users
@@ -776,15 +777,30 @@ namespace BudgetPortal.Controllers
 
                         }).ToList();
                 //ViewBag.SelectedAcademicYearID = mymodel.AcademicYears;
-                mymodel.AcademicYears.Where(x => x.Text.Equals(AcademicYear)).Single().Selected = true;
+                try
+                { 
+                    mymodel.AcademicYears.Where(x => x.Text.Equals(AcademicYear)).Single().Selected = true;
+                }
+                catch(Exception ex)
+                {
+                    ModelState.AddModelError("SelectedAcademicYearID", "Please select any Academic Year");
+                    
+                }
                 //mymodel.SelectedAcademicYearID = String.Concat(Year.ToString(),"-",(Year+1).ToString());
                 if (username.Equals("admin@test.com"))
                 {
+                   try
+                   {
+                      mymodel.DivisionNames.Where(x => x.Text.Equals(Division)).Single().Selected = true;
+                   }
+                   catch (Exception ex)
+                   {
+                       ModelState.AddModelError("SelectedDivisionID", "Please select any Division");
 
-                    mymodel.DivisionNames.Where(x => x.Text.Equals(Division)).Single().Selected = true;
+                   }
                 }
-                return View("Index", mymodel);
-            
+                
+            return View("Index", mymodel);
         }
 
 
