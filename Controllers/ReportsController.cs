@@ -124,9 +124,16 @@ namespace BudgetPortal.Controllers
            // });
 
             if(DivisionType == null)
-            { 
-                 mymodel.DivisionTypeNames.Where(x => x.Text.Equals("Regional Office")).Single().Selected = true;
-                //mymodel.SelectedDivisionTypeName = mymodel.DivisionTypeNames.Where(x => x.Selected == true).ToString();
+            {
+                try
+                {
+                    mymodel.DivisionTypeNames.Where(x => x.Text.Equals("Regional Office")).Single().Selected = true;
+                    //mymodel.SelectedDivisionTypeName = mymodel.DivisionTypeNames.Where(x => x.Selected == true).ToString();
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("SelectedDivisionTypeID", "Please select any DivisionType");
+                }
             }
             else
             {
@@ -139,7 +146,9 @@ namespace BudgetPortal.Controllers
                     ModelState.AddModelError("SelectedDivisionTypeID", "Please select any DivisionType");
                 }
             }
-            mymodel.ReportNames = _context.BudgetReports.AsEnumerable().Select(x =>
+            try
+            {
+                mymodel.ReportNames = _context.BudgetReports.AsEnumerable().Select(x =>
                     new SelectListItem()
                     {
                         Selected = false,
@@ -148,10 +157,17 @@ namespace BudgetPortal.Controllers
 
                     }).ToList();
             
+                mymodel.ReportNames.Where(x => x.Text.Equals(Report)).Single().Selected = true;
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("SelectedReportID", "Please select any Report");
+            }
 
             //mymodel.SelectedReportName = mymodel.ReportNames.Where(x => x.Selected == true).ToString();
-
-            mymodel.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
+            try
+            {
+                mymodel.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
                     new SelectListItem()
                     {
                         Selected = false,
@@ -159,8 +175,7 @@ namespace BudgetPortal.Controllers
                         Value = x.Id.ToString()
 
                     }).ToList();
-            try
-            {
+           
                 mymodel.AcademicYears.Where(x => x.Text.Equals(AcademicYear)).Single().Selected = true;
             }
             catch(Exception ex) 
@@ -168,14 +183,7 @@ namespace BudgetPortal.Controllers
                 ModelState.AddModelError("SelectedAcademicYearID", "Please select any Academic Year");
             }
             //mymodel.SelectedAcademicYear = String.Concat(Year.ToString(),"-",(Year+1).ToString());
-            try
-            {
-                mymodel.ReportNames.Where(x => x.Text.Equals(Report)).Single().Selected = true;
-            }
-            catch(Exception ex) 
-            {
-                ModelState.AddModelError("SelectedReportID", "Please select any Report");
-            }
+           
             return View("Reports", mymodel);
             
         }

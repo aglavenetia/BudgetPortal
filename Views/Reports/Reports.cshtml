@@ -189,9 +189,9 @@
                                 if(SelectedAcademicYear!=null)
                                 {
                                    SplitAcademicYear = SelectedAcademicYear.Split("-");
-                                 }
+                                 
                                    NextAcademicYear = SplitAcademicYear[1]+"-"+(Convert.ToInt32(SplitAcademicYear[1])+Convert.ToInt32(1));
-                               
+                                 }
                                 var SumGroupReport = 0.00;
                              
                                 if (ReportName!=null && ReportName.Equals("Actual"))
@@ -705,9 +705,9 @@
                                 @if (SelectedAcademicYear is not null)
                                 {
                                    SplitAcademicYear = SelectedAcademicYear.Split("-");
-                                }
-                                    NextAcademicYear = SplitAcademicYear[1]+"-"+(Convert.ToInt32(SplitAcademicYear[1])+Convert.ToInt32(1));
                                 
+                                    NextAcademicYear = SplitAcademicYear[1]+"-"+(Convert.ToInt32(SplitAcademicYear[1])+Convert.ToInt32(1));
+                                }
                                 var Report = ReportName != null && @ReportName.Contains("Budget") ? @ReportName : @ReportName + " " + @SelectedAcademicYear;
 
                                 var SumGroupReport = 0.00;
@@ -1311,9 +1311,9 @@
                                 @if (SelectedAcademicYear is not null)
                                 {
                                     SplitAcademicYear = SelectedAcademicYear.Split("-");
-                                }
-                                    NextAcademicYear = SplitAcademicYear[1]+"-"+(Convert.ToInt32(SplitAcademicYear[1])+Convert.ToInt32(1));
                                 
+                                    NextAcademicYear = SplitAcademicYear[1]+"-"+(Convert.ToInt32(SplitAcademicYear[1])+Convert.ToInt32(1));
+                                }
                                 var Report = ReportName!=null && @ReportName.Contains("Budget") ? @ReportName : @ReportName + " " + @SelectedAcademicYear;
 
                                 var SumGroupReport = 0.00;
@@ -2345,7 +2345,7 @@
                 $('body').on('change', "#AcademicYear",
                     function (evt) {
                         //$("#Reports").val(1);
-
+                        alert("Index of Budget Estimates: "+$("#Reports option:selected").text().trim().indexOf("Budget Estimates"));
                         if($("#Reports option:selected").text().trim().indexOf("Budget Estimates") >=0 )
                         {
                             reportNamesChange();
@@ -2402,13 +2402,21 @@
 
             $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
             var academicyear = $("#SelectedAcademicYear").val();
+            alert("Selected Academic Year : " + academicyear);
             
             $("#SelectedDivisionTypeName").val($("#DivisionType option:selected").text().trim());
             var SelectedDiv = $("#SelectedDivisionTypeName").val();
+            alert("Selected DivisionType Name : " + SelectedDiv);
             
-            var year = academicyear.split('-');
-            alert(year[0]);
-
+           // if(!academicyear.Equals("--Please select any Academic Year--"))
+           // {
+              var year = academicyear.split('-');
+              alert(year[0]);
+           // }
+           // else
+           // {
+           //    var year = 0;
+          //  }
             var sectionnoid = $('#outerTab li button.active').attr('id');
 
             var section = sectionnoid.split('-');
