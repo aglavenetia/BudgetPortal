@@ -19,7 +19,7 @@ $(document).ready(
     });
 
     //Calculating Percentage variation for Revised Estimates of Current Financial Year
-        $("body").on("change","input[id^='RevEstCurrFin']",function () {
+    $("body").on("change","input[id^='RevEstCurrFin']",function () {
         //alert($(this).attr("id"));
         var elementid = $(this).closest("tr").find($("input[id^='BudEstCurrFin']"));
         //alert(elementid);
@@ -36,8 +36,7 @@ $(document).ready(
     });
 
     //Calculating Percentage variation for Budget Estimates of Next Financial Year
-
-        $("body").on("change","input[id^= 'BudgEstNexFin']",
+    $("body").on("change","input[id^= 'BudgEstNexFin']",
         function ()
         {
         //alert($(this).attr("id"));
@@ -56,7 +55,7 @@ $(document).ready(
     );
 
     //Calculating total on entering values in a Textbox
-        $("body").on("change", "input",
+    $("body").on("change", "input",
            function ()
            {
         
@@ -138,9 +137,8 @@ $(document).ready(
             }
     });
 
-        //Calculating Total for each Section
-
-        $("body").on("focusout input", "td[id^='-Total']", function () {
+    //Calculating Total for each Section
+    $("body").on("focusout input", "td[id^='-Total']", function () {
 
             alert("Sum updated");
             var elementid = $(this).attr("id");

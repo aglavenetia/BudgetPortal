@@ -632,7 +632,7 @@ namespace BudgetPortal.Controllers
                                     ModelState.AddModelError("Justification["+index+"]", "Please enter Justification");
                                 }
                             }
-                          }
+                            }
 
                             else
                             {
