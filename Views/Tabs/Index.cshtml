@@ -45,7 +45,7 @@
 <br />
 
  <div id="outerdiv">
-    @using (Html.BeginForm(null, null, FormMethod.Post, new { @action = "", enctype = "multipart/form-data", id = "AppForm" }))
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { @action = "", enctype = "multipart/form-data", id = "AppForm"}))
     {
       <div style = "float:right">
         
@@ -5129,7 +5129,7 @@
       $(document).ready(  
          function() 
          {
-              onceDocReady();
+               onceDocReady();
               //resumeActiveTab();
 
                 $('body').on('change',"#Division",
@@ -5266,38 +5266,42 @@
 
                 $('body').on('click',".Submit",
                     function () {
-                        var sectionnoid = $('#outerTab li button.active').attr('id');
+                       
+                             var sectionnoid = $('#outerTab li button.active').attr('id');
                         
-                        var section = sectionnoid.split('-');
+                             var section = sectionnoid.split('-');
                         
-                        var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
-                        //alert($(this).val());
-                        if($(this).val()=="Delete")
-                        {
-                            var Ledgerid = $(this).closest('tr').closest('td').closest('tr').children('td').eq(1);
-                            //alert(Ledgerid.text());
-                        }
-                        else
-                        {
-                           var Ledgerid = $(this).closest('tr').children('td').eq(1);
-                           //alert(Ledgerid);
-                        }
-                        $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
-                        //alert($("#SelectedAcademicYear").val());
+                             var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
+                        
+                             //alert($(this).val());
+                             if($(this).val()=="Delete")
+                             {
+                                  var Ledgerid = $(this).closest('tr').closest('td').closest('tr').children('td').eq(1);
+                                  //alert(Ledgerid.text());
+                             }
+                             else
+                             {
+                                  var Ledgerid = $(this).closest('tr').children('td').eq(1);
+                                  //alert(Ledgerid);
+                             }
+                             $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
+                             //alert($("#SelectedAcademicYear").val());
                        
 
-                        $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
-                        //alert($("#SelectedDivisionName").val());
+                             $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
+                             //alert($("#SelectedDivisionName").val());
                         
-                        $('#SectionName').val($('#' + sectionnoid).text());
-                        //alert($('#SectionName').val());
+                             $('#SectionName').val($('#' + sectionnoid).text());
+                             //alert($('#SectionName').val());
                         
-                        $('#GroupName').val($('#' + groupnoid).text());
-                        //alert($('#GroupName').val());
+                             $('#GroupName').val($('#' + groupnoid).text());
+                             //alert($('#GroupName').val());
 
-                        $('#SubGroupLedgerName').val(Ledgerid.text().trim());
-                        
+                             $('#SubGroupLedgerName').val(Ledgerid.text().trim());
+
+                             validateinput();
                     });
+
                 $('body').on('click',".ViewFile",
                     function () {
                         var sectionnoid = $('#outerTab li button.active').attr('id');
@@ -5398,6 +5402,13 @@
                     alert("Group class updated");
              }
         }
+        function validateinput()
+        {
+
+           alert("Inside Validation");
+           return false;
+        }
+
     </script>
 }
 

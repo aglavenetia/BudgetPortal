@@ -48,25 +48,25 @@ namespace BudgetPortal.ViewModel
         public List<String> SubGroupNameOrLedgerName { get; set; }
 
 
-        [Required(ErrorMessage = "Please enter BudgetEstimates for the Current Financial Year")]
+        [Required(ErrorMessage = "BudgetEstimates for the Current Financial Year Required")]
         [Column(TypeName = "money")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.####}")]
         public List<Decimal> BudEstCurrFin { get; set; }
         //public Decimal BudEstCurrFin { get; set; }
 
-        [Required(ErrorMessage = "Please enter Actual for the Previous Financial Year")]
+        [Required(ErrorMessage = "Actual for the Previous Financial Year Required")]
         [Column(TypeName = "money")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.####}")]
         public List<Decimal> ActPrevFin { get; set; }
         //public Decimal ActPrevFin { get; set; }
 
-        [Required(ErrorMessage = "Please enter Actual for the Current Financial Year Till 2nd Quarter")]
+        [Required(ErrorMessage = "Actual for the Current Financial Year Till 2nd Quarter Required")]
         [Column(TypeName = "money")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.####}")]
         public List<Decimal> ActCurrFinTillsecondQuart { get; set; }
         //public Decimal ActCurrFinTill2ndQuart { get; set; }
 
-        [Required(ErrorMessage = "Please enter Revised Estimates for the Current Financial Year")]
+        [Required(ErrorMessage = "Revised Estimates for the Current Financial Year Required")]
         [Column(TypeName = "money")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.####}")]
         public List<Decimal> RevEstCurrFin { get; set; }
@@ -83,7 +83,7 @@ namespace BudgetPortal.ViewModel
         public List<Decimal> ACAndBWPropRECurrFin { get; set; }
         //public Decimal ACAndBWPropRECurrFin { get; set; }
 
-        [Required(ErrorMessage = "Please enter Budget Estimates for the Next Financial Year")]
+        [Required(ErrorMessage = "Budget Estimates for the Next Financial Year Required")]
         [Column(TypeName = "money")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.####}")]
         public List<Decimal> BudgEstNexFin { get; set; }
@@ -106,13 +106,13 @@ namespace BudgetPortal.ViewModel
 
         public IEnumerable<SelectListItem>? DivisionNames { get; set; }
 
-        [Required(ErrorMessage = "Please select a Division Name")]
+        [Required(ErrorMessage = "Division Name Required")]
         public String? SelectedDivisionID { get; set; }
 
         [Display(Name = "Financial Year")]
         public IEnumerable<SelectListItem>? AcademicYears { get; set; }
 
-        [Required(ErrorMessage = "Please select the Academic Year")]
+        [Required(ErrorMessage = "Academic Year Required")]
         public String? SelectedAcademicYearID { get; set; }
         public string FileName { get; set; }
         public IFormFile File { get; set; }

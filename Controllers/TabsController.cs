@@ -601,8 +601,7 @@ namespace BudgetPortal.Controllers
                                 for (int j = 0; j < Ledgers.Count(); j++)
                                 {
                                     int index = MD.SubGroupNameOrLedgerName.IndexOf(Ledgers[j]);
-                                   try
-                                   {
+                                   
                                     dataModel.DivisionID = Convert.ToInt32(SelectedDivisionID);
                                     dataModel.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
                                     dataModel.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
@@ -619,58 +618,71 @@ namespace BudgetPortal.Controllers
                                     dataModel.BudgEstNexFin = Convert.ToDecimal(MD.BudgEstNexFin[index]);
                                     //dataModel.Justification = Convert.ToString(Form[String.Concat("Justification", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
                                     dataModel.PerVarRevEstOverBudgEstNxtFin = Convert.ToDecimal(MD.PerVarRevEstOverBudgEstNxtFin[index]);
-                                    dataModel.Justification = MD.Justification[index].ToString();
+                                    try
+                                    {
+                                       if (MD.Justification[index] is not null)
+                                        dataModel.Justification = MD.Justification[index].ToString();
+                                       else
+                                        dataModel.Justification = " ";
+
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                       ModelState.AddModelError("Justification[" + index + "]", "Please enter Justification");
+                                    }
                                     dataModel.SectionNumber = Convert.ToInt32(SectionNumber);
                                     dataModel.GroupNumber = GroupNumber;
                                     dataModel.SubGroupNumber = SubGroups[i];
                                     dataModel.LedgerNumber = Ledgers[j];
                                     _context.BudgetDetails.Add(dataModel);
                                     _context.SaveChanges();
-                                }
-                                catch (Exception ex)
-                                {
-                                    ModelState.AddModelError("Justification["+index+"]", "Please enter Justification");
-                                }
+                                
+                                
                             }
                             }
 
                             else
                             {
                                 int index = MD.SubGroupNameOrLedgerName.IndexOf(SubGroups[i]);
-                            try
-                            {
-                                dataModel.DivisionID = Convert.ToInt32(SelectedDivisionID);
-                                dataModel.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
-                                dataModel.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
+                                
+                                  dataModel.DivisionID = Convert.ToInt32(SelectedDivisionID);
+                                  dataModel.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
+                                  dataModel.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
 
-                                //dataModel.BudEstCurrFin = Convert.ToDecimal(Form[String.Concat("BudEstCurrFin", SectionNumber, GroupNumber, i)]);
-                                dataModel.BudEstCurrFin = Convert.ToDecimal(MD.BudEstCurrFin[index]);
-                                //dataModel.ActPrevFin = Convert.ToDecimal(Form[String.Concat("ActPrevFin", SectionNumber, GroupNumber, i)]);
-                                dataModel.ActPrevFin = Convert.ToDecimal(MD.ActPrevFin[index]);
-                                //dataModel.ActCurrFinTill2ndQuart = Convert.ToDecimal(Form[String.Concat("ActCurrFinTill2ndQuart", SectionNumber, GroupNumber, i)]);
-                                dataModel.ActCurrFinTill2ndQuart = Convert.ToDecimal(MD.ActCurrFinTillsecondQuart[index]);
-                                //dataModel.RevEstCurrFin = Convert.ToDecimal(Form[String.Concat("RevEstCurrFin", SectionNumber, GroupNumber, i)]);
-                                dataModel.RevEstCurrFin = Convert.ToDecimal(MD.RevEstCurrFin[index]);
-                                //dataModel.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(Form[String.Concat("PerVarRevEstOverBudgEstCurrFin", SectionNumber, GroupNumber, i)]);       
-                                dataModel.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(MD.PerVarRevEstOverBudgEstCurrFin[index]);
-                                //dataModel.BudgEstNexFin = Convert.ToDecimal(Form[String.Concat("BudgEstNexFin", SectionNumber, GroupNumber, i)]);
-                                dataModel.BudgEstNexFin = Convert.ToDecimal(MD.BudgEstNexFin[index]);
-                                //dataModel.Justification = Convert.ToString(Form[String.Concat("Justification", SectionNumber, GroupNumber, i)]);
-                                dataModel.PerVarRevEstOverBudgEstNxtFin = Convert.ToDecimal(MD.PerVarRevEstOverBudgEstNxtFin[index]);
-                                dataModel.Justification = MD.Justification[index].ToString();
-                                dataModel.SectionNumber = Convert.ToInt32(SectionNumber);
-                                dataModel.GroupNumber = GroupNumber;
-                                dataModel.SubGroupNumber = SubGroups[i];
-                                dataModel.LedgerNumber = Convert.ToDecimal(0).ToString();
+                                  //dataModel.BudEstCurrFin = Convert.ToDecimal(Form[String.Concat("BudEstCurrFin", SectionNumber, GroupNumber, i)]);
+                                  dataModel.BudEstCurrFin = Convert.ToDecimal(MD.BudEstCurrFin[index]);
+                                  //dataModel.ActPrevFin = Convert.ToDecimal(Form[String.Concat("ActPrevFin", SectionNumber, GroupNumber, i)]);
+                                  dataModel.ActPrevFin = Convert.ToDecimal(MD.ActPrevFin[index]);
+                                  //dataModel.ActCurrFinTill2ndQuart = Convert.ToDecimal(Form[String.Concat("ActCurrFinTill2ndQuart", SectionNumber, GroupNumber, i)]);
+                                  dataModel.ActCurrFinTill2ndQuart = Convert.ToDecimal(MD.ActCurrFinTillsecondQuart[index]);
+                                  //dataModel.RevEstCurrFin = Convert.ToDecimal(Form[String.Concat("RevEstCurrFin", SectionNumber, GroupNumber, i)]);
+                                  dataModel.RevEstCurrFin = Convert.ToDecimal(MD.RevEstCurrFin[index]);
+                                  //dataModel.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(Form[String.Concat("PerVarRevEstOverBudgEstCurrFin", SectionNumber, GroupNumber, i)]);       
+                                  dataModel.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(MD.PerVarRevEstOverBudgEstCurrFin[index]);
+                                  //dataModel.BudgEstNexFin = Convert.ToDecimal(Form[String.Concat("BudgEstNexFin", SectionNumber, GroupNumber, i)]);
+                                  dataModel.BudgEstNexFin = Convert.ToDecimal(MD.BudgEstNexFin[index]);
+                                  //dataModel.Justification = Convert.ToString(Form[String.Concat("Justification", SectionNumber, GroupNumber, i)]);
+                                  dataModel.PerVarRevEstOverBudgEstNxtFin = Convert.ToDecimal(MD.PerVarRevEstOverBudgEstNxtFin[index]);
+                                try 
+                                { 
+                                  if (MD.Justification[index] is not null)
+                                    dataModel.Justification = MD.Justification[index].ToString();
+                                  else
+                                    dataModel.Justification = " ";
+                                }
+                                catch (Exception ex)
+                                {
+                                    ModelState.AddModelError("Justification[" + index + "]", "Please enter Justification");
+                                }
+                            
+                                  dataModel.SectionNumber = Convert.ToInt32(SectionNumber);
+                                  dataModel.GroupNumber = GroupNumber;
+                                  dataModel.SubGroupNumber = SubGroups[i];
+                                  dataModel.LedgerNumber = Convert.ToDecimal(0).ToString();
 
-                                _context.BudgetDetails.Add(dataModel);
-                                _context.SaveChanges();
-                            }
-                            catch (Exception ex)
-                            {
-                                ModelState.AddModelError("Justification["+index+"]", "Please enter Justification");
-                            }
-                        }
+                                  _context.BudgetDetails.Add(dataModel);
+                                  _context.SaveChanges();
+                           }
                        }
 
                         var Status = new BudgetdetailsStatus();
