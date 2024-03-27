@@ -349,9 +349,9 @@ namespace BudgetPortal.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Index(MultipleData MD)
         {
-           
+            Boolean valid = true;
             //Update Budget Details for Admin User
-             if (User.Identity.Name.Equals("admin@test.com"))
+            if (User.Identity.Name.Equals("admin@test.com"))
                 {
                   
                     var username = User.Identity.Name;
@@ -385,6 +385,7 @@ namespace BudgetPortal.Controllers
                     {
                         var result = new BudgetDetails();
 
+                        
 
                         var LedgerStatus = _context.BudgetSubGroups
                                   .Where(x => x.SubGroupNo.Equals(SubGroups[i]))
@@ -409,16 +410,29 @@ namespace BudgetPortal.Controllers
                                                && (b.SubGroupNumber == SubGroups[i])
                                                && (b.LedgerNumber == Ledgers[j])).FirstOrDefault();
 
-                                //result.ACAndBWPropRECurrFin = Convert.ToDecimal(Form[String.Concat("ACAndBWPropRECurrFin", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
-                                result.ACAndBWPropRECurrFin = Convert.ToDecimal(MD.ACAndBWPropRECurrFin[index]);
-                                //result.ACAndBWPropRENxtFin = Convert.ToDecimal(Form[String.Concat("ACAndBWPropRENxtFin", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
-                                result.ACAndBWPropRENxtFin = Convert.ToDecimal(MD.ACAndBWPropRENxtFin[index]);
+                                if (Decimal.Compare(Convert.ToDecimal(MD.ACAndBWPropRECurrFin[index]), Convert.ToDecimal(0.00)) == 0)
+                                {
+                                    ModelState.AddModelError("ACAndBWPropRECurrFin[" + index + "]", "Please enter value");
+                                    valid = false;
+                                }
+                                else
+                                    result.ACAndBWPropRECurrFin = Convert.ToDecimal(MD.ACAndBWPropRECurrFin[index]);
+
+                                if (Decimal.Compare(Convert.ToDecimal(MD.ACAndBWPropRENxtFin[index]), Convert.ToDecimal(0.00)) == 0)
+                                {
+                                    ModelState.AddModelError("ACAndBWPropRENxtFin[" + index + "]", "Please enter value");
+                                    valid = false;
+                                }
+                                else
+                                    result.ACAndBWPropRENxtFin = Convert.ToDecimal(MD.ACAndBWPropRENxtFin[index]);
                                
                             }
                         }
                         else
                         {
                             int index = MD.SubGroupNameOrLedgerName.IndexOf(SubGroups[i]);
+                            
+
                             result = _context.BudgetDetails
                                       .Where(b => (b.DivisionID == SelectedDivisionID)
                                                && (b.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0]))
@@ -426,27 +440,44 @@ namespace BudgetPortal.Controllers
                                                && (b.GroupNumber == GroupNumber)
                                                && (b.SubGroupNumber == SubGroups[i])).FirstOrDefault();
 
-                            //result.ACAndBWPropRECurrFin = Convert.ToDecimal(Form[String.Concat("ACAndBWPropRECurrFin", SectionNumber, GroupNumber, i)]);
-                            result.ACAndBWPropRECurrFin = Convert.ToDecimal(MD.ACAndBWPropRECurrFin[index]);
-                            //result.ACAndBWPropRENxtFin = Convert.ToDecimal(Form[String.Concat("ACAndBWPropRENxtFin", SectionNumber, GroupNumber, i)]);
-                            result.ACAndBWPropRENxtFin = Convert.ToDecimal(MD.ACAndBWPropRENxtFin[index]);
+                            if(Decimal.Compare(Convert.ToDecimal(MD.ACAndBWPropRECurrFin[index]), Convert.ToDecimal(0.00)) == 0)
+                            { 
+                                ModelState.AddModelError("ACAndBWPropRECurrFin[" + index + "]", "Please enter value");
+                                valid = false;
+                            }
+                            else
+                               result.ACAndBWPropRECurrFin = Convert.ToDecimal(MD.ACAndBWPropRECurrFin[index]);
+
+                            if (Decimal.Compare(Convert.ToDecimal(MD.ACAndBWPropRENxtFin[index]), Convert.ToDecimal(0.00)) == 0)
+                            { 
+                                ModelState.AddModelError("ACAndBWPropRENxtFin[" + index + "]", "Please enter value");
+                                valid = false;
+                            }
+
+                            else
+                                result.ACAndBWPropRENxtFin = Convert.ToDecimal(MD.ACAndBWPropRENxtFin[index]);
                         }
 
-                        _context.BudgetDetails.Update(result);
+                        if(valid)
+                        { 
+                           _context.BudgetDetails.Update(result);
+                           _context.SaveChanges();
+                        }
+                    }
+                    if (valid)
+                    {
+                        var Status = new BudgetdetailsStatus();
+                        Status = _context.BudgetdetailsStatus
+                                          .Where(b => (b.DivisionID == SelectedDivisionID)
+                                                   && (b.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0]))
+                                                   && (b.SectionNumber == SectionNumber)
+                                                   && (b.GroupNumber == GroupNumber)).FirstOrDefault();
+
+                        Status.AdminEditStatus = false;
+
+                        _context.BudgetdetailsStatus.Update(Status);
                         _context.SaveChanges();
                     }
-
-                    var Status = new BudgetdetailsStatus();
-                    Status = _context.BudgetdetailsStatus
-                                      .Where(b => (b.DivisionID == SelectedDivisionID)
-                                               && (b.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0]))
-                                               && (b.SectionNumber == SectionNumber)
-                                               && (b.GroupNumber == GroupNumber)).FirstOrDefault();
-
-                    Status.AdminEditStatus = false;
-
-                    _context.BudgetdetailsStatus.Update(Status);
-                    _context.SaveChanges();
 
                     
                 }
@@ -605,18 +636,30 @@ namespace BudgetPortal.Controllers
                                     dataModel.DivisionID = Convert.ToInt32(SelectedDivisionID);
                                     dataModel.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
                                     dataModel.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
-                                    //dataModel.BudEstCurrFin = Convert.ToDecimal(Form[String.Concat("BudEstCurrFin", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
+                                    
                                     dataModel.BudEstCurrFin = Convert.ToDecimal(MD.BudEstCurrFin[index]);
-                                    //dataModel.ActPrevFin = Convert.ToDecimal(Form[String.Concat("ActPrevFin", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
-                                    dataModel.ActCurrFinTill2ndQuart = Convert.ToDecimal(MD.ActCurrFinTillsecondQuart[index]);
-                                    dataModel.ActPrevFin = Convert.ToDecimal(MD.ActPrevFin[index]);                                //dataModel.ActCurrFinTill2ndQuart = Convert.ToDecimal(Form[String.Concat("ActCurrFinTill2ndQuart", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
-                                    //dataModel.RevEstCurrFin = Convert.ToDecimal(Form[String.Concat("RevEstCurrFin", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
+
+                                    if (Decimal.Compare(Convert.ToDecimal(MD.ActCurrFinTillsecondQuart[index]), Convert.ToDecimal(0.00)) == 0)
+                                    {
+                                       ModelState.AddModelError("ActCurrFinTillsecondQuart[" + index + "]", "Please enter value");
+                                       valid = false;
+                                    }
+                                    else
+                                        dataModel.ActCurrFinTill2ndQuart = Convert.ToDecimal(MD.ActCurrFinTillsecondQuart[index]);
+
+                                if (Decimal.Compare(Convert.ToDecimal(MD.ActPrevFin[index]), Convert.ToDecimal(0.00)) == 0)
+                                {
+                                    ModelState.AddModelError("ActPrevFin[" + index + "]", "Please enter value");
+                                    valid = false;
+                                }
+                                else
+                                    dataModel.ActPrevFin = Convert.ToDecimal(MD.ActPrevFin[index]);                                
+                                    
                                     dataModel.RevEstCurrFin = Convert.ToDecimal(MD.RevEstCurrFin[index]);
-                                    //dataModel.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(Form[String.Concat("PerVarRevEstOverBudgEstCurrFin", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
                                     dataModel.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(MD.PerVarRevEstOverBudgEstCurrFin[index]);
-                                    //dataModel.BudgEstNexFin = Convert.ToDecimal(Form[String.Concat("BudgEstNexFin", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
+                                    
                                     dataModel.BudgEstNexFin = Convert.ToDecimal(MD.BudgEstNexFin[index]);
-                                    //dataModel.Justification = Convert.ToString(Form[String.Concat("Justification", SectionNumber, GroupNumber, i, Ledgers[j])][1]);
+                                    
                                     dataModel.PerVarRevEstOverBudgEstNxtFin = Convert.ToDecimal(MD.PerVarRevEstOverBudgEstNxtFin[index]);
                                     try
                                     {
@@ -634,10 +677,13 @@ namespace BudgetPortal.Controllers
                                     dataModel.GroupNumber = GroupNumber;
                                     dataModel.SubGroupNumber = SubGroups[i];
                                     dataModel.LedgerNumber = Ledgers[j];
+
+                                if(valid)
+                                { 
                                     _context.BudgetDetails.Add(dataModel);
                                     _context.SaveChanges();
-                                
-                                
+                                }
+
                             }
                             }
 
@@ -649,19 +695,27 @@ namespace BudgetPortal.Controllers
                                   dataModel.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
                                   dataModel.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
 
-                                  //dataModel.BudEstCurrFin = Convert.ToDecimal(Form[String.Concat("BudEstCurrFin", SectionNumber, GroupNumber, i)]);
                                   dataModel.BudEstCurrFin = Convert.ToDecimal(MD.BudEstCurrFin[index]);
-                                  //dataModel.ActPrevFin = Convert.ToDecimal(Form[String.Concat("ActPrevFin", SectionNumber, GroupNumber, i)]);
+
+                                  if (Decimal.Compare(Convert.ToDecimal(MD.ActPrevFin[index]), Convert.ToDecimal(0.00)) == 0)
+                                  {
+                                     ModelState.AddModelError("ActPrevFin[" + index + "]", "Please enter value");
+                                     valid = false;
+                                  }
+                                 else
                                   dataModel.ActPrevFin = Convert.ToDecimal(MD.ActPrevFin[index]);
-                                  //dataModel.ActCurrFinTill2ndQuart = Convert.ToDecimal(Form[String.Concat("ActCurrFinTill2ndQuart", SectionNumber, GroupNumber, i)]);
-                                  dataModel.ActCurrFinTill2ndQuart = Convert.ToDecimal(MD.ActCurrFinTillsecondQuart[index]);
-                                  //dataModel.RevEstCurrFin = Convert.ToDecimal(Form[String.Concat("RevEstCurrFin", SectionNumber, GroupNumber, i)]);
+
+                                 if (Decimal.Compare(Convert.ToDecimal(MD.ActCurrFinTillsecondQuart[index]), Convert.ToDecimal(0.00)) == 0)
+                                 {
+                                     ModelState.AddModelError("ActCurrFinTillsecondQuart[" + index + "]", "Please enter value");
+                                     valid = false;
+                                 }
+                                 else
+                                    dataModel.ActCurrFinTill2ndQuart = Convert.ToDecimal(MD.ActCurrFinTillsecondQuart[index]);
+
                                   dataModel.RevEstCurrFin = Convert.ToDecimal(MD.RevEstCurrFin[index]);
-                                  //dataModel.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(Form[String.Concat("PerVarRevEstOverBudgEstCurrFin", SectionNumber, GroupNumber, i)]);       
                                   dataModel.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(MD.PerVarRevEstOverBudgEstCurrFin[index]);
-                                  //dataModel.BudgEstNexFin = Convert.ToDecimal(Form[String.Concat("BudgEstNexFin", SectionNumber, GroupNumber, i)]);
                                   dataModel.BudgEstNexFin = Convert.ToDecimal(MD.BudgEstNexFin[index]);
-                                  //dataModel.Justification = Convert.ToString(Form[String.Concat("Justification", SectionNumber, GroupNumber, i)]);
                                   dataModel.PerVarRevEstOverBudgEstNxtFin = Convert.ToDecimal(MD.PerVarRevEstOverBudgEstNxtFin[index]);
                                 try 
                                 { 
@@ -679,51 +733,34 @@ namespace BudgetPortal.Controllers
                                   dataModel.GroupNumber = GroupNumber;
                                   dataModel.SubGroupNumber = SubGroups[i];
                                   dataModel.LedgerNumber = Convert.ToDecimal(0).ToString();
-
-                                  _context.BudgetDetails.Add(dataModel);
-                                  _context.SaveChanges();
-                           }
+                                  
+                                 if(valid)
+                                 { 
+                                   _context.BudgetDetails.Add(dataModel);
+                                   _context.SaveChanges();
+                                 }
+                            }
                        }
+                       
+                        if(valid)
+                        { 
+                           var Status = new BudgetdetailsStatus();
+                           Status.DivisionID = Convert.ToInt32(SelectedDivisionID);
+                           Status.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
+                           Status.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
+                           Status.SectionNumber = SectionNumber;
+                           Status.GroupNumber = GroupNumber;
+                           Status.DelegateEditStatus = false;
+                           Status.AdminEditStatus = true;
 
-                        var Status = new BudgetdetailsStatus();
-                        Status.DivisionID = Convert.ToInt32(SelectedDivisionID);
-                        Status.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
-                        Status.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
-                        Status.SectionNumber = SectionNumber;
-                        Status.GroupNumber = GroupNumber;
-                        Status.DelegateEditStatus = false;
-                        Status.AdminEditStatus = true;
+                           _context.BudgetdetailsStatus.Add(Status);
+                           _context.SaveChanges();
+                        }
 
-                        _context.BudgetdetailsStatus.Add(Status);
-                        _context.SaveChanges();
-
-                        //var FinalSubmitStatus = new BudgetdetailsStatus();
-                        // FinalSubmitStatus = _context.BudgetdetailsStatus
-                        //                  .Where(b => (b.DivisionID == SelectedDivisionID)
-                        //                            && (b.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0]))
-                        //                            && (b.SectionNumber == 0)).FirstOrDefault();
-
-                        // if(FinalSubmitStatus == null)
-                        // {
-                        //     FinalSubmitStatus.DivisionID = Convert.ToInt32(SelectedDivisionID);
-                        //      FinalSubmitStatus.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
-                        //      FinalSubmitStatus.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
-                        //      FinalSubmitStatus.SectionNumber = Convert.ToInt32(0);
-                        //      FinalSubmitStatus.GroupNumber = Convert.ToString(0);
-                        //      FinalSubmitStatus.DelegateEditStatus = false;
-                        //       FinalSubmitStatus.AdminEditStatus = true;
-
-                        //      _context.BudgetdetailsStatus.Add(FinalSubmitStatus);
-                        //      _context.SaveChanges();
-                        // }
-                        MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
+                    MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
                                  .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
                         MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
                                      .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
-
-                        // MD.IsResponse = true;
-                        // MD.IsSuccess = true;
-                        // MD.Message = "Budget Details Submitted successfully";
 
                     }
                 
@@ -755,13 +792,6 @@ namespace BudgetPortal.Controllers
                                      .Select(x => x.DivisionID).FirstOrDefault();
             }
 
-            //var Month = DateTime.Now.Month;
-
-            //if (Month > 0 && Month < 4)
-            //{
-            //    Year = DateTime.Now.Year - 1;
-            //}
-            
                 var AcademicYear = String.Concat(Year, "-", (Year + 1));
                 var mymodel = new MultipleData();
                 mymodel.Sectionss = _context.BudgetSections.ToList();
