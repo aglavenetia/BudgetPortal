@@ -106,12 +106,14 @@ namespace BudgetPortal.ViewModel
 
         public IEnumerable<SelectListItem>? DivisionNames { get; set; }
 
+        [Display(Name = "Division Names")]
         [Required(ErrorMessage = "Division Name Required")]
         public String? SelectedDivisionID { get; set; }
 
-        [Display(Name = "Financial Year")]
+        
         public IEnumerable<SelectListItem>? AcademicYears { get; set; }
 
+        [Display(Name = "Financial Year")]
         [Required(ErrorMessage = "Academic Year Required")]
         public String? SelectedAcademicYearID { get; set; }
         public string FileName { get; set; }

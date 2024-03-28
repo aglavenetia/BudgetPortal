@@ -44,42 +44,38 @@
 }
 <br />
 
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
  <div id="outerdiv">
     @using (Html.BeginForm(null, null, FormMethod.Post, new { @action = "", enctype = "multipart/form-data", id = "AppForm"}))
     {
       <div style = "float:right">
         
-            @Html.AntiForgeryToken()
-            
-          <table border="0" cellpadding="5" cellspacing="0" >
-              <tr>
+           
+        <table border="0" cellpadding="5" cellspacing="0" >
+          <tr>
                   @if (User.IsInRole("Admin"))
                  {
                     <td>
-                        @Html.LabelFor(Model => Model.DivisionNames)                       
+                        @Html.LabelFor(Model => Model.SelectedDivisionID)                       
                     </td> 
                  }     
                     <td>
-                        @Html.LabelFor(Model => Model.AcademicYears)
+                        @Html.LabelFor(Model => Model.SelectedAcademicYearID)
                     </td>
-              </tr>
+          </tr>
           <tr>
            @if (User.IsInRole("Admin"))
            {
              <td>
-                            @Html.DropDownListFor(Model => Model.SelectedDivisionID, Model.DivisionNames,"--Please select any Division--", new { @class = "form-control", @id="Division" })
+                   @Html.DropDownListFor(Model => Model.SelectedDivisionID, Model.DivisionNames,"--Please select any Division--", new { @class = "form-control", @id="Division" })
                    @Html.ValidationMessageFor(Model => Model.SelectedDivisionID,  "", new { @class = "text-danger" })
-                   @*Html.ValidationMessageFor(Model => Model.DivisionNames,  "", new { @class = "text-danger" })*@
-                  
-                   @*Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName)*@
                         
              </td> 
            }       
              <td>
-              @Html.DropDownListFor(Model => Model.SelectedAcademicYearID, Model.AcademicYears,"--Please select any Academic Year--",new { @class = "form-control", @id="AcademicYear" })
-              @Html.ValidationMessageFor(Model => Model.SelectedAcademicYearID,  "", new { @class = "text-danger" }) 
-              @*Html.ValidationMessageFor(Model => Model.AcademicYears,  "", new { @class = "text-danger" })*@ 
-              @*Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear)*@
+                 @Html.DropDownListFor(Model => Model.SelectedAcademicYearID, Model.AcademicYears,"--Please select any Academic Year--",new { @class = "form-control", @id="AcademicYear" })
+                 @Html.ValidationMessageFor(Model => Model.SelectedAcademicYearID,  "", new { @class = "text-danger" }) 
               
              </td>
                 
@@ -91,37 +87,21 @@
       <br />
       <br />
       <br />
-
        
-        @Html.AntiForgeryToken()
-
-       
-
-       @*  if ((from a in Model.Statuss select a.AdminEditStatus).Count() > 0 && User.IsInRole("Admin"))
-        {
-            AdminEditStatus = false;
-        }*@
-        
-       
-        
         if (User.IsInRole("Admin") && FinalAdminEditStatus)
         {
             <input id="Submit" class="FinalSubmit" formaction="~/Tabs/FinalSubmit" value="Finalise Budget" type="submit" style="align-self:center"/>
             @*Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = "FinalSubmit-SelectedAcademicYear" })
             @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = "FinalSubmit-SelectedDivisionName" })*@
             <br /><br/>
-        
         }
 
         
 
-       
     <ul id="outerTab" class="nav nav-tabs" role="tablist" >    
       @foreach (var item in Model.Sectionss)
       {
             var inneridenti = String.Concat("Budget", @item.SectionNo.ToString());
-
-            
 
         if (OuterHeaderCount == 0)
         {
@@ -362,9 +342,6 @@
                                                    
                             <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
                              
-                              @*using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
-                              {
-                              @Html.AntiForgeryToken()*@
                                 <table id="@identi-outertable" class="table table-responsive table-hover">
                                     <thead>
                                         <tr>
@@ -469,166 +446,156 @@
                                                                                      @Html.DisplayFor(model => model.SubGroupNameOrLedgerName[LedgerNo])
 
 
-                                                                                        @Html.HiddenFor(model => model.SubGroupNameOrLedgerName[LedgerNo])
+                                                                                    @Html.HiddenFor(model => model.SubGroupNameOrLedgerName[LedgerNo])
                                                                                  </td>
                                                                                 <td>@Ledgers.LedgerName</td>
                                                                                 <td>
                                                                                     @if (!DelegateEditStatus)
                                                                                     {
-                                                                                           @* <div class="form-group"> *@
-                                                                                             
+                                                                                       <div class="form-group"> 
+                                                                                         
+                                                                                         @{
                                                                                           Model.BudEstCurrFin.Insert(LedgerNo, Ledgerdetails != null ? Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F")): Convert.ToDecimal(0.00));
-                                                                                                
-                                                                                             @*Html.TextBox(@name1+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1+@Ledgers.LedgerNo, @readonly = "readonly"})                                                                                            
-                                                                                             @Html.ValidationMessage(@name1+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"})*@
-                                                                                                @Html.TextBoxFor(model => model.BudEstCurrFin[LedgerNo], new { @class = "form-control", id = @name1 + @Ledgers.LedgerNo, @readonly = "readonly" })
-                                                                                                @Html.ValidationMessageFor(model => model.BudEstCurrFin[LedgerNo]," ",new {@class = "text-danger"})
-                                                                                           @* </div> *@
+                                                                                          }     
+                                                                                          @Html.TextBoxFor(model => model.BudEstCurrFin[LedgerNo], new { @class = "form-control", id = @name1 + @Ledgers.LedgerNo, @readonly = "readonly" })
+                                                                                          @Html.ValidationMessageFor(model => model.BudEstCurrFin[LedgerNo]," ",new {@class = "text-danger"})
+                                                                                        </div> 
                                                                                             
-                                                                                        }
+                                                                                    }
                                                                                         else
                                                                                         {
-                                                                                                    Model.BudEstCurrFin.Insert(LedgerNo, LedPrevYearApp != null ? Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : Convert.ToDecimal(0.00));
-                                                                                                
-   
-                                                                                                 @*Html.TextBox(@name1+@Ledgers.LedgerNo, LedPrevYearApp!=null ? LedPrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name1+@Ledgers.LedgerNo, @readonly = "readonly"})
-                                                                                                 @Html.ValidationMessage(@name1+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"}) *@
+                                                                                            <div class="form-group">
+                                                                                                @{
+                                                                                                  Model.BudEstCurrFin.Insert(LedgerNo, LedPrevYearApp != null ? Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : Convert.ToDecimal(0.00));
+                                                                                                }
                                                                                                 @Html.TextBoxFor(model => model.BudEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name1 + @Ledgers.LedgerNo, @readonly = "readonly" })
-                                                                                                 @Html.ValidationMessageFor(model => model.BudEstCurrFin[LedgerNo]," ",new {@class = "text-danger"})
-
-                                                                                    }
+                                                                                                @Html.ValidationMessageFor(model => model.BudEstCurrFin[LedgerNo]," ",new {@class = "text-danger"})
+                                                                                            </div>
+                                                                                        }
                                                                                 </td>
                                                                                 <td>
                                                                                     @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
-                                                                                        
-                                                                                               Model.ActPrevFin.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.ActPrevFin.ToString("F")) : Convert.ToDecimal(0.00));
-                                                                                            
-                                                                                            @*Html.TextBox(@name2+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2+@Ledgers.LedgerNo, @readonly = "readonly"})                                                
-                                                                                            @Html.ValidationMessage(@name2+@Ledgers.LedgerNo,  " ",new {@class = "text-danger"}) *@
-                                                                                                @Html.TextBoxFor(model => model.ActPrevFin[LedgerNo], new { @class = "form-control", @id = @name2 + @Ledgers.LedgerNo, @readonly = "readonly" })
+                                                                                        <div class="form-group"> 
+                                                                                          @{
+                                                                                            Model.ActPrevFin.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.ActPrevFin.ToString("F")) : Convert.ToDecimal(0.00));
+                                                                                           } 
+                                                                                            @Html.TextBoxFor(model => model.ActPrevFin[LedgerNo], new { @class = "form-control", @id = @name2 + @Ledgers.LedgerNo, @readonly = "readonly" })
                                                                                             @Html.ValidationMessageFor(model => model.ActPrevFin[LedgerNo]," ",new {@class = "text-danger"})
-                                                                                            
+                                                                                        </div>  
                                                                                     }
                                                                                     else
                                                                                     {
-                                                                                       
+                                                                                       <div class="form-group">
+                                                                                           @{
                                                                                               Model.ActPrevFin.Insert(LedgerNo,Ledgerdetails != null ? Convert.ToDecimal(Ledgerdetails.ActPrevFin.ToString("F")) : Convert.ToDecimal(0.00));
-                                                                                         
-                                                                                            @*Html.TextBox(@name2+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2+@Ledgers.LedgerNo})
-                                                                                            @Html.ValidationMessage(@name2+@Ledgers.LedgerNo,  " ",new {@class = "text-danger"}) *@
+                                                                                            }
                                                                                                 @Html.TextBoxFor(model => model.ActPrevFin[LedgerNo], new { @class = "form-control", @id = @name2 + @Ledgers.LedgerNo })
                                                                                                 @Html.ValidationMessageFor(model => model.ActPrevFin[LedgerNo]," ",new {@class = "text-danger"})
-                                                                                        
+                                                                                      </div>  
                                                                                        
                                                                                     }
                                                                                 </td>
                                                                                 <td>
                                                                                     @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
-                                                                                       
-                                                                                                    Model.ActCurrFinTillsecondQuart.Insert(LedgerNo, Ledgerdetails != null ? Convert.ToDecimal(Ledgerdetails.ActCurrFinTill2ndQuart.ToString("F")) : Convert.ToDecimal(0.00));
-                                                                                            
-                                                                                             @*Html.TextBox(@name3+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3+@Ledgers.LedgerNo, @readonly = "readonly"})                                                                                            
-                                                                                             @Html.ValidationMessage(@name3+@Ledgers.LedgerNo,  " ",new {@class = "text-danger"}) *@
-                                                                                                @Html.TextBoxFor(model => model.ActCurrFinTillsecondQuart[LedgerNo], new { @class = "form-control", @id = @name3 + @Ledgers.LedgerNo, @readonly = "readonly" })
-                                                                                                @Html.ValidationMessageFor(model => model.ActCurrFinTillsecondQuart[LedgerNo]," ",new {@class = "text-danger"})
-                                                                                        
-                                                                                       
+                                                                                       <div class="form-group">
+                                                                                           @{
+                                                                                               Model.ActCurrFinTillsecondQuart.Insert(LedgerNo, Ledgerdetails != null ? Convert.ToDecimal(Ledgerdetails.ActCurrFinTill2ndQuart.ToString("F")) : Convert.ToDecimal(0.00));
+                                                                                            }
+                                                                                               @Html.TextBoxFor(model => model.ActCurrFinTillsecondQuart[LedgerNo], new { @class = "form-control", @id = @name3 + @Ledgers.LedgerNo, @readonly = "readonly" })
+                                                                                               @Html.ValidationMessageFor(model => model.ActCurrFinTillsecondQuart[LedgerNo]," ",new {@class = "text-danger"})
+                                                                                      </div>  
                                                                                     }
                                                                                     else
                                                                                     {
-                                                                                       
+                                                                                       <div class="form-group">
+                                                                                           @{
                                                                                             Model.ActCurrFinTillsecondQuart.Insert(LedgerNo, Ledgerdetails != null ? Convert.ToDecimal(Ledgerdetails.ActCurrFinTill2ndQuart.ToString("F")) : Convert.ToDecimal(0.00));
-                                                                                        
-                                                                                            @*Html.TextBox(@name3+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3+@Ledgers.LedgerNo})
-                                                                                            @Html.ValidationMessage(@name3+@Ledgers.LedgerNo,  " ",new {@class = "text-danger"}) *@
+                                                                                            }
                                                                                             @Html.TextBoxFor(model => model.ActCurrFinTillsecondQuart[LedgerNo], new { @class = "form-control", @id = @name3+@Ledgers.LedgerNo})
-                                                                                                @Html.ValidationMessageFor(model => model.ActCurrFinTillsecondQuart[LedgerNo]," ",new {@class = "text-danger"})
-                                                                                        
-
+                                                                                            @Html.ValidationMessageFor(model => model.ActCurrFinTillsecondQuart[LedgerNo]," ",new {@class = "text-danger"})
+                                                                                       </div> 
                                                                                     }
                                                                                 </td>
                                                                                 <td>
                                                                                      @if(User.IsInRole("Admin") && DelegateEditStatus)
                                                                                     {
-                                                                                        
+                                                                                        <div class="form-group">
+                                                                                            @{
                                                                                             Model.RevEstCurrFin.Insert(LedgerNo, LedPrevYearApp != null ? Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : Convert.ToDecimal(0.00));
-                                                                                               
-                                                                                            @*Html.TextBox(@name4+@Ledgers.LedgerNo, LedPrevYearApp!=null ? LedPrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name4+@Ledgers.LedgerNo})                                                                                            
-                                                                                            @Html.ValidationMessage(@name4+@Ledgers.LedgerNo,  " ",new {@class = "text-danger"}) *@
+                                                                                            }   
                                                                                             @Html.TextBoxFor(model => model.RevEstCurrFin[LedgerNo], new { @type = "number", @class = "form-control", @id = @name4+@Ledgers.LedgerNo, @readonly = "readonly"}) 
                                                                                             @Html.ValidationMessageFor(model => model.RevEstCurrFin[LedgerNo]," ",new {@class = "text-danger"})
+                                                                                        </div>
                                                                                     }
                                                                                     else if (!DelegateEditStatus)
                                                                                     {
-                                                                                        
+                                                                                        <div class="form-group">
+                                                                                            @{
                                                                                             Model.RevEstCurrFin.Insert(LedgerNo, Ledgerdetails != null ? Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")) : Convert.ToDecimal(0.00));
-                                                                                           
-                                                                                            @*Html.TextBox(@name4+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4+@Ledgers.LedgerNo, @readonly = "readonly"})                                                                                           
-                                                                                            @Html.ValidationMessage(@name4+@Ledgers.LedgerNo,  " ",new {@class = "text-danger"}) *@
+                                                                                           }
                                                                                             @Html.TextBoxFor(model => model.RevEstCurrFin[LedgerNo],new { @class = "form-control", @id = @name4+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.RevEstCurrFin[LedgerNo]," ",new {@class = "text-danger"})
-                                                                                        
-                                                                                       
+                                                                                        </div>
                                                                                     }          
                                                                                     else
                                                                                     {
+                                                                                       <div class="form-group">
+                                                                                           @{
                                                                                             Model.RevEstCurrFin.Insert(LedgerNo, LedPrevYearApp != null ? Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : Convert.ToDecimal(0.00));
-                                                                                             
-                                                                                     @*Html.TextBox(@name4+@Ledgers.LedgerNo, LedPrevYearApp!=null ? LedPrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name4+@Ledgers.LedgerNo})                                                                                            
-                                                                                            @Html.ValidationMessage(@name4+@Ledgers.LedgerNo,  " ",new {@class = "text-danger"}) *@
+                                                                                             }
                                                                                             @Html.TextBoxFor(model => model.RevEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name4+@Ledgers.LedgerNo}) 
                                                                                             @Html.ValidationMessageFor(model => model.RevEstCurrFin[LedgerNo]," ",new {@class = "text-danger"})
-                                                                                       
+                                                                                       </div>
                                                                                     }
                                                                                 </td>
                                                                                     <td>
                                                                                         @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                         {
-                                                                                           
-                                                                                                    Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (Ledgerdetails != null) ? (Convert.ToDecimal(Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")) - Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))) / Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))) : Convert.ToDecimal(0.00));
-                                                                                            
-                                                                                        @*Html.TextBox(@name5+@Ledgers.LedgerNo, (Ledgerdetails!=null) ? (Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @readonly = "readonly"})
-                                                                                              @Html.ValidationMessage(@name5+@Ledgers.LedgerNo,  " ",new {@class = "text-danger"}) *@
+                                                                                          <div class="form-group"> 
+                                                                                              @{
+                                                                                              Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (Ledgerdetails != null) ? (Convert.ToDecimal(Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")) - Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))) / Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))) : Convert.ToDecimal(0.00));
+                                                                                              }
                                                                                               @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo]," ",new {@class = "text-danger"})
-                                                                                          
+                                                                                          </div>
                                                                                         }
                                                                                         else
                                                                                         {
-                                                                                            
-                                                                                               Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, LedPrevYearApp!=null ? (Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : Convert.ToDecimal(0.00));
-                                                                                           
-                                                                                                @*Html.TextBox(@name5+@Ledgers.LedgerNo, LedPrevYearApp!=null ? (Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : " ", new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @readonly = "readonly"})
-                                                                                                @Html.ValidationMessage(@name5+@Ledgers.LedgerNo,  " ",new {@class = "text-danger"}) *@
+                                                                                           <div class="form-group"> 
+                                                                                               @{
+                                                                                                 Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, LedPrevYearApp!=null ? (Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : Convert.ToDecimal(0.00));
+                                                                                               }
                                                                                                 @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                                 @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo]," ",new {@class = "text-danger"})
-                                                                                           
+                                                                                           </div>
                                                                                         }
                                                                                     </td>
                                                                                     @if (User.IsInRole("Admin") && AdminEditStatus)
                                                                                     {
                                                                                         <td>
-                                                                                               Model.ACAndBWPropRECurrFin.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.ACAndBWPropRECurrFin.ToString("F"))  : Convert.ToDecimal(0.00));
-                                                                                            
-                                                                                                @*Html.TextBox(@name6+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6+@Ledgers.LedgerNo})
-                                                                                                @Html.ValidationMessage(@name6+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"}) *@
+                                                                                            <div class="form-group"> 
+                                                                                                @{
+                                                                                                  Model.ACAndBWPropRECurrFin.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.ACAndBWPropRECurrFin.ToString("F"))  : Convert.ToDecimal(0.00));
+                                                                                               }
+                                                                                                
                                                                                                 @Html.TextBoxFor(model => model.ACAndBWPropRECurrFin[LedgerNo], new { @class = "form-control", @id = @name6+@Ledgers.LedgerNo})
                                                                                                 @Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin[LedgerNo]," ",new {@class = "text-danger"})
-                                                                                           
+                                                                                            </div>
                                                                                         </td>
                                                                                     }
                                                                                     else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                                                     {
                                                                                       <td>
-                                                                                            Model.ACAndBWPropRECurrFin.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.ACAndBWPropRECurrFin.ToString("F"))  : Convert.ToDecimal(0.00));
-                                                                                         
-                                                                                            @*Html.TextBox(@name6+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6+@Ledgers.LedgerNo, @readonly = "readonly"})
-                                                                                            @Html.ValidationMessage(@name6+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"}) *@
+                                                                                          <div class="form-group">
+                                                                                              @{
+                                                                                                 Model.ACAndBWPropRECurrFin.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.ACAndBWPropRECurrFin.ToString("F"))  : Convert.ToDecimal(0.00));
+                                                                                               }
+                                                                                            
                                                                                             @Html.TextBoxFor(model => model.ACAndBWPropRECurrFin[LedgerNo], new { @class = "form-control", @id = @name6+@Ledgers.LedgerNo,@readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin[LedgerNo]," ",new {@class = "text-danger"})
-                                                                                       
+                                                                                          </div>
                                                                                         </td>
                                                                                     }
                                                                                     else
@@ -641,11 +608,10 @@
                                                                                     @if (User.IsInRole("Admin") && DelegateEditStatus )
                                                                                     {
                                                                                         <div class="form-group">
-                                                                                        @{
+                                                                                          @{
                                                                                             Model.BudgEstNexFin.Insert(LedgerNo, LedPrevYearApp!=null ? Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : Convert.ToDecimal(0.00));
-                                                                                         }    
-                                                                                            @*Html.TextBox(@name7+@Ledgers.LedgerNo, PrevYearApp!=null ? PrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name7+@Ledgers.LedgerNo})
-                                                                                            @Html.ValidationMessage(@name7+@Ledgers.LedgerNo,  " ",new {@class = "text-danger"}) *@
+                                                                                           }  
+                                                                                            
                                                                                             @Html.TextBoxFor(model => model.BudgEstNexFin[LedgerNo], new { @class = "form-control", @id = @name7+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.BudgEstNexFin[LedgerNo]," ",new {@class = "text-danger"})
                                                                                         </div>
@@ -654,11 +620,10 @@
                                                                                     else if (!DelegateEditStatus )
                                                                                     {
                                                                                         <div class="form-group">
-                                                                                        @{
+                                                                                          @{
                                                                                             Model.BudgEstNexFin.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.BudgEstNexFin.ToString("F")) : Convert.ToDecimal(0.00));
-                                                                                         }
-                                                                                            @*Html.TextBox(@name7+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.BudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7+@Ledgers.LedgerNo, @readonly = "readonly"})               
-                                                                                            @Html.ValidationMessage(@name7+@Ledgers.LedgerNo,  " ",new {@class = "text-danger"}) *@
+                                                                                          }
+                                                                                            
                                                                                             @Html.TextBoxFor(model => model.BudgEstNexFin[LedgerNo], new { @class = "form-control", @id = @name7+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.BudgEstNexFin[LedgerNo]," ",new {@class = "text-danger"})
                                                                                         </div>
@@ -667,11 +632,9 @@
                                                                                     else
                                                                                     {
                                                                                         <div class="form-group">
-                                                                                        @{
+                                                                                          @{
                                                                                             Model.BudgEstNexFin.Insert(LedgerNo, LedPrevYearApp!=null ? Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : Convert.ToDecimal(0.00));
-                                                                                         }    
-                                                                                            @*Html.TextBox(@name7+@Ledgers.LedgerNo, PrevYearApp!=null ? PrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name7+@Ledgers.LedgerNo})
-                                                                                            @Html.ValidationMessage(@name7+@Ledgers.LedgerNo,  " ",new {@class = "text-danger"}) *@
+                                                                                            }
                                                                                             @Html.TextBoxFor(model => model.BudgEstNexFin[LedgerNo], new { @class = "form-control", @id = @name7+@Ledgers.LedgerNo})
                                                                                             @Html.ValidationMessageFor(model => model.BudgEstNexFin[LedgerNo]," ",new {@class = "text-danger"})
                                                                                         </div>
@@ -682,13 +645,11 @@
                                                                                         @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                         {
                                                                                             <div class="form-group">
-                                                                                            @{
+                                                                                             @{
                                                                                               Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (Ledgerdetails!=null) ? (Convert.ToDecimal(Ledgerdetails.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")) : Convert.ToDecimal(0.00));
-                                                                                            }
-                                                                                                @*Html.TextBox(@name8+@Ledgers.LedgerNo, (Ledgerdetails!=null) ? (Convert.ToDecimal(Ledgerdetails.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @readonly = "readonly"})
-                                                                                                @Html.ValidationMessage(@name8+@Ledgers.LedgerNo,  " ",new {@class = "text-danger"}) *@
-                                                                                                @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @readonly = "readonly"})
-                                                                                                @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo]," ",new {@class = "text-danger"})
+                                                                                              }  
+                                                                                              @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                              @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo]," ",new {@class = "text-danger"})
                                                                                             </div>
                                                                                             
                                                                                         }
@@ -697,11 +658,9 @@
                                                                                             <div class="form-group">
                                                                                             @{
                                                                                               Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, LedPrevYearApp!=null ? (Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : Convert.ToDecimal(0.00));
-                                                                                            }
-                                                                                                 @*Html.TextBox(@name8+@Ledgers.LedgerNo, LedPrevYearApp!=null ? (Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : " ", new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @readonly = "readonly"})
-                                                                                                 @Html.ValidationMessage(@name8+@Ledgers.LedgerNo,  " ",new {@class = "text-danger"}) *@
-                                                                                                 @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @readonly = "readonly"})
-                                                                                                 @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo]," ",new {@class = "text-danger"})
+                                                                                              }   
+                                                                                              @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                              @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo]," ",new {@class = "text-danger"})
                                                                                             </div>
                                                                                             
                                                                                         }
@@ -710,11 +669,9 @@
                                                                                 {
                                                                                     <td>
                                                                                         <div class="form-group">
-                                                                                         @{
+                                                                                          @{
                                                                                               Model.ACAndBWPropRENxtFin.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.ACAndBWPropRENxtFin.ToString("F")) : Convert.ToDecimal(0.00));
-                                                                                          }    
-                                                                                            @*Html.TextBox(@name9+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9+@Ledgers.LedgerNo})                                                                                           
-                                                                                            @Html.ValidationMessage(@name9+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"}) *@
+                                                                                            }
                                                                                             @Html.TextBoxFor(model => model.ACAndBWPropRENxtFin[LedgerNo], new { @class = "form-control", @id = @name9+@Ledgers.LedgerNo})
                                                                                             @Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin[LedgerNo]," ",new {@class = "text-danger"})
                                                                                         </div>
@@ -725,13 +682,11 @@
                                                                                 {
                                                                                     <td>
                                                                                         <div class="form-group">
-                                                                                         @{
+                                                                                           @{
                                                                                               Model.ACAndBWPropRENxtFin.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.ACAndBWPropRENxtFin.ToString("F")) : Convert.ToDecimal(0.00));
-                                                                                          }
-                                                                                                @*Html.TextBox(@name9+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9+@Ledgers.LedgerNo, @readonly = "readonly"})
-                                                                                                @Html.ValidationMessage(@name9+@Ledgers.LedgerNo,  "*",new {@class = "text-danger"}) *@
-                                                                                                @Html.TextBoxFor(model => model.ACAndBWPropRENxtFin[LedgerNo], new { @class = "form-control", @id = @name9+@Ledgers.LedgerNo, @readonly = "readonly"})
-                                                                                                @Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin[LedgerNo]," ",new {@class = "text-danger"})
+                                                                                             }   
+                                                                                              @Html.TextBoxFor(model => model.ACAndBWPropRENxtFin[LedgerNo], new { @class = "form-control", @id = @name9+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                              @Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin[LedgerNo]," ",new {@class = "text-danger"})
                                                                                         </div>
                                                                                         
                                                                                     </td>
@@ -744,11 +699,9 @@
                                                                                     @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
                                                                                             <div class="form-group">
-                                                                                                @{
-                                                                                                    Model.Justification.Insert(LedgerNo, Ledgerdetails != null ? Ledgerdetails.Justification.ToString(): "");
-                                                                                                }
-                                                                                            @*Html.TextArea(@name10+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.Justification.ToString() : " ", new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @readonly = "readonly"})                                                                                           
-                                                                                            @Html.ValidationMessage(@name10+@Ledgers.LedgerNo,  " ",new {@class = "text-danger"}) *@
+                                                                                             @{  
+                                                                                                Model.Justification.Insert(LedgerNo, Ledgerdetails != null ? Ledgerdetails.Justification.ToString(): "");
+                                                                                              }  
                                                                                             @Html.TextAreaFor(model => model.Justification[LedgerNo], new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.Justification[LedgerNo]," ",new {@class = "text-danger"})
                                                                                         </div>
@@ -759,11 +712,9 @@
 
 
                                                                                         <div class="form-group">
-                                                                                            @{
-                                                                                                    Model.Justification.Insert(LedgerNo, Ledgerdetails != null ? Ledgerdetails.Justification.ToString() : "");
-                                                                                                }
-                                                                                            @*Html.TextArea(@name10+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.Justification.ToString() : " ", new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo})                                   
-                                                                                            @Html.ValidationMessage(@name10+@Ledgers.LedgerNo,  " ",new {@class = "text-danger"}) *@
+                                                                                           @{ 
+                                                                                              Model.Justification.Insert(LedgerNo, Ledgerdetails != null ? Ledgerdetails.Justification.ToString() : "");
+                                                                                             }   
                                                                                             @Html.TextAreaFor(model => model.Justification[LedgerNo], new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo})
                                                                                             @Html.ValidationMessageFor(model => model.Justification[LedgerNo]," ",new {@class = "text-danger"})
                                                                                         </div>
@@ -857,15 +808,13 @@
                                                             var LedgerPastYearAppBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();
 
                                                                 <div class="form-group"> 
-                                                                    @{
+                                                                 @{
                                                                         Model.BudEstCurrFin.Insert(Count, LedgerPastYearAppBudEstCurrFin != null ? Convert.ToDecimal(LedgerPastYearAppBudEstCurrFin) : Convert.ToDecimal(0.00));
-                                                                    }
-                                                                 @*Html.TextBox(@name1, LedgerPastYearAppBudEstCurrFin!=null ? LedgerPastYearAppBudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
-                                                                 @Html.ValidationMessage(@name1,  " ",new {@class = "text-danger"}) *@
+                                                                   }
                                                                  @Html.TextBoxFor(model => model.BudEstCurrFin[Count], new { @class = "form-control", @id = @name1, @readonly = "readonly"} )
                                                                  @Html.ValidationMessageFor(model => model.BudEstCurrFin[Count]," ",new {@class = "text-danger"})
 
-                                                            </div>
+                                                                </div>
                                                             
                                                         }
                                                         else if (@Subs.RequireInput && !DelegateEditStatus)
@@ -875,9 +824,7 @@
                                                             <div class="form-group">
                                                                     @{
                                                                         Model.BudEstCurrFin.Insert(Count, LedgerSumBudEstCurrFin != null ? Convert.ToDecimal(LedgerSumBudEstCurrFin) : Convert.ToDecimal(0.00));
-                                                                    }
-                                                                     @*Html.TextBox(@name1, LedgerSumBudEstCurrFin!=null ? LedgerSumBudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
-                                                                     @Html.ValidationMessage(@name1,  " ",new {@class = "text-danger"}) *@
+                                                                     }
                                                                      @Html.TextBoxFor(model => model.BudEstCurrFin[Count], new { @class = "form-control", @id = @name1, @readonly = "readonly"} )
                                                                      @Html.ValidationMessageFor(model => model.BudEstCurrFin[Count]," ",new {@class = "text-danger"})
                                                                 </div>
@@ -887,11 +834,10 @@
                                                             else if (!DelegateEditStatus)
                                                             {
                                                                 <div class="form-group">
-                                                                    @{
+                                                                   
+                                                                   @{
                                                                         Model.BudEstCurrFin.Insert(Count, details != null ? Convert.ToDecimal(details.BudEstCurrFin) : Convert.ToDecimal(0.00));
-                                                                    } 
-                                                                    @*Html.TextBox(@name1, details!=null ? details.BudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})                                                                    
-                                                                    @Html.ValidationMessage(@name1,  "*",new {@class = "text-danger"}) *@
+                                                                    }
                                                                     @Html.TextBoxFor(model => model.BudEstCurrFin[Count], new { @class = "form-control", @id = @name1, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.BudEstCurrFin[Count]," ",new {@class = "text-danger"})
 
@@ -902,11 +848,8 @@
                                                             {
                                                                 <div class="form-group">
                                                                     @{
-                                                                
                                                                         Model.BudEstCurrFin.Insert(Count,(PrevYearApp != null) ? Convert.ToDecimal(PrevYearApp.BudEstNextFin) : Convert.ToDecimal(0.00));
-                                                                    } 
-                                                                    @*Html.TextBox(@name1, PrevYearApp!=null ? PrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name1,  "*",new {@class = "text-danger"}) *@
+                                                                     }
                                                                     @Html.TextBoxFor(model => model.BudEstCurrFin[Count], new { @class = "form-control", @id = @name1, @readonly = "readonly" })
                                                                     @Html.ValidationMessageFor(model => model.BudEstCurrFin[Count]," ",new {@class = "text-danger"})
 
@@ -919,12 +862,9 @@
                                                         {
                                                             var LedgerSumActPrevFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActPrevFin).Sum();
                                                             <div class="form-group">  
-                                                                @{
-                                                                        Model.ActPrevFin.Insert(Count, LedgerSumActPrevFin != null ? Convert.ToDecimal(LedgerSumActPrevFin) : Convert.ToDecimal(0.00));
-                                                                    } 
-
-                                                                @*Html.TextBox(@name2, LedgerSumActPrevFin!=null ? LedgerSumActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name2,  " ",new {@class = "text-danger"}) *@
+                                                               @{
+                                                                  Model.ActPrevFin.Insert(Count, LedgerSumActPrevFin != null ? Convert.ToDecimal(LedgerSumActPrevFin) : Convert.ToDecimal(0.00));
+                                                                }   
                                                                 @Html.TextBoxFor(model => model.ActPrevFin[Count], new { @class = "form-control", @id = @name2, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.ActPrevFin[Count]," ",new {@class = "text-danger"})
                                                             </div>
@@ -933,12 +873,9 @@
                                                         else if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                         {
                                                                 <div class="form-group">
-                                                                    @{
-                                                                        Model.ActPrevFin.Insert(Count, details != null ? Convert.ToDecimal(details.ActPrevFin) : Convert.ToDecimal(0.00));
-                                                                    }
-
-                                                                    @*Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F"): " ", new { @class = "form-control", @id = @name2, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name2,  " ",new {@class = "text-danger"}) *@
+                                                                  @{ 
+                                                                     Model.ActPrevFin.Insert(Count, details != null ? Convert.ToDecimal(details.ActPrevFin) : Convert.ToDecimal(0.00));
+                                                                   }
                                                                     @Html.TextBoxFor(model => model.ActPrevFin[Count], new { @class = "form-control", @id = @name2, @readonly = "readonly"} )
                                                                     @Html.ValidationMessageFor(model => model.ActPrevFin[Count]," ",new {@class = "text-danger"})
                                                                 </div>
@@ -947,12 +884,10 @@
                                                         else
                                                         {
                                                             <div class="form-group">
-                                                                @{
-                                                                    Model.ActPrevFin.Insert(Count, details != null ? Convert.ToDecimal(details.ActPrevFin) : Convert.ToDecimal(0.00));
-                                                                 }
-                                                                @*Html.TextBox(@name2, details!=null ? details.ActPrevFin.ToString("F") : " ", new { @class = "form-control", @id = @name2})
-                                                                @Html.ValidationMessage(@name2,  " ",new {@class = "text-danger"}) *@
-                                                                    @Html.TextBoxFor(model => model.ActPrevFin[Count], new { @class = "form-control", @id = @name2 })
+                                                               @{
+                                                                  Model.ActPrevFin.Insert(Count, details != null ? Convert.ToDecimal(details.ActPrevFin) : Convert.ToDecimal(0.00));
+                                                                }
+                                                                @Html.TextBoxFor(model => model.ActPrevFin[Count], new { @class = "form-control", @id = @name2 })
                                                                 @Html.ValidationMessageFor(model => model.ActPrevFin[Count]," ",new {@class = "text-danger"})
                                                             </div>
                                                             
@@ -963,11 +898,9 @@
                                                         {
                                                                 var LedgerSumActCurrFinTill2ndQuart = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActCurrFinTill2ndQuart).Sum();
                                                              <div class="form-group">
-                                                                @{
-                                                                    Model.ActCurrFinTillsecondQuart.Insert(Count, LedgerSumActCurrFinTill2ndQuart != null ? Convert.ToDecimal(LedgerSumActCurrFinTill2ndQuart) : Convert.ToDecimal(0.00));
+                                                               @{
+                                                                  Model.ActCurrFinTillsecondQuart.Insert(Count, LedgerSumActCurrFinTill2ndQuart != null ? Convert.ToDecimal(LedgerSumActCurrFinTill2ndQuart) : Convert.ToDecimal(0.00));
                                                                  }
-                                                                 @*Html.TextBox(@name3, LedgerSumActCurrFinTill2ndQuart!=null ? LedgerSumActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3, @readonly = "readonly"})
-                                                                 @Html.ValidationMessage(@name3,  " ",new {@class = "text-danger"}) *@
                                                                  @Html.TextBoxFor(model => model.ActCurrFinTillsecondQuart[Count], new { @class = "form-control", @id = @name3, @readonly = "readonly"})
                                                                  @Html.ValidationMessageFor(model => model.ActCurrFinTillsecondQuart[Count]," ",new {@class = "text-danger"})
                                                                 </div>
@@ -977,11 +910,9 @@
                                                         {                                       
                                                               <div class="form-group">
                                                                 @{
-                                                                        Model.ActCurrFinTillsecondQuart.Insert(Count, details != null ? Convert.ToDecimal(details.ActCurrFinTill2ndQuart) : Convert.ToDecimal(0.00));
+                                                                   Model.ActCurrFinTillsecondQuart.Insert(Count, details != null ? Convert.ToDecimal(details.ActCurrFinTill2ndQuart) : Convert.ToDecimal(0.00));
                                                                  }
-                                                                 @*Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3, @readonly = "readonly"})
-                                                                 @Html.ValidationMessage(@name3,  " ",new {@class = "text-danger"}) *@
-                                                                    @Html.TextBoxFor(model => model.ActCurrFinTillsecondQuart[Count], new { @class = "form-control", @id = @name3, @readonly = "readonly"})
+                                                                  @Html.TextBoxFor(model => model.ActCurrFinTillsecondQuart[Count], new { @class = "form-control", @id = @name3, @readonly = "readonly"})
                                                                  @Html.ValidationMessageFor(model => model.ActCurrFinTillsecondQuart[Count]," ",new {@class = "text-danger"})
                                                                 </div>
                                                                 
@@ -989,11 +920,9 @@
                                                         else
                                                         {
                                                             <div class="form-group">
-                                                                @{
-                                                                        Model.ActCurrFinTillsecondQuart.Insert(Count, details != null ? Convert.ToDecimal(details.ActCurrFinTill2ndQuart) : Convert.ToDecimal(0.00));
-                                                                 }
-                                                                 @*Html.TextBox(@name3, details!=null ? details.ActCurrFinTill2ndQuart.ToString("F") : " ", new { @class = "form-control", @id = @name3})
-                                                                 @Html.ValidationMessage(@name3,  " ",new {@class = "text-danger"}) *@
+                                                               @{ 
+                                                                  Model.ActCurrFinTillsecondQuart.Insert(Count, details != null ? Convert.ToDecimal(details.ActCurrFinTill2ndQuart) : Convert.ToDecimal(0.00));
+                                                                } 
                                                                 @Html.TextBoxFor(model => model.ActCurrFinTillsecondQuart[Count], new { @class = "form-control", @id = @name3})
                                                                 @Html.ValidationMessageFor(model => model.ActCurrFinTillsecondQuart[Count]," ",new {@class = "text-danger"})
                                                             </div>
@@ -1005,25 +934,21 @@
                                                         {
                                                                 var PastYearBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin ).Sum();
                                                             <div class="form-group">
-                                                                @{
-                                                                        Model.RevEstCurrFin.Insert(Count, PastYearBudEstCurrFin != null ? Convert.ToDecimal(PastYearBudEstCurrFin) : Convert.ToDecimal(0.00));
-                                                                 }
-                                                                 @*Html.TextBox(@name4, PastYearBudEstCurrFin!=null ? PastYearBudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4, @readonly = "readonly"})
-                                                                 @Html.ValidationMessage(@name4,  " ",new {@class = "text-danger"}) *@
+                                                               @{ 
+                                                                 Model.RevEstCurrFin.Insert(Count, PastYearBudEstCurrFin != null ? Convert.ToDecimal(PastYearBudEstCurrFin) : Convert.ToDecimal(0.00));
+                                                                } 
                                                                  @Html.TextBoxFor(model => model.RevEstCurrFin[Count], new { @class = "form-control", @id = @name4, @readonly = "readonly"})
                                                                  @Html.ValidationMessageFor(model => model.RevEstCurrFin[Count]," ",new {@class = "text-danger"})
-                                                                </div>
+                                                            </div>
                                                                 
                                                             }
                                                         else if (@Subs.RequireInput && !DelegateEditStatus)
                                                         {
                                                                 var PastYearBudEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.RevEstCurrFin).Sum();
                                                             <div class="form-group">
-                                                                @{
-                                                                        Model.RevEstCurrFin.Insert(Count, PastYearBudEstCurrFin != null ? Convert.ToDecimal(PastYearBudEstCurrFin) : Convert.ToDecimal(0.00));
-                                                                 }
-                                                                @*Html.TextBox(@name4, PastYearBudEstCurrFin!=null ? PastYearBudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name4,  " ",new {@class = "text-danger"}) *@
+                                                             @{   
+                                                                Model.RevEstCurrFin.Insert(Count, PastYearBudEstCurrFin != null ? Convert.ToDecimal(PastYearBudEstCurrFin) : Convert.ToDecimal(0.00));
+                                                              }   
                                                                 @Html.TextBoxFor(model => model.RevEstCurrFin[Count], new { @class = "form-control", @id = @name4, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.RevEstCurrFin[Count]," ",new {@class = "text-danger"})
                                                             </div>
@@ -1031,11 +956,9 @@
                                                         else if(User.IsInRole("Admin") && DelegateEditStatus)
                                                         {
                                                             <div class="form-group">
-                                                                @{
-                                                                        Model.RevEstCurrFin.Insert(Count, PrevYearApp != null ? Convert.ToDecimal(PrevYearApp.BudEstNextFin) : Convert.ToDecimal(0.00));
-                                                                 }
-                                                                @*Html.TextBox(@name4, PrevYearApp!=null ? PrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name4})
-                                                                @Html.ValidationMessage(@name4,  " ",new {@class = "text-danger"}) *@
+                                                             @{  
+                                                                Model.RevEstCurrFin.Insert(Count, PrevYearApp != null ? Convert.ToDecimal(PrevYearApp.BudEstNextFin) : Convert.ToDecimal(0.00));
+                                                              }  
                                                                 @Html.TextBoxFor(model => model.RevEstCurrFin[Count], new { @class = "form-control", @id = @name4, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.RevEstCurrFin[Count]," ",new {@class = "text-danger"})
                                                             </div>
@@ -1043,11 +966,9 @@
                                                         else if(!DelegateEditStatus)
                                                         {
                                                               <div class="form-group">
-                                                                    @{
-                                                                        Model.RevEstCurrFin.Insert(Count, details != null ? Convert.ToDecimal(details.RevEstCurrFin) : Convert.ToDecimal(0.00));
-                                                                    }
-                                                                @*Html.TextBox(@name4, details!=null ? details.RevEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name4, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name4,  " ",new {@class = "text-danger"}) *@
+                                                                @{    
+                                                                  Model.RevEstCurrFin.Insert(Count, details != null ? Convert.ToDecimal(details.RevEstCurrFin) : Convert.ToDecimal(0.00));
+                                                                 }  
                                                                     @Html.TextBoxFor(model => model.RevEstCurrFin[Count], new { @class = "form-control", @id = @name4, @readonly = "readonly" })
                                                                     @Html.ValidationMessageFor(model => model.RevEstCurrFin[Count], "", new { @class = "text-danger" })
                                                               </div> 
@@ -1055,11 +976,9 @@
                                                         else
                                                         {
                                                             <div class="form-group">
-                                                                @{
-                                                                        Model.RevEstCurrFin.Insert(Count, PrevYearApp != null ? Convert.ToDecimal(PrevYearApp.BudEstNextFin) : Convert.ToDecimal(0.00));
-                                                                 }
-                                                                @*Html.TextBox(@name4, PrevYearApp!=null ? PrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name4})
-                                                                @Html.ValidationMessage(@name4,  " ",new {@class = "text-danger"}) *@
+                                                              @{ 
+                                                                Model.RevEstCurrFin.Insert(Count, PrevYearApp != null ? Convert.ToDecimal(PrevYearApp.BudEstNextFin) : Convert.ToDecimal(0.00));
+                                                                }
                                                                 @Html.TextBoxFor(model => model.RevEstCurrFin[Count], new { @class = "form-control", @id = @name4})
                                                                 @Html.ValidationMessageFor(model => model.RevEstCurrFin[Count]," ",new {@class = "text-danger"})
                                                             </div>
@@ -1074,8 +993,6 @@
                                                               @{
                                                                   Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, PastYearSumBudEstCurrFin != Convert.ToDecimal(0.00) ? (Convert.ToDecimal(PastYearSumBudEstCurrFin) - Convert.ToDecimal(PastYearSumBudEstCurrFin)) / Convert.ToDecimal(PastYearSumBudEstCurrFin) : Convert.ToDecimal(0.00));
                                                                }
-                                                                @*Html.TextBox(@name5, PastYearSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? (Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F"))- Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")))/Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name5,  " ",new {@class = "text-danger"}) *@
                                                                 @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count]," ",new {@class = "text-danger"})
                                                                 </div>
@@ -1086,10 +1003,8 @@
                                                             var LedgerSumBudEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstCurrFin).Sum();
                                                                 <div class="form-group">
                                                                 @{
-                                                                        Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, LedgerSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? (Convert.ToDecimal(LedgerSumRevEstCurrFin)- Convert.ToDecimal(LedgerSumBudEstCurrFin))/Convert.ToDecimal(LedgerSumBudEstCurrFin): Convert.ToDecimal(0.00));
-                                                                 } 
-                                                                    @*Html.TextBox(@name5, LedgerSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? (Convert.ToDecimal(LedgerSumRevEstCurrFin.ToString("F"))- Convert.ToDecimal(LedgerSumBudEstCurrFin.ToString("F")))/Convert.ToDecimal(LedgerSumBudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name5,  " ",new {@class = "text-danger"}) *@
+                                                                    Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, LedgerSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? (Convert.ToDecimal(LedgerSumRevEstCurrFin)- Convert.ToDecimal(LedgerSumBudEstCurrFin))/Convert.ToDecimal(LedgerSumBudEstCurrFin): Convert.ToDecimal(0.00));
+                                                                 }
                                                                     @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count]," ",new {@class = "text-danger"})
                                                                 </div>
@@ -1098,11 +1013,9 @@
                                                         else if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                         {
                                                             <div class="form-group">
-                                                                @{
-                                                                    Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, (details!=null) ? (Convert.ToDecimal(details.RevEstCurrFin)- Convert.ToDecimal(details.BudEstCurrFin))/Convert.ToDecimal(details.BudEstCurrFin)  : Convert.ToDecimal(0.00));
-                                                                 }
-                                                                @*Html.TextBox(@name5, (details!=null) ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")) : " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name5,  " ",new {@class = "text-danger"}) *@
+                                                               @{ 
+                                                                  Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, (details!=null) ? (Convert.ToDecimal(details.RevEstCurrFin)- Convert.ToDecimal(details.BudEstCurrFin))/Convert.ToDecimal(details.BudEstCurrFin)  : Convert.ToDecimal(0.00));
+                                                                } 
                                                                 @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count]," ",new {@class = "text-danger"})
                                                             </div>
@@ -1110,11 +1023,9 @@
                                                         else
                                                         {
                                                                 <div class="form-group">
-                                                                @{
+                                                                 @{
                                                                     Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, (PrevYearApp!=null) ? (Convert.ToDecimal(PrevYearApp.BudEstNextFin)- Convert.ToDecimal(PrevYearApp.BudEstNextFin))/Convert.ToDecimal(PrevYearApp.BudEstNextFin)   : Convert.ToDecimal(0.00));
-                                                                 }
-                                                                     @*Html.TextBox(@name5, (PrevYearApp!=null) ? (Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")) : " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
-                                                                     @Html.ValidationMessage(@name5,  " ",new {@class = "text-danger"}) *@
+                                                                  }
                                                                      @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                      @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count]," ",new {@class = "text-danger"})
                                                                 </div>
@@ -1125,11 +1036,9 @@
                                                             var LedgerSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
                                                             <td>
                                                               <div class="form-group">
-                                                                @{
-                                                                    Model.ACAndBWPropRECurrFin.Insert(Count, LedgerSumACAndBWPropRECurrFin!=null ? Convert.ToDecimal(LedgerSumACAndBWPropRECurrFin) : Convert.ToDecimal(0.00));
-                                                                 }
-                                                                 @*Html.TextBox(@name6, LedgerSumACAndBWPropRECurrFin!=null ? LedgerSumACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6, @readonly = "readonly"})
-                                                                 @Html.ValidationMessage(@name6,  " ",new {@class = "text-danger"}) *@
+                                                               @{
+                                                                 Model.ACAndBWPropRECurrFin.Insert(Count, LedgerSumACAndBWPropRECurrFin!=null ? Convert.ToDecimal(LedgerSumACAndBWPropRECurrFin) : Convert.ToDecimal(0.00));
+                                                                }
                                                                  @Html.TextBoxFor(model => model.ACAndBWPropRECurrFin[Count],new { @class = "form-control", @id = @name6, @readonly = "readonly"})
                                                                  @Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin[Count]," ",new {@class = "text-danger"})
                                                               </div>
@@ -1139,11 +1048,9 @@
                                                         {
                                                             <td>
                                                                 <div class="form-group">
-                                                                @{
-                                                                    Model.ACAndBWPropRECurrFin.Insert(Count, details!=null ? Convert.ToDecimal(details.ACAndBWPropRECurrFin) : Convert.ToDecimal(0.00));
-                                                                 }
-                                                                @*Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6})
-                                                                @Html.ValidationMessage(@name6,  " ",new {@class = "text-danger"}) *@
+                                                               @{ 
+                                                                Model.ACAndBWPropRECurrFin.Insert(Count, details!=null ? Convert.ToDecimal(details.ACAndBWPropRECurrFin) : Convert.ToDecimal(0.00));
+                                                                } 
                                                                 @Html.TextBoxFor(model => model.ACAndBWPropRECurrFin[Count],new { @class = "form-control", @id = @name6})
                                                                 @Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin[Count]," ",new {@class = "text-danger"})
                                                                 </div>
@@ -1153,11 +1060,9 @@
                                                         {
                                                             <td>
                                                                 <div class="form-group">
-                                                                    @{
-                                                                        Model.ACAndBWPropRECurrFin.Insert(Count, details != null ? Convert.ToDecimal(details.ACAndBWPropRECurrFin) : Convert.ToDecimal(0.00));
-                                                                    }
-                                                                @*Html.TextBox(@name6, details!=null ? details.ACAndBWPropRECurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name6, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name6,  " ",new {@class = "text-danger"}) *@
+                                                                 @{   
+                                                                    Model.ACAndBWPropRECurrFin.Insert(Count, details != null ? Convert.ToDecimal(details.ACAndBWPropRECurrFin) : Convert.ToDecimal(0.00));
+                                                                  } 
                                                                     @Html.TextBoxFor(model => model.ACAndBWPropRECurrFin[Count], new { @class = "form-control", @id = @name6, @readonly = "readonly" })
                                                                     @Html.ValidationMessageFor(model => model.ACAndBWPropRECurrFin[Count], "", new { @class = "text-danger" })
                                                                 </div>
@@ -1192,8 +1097,7 @@
                                                                 @{
                                                                     Model.BudgEstNexFin.Insert(Count, PastYearBudEstCurrFin != null ? Convert.ToDecimal(PastYearBudEstCurrFin) : Convert.ToDecimal(0.00));
                                                                  }
-                                                                @*Html.TextBox(@name7, PastYearBudEstCurrFin!=null ? PastYearBudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name7,  " ",new {@class = "text-danger"}) *@
+                                                                
                                                                 @Html.TextBoxFor(model => model.BudgEstNexFin[Count],new { @class = "form-control", @id = @name7, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.BudgEstNexFin[Count]," ",new {@class = "text-danger"})
                                                             </div>
@@ -1205,8 +1109,7 @@
                                                             @{
                                                                  Model.BudgEstNexFin.Insert(Count,ThisYearBudEstNextFin!=null ? Convert.ToDecimal(ThisYearBudEstNextFin) : Convert.ToDecimal(0.00));
                                                              }
-                                                                @*Html.TextBox(@name7, ThisYearBudEstNextFin!=null ? ThisYearBudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name7,  " ",new {@class = "text-danger"}) *@
+                                                                
                                                                 @Html.TextBoxFor(model => model.BudgEstNexFin[Count],new { @class = "form-control", @id = @name7, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.BudgEstNexFin[Count]," ",new {@class = "text-danger"})
                                                             </div>
@@ -1214,11 +1117,10 @@
                                                         else if (User.IsInRole("Admin") && DelegateEditStatus)
                                                         {
                                                             <div class="form-group">
-                                                                    @{
-                                                                        Model.BudgEstNexFin.Insert(Count, PrevYearApp != null ? Convert.ToDecimal(PrevYearApp.BudEstNextFin) : Convert.ToDecimal(0.00));
-                                                                    }
-                                                                @*Html.TextBox(@name7, PrevYearApp!=null ? PrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name7})
-                                                                @Html.ValidationMessage(@name7,  " ",new {@class = "text-danger"}) *@
+                                                               @{
+                                                                  Model.BudgEstNexFin.Insert(Count, PrevYearApp != null ? Convert.ToDecimal(PrevYearApp.BudEstNextFin) : Convert.ToDecimal(0.00));
+                                                                }
+                                                                
                                                                 @Html.TextBoxFor(model => model.BudgEstNexFin[Count],new { @class = "form-control", @id = @name7, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.BudgEstNexFin[Count]," ",new {@class = "text-danger"})
                                                             </div>
@@ -1230,8 +1132,7 @@
                                                                @{
                                                                  Model.BudgEstNexFin.Insert(Count, details!=null ? Convert.ToDecimal(details.BudgEstNexFin) : Convert.ToDecimal(0.00));
                                                                }
-                                                               @*Html.TextBox(@name7, details!=null ? details.BudgEstNexFin.ToString("F") : " ", new { @class = "form-control", @id = @name7, @readonly = "readonly"})
-                                                               @Html.ValidationMessage(@name7,  " ",new {@class = "text-danger"}) *@
+                                                               
                                                                @Html.TextBoxFor(model => model.BudgEstNexFin[Count],new { @class = "form-control", @id = @name7, @readonly = "readonly"})
                                                                @Html.ValidationMessageFor(model => model.BudgEstNexFin[Count]," ",new {@class = "text-danger"})
                                                               </div>
@@ -1242,8 +1143,7 @@
                                                                     @{
                                                                         Model.BudgEstNexFin.Insert(Count, PrevYearApp != null ? Convert.ToDecimal(PrevYearApp.BudEstNextFin) : Convert.ToDecimal(0.00));
                                                                     }
-                                                                @*Html.TextBox(@name7, PrevYearApp!=null ? PrevYearApp.BudEstNextFin.ToString("F") : " ", new { @class = "form-control", @id = @name7})
-                                                                @Html.ValidationMessage(@name7,  " ",new {@class = "text-danger"}) *@
+                                                                
                                                                 @Html.TextBoxFor(model => model.BudgEstNexFin[Count],new { @class = "form-control", @id = @name7})
                                                                 @Html.ValidationMessageFor(model => model.BudgEstNexFin[Count]," ",new {@class = "text-danger"})
                                                             </div>
@@ -1259,8 +1159,7 @@
                                                                 @{
                                                                     Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, PastYearSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? (Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F"))- Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")))/Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")) : Convert.ToDecimal(0.00));
                                                                  }
-                                                                    @*Html.TextBox(@name8, PastYearSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? (Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F"))- Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")))/Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name8,  " ",new {@class = "text-danger"}) *@
+                                                                    
                                                                     @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count]," ",new {@class = "text-danger"})
                                                                 </div>
@@ -1273,8 +1172,7 @@
                                                                     @{
                                                                         Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, LedgerSumBudEstNextFin!=Convert.ToDecimal(0.00) ? (Convert.ToDecimal(LedgerSumBudEstNextFin.ToString("F"))- Convert.ToDecimal(LedgerSumRevEstCurrFin.ToString("F")))/Convert.ToDecimal(LedgerSumRevEstCurrFin.ToString("F")) : Convert.ToDecimal(0.00));
                                                                     }
-                                                                    @*Html.TextBox(@name8, LedgerSumBudEstNextFin!=Convert.ToDecimal(0.00) ? (Convert.ToDecimal(LedgerSumBudEstNextFin.ToString("F"))- Convert.ToDecimal(LedgerSumRevEstCurrFin.ToString("F")))/Convert.ToDecimal(LedgerSumRevEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name8,  " ",new {@class = "text-danger"}) *@
+                                                                    
                                                                     @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count]," ",new {@class = "text-danger"})
                                                                 </div>
@@ -1286,8 +1184,7 @@
                                                                     @{
                                                                         Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (details!=null) ? (Convert.ToDecimal(details.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(details.RevEstCurrFin.ToString("F")) : Convert.ToDecimal(0.00));
                                                                     }
-                                                                    @*Html.TextBox(@name8, (details!=null) ? (Convert.ToDecimal(details.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(details.RevEstCurrFin.ToString("F")) : " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name8,  " ",new {@class = "text-danger"}) *@
+                                                                   
                                                                     @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count]," ",new {@class = "text-danger"})
                                                                 </div>
@@ -1298,8 +1195,7 @@
                                                                     @{
                                                                         Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (PrevYearApp!=null) ? (Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")) : Convert.ToDecimal(0.00));
                                                                     }
-                                                                    @*Html.TextBox(@name8, (PrevYearApp!=null) ? (Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")) : " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name8,  " ",new {@class = "text-danger"}) *@
+                                                                    
                                                                     @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count]," ",new {@class = "text-danger"})
                                                                 </div>
@@ -1313,8 +1209,7 @@
                                                                     @{
                                                                         Model.ACAndBWPropRENxtFin.Insert(Count, LedgerSumACAndBWPropRENxtFin!=null ? Convert.ToDecimal(LedgerSumACAndBWPropRENxtFin.ToString("F")) : Convert.ToDecimal(0.00));
                                                                     }
-                                                                    @*Html.TextBox(@name9, LedgerSumACAndBWPropRENxtFin!=null ? LedgerSumACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name9,  " ",new {@class = "text-danger"}) *@
+                                                                    
                                                                     @Html.TextBoxFor(model => model.ACAndBWPropRENxtFin[Count],new { @class = "form-control", @id = @name9, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin[Count]," ",new {@class = "text-danger"})
                                                                 </div>
@@ -1327,8 +1222,7 @@
                                                                     @{
                                                                         Model.ACAndBWPropRENxtFin.Insert(Count, details != null ? Convert.ToDecimal(details.ACAndBWPropRENxtFin.ToString("F")) : Convert.ToDecimal(0.00));
                                                                     }
-                                                                    @*Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9})
-                                                                    @Html.ValidationMessage(@name9,  " ",new {@class = "text-danger"}) *@
+                                                                    
                                                                     @Html.TextBoxFor(model => model.ACAndBWPropRENxtFin[Count], new {@class = "form-control", @id = @name9})
                                                                     @Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin[Count]," ",new {@class = "text-danger"})
                                                                 </div>
@@ -1341,8 +1235,7 @@
                                                                     @{
                                                                         Model.ACAndBWPropRENxtFin.Insert(Count, details != null ? Convert.ToDecimal(details.ACAndBWPropRENxtFin.ToString("F")) : Convert.ToDecimal(0.00));
                                                                     }
-                                                                    @*Html.TextBox(@name9, details!=null ? details.ACAndBWPropRENxtFin.ToString("F") : " ", new { @class = "form-control", @id = @name9, @readonly = "readonly"})
-                                                                    @Html.ValidationMessage(@name9,  " ",new {@class = "text-danger"}) *@
+                                                                    
                                                                     @Html.TextBoxFor(model => model.ACAndBWPropRENxtFin[Count], new {@class = "form-control", @id = @name9, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.ACAndBWPropRENxtFin[Count]," ",new {@class = "text-danger"})
                                                                 </div>
@@ -1367,7 +1260,6 @@
                                                         else
                                                         {
                                                            Model.ACAndBWPropRENxtFin.Insert(Count, Convert.ToDecimal(0.00));                                                   
-                                                            
                                                         }
                                                         <td>
                                                             @if (@Subs.RequireInput || User.IsInRole("Admin") || !DelegateEditStatus)
@@ -1376,8 +1268,7 @@
                                                                 @{
                                                                     Model.Justification.Insert(Count, details != null ? details.Justification.ToString(): "");
                                                                  }
-                                                                @*Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name10,  " ",new {@class = "text-danger"}) *@
+                                                                
                                                                 @Html.TextAreaFor(model => model.Justification[Count] , new { @class = "form-control", @id = @name10, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.Justification[Count]," ",new {@class = "text-danger"})
                                                             </div>
@@ -1519,10 +1410,6 @@
                                                     
                             <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
                                 <br />
-                                
-                                @*using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
-                                {
-                                        @Html.AntiForgeryToken()*@
                                         <table id="@identi-outertable" class="table table-responsive table-hover">
                                             <thead>
                                                 <tr>
@@ -2824,9 +2711,6 @@
                                                      }*@
                               <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
                                   
-                                 @*using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
-                                 {
-                                        @Html.AntiForgeryToken()*@
                                         <table id="@identi-outertable" class="table table-responsive table-hover">
                                             <thead>
                                                 <tr>
@@ -3310,8 +3194,7 @@
                                                                     @{
                                                                         Model.BudEstCurrFin.Insert(Count, LedgerPastYearAppBudEstCurrFin != null ? Convert.ToDecimal(LedgerPastYearAppBudEstCurrFin.ToString("F")) : Convert.ToDecimal(0.00));
                                                                     } 
-                                                              @*Html.TextBox(@name1, LedgerPastYearAppBudEstCurrFin!=null ? LedgerPastYearAppBudEstCurrFin.ToString("F") : " ", new { @class = "form-control", @id = @name1, @readonly = "readonly"})
-                                                                     @Html.ValidationMessage(@name1,  " ",new {@class = "text-danger"}) *@                        
+                                                                                     
                                                                      @Html.TextBoxFor(model => model.BudEstCurrFin[Count], new { @class = "form-control", @id = @name1, @readonly = "readonly"})
                                                                      @Html.ValidationMessageFor(model => model.BudEstCurrFin[Count]," ",new {@class = "text-danger"})
                                                             </div>
@@ -3948,10 +3831,6 @@
                                                      
                              <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
                                 <br />
-                              
-                             @*using (Html.BeginForm("Index", "Tabs", FormMethod.Post))
-                             {
-                                 @Html.AntiForgeryToken()*@
                                         <table id="@identi-outertable" class="table table-responsive table-hover">
                                             <thead>
                                                 <tr>
@@ -5093,11 +4972,12 @@
 
 @section Scripts
 {
+     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script type="text/javascript" src="~/js/NestedTable.js"></script>
-    <script type="text/javascript" src="~/jquery-validate/jquery.validate.min.js"></script>   
-    <script type="text/javascript" src="~/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>  
-    
+    <script type="text/javascript" src="~/jquery-validate/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="~/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
     <script type="text/javascript">
         
       $(document).ready(  
