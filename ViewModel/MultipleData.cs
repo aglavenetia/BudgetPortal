@@ -13,7 +13,7 @@ using BudgetPortal.Models;
 
 namespace BudgetPortal.ViewModel
 {
-    public class MultipleData : ReponseModel
+    public class MultipleData 
     {
         public IEnumerable<BudgetSections>? Sectionss { get; set; }
         public IEnumerable<BudgetGroups>? Groupss { get; set; }
@@ -107,7 +107,6 @@ namespace BudgetPortal.ViewModel
         public IEnumerable<SelectListItem>? DivisionNames { get; set; }
 
         [Display(Name = "Division Names")]
-        [Required(ErrorMessage = "Division Name Required")]
         public String? SelectedDivisionID { get; set; }
 
         
@@ -116,8 +115,8 @@ namespace BudgetPortal.ViewModel
         [Display(Name = "Financial Year")]
         [Required(ErrorMessage = "Academic Year Required")]
         public String? SelectedAcademicYearID { get; set; }
-        public string FileName { get; set; }
-        public IFormFile File { get; set; }
+        public string? FileName { get; set; }
+        public IFormFile? File { get; set; }
 
 
     }

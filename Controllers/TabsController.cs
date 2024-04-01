@@ -11,7 +11,7 @@ namespace BudgetPortal.Controllers
     public class TabsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        //public int Year = DateTime.Now.Year;
+        
         public TabsController(ApplicationDbContext context)
         {
             _context = context;
@@ -21,7 +21,7 @@ namespace BudgetPortal.Controllers
         public IActionResult Index()
         {
             var Year = DateTime.Now.Year;
-            //var Year = 2022;
+            
             var username = User.Identity.Name;
             var DivName = _context.Users
                           .Where(x => x.UserName.Equals(username))
@@ -47,16 +47,7 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.FinancialYear1 == Year).ToList();
             mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == LoggedInDivisionID)
                                 .Where(x => x.FinancialYear1 == (Year-1)).ToList();
-          //  if (username != "admin@test.com")
-          //  {
-         //       mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
-         //                       .Where(x => x.FinancialYear1 == Year).Where(x => x.SectionNumber != Convert.ToInt32(0)).ToList();
-
-         //       mymodel.PreviousYearAdminEditStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
-          //                      .Where(x => x.FinancialYear1 == Year-1).Where(x => x.SectionNumber == Convert.ToInt32(0)).Select(x => x.AdminEditStatus).FirstOrDefault();
-          //  }
-          //  else
-          //  {
+          
                 mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
                                 .Where(x => x.FinancialYear1 == Year).ToList();
                 
@@ -64,7 +55,7 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.FinancialYear1 == Year - 1).Where(x => x.SectionNumber == Convert.ToInt32(0)).Select(x => x.AdminEditStatus).Count();
 
 
-            // }
+            
             mymodel.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                     new SelectListItem()
                     {
@@ -83,10 +74,10 @@ namespace BudgetPortal.Controllers
                         Value = x.Id.ToString()
 
                     }).ToList();
-            //ViewData["SelectedAcademicID"] = mymodel.AcademicYears;
+            
 
             mymodel.AcademicYears.Where(x => x.Text.Equals(AcademicYear)).Single().Selected = true;
-           //mymodel.SelectedAcademicYearID = mymodel.AcademicYears.Where(x => x.Selected.Equals(true)).Select(x => x.Value).FirstOrDefault();
+           
 
             return View(mymodel);
         }
@@ -212,39 +203,30 @@ namespace BudgetPortal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Upload(MultipleData MD)
         {
-          
-               
-                    //MD.IsResponse = true;
-
-                    string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files");
-
-                    //create folder if not exist
-                    if (!Directory.Exists(path))
-                        Directory.CreateDirectory(path);
-
-                    //get file extension
-                    FileInfo fileInfo = new FileInfo(MD.File.FileName);
-                    string[] Name = (MD.File.FileName).Split('.');
-                    DateTime currentDateTime = DateTime.Now;
-                    string fileName = Name[0] +"_"+ currentDateTime.ToString("dd-MM-yyyy_HH_mm_ss") + fileInfo.Extension;
-
-                    string fileNameWithPath = Path.Combine(path, fileName);
-
-                    if(fileInfo.Extension.Equals("pdf") && MD.File.Length < 1000000 )
-                    { 
-                         using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
-                         {
-                             MD.File.CopyTo(stream);
-                         }
-                    }
-                    //MD.IsSuccess = true;
-                    //MD.Message = "Saved";
-
 
             var username = User.Identity.Name;
             var DivName = " ";
             var DivisionID = " ";
-            
+
+            if (User.Identity.Name.Equals("admin@test.com"))
+            {
+                DivName = MD.SelectedDivisionName.ToString();
+                DivisionID = _context.Division
+                         .Where(d => d.DivisionName == DivName)
+                         .Select(x => x.DivisionID).FirstOrDefault().ToString();
+            }
+            else
+            {
+                DivName = _context.Users
+                        .Where(x => x.UserName.Equals(username))
+                        .Select(x => x.BranchName).First();
+                DivisionID = _context.Division
+                        .Where(d => d.DivisionName == DivName)
+                        .Select(x => x.DivisionID).FirstOrDefault().ToString();
+            }
+
+            var splitAcademicYear = MD.SelectedAcademicYear.ToString().Split("-");
+
             var SectionNumber = _context.BudgetSections
                                   .Where(x => x.SectionName.Equals(MD.SectionName))
                                   .Select(x => x.SectionNo).First();
@@ -253,54 +235,79 @@ namespace BudgetPortal.Controllers
                      .Select(x => x.GroupNo).First();
 
             var SubGroupNumber = _context.BudgetSubGroups
-                     .Where(x => x.SubGroupNo.Equals(MD.SubGroupLedgerName))
-                     .Select(x => x.SubGroupNo).FirstOrDefault();
+                    .Where(x => x.SubGroupNo.Equals(MD.SubGroupLedgerName))
+                    .Select(x => x.SubGroupNo).FirstOrDefault();
 
             var LedgerNumber = _context.BudgetLedgers
-                     .Where(x => x.LedgerName.Equals(MD.SubGroupLedgerName))
-                     .Select(x => x.LedgerNo).FirstOrDefault();
+                    .Where(x => x.LedgerName.Equals(MD.SubGroupLedgerName))
+                    .Select(x => x.LedgerNo).FirstOrDefault();
 
-            if(LedgerNumber!=null)
+            if (LedgerNumber != null)
             {
-                 SubGroupNumber = _context.BudgetLedgers
-                     .Where(x => x.LedgerName.Equals(MD.SubGroupLedgerName))
-                     .Select(x => x.SubGroupNo).FirstOrDefault();
+                SubGroupNumber = _context.BudgetLedgers
+                           .Where(x => x.LedgerName.Equals(MD.SubGroupLedgerName))
+                           .Select(x => x.SubGroupNo).FirstOrDefault();
+               
             }
 
-            if (User.Identity.Name.Equals("admin@test.com"))
-            {
-                DivName = MD.SelectedDivisionName.ToString();
-                DivisionID = _context.Division
-                                     .Where(d => d.DivisionName == DivName)
-                                     .Select(x => x.DivisionID).FirstOrDefault().ToString();
-            }
-            else
-            {
-                 DivName = _context.Users
-                             .Where(x => x.UserName.Equals(username))
-                             .Select(x => x.BranchName).First();
-                DivisionID = _context.Division
-                                    .Where(d => d.DivisionName == DivName)
-                                    .Select(x => x.DivisionID).FirstOrDefault().ToString();
-            }
+            int index = MD.SubGroupNameOrLedgerName.IndexOf(MD.SubGroupLedgerName);
+            //int index = 0;
+            //MD.IsResponse = true;
+
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files");
+
+                    //create folder if not exist
+                    if (!Directory.Exists(path))
+                        Directory.CreateDirectory(path);
+              try
+              { 
+                    //get file extension
+                    FileInfo fileInfo = new FileInfo(MD.File.FileName);
+                    string[] Name = (MD.File.FileName).Split('.');
+                    DateTime currentDateTime = DateTime.Now;
+                    string fileName = Name[0] +"_"+ currentDateTime.ToString("dd-MM-yyyy_HH_mm_ss") + fileInfo.Extension;
+
+                    string fileNameWithPath = Path.Combine(path, fileName);
+
+           
+
+                if (fileInfo.Extension.Equals("pdf") && MD.File.Length < 1000000 )
+                { 
+                         using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
+                         {
+                             MD.File.CopyTo(stream);
+                         }
+                    
+                         //MD.IsSuccess = true;
+                         //MD.Message = "Saved";
+
+                         
+                        
+
+                         var result = new BudgetFiles();
             
-            var splitAcademicYear = MD.SelectedAcademicYear.ToString().Split("-");
+                          result.DivisionID = Convert.ToInt32(DivisionID);
+                          result.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
+                          result.FinancialYear2 = Convert.ToInt32(splitAcademicYear[0]) + Convert.ToInt32(1);
+                          result.SectionNumber = Convert.ToInt32(SectionNumber);
+                          result.GroupNumber = GroupNumber;
+                          result.SubGroupNumber = SubGroupNumber;
+                          result.LedgerNumber = LedgerNumber;
+                          result.SupportingDocumentPath = "/Files/"+fileName;
+                          result.FileName = fileName;
 
-            var result = new BudgetFiles();
-            
-            result.DivisionID = Convert.ToInt32(DivisionID);
-            result.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
-            result.FinancialYear2 = Convert.ToInt32(splitAcademicYear[0]) + Convert.ToInt32(1);
-            result.SectionNumber = Convert.ToInt32(SectionNumber);
-            result.GroupNumber = GroupNumber;
-            result.SubGroupNumber = SubGroupNumber;
-            result.LedgerNumber = LedgerNumber;
-            result.SupportingDocumentPath = "/Files/"+fileName;
-            result.FileName = fileName;
-
-            _context.BudgetFiles.Add(result);
-            _context.SaveChanges();
-
+                          _context.BudgetFiles.Add(result);
+                          _context.SaveChanges();
+                }
+                else
+                {
+                    ModelState.AddModelError("FileMessage_" + index + "]", "Please Upload only PDF files with maximum size 1 MB");
+                }
+              } 
+              catch(Exception)
+              {
+                ModelState.AddModelError("FileMessage_" + index + "]", "Please add any PDF file with maximum size 1 MB");
+              }
             MD.Sectionss = _context.BudgetSections.ToList();
             MD.Groupss = _context.BudgetGroups.ToList();
             MD.SubGroupss = _context.BudgetSubGroups.ToList();
@@ -607,7 +614,6 @@ namespace BudgetPortal.Controllers
                     ModelState.Remove("SelectedDivisionID");
                     ModelState.Remove("ACAndBWPropRECurrFin");
                     ModelState.Remove("ACAndBWPropRENxtFin");
-                    ModelState.Remove("Message");
                     ModelState.Remove("File");
                     ModelState.Remove("FileName");
                     ModelState.Remove("SubGroupLedgerName");
@@ -632,51 +638,52 @@ namespace BudgetPortal.Controllers
                                 for (int j = 0; j < Ledgers.Count(); j++)
                                 {
                                     int index = MD.SubGroupNameOrLedgerName.IndexOf(Ledgers[j]);
-                                   
+
                                     dataModel.DivisionID = Convert.ToInt32(SelectedDivisionID);
                                     dataModel.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
                                     dataModel.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
-                                    
+
                                     dataModel.BudEstCurrFin = Convert.ToDecimal(MD.BudEstCurrFin[index]);
 
                                     if (Decimal.Compare(Convert.ToDecimal(MD.ActCurrFinTillsecondQuart[index]), Convert.ToDecimal(0.00)) == 0)
                                     {
-                                       ModelState.AddModelError("ActCurrFinTillsecondQuart[" + index + "]", "Please enter value");
-                                       valid = false;
+                                        ModelState.AddModelError("ActCurrFinTillsecondQuart[" + index + "]", "Please enter Actual values till Second Quarter for " + Ledgers[j]);
+                                        valid = false;
                                     }
                                     else
                                         dataModel.ActCurrFinTill2ndQuart = Convert.ToDecimal(MD.ActCurrFinTillsecondQuart[index]);
 
-                                if (Decimal.Compare(Convert.ToDecimal(MD.ActPrevFin[index]), Convert.ToDecimal(0.00)) == 0)
-                                {
-                                    ModelState.AddModelError("ActPrevFin[" + index + "]", "Please enter value");
-                                    valid = false;
-                                }
-                                else
-                                    dataModel.ActPrevFin = Convert.ToDecimal(MD.ActPrevFin[index]);                                
-                                    
+                                    if (Decimal.Compare(Convert.ToDecimal(MD.ActPrevFin[index]), Convert.ToDecimal(0.00)) == 0)
+                                    {
+                                        ModelState.AddModelError("ActPrevFin[" + index + "]", "Please enter Actual values of Prev. Financial Year for "+ Ledgers[j]);
+                                        valid = false;
+                                    }
+                                    else
+                                        dataModel.ActPrevFin = Convert.ToDecimal(MD.ActPrevFin[index]);
+
                                     dataModel.RevEstCurrFin = Convert.ToDecimal(MD.RevEstCurrFin[index]);
                                     dataModel.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(MD.PerVarRevEstOverBudgEstCurrFin[index]);
-                                    
+
                                     dataModel.BudgEstNexFin = Convert.ToDecimal(MD.BudgEstNexFin[index]);
-                                    
+
                                     dataModel.PerVarRevEstOverBudgEstNxtFin = Convert.ToDecimal(MD.PerVarRevEstOverBudgEstNxtFin[index]);
                                     try
                                     {
-                                       if (MD.Justification[index] is not null)
-                                        dataModel.Justification = MD.Justification[index].ToString();
-                                       else
-                                        dataModel.Justification = " ";
+                                        if (MD.Justification[index] is not null)
+                                            dataModel.Justification = MD.Justification[index].ToString();
+                                        else
+                                            dataModel.Justification = " ";
 
                                     }
                                     catch (Exception ex)
                                     {
-                                       ModelState.AddModelError("Justification[" + index + "]", "Please enter Justification");
+                                        ModelState.AddModelError("Justification[" + index + "]", "Please enter Justification");
                                     }
                                     dataModel.SectionNumber = Convert.ToInt32(SectionNumber);
                                     dataModel.GroupNumber = GroupNumber;
                                     dataModel.SubGroupNumber = SubGroups[i];
                                     dataModel.LedgerNumber = Ledgers[j];
+                                
 
                                 if(valid)
                                 { 
@@ -699,7 +706,7 @@ namespace BudgetPortal.Controllers
 
                                   if (Decimal.Compare(Convert.ToDecimal(MD.ActPrevFin[index]), Convert.ToDecimal(0.00)) == 0)
                                   {
-                                     ModelState.AddModelError("ActPrevFin[" + index + "]", "Please enter value");
+                                     ModelState.AddModelError("ActPrevFin[" + index + "]", "Please enter Actual values of Prev. Financial Year for " + SubGroups[i]);
                                      valid = false;
                                   }
                                  else
@@ -707,7 +714,7 @@ namespace BudgetPortal.Controllers
 
                                  if (Decimal.Compare(Convert.ToDecimal(MD.ActCurrFinTillsecondQuart[index]), Convert.ToDecimal(0.00)) == 0)
                                  {
-                                     ModelState.AddModelError("ActCurrFinTillsecondQuart[" + index + "]", "Please enter value");
+                                     ModelState.AddModelError("ActCurrFinTillsecondQuart[" + index + "]", "Please enter Actual values till Second Quarter for " + SubGroups[i]);
                                      valid = false;
                                  }
                                  else

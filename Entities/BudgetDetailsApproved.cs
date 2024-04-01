@@ -23,7 +23,7 @@ namespace BudgetPortal.Entities
 
         [StringLength(10)]
         [Required]
-        public String GroupNumber { get; set; }
+        public String? GroupNumber { get; set; }
 
         [StringLength(10)]
         [Required]

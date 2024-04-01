@@ -18,11 +18,11 @@ namespace BudgetPortal.Entities
 
         [StringLength(10)]
         [Required]
-        public String SubGroupNumber { get; set; }
+        public String? SubGroupNumber { get; set; }
 
         [StringLength(10)]
         [Required]
-        public String GroupNumber { get; set; }
+        public String? GroupNumber { get; set; }
 
         [StringLength(15)]
         public String? LedgerNumber { get; set; }

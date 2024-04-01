@@ -6,7 +6,7 @@
 
         public int ReportID { get; set; }
 
-        public string ReportName { get; set; }
+        public string? ReportName { get; set; }
 
     }
 }

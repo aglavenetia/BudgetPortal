@@ -8,10 +8,10 @@ namespace BudgetPortal.Entities
         [Key]
         [StringLength(10)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public String GroupNo { get; set; }
+        public String? GroupNo { get; set; }
 
         [StringLength(200)]
-        public String GroupName { get; set; }
+        public String? GroupName { get; set; }
 
         public int SectionNo { get; set; }
 

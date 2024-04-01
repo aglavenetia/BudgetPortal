@@ -11,16 +11,16 @@ namespace BudgetPortal.Entities
         public int DivisionID { get; set; }
 
         [StringLength(200)]
-        public String DivisionName { get; set; }
+        public String? DivisionName { get; set; }
 
         [StringLength(200)]
-        public String DivisionType { get; set; }
+        public String? DivisionType { get; set; }
 
         [StringLength(200)]
-        public String DealingHandID { get; set; }
+        public String? DealingHandID { get; set; }
 
         [StringLength(200)]
-        public String State { get; set; }
+        public String? State { get; set; }
 
         public DateTime CreatedDateTime { get; set; }
     }
