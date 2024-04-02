@@ -259,8 +259,12 @@ namespace BudgetPortal.Controllers
                     //create folder if not exist
                     if (!Directory.Exists(path))
                         Directory.CreateDirectory(path);
-              try
-              { 
+
+            ModelState.Remove("ACAndBWPropRECurrFin");
+            ModelState.Remove("ACAndBWPropRENxtFin");
+            ModelState.Remove("SubGroupLedgerName");
+            if (MD.File is not null)
+            { 
                     //get file extension
                     FileInfo fileInfo = new FileInfo(MD.File.FileName);
                     string[] Name = (MD.File.FileName).Split('.');
@@ -301,12 +305,12 @@ namespace BudgetPortal.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("FileMessage_" + index + "]", "Please Upload only PDF files with maximum size 1 MB");
+                    ModelState.AddModelError("FileMessage_"+index, "Please Upload only PDF files with maximum size 1 MB");
                 }
               } 
-              catch(Exception)
+            else
               {
-                ModelState.AddModelError("FileMessage_" + index + "]", "Please add any PDF file with maximum size 1 MB");
+                ModelState.AddModelError("FileMessage_"+index, "Please add any PDF file with maximum size 1 MB");
               }
             MD.Sectionss = _context.BudgetSections.ToList();
             MD.Groupss = _context.BudgetGroups.ToList();
@@ -419,7 +423,7 @@ namespace BudgetPortal.Controllers
 
                                 if (Decimal.Compare(Convert.ToDecimal(MD.ACAndBWPropRECurrFin[index]), Convert.ToDecimal(0.00)) == 0)
                                 {
-                                    ModelState.AddModelError("ACAndBWPropRECurrFin[" + index + "]", "Please enter value");
+                                    ModelState.AddModelError("ACAndBWPropRECurrFin[" + index + "]", "Please enter AC and BWP Proposal for Current Financial Year.");
                                     valid = false;
                                 }
                                 else
@@ -427,7 +431,7 @@ namespace BudgetPortal.Controllers
 
                                 if (Decimal.Compare(Convert.ToDecimal(MD.ACAndBWPropRENxtFin[index]), Convert.ToDecimal(0.00)) == 0)
                                 {
-                                    ModelState.AddModelError("ACAndBWPropRENxtFin[" + index + "]", "Please enter value");
+                                    ModelState.AddModelError("ACAndBWPropRENxtFin[" + index + "]", "Please enter AC and BWP Proposal for Next Financial Year.");
                                     valid = false;
                                 }
                                 else
