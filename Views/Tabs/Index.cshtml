@@ -30,7 +30,7 @@
     Model.PerVarRevEstOverBudgEstNxtFin = new List<Decimal>();
     Model.ACAndBWPropRENxtFin = new List<Decimal>();
     Model.Justification = new List<String>();
-    
+    //Model.File = new List<IFormFile>();
 
     Boolean AdminEditStatus = false ;
     Boolean DelegateEditStatus = false;
@@ -729,16 +729,16 @@
 
                                                                                 <td>  
                                                                                    
-                                                                                    <table class="table">
+                                                                                    <table class="table" >
                                                                                     <thead> </thead>
                                                                                     <tbody>
                                                                                        @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0)
                                                                                         {
-                                                                                            <tr><td> @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo})</td> </tr>
-                                                                                            <tr><td> @Html.ValidationMessage("Caution","only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
-                                                                                            <tr><td> @Html.ValidationMessageFor(model => model.File,null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
+                                                                                            <tr><td  style="border:none"> @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo})</td> </tr>
+                                                                                            <tr><td  style="border:none"> @Html.ValidationMessage("Caution"+LedgerNo,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
+                                                                                            <tr><td  style="border:none"> @Html.ValidationMessage("FileMessage_"+LedgerNo,null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
                                                                                             <br/>
-                                                                                            <tr><td> <input id="@upload@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/></td> </tr>
+                                                                                            <tr><td style="border:none"> <input id="@upload@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload" /></td> </tr>
                                                                                         }
                                                                                         
                                                                                     @foreach(var LedgerFiles in Model.Filess.Where (a => (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo))))
@@ -746,12 +746,12 @@
                                                                                                     <tr>
                                                                                                         @if ((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
                                                                                                         {
-                                                                                                            <td>@Html.ActionLink(@LedgerFiles.FileName,null,null,null,new{href =@LedgerFiles.SupportingDocumentPath, target = "_blank"} )</td>
+                                                                                                            <td style="border:none">@Html.ActionLink(@LedgerFiles.FileName,null,null,null,new{href =@LedgerFiles.SupportingDocumentPath, target = "_blank"} )</td>
                                                                                                             /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>*/
                                                                                                         }
                                                                                                         @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
                                                                                                         {
-                                                                                                           <td><input id="@delete@Ledgers.LedgerNo" class="Submit btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
+                                                                                                           <td style="border:none"><input id="@delete@Ledgers.LedgerNo" class="Submit btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
                                                                                                         }
                                                                                                      </tr>      
                                                                                          
@@ -1307,16 +1307,16 @@
                                                         
                                                             @if(!@Subs.RequireInput) 
                                                             {
-                                                              <table class="table">
+                                                              <table class="table" style="border:none">
                                                               <thead> </thead>
                                                               <tbody>
                                                               @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0)
                                                               {
-                                                                   <tr><td> @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11})</td></tr>
-                                                                   <tr><td> @Html.ValidationMessage("Caution","only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
-                                                                   <tr><td> @Html.ValidationMessageFor(model => model.File,null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
+                                                                   <tr><td  style="border:none"> @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11})</td></tr>
+                                                                   <tr><td  style="border:none"> @Html.ValidationMessage("Caution"+Count,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
+                                                                   <tr><td  style="border:none"> @Html.ValidationMessage("FileMessage_"+Count,null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
                                                                    <br/>
-                                                                            <tr><td><input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload" /></td></tr>
+                                                                   <tr><td style="border:none"><input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload" /></td></tr>
                                                               }
                                                              
                                                                                     @foreach(var Files in Model.Filess.Where(a => a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
@@ -1324,12 +1324,12 @@
                                                                                      <tr>
                                                                                       @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
                                                                                       {
-                                                                                       <td>@Html.ActionLink(@Files.FileName,null,null,null,new{href =@Files.SupportingDocumentPath, target = "_blank"} )</td>
+                                                                                       <td style="border:none">@Html.ActionLink(@Files.FileName,null,null,null,new{href =@Files.SupportingDocumentPath, target = "_blank"} )</td>
                                                                                        /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@Files.FileName" /></td>*/
                                                                                       }
                                                                                         @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
                                                                                         {
-                                                                                           <td><input id="@delete" class="Submit  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete"/></td>
+                                                                                           <td style="border:none"><input id="@delete" class="Submit  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete"/></td>
                                                                                         }
                                                                                      </tr>      
                                                                                          
@@ -1806,18 +1806,18 @@
                                                                                         </div>
                                                                                     }
                                                                                 </td>
-                                                                                <td>  
-                                                                                  <table class="table">
+                                                                                <td>
+                                                                                        <table class="table" style="border:none">
                                                                                     <thead> </thead>
                                                                                     <tbody>
                                                                                    @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0)
                                                                                             {
 
-                                                                                                    <tr><td> @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo}) </td></tr>
-                                                                                                  <tr><td>@Html.ValidationMessage("Caution","only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
-                                                                                                    <tr><td>@Html.ValidationMessageFor(model => model.File,null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
+                                                                                                  <tr><td  style="border:none"> @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo}) </td></tr>
+                                                                                                  <tr><td  style="border:none">@Html.ValidationMessage("Caution"+LedgerNo,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
+                                                                                                  <tr><td  style="border:none">@Html.ValidationMessage("FileMessage_"+LedgerNo,null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
                                                                                                 <br/>
-                                                                                               <tr> <td><input id="@upload@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/></td></tr>
+                                                                                               <tr> <td style="border:none"><input id="@upload@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/></td></tr>
                                                                                             }
                                                                                     
                                                                                     @foreach(var LedgerFiles in Model.Filess.Where (a => (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo))))
@@ -1825,12 +1825,12 @@
                                                                                      <tr>
                                                                                       @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
                                                                                       {
-                                                                                        <td>@Html.ActionLink(@LedgerFiles.FileName,null,null,null,new{href =@LedgerFiles.SupportingDocumentPath, target = "_blank"} )</td>
+                                                                                        <td style="border:none">@Html.ActionLink(@LedgerFiles.FileName,null,null,null,new{href =@LedgerFiles.SupportingDocumentPath, target = "_blank"} )</td>
                                                                                        /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>*/
                                                                                       }
                                                                                         @if(!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
                                                                                         {
-                                                                                         <td><input id="@delete@Ledgers.LedgerNo" class="Submit  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete" /> </td>
+                                                                                         <td style="border:none"><input id="@delete@Ledgers.LedgerNo" class="Submit  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete" /> </td>
                                                                                         }
                                                                                      </tr>      
                                                                                          
@@ -2419,17 +2419,17 @@
                                                              }*@
                                                            @if(!@Subs.RequireInput) 
                                                            {
-                                                              <table class="table">
+                                                              <table class="table"  style="border:none">
                                                                <thead> </thead>
                                                                <tbody>
                                                                 @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0)
                                                                 {
                                                                    
-                                                                      <tr><td> @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11})</td></tr>
-                                                                      <tr><td>@Html.ValidationMessage("Caution","only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
-                                                                       <tr><td>@Html.ValidationMessageFor(model => model.File,null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
+                                                                      <tr><td  style="border:none"> @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11})</td></tr>
+                                                                      <tr><td  style="border:none">@Html.ValidationMessage("Caution"+Count,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
+                                                                      <tr><td  style="border:none">@Html.ValidationMessage("FileMessage_"+Count,null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
                                                                     <br/>
-                                                                   <tr><td> <input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/></td></tr>
+                                                                   <tr><td style="border:none"> <input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/></td></tr>
                                                                 }
                                                                 
                                                                                     @foreach(var Files in Model.Filess.Where (a => a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
@@ -2437,12 +2437,12 @@
                                                                                      <tr>
                                                                                         @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
                                                                                         {
-                                                                                           <td>@Html.ActionLink(@Files.FileName,null,null,null,new{href =@Files.SupportingDocumentPath, target = "_blank"} )</td>
+                                                                                           <td style="border:none">@Html.ActionLink(@Files.FileName,null,null,null,new{href =@Files.SupportingDocumentPath, target = "_blank"} )</td>
                                                                                          /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@Files.FileName" /></td>*/
                                                                                         }
                                                                                         @if(!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
                                                                                         {
-                                                                                    <td> <input id="@delete" class="Submit  btn-link" style="border:none; outline:none; background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete" />  </td>
+                                                                                           <td style="border:none"> <input id="@delete" class="Submit  btn-link" style="border:none; outline:none; background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete" />  </td>
                                                                                         }
                                                                                      </tr>      
                                                                                          
@@ -3130,16 +3130,16 @@
                                                                                                    </div>
                                                                                                }
                                                                                         }*@
-                                                                                    <table class="table">
+                                                                                    <table class="table"  style="border:none">
                                                                                     <thead> </thead>
                                                                                     <tbody>
                                                                                      @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0)
                                                                                      {
-                                                                                             <tr><td>@Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo})</td></tr>
-                                                                                            <tr><td>@Html.ValidationMessage("Caution","only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
-                                                                                            <tr><td>@Html.ValidationMessageFor(model => model.File,null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
+                                                                                            <tr><td  style="border:none">@Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo})</td></tr>
+                                                                                                    <tr><td style="border:none">@Html.ValidationMessage("Caution"+LedgerNo,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
+                                                                                            <tr><td  style="border:none">@Html.ValidationMessage("FileMessage_"+LedgerNo,null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
                                                                                             <br/>
-                                                                                           <tr> <td><input id="@upload@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/> </td></tr>
+                                                                                           <tr> <td style="border:none"><input id="@upload@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/> </td></tr>
                                                                                      }
                                                                                     
                                                                                     @foreach(var LedgerFiles in Model.Filess.Where (a => (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo))))
@@ -3147,12 +3147,12 @@
                                                                                      <tr>
                                                                                       @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
                                                                                       {
-                                                                                        <td>@Html.ActionLink(@LedgerFiles.FileName,null,null,null,new{href =@LedgerFiles.SupportingDocumentPath, target = "_blank"} )</td>
+                                                                                        <td style="border:none">@Html.ActionLink(@LedgerFiles.FileName,null,null,null,new{href =@LedgerFiles.SupportingDocumentPath, target = "_blank"} )</td>
                                                                                         /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>*/
                                                                                       }
                                                                                         @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
                                                                                         {
-                                                                                          <td><input id="@delete@Ledgers.LedgerNo" class="Submit  btn-link" style="border:none; outline:none; background-color:  transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
+                                                                                          <td style="border:none"><input id="@delete@Ledgers.LedgerNo" class="Submit  btn-link" style="border:none; outline:none; background-color:  transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
                                                                                         }
                                                                                      </tr>      
                                                                                          
@@ -3740,17 +3740,17 @@
                                                                  }*@
                                                            @if(!@Subs.RequireInput) 
                                                            {
-                                                             <table class="table">
+                                                             <table class="table"  style="border:none">
                                                              <thead> </thead>
                                                              <tbody>
                                                              @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0)
                                                              {
                                                                
-                                                                   <tr><td>@Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11})</td></tr>
-                                                                   <tr><td> @Html.ValidationMessage("Caution","only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
-                                                                            <tr><td> @Html.ValidationMessageFor(model => model.File,null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
+                                                                   <tr><td  style="border:none">@Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11})</td></tr>
+                                                                   <tr><td  style="border:none"> @Html.ValidationMessage("Caution"+Count,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
+                                                                   <tr><td  style="border:none"> @Html.ValidationMessage("FileMessage_"+Count,null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
                                                                             <br/>
-                                                              <tr><td><input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/></td></tr>
+                                                                   <tr><td style="border:none"><input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/></td></tr>
                                                              }
                                                               
                                                                                     @foreach(var Files in Model.Filess.Where (a => a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
@@ -3758,12 +3758,12 @@
                                                                             <tr>
                                                                                 @if ((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
                                                                                 {
-                                                                                   <td>@Html.ActionLink(@Files.FileName,null,null,null,new{href =@Files.SupportingDocumentPath, target = "_blank"} )</td>
+                                                                                   <td style="border:none">@Html.ActionLink(@Files.FileName,null,null,null,new{href =@Files.SupportingDocumentPath, target = "_blank"} )</td>
                                                                                  /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@Files.FileName" /></td>*/
                                                                                 }
                                                                                 @if(!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
                                                                                         {
-                                                                                     <td><input id="@delete" class="Submit  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
+                                                                                     <td style="border:none"><input id="@delete" class="Submit  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
                                                                                         }
                                                                                      </tr>      
                                                                                          
@@ -4267,17 +4267,17 @@
                                                                                                             </div>
                                                                                                         }
                                                                                                     }*@
-                                                                                <table class="table">
+                                                                                <table class="table"  style="border:none">
                                                                                 <thead> </thead>
                                                                                 <tbody>
                                                                                    @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0)
                                                                                    {
                                                                                       
-                                                                                          <tr><td>@Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo})</td></tr>
-                                                                                           <tr><td> @Html.ValidationMessage("Caution","only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
-                                                                                          <tr><td> @Html.ValidationMessageFor(model => model.File,null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
+                                                                                          <tr><td  style="border:none">@Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo})</td></tr>
+                                                                                          <tr><td  style="border:none"> @Html.ValidationMessage("Caution"+LedgerNo,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
+                                                                                          <tr><td  style="border:none"> @Html.ValidationMessage("FileMessage_"+LedgerNo,null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
                                                                                             <br/>
-                                                                                                    <tr><td>   <input id="@upload@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload" /></td></tr>
+                                                                                           <tr><td style="border:none">   <input id="@upload@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload" /></td></tr>
                                                                                                 }
                                                                                         
                                                                                     @foreach(var LedgerFiles in Model.Filess.Where (a => (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo))))
@@ -4285,12 +4285,12 @@
                                                                                      <tr>
                                                                                        @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
                                                                                        {
-                                                                                         <td>@Html.ActionLink(@LedgerFiles.FileName,null,null,null,new{href =@LedgerFiles.SupportingDocumentPath, target = "_blank"} )</td>
+                                                                                         <td style="border:none">@Html.ActionLink(@LedgerFiles.FileName,null,null,null,new{href =@LedgerFiles.SupportingDocumentPath, target = "_blank"} )</td>
                                                                                          /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>*/
                                                                                        }
                                                                                         @if(!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
                                                                                         {
-                                                                                            <td><input id="@delete@Ledgers.LedgerNo" class="Submit  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
+                                                                                            <td style="border:none"><input id="@delete@Ledgers.LedgerNo" class="Submit  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
                                                                                         }
                                                                                      </tr>      
                                                                                          
@@ -4877,18 +4877,18 @@
                                                                                }*@
                                                            @if(!@Subs.RequireInput) 
                                                            {
-                                                             <table class="table">
+                                                             <table class="table"  style="border:none">
                                                               <thead> </thead>
                                                               <tbody>
                                                                 @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0)
                                                                 {
                                                                   
-                                                                    <tr><td>  @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11})</td></tr>
-                                                                    <tr><td> @Html.ValidationMessage("Caution","only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
-                                                                   <tr><td> @Html.ValidationMessageFor(model => model.File,null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
+                                                                    <tr><td  style="border:none">  @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11})</td></tr>
+                                                                    <tr><td  style="border:none"> @Html.ValidationMessage("Caution"+Count,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
+                                                                    <tr><td style="border:none"> @Html.ValidationMessage("FileMessage_"+Count,null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
                                                                  
                                                                     <br/>
-                                                                            <tr><td><input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload" /></td></tr>
+                                                                    <tr><td style="border:none"><input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload" /></td></tr>
                                                                 }
                                                                
                                                                                     @foreach(var Files in Model.Filess.Where (a => a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
@@ -4896,12 +4896,12 @@
                                                                                      <tr>
                                                                                       @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
                                                                                       {
-                                                                                        <td>@Html.ActionLink(@Files.FileName,null,null,null,new{href =@Files.SupportingDocumentPath, target = "_blank"} )</td>
+                                                                                        <td style="border:none">@Html.ActionLink(@Files.FileName,null,null,null,new{href =@Files.SupportingDocumentPath, target = "_blank"} )</td>
                                                                                        /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@Files.FileName" /></td>*/
                                                                                       }
                                                                                         @if(!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
                                                                                         {
-                                                                                         <td><input id="@delete" class="Submit  btn-link" style="border:none; outline:none; background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
+                                                                                         <td style="border:none"><input id="@delete" class="Submit  btn-link" style="border:none; outline:none; background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
                                                                                         }
                                                                                      </tr>      
                                                                                          
@@ -5151,15 +5151,15 @@
                              var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
                         
                              //alert($(this).val());
-                             if($(this).val()=="Delete")
+                             if($(this).val()=="Delete" || $(this).val()=="Upload")
                              {
                                   var Ledgerid = $(this).closest('tr').closest('td').closest('tr').children('td').eq(1);
-                                  //alert(Ledgerid.text());
+                                  alert("SubGroupID"+Ledgerid.text());
                              }
                              else
                              {
                                   var Ledgerid = $(this).closest('tr').children('td').eq(1);
-                                  //alert(Ledgerid);
+                                  alert("LedgerID"+Ledgerid.text());
                              }
                              $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
                              //alert($("#SelectedAcademicYear").val());
@@ -5176,7 +5176,9 @@
 
                              $('#SubGroupLedgerName').val(Ledgerid.text().trim());
 
-                             validateinput();
+                             alert($('#SubGroupLedgerName').val());
+
+                             //validateinput();
                     });
 
                 $('body').on('click',".ViewFile",

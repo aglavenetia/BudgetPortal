@@ -275,7 +275,7 @@ namespace BudgetPortal.Controllers
 
            
 
-                if (fileInfo.Extension.Equals("pdf") && MD.File.Length < 1000000 )
+                if (fileInfo.Extension.Equals(".pdf") && MD.File.Length < 1000000 )
                 { 
                          using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
                          {
@@ -311,7 +311,7 @@ namespace BudgetPortal.Controllers
             else
               {
                 ModelState.AddModelError("FileMessage_"+index, "Please add any PDF file with maximum size 1 MB");
-              }
+               }
             MD.Sectionss = _context.BudgetSections.ToList();
             MD.Groupss = _context.BudgetGroups.ToList();
             MD.SubGroupss = _context.BudgetSubGroups.ToList();
