@@ -2398,20 +2398,20 @@
         {
             $("#SelectedReportName").val($("#Reports option:selected").text().trim());
             var SelectedReport = $("#SelectedReportName").val();
-            alert("Selected Report : " + SelectedReport);
+            //alert("Selected Report : " + SelectedReport);
 
             $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
             var academicyear = $("#SelectedAcademicYear").val();
-            alert("Selected Academic Year : " + academicyear);
+            //alert("Selected Academic Year : " + academicyear);
             
             $("#SelectedDivisionTypeName").val($("#DivisionType option:selected").text().trim());
             var SelectedDiv = $("#SelectedDivisionTypeName").val();
-            alert("Selected DivisionType Name : " + SelectedDiv);
+            //alert("Selected DivisionType Name : " + SelectedDiv);
             
            // if(!academicyear.Equals("--Please select any Academic Year--"))
            // {
               var year = academicyear.split('-');
-              alert(year[0]);
+              //alert(year[0]);
            // }
            // else
            // {
@@ -2434,7 +2434,7 @@
                     dataType: "html",
                     success: function (data) {
                         //Whatever result you have got from your controller with html partial view replace with a specific html.
-                        alert("Inside Ajax");
+                        //alert("Inside Ajax");
                         //alert($("#outerdiv", data).html());
 
                         //$("#outerdiv").html(data);// HTML DOM replace
@@ -2446,15 +2446,34 @@
                         //alert("Not active : "+activesectionid);
 
                         $('#'+activesectionid).removeClass("active");
+                        $('#'+activesectionid).removeClass("show");
+                        //$('#'+sectionnoid).Click();
                         $('#'+sectionnoid).addClass("active");
+                        $('#'+sectionnoid).addClass("show");
+                        
                         //alert("Active : "+sectionnoid);
 
                         var splitsection = activesectionid.split('-');
 
                         var activegroupnoid = $('#' + splitsection[0] + ' ul li button.active').attr('id');
                         $('#'+activegroupnoid).removeClass("active");
+                        $('#' + activegroupnoid).removeClass("show");
+                        //$('#'+groupnoid).Click();
                         $('#'+groupnoid).addClass("active");
-                        //alert("Active : "+groupnoid);
+                        $('#'+groupnoid).addClass("show");
+
+                        var activenavigationid = $('#' + activegroupnoid).attr('data-bs-target');
+                        //alert(activenavigationid);
+                        $(activenavigationid).removeClass("active");
+                        $(activenavigationid).removeClass("show");
+
+                        var navigationid = $('#'+groupnoid).attr('data-bs-target');
+
+                        $(navigationid).addClass("active");
+                        $(navigationid).addClass("show");
+
+                        //var splitnavigationid = navigationid.split('#');
+                        //alert("Active Content : " + splitnavigationid[0]+"Active Content :"+ splitnavigationid[1]);
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         alert("Error Thrown" + errorThrown);

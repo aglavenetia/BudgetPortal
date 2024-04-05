@@ -743,8 +743,9 @@
                                                                                         
                                                                                     @foreach(var LedgerFiles in Model.Filess.Where (a => (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo))))
                                                                                     {
+                                                                                        var FinalSubmitStatus = (from a in Model.Statuss where (a.SectionNumber == 0 && a.GroupNumber.Equals("0")) select a.AdminEditStatus).Count();
                                                                                                     <tr>
-                                                                                                        @if ((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
+                                                                                                        @if ((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin") || (User.IsInRole("Admin") && (FinalSubmitStatus > 0)))
                                                                                                         {
                                                                                                             <td style="border:none">@Html.ActionLink(@LedgerFiles.FileName,null,null,null,new{href =@LedgerFiles.SupportingDocumentPath, target = "_blank"} )</td>
                                                                                                             /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>*/
@@ -1289,22 +1290,7 @@
                                                         </td>
 
                                                         <td> 
-                                                                                     @*if (Model.IsResponse)
-                                                                                     {
-                                                                                           @if (Model.IsSuccess)
-                                                                                           {
-                                                                                                 <div class="alert alert-success">
-                                                                                                      @Model.Message
-                                                                                                 </div>
-                                                                                           }
-                                                                                           else
-                                                                                           {
-                                                                                                 <div class="alert alert-danger">
-                                                                                                       @Model.Message
-                                                                                                 </div>
-                                                                                           }
-                                                                                    }*@
-                                                        
+                                                                                    
                                                             @if(!@Subs.RequireInput) 
                                                             {
                                                               <table class="table" style="border:none">
@@ -1321,8 +1307,9 @@
                                                              
                                                                                     @foreach(var Files in Model.Filess.Where(a => a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
                                                                                     {
+                                                                                        var FinalSubmitStatus = (from a in Model.Statuss where (a.SectionNumber == 0 && a.GroupNumber.Equals("0")) select a.AdminEditStatus).Count();
                                                                                      <tr>
-                                                                                      @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
+                                                                                      @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin") || (User.IsInRole("Admin") && FinalSubmitStatus > 0))
                                                                                       {
                                                                                        <td style="border:none">@Html.ActionLink(@Files.FileName,null,null,null,new{href =@Files.SupportingDocumentPath, target = "_blank"} )</td>
                                                                                        /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@Files.FileName" /></td>*/
@@ -1822,8 +1809,9 @@
                                                                                     
                                                                                     @foreach(var LedgerFiles in Model.Filess.Where (a => (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo))))
                                                                                     {
+                                                                                        var FinalSubmitStatus = (from a in Model.Statuss where (a.SectionNumber == 0 && a.GroupNumber.Equals("0")) select a.AdminEditStatus).Count();
                                                                                      <tr>
-                                                                                      @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
+                                                                                      @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin") || (User.IsInRole("Admin") && (FinalSubmitStatus > 0) ))
                                                                                       {
                                                                                         <td style="border:none">@Html.ActionLink(@LedgerFiles.FileName,null,null,null,new{href =@LedgerFiles.SupportingDocumentPath, target = "_blank"} )</td>
                                                                                        /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>*/
@@ -2434,8 +2422,9 @@
                                                                 
                                                                                     @foreach(var Files in Model.Filess.Where (a => a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
                                                                                     {
+                                                                                        var FinalSubmitStatus = (from a in Model.Statuss where (a.SectionNumber == 0 && a.GroupNumber.Equals("0")) select a.AdminEditStatus).Count();
                                                                                      <tr>
-                                                                                        @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
+                                                                                        @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin") || (User.IsInRole("Admin") && (FinalSubmitStatus > 0)))
                                                                                         {
                                                                                            <td style="border:none">@Html.ActionLink(@Files.FileName,null,null,null,new{href =@Files.SupportingDocumentPath, target = "_blank"} )</td>
                                                                                          /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@Files.FileName" /></td>*/
@@ -2699,21 +2688,6 @@
 
                           if (CounterBody == 0)
                           {
-                                                     @*if (Model.IsResponse)
-                                                     {
-                                                         @if (Model.IsSuccess)
-                                                         {
-                                                             <div class="alert alert-success">
-                                                                     @Model.Message
-                                                             </div>
-                                                         }
-                                                         else
-                                                         {
-                                                               <div class="alert alert-danger">
-                                                                   @Model.Message
-                                                               </div>
-                                                         }
-                                                     }*@
                               <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
                                   
                                         <table id="@identi-outertable" class="table table-responsive table-hover">
@@ -3144,8 +3118,9 @@
                                                                                     
                                                                                     @foreach(var LedgerFiles in Model.Filess.Where (a => (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo))))
                                                                                     {
+                                                                                        var FinalSubmitStatus = (from a in Model.Statuss where (a.SectionNumber == 0 && a.GroupNumber.Equals("0")) select a.AdminEditStatus).Count();
                                                                                      <tr>
-                                                                                      @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
+                                                                                      @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin") || (User.IsInRole("Admin") && (FinalSubmitStatus > 0)))
                                                                                       {
                                                                                         <td style="border:none">@Html.ActionLink(@LedgerFiles.FileName,null,null,null,new{href =@LedgerFiles.SupportingDocumentPath, target = "_blank"} )</td>
                                                                                         /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>*/
@@ -3723,21 +3698,6 @@
                                                             }
                                                         </td>
                                                         <td>
-                                                                 @*if (Model.IsResponse)
-                                                                 {
-                                                                          @if (Model.IsSuccess)
-                                                                          {
-                                                                               <div class="alert alert-success">
-                                                                                   @Model.Message
-                                                                               </div>
-                                                                          }
-                                                                          else
-                                                                          {
-                                                                             <div class="alert alert-danger">
-                                                                                @Model.Message
-                                                                             </div>
-                                                                          }
-                                                                 }*@
                                                            @if(!@Subs.RequireInput) 
                                                            {
                                                              <table class="table"  style="border:none">
@@ -3753,23 +3713,24 @@
                                                                    <tr><td style="border:none"><input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/></td></tr>
                                                              }
                                                               
-                                                                                    @foreach(var Files in Model.Filess.Where (a => a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
-                                                                                    {
+                                                            @foreach(var Files in Model.Filess.Where (a => a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
+                                                             {
+                                                                 var FinalSubmitStatus = (from a in Model.Statuss where (a.SectionNumber == 0 && a.GroupNumber.Equals("0")) select a.AdminEditStatus).Count();
                                                                             <tr>
-                                                                                @if ((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
+                                                                                @if ((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin") ||(User.IsInRole("Admin") && (FinalSubmitStatus > 0)))
                                                                                 {
                                                                                    <td style="border:none">@Html.ActionLink(@Files.FileName,null,null,null,new{href =@Files.SupportingDocumentPath, target = "_blank"} )</td>
                                                                                  /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@Files.FileName" /></td>*/
                                                                                 }
                                                                                 @if(!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
-                                                                                        {
+                                                                                {
                                                                                      <td style="border:none"><input id="@delete" class="Submit  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
-                                                                                        }
-                                                                                     </tr>      
+                                                                                }
+                                                                            </tr>      
                                                                                          
-                                                                                    }
-                                                                                    </tbody>
-                                                                                    </table>
+                                                             }
+                                                             </tbody>
+                                                             </table>
                                                             }
                                                         </td>
 
@@ -4282,8 +4243,9 @@
                                                                                         
                                                                                     @foreach(var LedgerFiles in Model.Filess.Where (a => (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo))))
                                                                                     {
+                                                                                        var FinalSubmitStatus = (from a in Model.Statuss where (a.SectionNumber == 0 && a.GroupNumber.Equals("0")) select a.AdminEditStatus).Count();
                                                                                      <tr>
-                                                                                       @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
+                                                                                       @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin") || (User.IsInRole("Admin") && (FinalSubmitStatus > 0)))
                                                                                        {
                                                                                          <td style="border:none">@Html.ActionLink(@LedgerFiles.FileName,null,null,null,new{href =@LedgerFiles.SupportingDocumentPath, target = "_blank"} )</td>
                                                                                          /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>*/
@@ -4893,8 +4855,9 @@
                                                                
                                                                                     @foreach(var Files in Model.Filess.Where (a => a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
                                                                                     {
+                                                                                        var FinalSubmitStatus = (from a in Model.Statuss where (a.SectionNumber == 0 && a.GroupNumber.Equals("0")) select a.AdminEditStatus).Count();
                                                                                      <tr>
-                                                                                      @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin"))
+                                                                                      @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin") || (User.IsInRole("Admin") && (FinalSubmitStatus > 0)))
                                                                                       {
                                                                                         <td style="border:none">@Html.ActionLink(@Files.FileName,null,null,null,new{href =@Files.SupportingDocumentPath, target = "_blank"} )</td>
                                                                                        /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@Files.FileName" /></td>*/
@@ -5149,17 +5112,19 @@
                              var section = sectionnoid.split('-');
                         
                              var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
-                        
+                             
                              //alert($(this).val());
+                             
                              if($(this).val()=="Delete" || $(this).val()=="Upload")
                              {
-                                  var Ledgerid = $(this).closest('tr').closest('td').closest('tr').children('td').eq(1);
-                                  alert("SubGroupID"+Ledgerid.text());
+                                  
+                                     var Ledgerid = $(this).closest('tr').closest('td').closest('tr').children('td').eq(1);
+                                  //alert("SubGroupID"+Ledgerid.text());
                              }
                              else
                              {
                                   var Ledgerid = $(this).closest('tr').children('td').eq(1);
-                                  alert("LedgerID"+Ledgerid.text());
+                                  //alert("LedgerID"+Ledgerid.text());
                              }
                              $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
                              //alert($("#SelectedAcademicYear").val());
@@ -5176,7 +5141,7 @@
 
                              $('#SubGroupLedgerName').val(Ledgerid.text().trim());
 
-                             alert($('#SubGroupLedgerName').val());
+                             //alert($('#SubGroupLedgerName').val());
 
                              //validateinput();
                     });

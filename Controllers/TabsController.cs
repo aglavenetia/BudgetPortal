@@ -132,7 +132,8 @@ namespace BudgetPortal.Controllers
             }
 
             var splitAcademicYear = MD.SelectedAcademicYear.ToString().Split("-");
-
+            ModelState.Remove("ACAndBWPropRECurrFin");
+            ModelState.Remove("ACAndBWPropRENxtFin");
             var result = new BudgetFiles();
             result = _context.BudgetFiles 
                                       .Where(b => (b.DivisionID == Convert.ToInt32(DivisionID))
@@ -207,7 +208,7 @@ namespace BudgetPortal.Controllers
             var username = User.Identity.Name;
             var DivName = " ";
             var DivisionID = " ";
-
+            int index = -1;
             if (User.Identity.Name.Equals("admin@test.com"))
             {
                 DivName = MD.SelectedDivisionName.ToString();
@@ -247,11 +248,14 @@ namespace BudgetPortal.Controllers
                 SubGroupNumber = _context.BudgetLedgers
                            .Where(x => x.LedgerName.Equals(MD.SubGroupLedgerName))
                            .Select(x => x.SubGroupNo).FirstOrDefault();
-               
-            }
+                index = MD.SubGroupNameOrLedgerName.IndexOf(LedgerNumber);
 
-            int index = MD.SubGroupNameOrLedgerName.IndexOf(MD.SubGroupLedgerName);
-            //int index = 0;
+            }
+            else
+            { 
+                index = MD.SubGroupNameOrLedgerName.IndexOf(MD.SubGroupLedgerName);
+            }
+            
             //MD.IsResponse = true;
 
             string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files");
@@ -423,7 +427,7 @@ namespace BudgetPortal.Controllers
 
                                 if (Decimal.Compare(Convert.ToDecimal(MD.ACAndBWPropRECurrFin[index]), Convert.ToDecimal(0.00)) == 0)
                                 {
-                                    ModelState.AddModelError("ACAndBWPropRECurrFin[" + index + "]", "Please enter AC and BWP Proposal for Current Financial Year.");
+                                    ModelState.AddModelError("ACAndBWPropRECurrFin[" + index + "]", "Please enter value");
                                     valid = false;
                                 }
                                 else
@@ -431,7 +435,7 @@ namespace BudgetPortal.Controllers
 
                                 if (Decimal.Compare(Convert.ToDecimal(MD.ACAndBWPropRENxtFin[index]), Convert.ToDecimal(0.00)) == 0)
                                 {
-                                    ModelState.AddModelError("ACAndBWPropRENxtFin[" + index + "]", "Please enter AC and BWP Proposal for Next Financial Year.");
+                                    ModelState.AddModelError("ACAndBWPropRENxtFin[" + index + "]", "Please enter value");
                                     valid = false;
                                 }
                                 else
