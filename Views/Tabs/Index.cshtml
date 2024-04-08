@@ -45,7 +45,12 @@
 }
 <br />
 
-
+ 
+@if(! FinalAdminEditStatus)
+{
+    <div style="justify-content:center;font-style:oblique;" class="text-success">Budget Details Approved for the Financial Year!!!</div>
+    @*Html.ValidationMessage("BudgetStatus",null,new {@class = "text-success", @style="font-size: 1.5em;font-style: bold;"})*@
+}
 
  <div id="outerdiv">
     @using (Html.BeginForm(null, null, FormMethod.Post, new { @action = "", enctype = "multipart/form-data", id = "AppForm"}))
@@ -87,7 +92,7 @@
         
     </div>
 
-    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    @*Html.ValidationSummary(false, "", new { @class = "text-danger" })*@
       <br />
       <br />
       <br />
