@@ -45,14 +45,11 @@
 }
 <br />
 
- 
-@if(! FinalAdminEditStatus)
-{
-    <div style="justify-content:center;font-style:oblique;" class="text-success">Budget Details Approved for the Financial Year!!!</div>
-    @*Html.ValidationMessage("BudgetStatus",null,new {@class = "text-success", @style="font-size: 1.5em;font-style: bold;"})*@
-}
-
  <div id="outerdiv">
+     <div style="justify-content:center;font-style:oblique;" class="text-success">@Model.ApprovedMessage</div>
+    <div style="justify-content:center;font-style:oblique;" class="text-danger">@Model.WaitingForApprovalMessage</div>
+    @*Html.ValidationMessage("BudgetStatus",null,new {@class = "text-success", @style="font-size: 1.5em;font-style: bold;"})*@
+
     @using (Html.BeginForm(null, null, FormMethod.Post, new { @action = "", enctype = "multipart/form-data", id = "AppForm"}))
     {
         @Html.AntiForgeryToken()

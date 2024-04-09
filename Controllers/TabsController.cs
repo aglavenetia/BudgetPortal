@@ -49,6 +49,34 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.FinancialYear1 == (Year-1)).ToList();
             mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
                                 .Where(x => x.FinancialYear1 == Year).ToList();
+
+            int FinalApproved = (from a in mymodel.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(false) select a.AdminEditStatus).Count();
+            int SubmittedForApproval = (from a in mymodel.Statuss where a.SectionNumber != 0 && !a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
+            int NumberOfGroups = (from a in mymodel.Groupss select a.GroupNo).Count();
+            int PendingForFinalSubmission = (from a in mymodel.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
+
+            if (FinalApproved > 0)
+            {
+                mymodel.ApprovedMessage = "Budget Details Approved for the Financial Year " + AcademicYear + "!!!";
+                mymodel.WaitingForApprovalMessage = " ";
+            }
+            else if (FinalApproved == 0 && SubmittedForApproval <= NumberOfGroups && SubmittedForApproval != 0)
+            {
+                mymodel.WaitingForApprovalMessage = "Budget Details for the Financial Year " + AcademicYear + " is pending with AC&BW for Approval.";
+                mymodel.ApprovedMessage = " ";
+            }
+            else if (PendingForFinalSubmission > 0)
+            {
+                mymodel.WaitingForApprovalMessage = "Budget Details for the Financial Year " + AcademicYear + " is pending with CMD for Approval.";
+                mymodel.ApprovedMessage = " ";
+            }
+            else
+            {
+                mymodel.ApprovedMessage = " ";
+                mymodel.WaitingForApprovalMessage = " ";
+            }
+
+
             mymodel.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
                                 .Where(x => x.FinancialYear1 == Year - 1).Where(x => x.SectionNumber == Convert.ToInt32(0)).Select(x => x.AdminEditStatus).Count();
 
@@ -507,12 +535,39 @@ namespace BudgetPortal.Controllers
                                         .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
                     MD.Filess = _context.BudgetFiles.Where(x => x.DivisionID == DivisionID)
                                         .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
-                //MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
-                // .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).ToList();
-                MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
+                    //MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
+                    // .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).ToList();
+                    MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
                             .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
-                    
-                    MD.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
+
+                int FinalApproved = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(false) select a.AdminEditStatus).Count();
+                int SubmittedForApproval = (from a in MD.Statuss where a.SectionNumber != 0 && !a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
+                int NumberOfGroups = (from a in MD.Groupss select a.GroupNo).Count();
+                int PendingForFinalSubmission = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
+
+                if (FinalApproved > 0)
+                {
+                    MD.ApprovedMessage = "Budget Details Approved for the Financial Year " + MD.SelectedAcademicYear + "!!!";
+                    MD.WaitingForApprovalMessage = " ";
+                }
+                else if (FinalApproved == 0 && SubmittedForApproval <= NumberOfGroups && SubmittedForApproval != 0)
+                {
+                    MD.WaitingForApprovalMessage = "Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
+                    MD.ApprovedMessage = " ";
+                }
+                else if (PendingForFinalSubmission > 0)
+                {
+                    MD.WaitingForApprovalMessage = "Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with CMD for Approval.";
+                    MD.ApprovedMessage = " ";
+                }
+                else
+                {
+                    MD.ApprovedMessage = " ";
+                    MD.WaitingForApprovalMessage = " ";
+                }
+
+
+                MD.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
                      .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Select(x => x.AdminEditStatus).Count();
                     
                    MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == DivisionID)
@@ -590,7 +645,7 @@ namespace BudgetPortal.Controllers
                     MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
 
-                    MD.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
+                MD.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
                          .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Select(x => x.AdminEditStatus).Count();
 
 
@@ -770,9 +825,37 @@ namespace BudgetPortal.Controllers
                            _context.SaveChanges();
                         }
 
-                    MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
+                        MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
                                  .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
-                        MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
+
+                    int FinalApproved = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(false) select a.AdminEditStatus).Count();
+                    int SubmittedForApproval = (from a in MD.Statuss where a.SectionNumber != 0 && !a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
+                    int NumberOfGroups = (from a in MD.Groupss select a.GroupNo).Count();
+                    int PendingForFinalSubmission = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
+
+                    if (FinalApproved > 0)
+                    {
+                        MD.ApprovedMessage = "Budget Details Approved for the Financial Year " + MD.SelectedAcademicYear + "!!!";
+                        MD.WaitingForApprovalMessage = " ";
+                    }
+                    else if (FinalApproved == 0 && SubmittedForApproval <= NumberOfGroups && SubmittedForApproval != 0)
+                    {
+                        MD.WaitingForApprovalMessage = "Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
+                        MD.ApprovedMessage = " ";
+                    }
+                    else if (PendingForFinalSubmission > 0)
+                    {
+                        MD.WaitingForApprovalMessage = "Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with CMD for Approval.";
+                        MD.ApprovedMessage = " ";
+                    }
+                    else
+                    {
+                        MD.ApprovedMessage = " ";
+                        MD.WaitingForApprovalMessage = " ";
+                    }
+
+
+                    MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
                                      .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
 
                     }
@@ -820,6 +903,32 @@ namespace BudgetPortal.Controllers
                 
             mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
                         .Where(x => x.FinancialYear1 == Convert.ToInt32(Year)).ToList();
+
+            int FinalApproved = (from a in mymodel.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(false) select a.AdminEditStatus).Count();
+            int SubmittedForApproval = (from a in mymodel.Statuss where a.SectionNumber != 0 && !a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
+            int NumberOfGroups = (from a in mymodel.Groupss select a.GroupNo).Count();
+            int PendingForFinalSubmission = (from a in mymodel.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
+            
+            if (FinalApproved > 0)
+            {
+                mymodel.ApprovedMessage = "Budget Details Approved for the Financial Year " + AcademicYear + "!!!";
+                mymodel.WaitingForApprovalMessage = " ";
+            }
+            else if (FinalApproved == 0 && SubmittedForApproval <= NumberOfGroups && SubmittedForApproval!=0)
+            {
+                mymodel.WaitingForApprovalMessage = "Budget Details for the Financial Year " + AcademicYear + " is pending with AC&BW for Approval.";
+                mymodel.ApprovedMessage = " ";
+            }
+            else if(PendingForFinalSubmission > 0)
+            {
+                mymodel.WaitingForApprovalMessage = "Budget Details for the Financial Year " + AcademicYear + " is pending with CMD for Approval.";
+                mymodel.ApprovedMessage = " ";
+            }
+            else
+            {
+                mymodel.ApprovedMessage = " ";
+                mymodel.WaitingForApprovalMessage = " ";
+            }
 
             mymodel.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
                      .Where(x => x.FinancialYear1 == Convert.ToInt32(Year - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Select(x => x.AdminEditStatus).Count();
@@ -1002,7 +1111,35 @@ namespace BudgetPortal.Controllers
 
                 MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
                         .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
-                
+
+                int FinalApproved = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(false) select a.AdminEditStatus).Count();
+                int SubmittedForApproval = (from a in MD.Statuss where a.SectionNumber != 0 && !a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
+                int NumberOfGroups = (from a in MD.Groupss select a.GroupNo).Count();
+                int PendingForFinalSubmission = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
+
+                if (FinalApproved > 0)
+                {
+                    MD.ApprovedMessage = "Budget Details Approved for the Financial Year " + MD.SelectedAcademicYear + "!!!";
+                    MD.WaitingForApprovalMessage = " ";
+                }
+                else if (FinalApproved == 0 && SubmittedForApproval <= NumberOfGroups && SubmittedForApproval != 0)
+                {
+                    MD.WaitingForApprovalMessage = "Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
+                    MD.ApprovedMessage = " ";
+                }
+                else if (PendingForFinalSubmission > 0)
+                {
+                    MD.WaitingForApprovalMessage = "Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with CMD for Approval.";
+                    MD.ApprovedMessage = " ";
+                }
+                else
+                {
+                    MD.ApprovedMessage = " ";
+                    MD.WaitingForApprovalMessage = " ";
+                }
+
+
+
                 MD.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
                      .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Select(x => x.AdminEditStatus).Count();
 

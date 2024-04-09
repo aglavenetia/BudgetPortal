@@ -117,7 +117,9 @@ namespace BudgetPortal.ViewModel
         public String? SelectedAcademicYearID { get; set; }
         public string? FileName { get; set; }
         public IFormFile? File { get; set; }
-
+        public string? WaitingForFinalSubmission { get; set; }
+        public string? WaitingForApprovalMessage { get; set; }
+        public string? ApprovedMessage { get; set; }
 
     }
 }
