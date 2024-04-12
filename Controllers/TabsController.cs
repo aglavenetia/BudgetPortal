@@ -386,6 +386,7 @@ namespace BudgetPortal.Controllers
         }
 
         [HttpPost]
+        [RequestFormLimits(ValueCountLimit = 20000)]
         [Authorize]
         [ValidateAntiForgeryToken]
         public IActionResult Index(MultipleData MD)
