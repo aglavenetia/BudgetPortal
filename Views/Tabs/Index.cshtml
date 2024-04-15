@@ -106,7 +106,7 @@
 
         
 
-    <ul id="outerTab" class="nav nav-tabs" role="tablist" >    
+    <ul id="outerTab" class="nav nav-pills" role="tablist" >    
       @foreach (var item in Model.Sectionss)
       {
             var inneridenti = String.Concat("Budget", @item.SectionNo.ToString());
@@ -264,7 +264,7 @@
                 </table>
               }
 
-                <ul id="innertab1" class="nav nav-tabs" role="tablist">
+                    <ul id="innertab1" class="nav nav-pills" role="tablist">
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {                           
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
@@ -2606,7 +2606,7 @@
                         </tbody>
                     </table>
                 }
-                <ul id="innertab2" class="nav nav-tabs" role="tablist">
+                <ul id="innertab2" class="nav nav-pills" role="tablist">
 
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {

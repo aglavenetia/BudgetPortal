@@ -15,7 +15,7 @@ namespace BudgetPortal.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View("Homepage");
         }
 
         public IActionResult Privacy()
