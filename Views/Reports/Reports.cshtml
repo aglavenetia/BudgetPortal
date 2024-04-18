@@ -60,7 +60,7 @@
     </div>
     <br />
     <br />
-    <ul id="outerTab" class="nav nav-tabs" role="tablist">
+    <ul id="outerTab" class="nav nav-tabs nav-pills" role="tablist">
         @foreach (var item in Model.Sectionss)
         {
             var inneridenti = String.Concat("Budget", @item.SectionNo.ToString());
@@ -83,7 +83,7 @@
         }
     </ul>
 
-    <div id="outerTabContent" class="tab-content" onclick="">
+    <div id="outerTabContent" class="tab-content">
         <br />
 
         @foreach (var inner in Model.Sectionss)
@@ -107,7 +107,7 @@
                 var SelectedDivisionTypeName = (from a in Model.DivisionTypeNames where a.Selected == true select a.Text).FirstOrDefault();
 
                 <div id="@inneridenti" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="true">
-                    <ul id="innertab1" class="nav nav-tabs" role="tablist">
+                    <ul id="innertab1" class="nav nav-tabs nav-pills" role="tablist">
                         @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                         {
                             var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
@@ -455,7 +455,7 @@
                                                     @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
                                                     {
                                                         <th >
-                                                            @Html.Label( Regions.DivisionName)
+                                                            @Html.Label("RegionDivisionNames-"+Regions.DivisionID, Regions.DivisionName)
                                                         </th>
                                                      }
                                                    
@@ -970,7 +970,7 @@
                                                     </th>
                                                     @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
                                                     {
-                                                    <th> @Html.Label(Regions.DivisionName)</th>
+                                                    <th> @Html.Label("RegionDivisionNames-"+Regions.DivisionID,Regions.DivisionName)</th>
                                                     }
                                                 </tr>
                                             </thead>
@@ -1225,7 +1225,7 @@
             {
                 <div id="@inneridenti" class="tab-pane fade" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="false">
 
-                    <ul id="innertab2" class="nav nav-tabs" role="tablist">
+                    <ul id="innertab2" class="nav nav-tabs nav-pills" role="tablist">
                         @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                         {
                             var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
@@ -1575,7 +1575,7 @@
                                                     </th>
                                                     @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
                                                     {
-                                                    <th > @Html.Label(Regions.DivisionName)</th>
+                                                        <th> @Html.Label("RegionDivisionNames-"+Regions.DivisionID,Regions.DivisionName)</th>
                                                     }
                                                 </tr>
                                             </thead>
@@ -2067,7 +2067,7 @@
                                                     </th>
                                                     @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
                                                     {
-                                                        <th > @Html.Label(Regions.DivisionName)</th>
+                                                        <th> @Html.Label("RegionDivisionNames-"+Regions.DivisionID,Regions.DivisionName)</th>
                                                     }
                                                 </tr>
                                             </thead>

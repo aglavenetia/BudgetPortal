@@ -129,7 +129,7 @@
       }
     </ul>
 
-    <div id="outerTabContent" class="tab-content" onclick="">
+    <div id="outerTabContent" class="tab-content">
        <br />  
        @Html.Hidden("SectionName",Model.SectionName, new{@id = "SectionName" })
        @Html.Hidden("GroupName",Model.GroupName,  new{@id = "GroupName" })
@@ -174,7 +174,7 @@
 
            if (OuterBodyCount == 0)
            {
-            <div id="@inneridenti" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="true">
+            <div id="@inneridenti" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="true" style="width: 1750px;">
               
               @if(GroupsCount > 0)
               {
@@ -184,36 +184,36 @@
                                             <th>
                                                 
                                             </th>
-                                            <th class="CurrentBudgetEstimates" >
+                                            <th class="CurrentBudgetEstimates w-10"  >
                                                         
                                             </th>
-                                            <th class="PreviousActualBudget">
+                                            <th class="PreviousActualBudget w-10">
                                                 
                                             </th>
-                                            <th class="PreviousHalfYearActualBudget">
+                                            <th class="PreviousHalfYearActualBudget w-10">
                                                 
                                             </th>
-                                            <th class="CurrentYearRevisedEstimates">
+                                            <th class="CurrentYearRevisedEstimates w-10">
                                                 
                                             </th>
-                                            <th class="VariationInRevisedEstimates">
+                                            <th class="VariationInRevisedEstimates w-10">
                                                         
                                             </th>
                                             @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                              {
-                                               <th class="ACBWProposalForRevisedEstimates">
+                                               <th class="ACBWProposalForRevisedEstimates w-10">
                                                   
                                                </th>
                                              }
-                                            <th class="BudgetEstimatesNextYear">
+                                            <th class="BudgetEstimatesNextYear w-10">
                                                 
                                             </th>
-                                            <th class="VariationInBudgetEstimates">
+                                            <th class="VariationInBudgetEstimates w-10">
                                                 
                                             </th>
                                         @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                              {
-                                               <th class="ACBWProposalForBudgetEstimates">
+                                               <th class="ACBWProposalForBudgetEstimates w-10">
                                                    
                                                 </th>
                                              }
@@ -264,7 +264,7 @@
                 </table>
               }
 
-                    <ul id="innertab1" class="nav nav-pills" role="tablist">
+                   <ul id="innertab1" class="nav nav-pills nav-justified" role="tablist">
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {                           
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
@@ -348,55 +348,55 @@
                         if (CounterBody == 0)
                         {
                                                    
-                            <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
+                            <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab" style="width: 1750px;">
                              
                                 <table id="@identi-outertable" class="table table-responsive table-hover">
                                     <thead>
                                         <tr>
                                             <th></th>
-                                            <th class="w-50">
+                                            <th class="w-5">
                                                 SubGroupNumber
                                             </th>
-                                            <th class="w-50">
+                                            <th class="w-5">
                                                 SubGroupName
                                             </th>
-                                            <th class="CurrentBudgetEstimates w-50" >
+                                            <th class="CurrentBudgetEstimates w-10" >
                                                         
                                             </th>
-                                            <th class="PreviousActualBudget w-50" >
+                                            <th class="PreviousActualBudget w-10" >
                                                 
                                             </th>
-                                            <th class="PreviousHalfYearActualBudget w-50" >
+                                            <th class="PreviousHalfYearActualBudget w-10" >
                                                 
                                             </th>
-                                            <th class="CurrentYearRevisedEstimates w-50" >
+                                            <th class="CurrentYearRevisedEstimates w-10" >
                                                 
                                             </th>
-                                            <th class="VariationInRevisedEstimates w-50" >
+                                            <th class="VariationInRevisedEstimates w-10" >
                                                        
                                             </th>
                                             @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                              {
-                                               <th class="ACBWProposalForRevisedEstimates w-50" >
+                                               <th class="ACBWProposalForRevisedEstimates w-10" >
                                                  
                                                </th>
                                              }
-                                            <th class="BudgetEstimatesNextYear w-50">
+                                            <th class="BudgetEstimatesNextYear w-10">
                                                 
                                             </th>
-                                                    <th class="VariationInBudgetEstimates w-50">
+                                                    <th class="VariationInBudgetEstimates w-10">
                                                 
                                             </th>
                                             @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                              {
-                                                        <th class="ACBWProposalForBudgetEstimates w-50">
+                                                        <th class="ACBWProposalForBudgetEstimates w-10">
                                                    
                                                 </th>
                                              }
-                                            <th class="Justification w-50">
+                                            <th class="Justification w-10">
                                                        
                                             </th>
-                                            <th class="UploadDocuments w-50">
+                                            <th class="UploadDocuments w-10">
                                                        
                                             </th>
                                         </tr>
@@ -1396,53 +1396,53 @@
                         else
                         {
                                                     
-                            <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
+                            <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab" style="width: 1750px;">
                                 <br />
                                         <table id="@identi-outertable" class="table table-responsive table-hover">
                                             <thead>
                                                 <tr>
                                                     <th></th>
-                                                    <th class="w-50">
+                                                    <th class="w-5">
                                                         SubGroupNumber
                                                     </th>
-                                                    <th class="w-50">
+                                                    <th class="w-5">
                                                         SubGroupName
                                                     </th>
-                                                    <th class="CurrentBudgetEstimates w-50">
+                                                    <th class="CurrentBudgetEstimates w-10">
 
                                                     </th>
-                                                    <th class="PreviousActualBudget w-50">
+                                                    <th class="PreviousActualBudget w-10">
 
                                                     </th>
-                                                    <th class="PreviousHalfYearActualBudget w-50">
+                                                    <th class="PreviousHalfYearActualBudget w-10">
 
                                                     </th>
-                                                    <th class="CurrentYearRevisedEstimates w-50">
+                                                    <th class="CurrentYearRevisedEstimates w-10">
 
                                                     </th>
-                                                    <th class="VariationInRevisedEstimates w-50">
+                                                    <th class="VariationInRevisedEstimates w-10">
 
                                                     </th>
                                                     @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                     {
-                                                        <th class="ACBWProposalForRevisedEstimates w-50">
+                                                        <th class="ACBWProposalForRevisedEstimates w-10">
 
                                                         </th>
                                                     }
-                                                    <th class="BudgetEstimatesNextYear w-50">
+                                                    <th class="BudgetEstimatesNextYear w-10">
 
                                                     </th>
-                                                    <th class="VariationInBudgetEstimates w-50">
+                                                    <th class="VariationInBudgetEstimates w-10">
 
                                                     </th>
                                                     @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0) )
                                                     {
-                                                        <th class="ACBWProposalForBudgetEstimates w-50">
+                                                        <th class="ACBWProposalForBudgetEstimates w-10">
 
                                                         </th>
                                                     }
-                                                    <th class="Justification w-50"></th>
-                                                    <th class="UploadDocuments w-50"></th>
+                                                    <th class="Justification w-10"></th>
+                                                    <th class="UploadDocuments w-10"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -2517,7 +2517,7 @@
 
            else
            {
-            <div id="@inneridenti" class="tab-pane fade" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="false">
+                    <div id="@inneridenti" class="tab-pane fade" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="false" style="width: 1750px;">
 
                 @if(GroupsCount>0)
                 {
@@ -2527,36 +2527,36 @@
                                 <th>
 
                                 </th>
-                                <th class="CurrentBudgetEstimates w-50">
+                                <th class="CurrentBudgetEstimates w-10">
 
                                 </th>
-                                <th class="PreviousActualBudget w-50">
+                                <th class="PreviousActualBudget w-10">
 
                                 </th>
-                                <th class="PreviousHalfYearActualBudget w-50">
+                                <th class="PreviousHalfYearActualBudget w-10">
 
                                 </th>
-                                <th class="CurrentYearRevisedEstimates w-50">
+                                <th class="CurrentYearRevisedEstimates w-10">
 
                                 </th>
-                                <th class="VariationInRevisedEstimates w-50">
+                                <th class="VariationInRevisedEstimates w-10">
 
                                 </th>
                                 @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                 {
-                                    <th class="ACBWProposalForRevisedEstimates w-50">
+                                    <th class="ACBWProposalForRevisedEstimates w-10">
 
                                     </th>
                                 }
-                                <th class="BudgetEstimatesNextYear w-50">
+                                <th class="BudgetEstimatesNextYear w-10">
 
                                 </th>
-                                <th class="VariationInBudgetEstimates w-50">
+                                <th class="VariationInBudgetEstimates w-10">
 
                                 </th>
                                 @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                 {
-                                    <th class="ACBWProposalForBudgetEstimates w-50">
+                                    <th class="ACBWProposalForBudgetEstimates w-10">
 
                                     </th>
                                 }
@@ -2691,55 +2691,55 @@
 
                           if (CounterBody == 0)
                           {
-                              <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab">
+                              <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab" style="width: 1750px;">
                                   
                                         <table id="@identi-outertable" class="table table-responsive table-hover">
                                             <thead>
                                                 <tr>
                                                     <th></th>
-                                                    <th class="w-50">
+                                                    <th class="w-5">
                                                         SubGroupNumber
                                                     </th>
-                                                    <th class="w-50">
+                                                    <th class="w-5">
                                                         SubGroupName
                                                     </th>
-                                                    <th class="CurrentBudgetEstimates w-50">
+                                                    <th class="CurrentBudgetEstimates w-10">
 
                                                     </th>
-                                                    <th class="PreviousActualBudget w-50">
+                                                    <th class="PreviousActualBudget w-10">
 
                                                     </th>
-                                                    <th class="PreviousHalfYearActualBudget w-50">
+                                                    <th class="PreviousHalfYearActualBudget w-10">
 
                                                     </th>
-                                                    <th class="CurrentYearRevisedEstimates w-50">
+                                                    <th class="CurrentYearRevisedEstimates w-10">
 
                                                     </th>
-                                                    <th class="VariationInRevisedEstimates w-50">
-
-                                                    </th>
-                                                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
-                                                    {
-                                                        <th class="ACBWProposalForRevisedEstimates w-50">
-
-                                                        </th>
-                                                    }
-                                                    <th class="BudgetEstimatesNextYear w-50">
-
-                                                    </th>
-                                                    <th class="VariationInBudgetEstimates w-50">
+                                                    <th class="VariationInRevisedEstimates w-10">
 
                                                     </th>
                                                     @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                     {
-                                                        <th class="ACBWProposalForBudgetEstimates w-50">
+                                                        <th class="ACBWProposalForRevisedEstimates w-10">
 
                                                         </th>
                                                     }
-                                                    <th class="Justification w-50">
+                                                    <th class="BudgetEstimatesNextYear w-10">
 
                                                     </th>
-                                                    <th class="UploadDocuments w-50"></th>   
+                                                    <th class="VariationInBudgetEstimates w-10">
+
+                                                    </th>
+                                                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                    {
+                                                        <th class="ACBWProposalForBudgetEstimates w-10">
+
+                                                        </th>
+                                                    }
+                                                    <th class="Justification w-10">
+
+                                                    </th>
+                                                    <th class="UploadDocuments w-10"></th>   
 
                                                 </tr>
                                             </thead>
@@ -3805,55 +3805,55 @@
                         else
                         {  
                                                      
-                             <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab">
+                             <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab" style="width: 1750px;">
                                 <br />
                                         <table id="@identi-outertable" class="table table-responsive table-hover">
                                             <thead>
                                                 <tr>
                                                     <th></th>
-                                                    <th class="w-50">
+                                                    <th class="w-5">
                                                         SubGroupNumber
                                                     </th>
-                                                    <th class="w-50">
+                                                    <th class="w-5">
                                                         SubGroupName
                                                     </th>
-                                                    <th class="CurrentBudgetEstimates w-50">
+                                                    <th class="CurrentBudgetEstimates w-10">
 
                                                     </th>
-                                                    <th class="PreviousActualBudget w-50">
+                                                    <th class="PreviousActualBudget w-10">
 
                                                     </th>
-                                                    <th class="PreviousHalfYearActualBudget w-50">
+                                                    <th class="PreviousHalfYearActualBudget w-10">
 
                                                     </th>
-                                                    <th class="CurrentYearRevisedEstimates w-50">
+                                                    <th class="CurrentYearRevisedEstimates w-10">
 
                                                     </th>
-                                                    <th class="VariationInRevisedEstimates w-50">
-
-                                                    </th>
-                                                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
-                                                    {
-                                                        <th class="ACBWProposalForRevisedEstimates w-50">
-
-                                                        </th>
-                                                    }
-                                                    <th class="BudgetEstimatesNextYear w-50">
-
-                                                    </th>
-                                                    <th class="VariationInBudgetEstimates w-50">
+                                                    <th class="VariationInRevisedEstimates w-10">
 
                                                     </th>
                                                     @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                     {
-                                                        <th class="ACBWProposalForBudgetEstimates w-50">
+                                                        <th class="ACBWProposalForRevisedEstimates w-10">
 
                                                         </th>
                                                     }
-                                                    <th class="Justification w-50">
+                                                    <th class="BudgetEstimatesNextYear w-10">
 
                                                     </th>
-                                                    <th class="UploadDocuments w-50"></th>
+                                                    <th class="VariationInBudgetEstimates w-10">
+
+                                                    </th>
+                                                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                    {
+                                                        <th class="ACBWProposalForBudgetEstimates w-10">
+
+                                                        </th>
+                                                    }
+                                                    <th class="Justification w-10">
+
+                                                    </th>
+                                                    <th class="UploadDocuments w-10"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
