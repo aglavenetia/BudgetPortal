@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using System.Drawing;
+using Rotativa;
+using Rotativa.Options;
 
 namespace BudgetPortal.Controllers
 {
@@ -186,6 +188,31 @@ namespace BudgetPortal.Controllers
            
             return View("Reports", mymodel);
             
+        }
+
+        public ActionResult PrintPDF(int Year, String DivisionType, String Report)
+        {
+            var AcademicYear = String.Concat(Year, "-", (Year + 1));
+            var NextAcademicYear = String.Concat((Year + 1), "-", (Year + 2));
+
+
+            var mymodel = new ReportView();
+
+            mymodel.Sectionss = _context.BudgetSections.ToList();
+            mymodel.Groupss = _context.BudgetGroups.ToList();
+            mymodel.SubGroupss = _context.BudgetSubGroups.ToList();
+            mymodel.Ledgerss = _context.BudgetLedgers.ToList();
+            mymodel.Detailss = _context.BudgetDetails.Where(x => x.FinancialYear1 == Year).ToList();
+            mymodel.Divisionss = _context.Division.ToList();
+            mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.FinancialYear1 == (Year - 1)).ToList();
+            
+            return new PartialViewAsPdf("_JobPrint", mymodel)
+            {
+                PageOrientation = Orientation.Landscape,
+                PageSize = System.Drawing.Size.A3,
+                CustomSwitches = "--footer-center \" [page] Page of [toPage] Pages\" --footer-line --footer-font-size \"9\" --footer-spacing 5 --footer-font-name \"calibri light\"",
+                FileName = "TestPartialViewAsPdf.pdf"
+            };
         }
     }
 }

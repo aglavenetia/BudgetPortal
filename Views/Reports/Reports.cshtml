@@ -1,6 +1,7 @@
 ﻿@model BudgetPortal.ViewModel.ReportView
 @using System.Web;
 
+@using BudgetPortal.ViewModel;
 @using Microsoft.AspNetCore.Mvc;
 
 @using Microsoft.AspNetCore.Identity;
@@ -28,6 +29,9 @@
 <br />
 
 <div id="outerdiv">
+    <div style="float:left">
+    @Html.DropDownListFor(m => m.ExportTypes, new SelectList(Enum.GetValues(typeof(Export))), "Select--")
+    </div>
     <div style="float:right">
 
         @Html.AntiForgeryToken()
@@ -60,7 +64,10 @@
     </div>
     <br />
     <br />
-    <ul id="outerTab" class="nav nav-tabs nav-pills" role="tablist">
+
+    
+
+    <ul id="outerTab" class="nav nav-pills" role="tablist">
         @foreach (var item in Model.Sectionss)
         {
             var inneridenti = String.Concat("Budget", @item.SectionNo.ToString());
@@ -107,7 +114,7 @@
                 var SelectedDivisionTypeName = (from a in Model.DivisionTypeNames where a.Selected == true select a.Text).FirstOrDefault();
 
                 <div id="@inneridenti" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="true">
-                    <ul id="innertab1" class="nav nav-tabs nav-pills nav-justified" role="tablist">
+                    <ul id="innertab1" class="nav nav-pills nav-justified" role="tablist">
                         @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                         {
                             var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
@@ -243,17 +250,17 @@
                                     @if (ReportName!=null && ReportName.Equals("Headwise Consolidation"))
                                     {
 
-                                        <table id="@identi-outertable" class="table table-responsive table-hover table-borderless">
+                                        <table id="@identi-outertable" class="table table-responsive table-hover">
                                             
                                                 <thead>
-                                                <tr class="text-center"  style="color:chocolate;"><th colspan="100">CENTRAL BOARD OF SECONDARY EDUCATION</th></tr>
-                                                <tr class="text-center"  style="color:chocolate;">
+                                                <tr class="text-center"  style="color:chocolate;border-bottom:hidden;"><th colspan="100">CENTRAL BOARD OF SECONDARY EDUCATION</th></tr>
+                                                <tr class="text-center" style="color:chocolate;border-bottom:hidden;">
                                                     <th colspan="100">Shiksha Kendra 2, Community Centre, Preet Vihar, Delhi - 110 092</th>
                                                 </tr>
-                                                <tr class="text-center" style="color:green;">
+                                                <tr class="text-center" style="color:green;border-bottom:hidden;">
                                                     <th colspan="100">@Report</th>
                                                 </tr>
-                                                <tr class="text-center" style="color:red;">
+                                                <tr class="text-center" style="color:red;border-bottom:hidden;">
                                                     <th colspan="100">(*FIGURES IN CRORES)</th>
                                                 </tr>
                                                     <tr>
@@ -450,17 +457,17 @@
                                     }
                                     else
                                     {
-                                        <table id="@identi-outertable" class="table table-responsive table-hover table-borderless">
+                                        <table id="@identi-outertable" class="table table-responsive table-hover">
                                             
                                             <thead>
-                                            <tr class="text-center"  style="color:chocolate;"><th colspan="100" >CENTRAL BOARD OF SECONDARY EDUCATION</th></tr>
-                                                <tr class="text-center" style="color:chocolate;">
+                                                <tr class="text-center" style="color:chocolate;border-bottom:hidden;"><th colspan="100">CENTRAL BOARD OF SECONDARY EDUCATION</th></tr>
+                                                <tr class="text-center" style="color:chocolate;border-bottom:hidden;">
                                                     <th colspan="100">Shiksha Kendra 2, Community Centre, Preet Vihar, Delhi - 110 092</th>
                                                 </tr>
-                                                <tr class="text-center" style="color:green;">
+                                                <tr class="text-center" style="color:green;border-bottom:hidden;">
                                                     <th colspan="100"> Consolidated @Report</th>
                                                 </tr>
-                                                <tr class="text-center" style="color:red;">
+                                                <tr class="text-center" style="color:red;border-bottom:hidden;">
                                                     <th colspan="100">*(FIGURES IN CRORES)</th>
                                                 </tr>
                                                 <tr>
@@ -783,18 +790,18 @@
                                     <br />
                                     @if (ReportName!=null && ReportName.Equals("Headwise Consolidation"))
                                     {
-                                      <table id="@identi-outertable" class="table table-borderless table-responsive table-hover">
+                                      <table id="@identi-outertable" class="table table-responsive table-hover">
                                             <thead>
-                                                <tr class="text-center" style="color:chocolate;">
+                                                <tr class="text-center" style="color:chocolate;border-bottom:hidden;">
                                                     <th colspan="100">CENTRAL BOARD OF SECONDARY EDUCATION</th>
                                                 </tr>
-                                                <tr class="text-center" style="color:chocolate;">
+                                                <tr class="text-center" style="color:chocolate;border-bottom:hidden;">
                                                     <th colspan="100">Shiksha Kendra 2, Community Centre, Preet Vihar, Delhi - 110 092</th>
                                                 </tr>
-                                                <tr class="text-center" style="color:green;">
+                                                <tr class="text-center" style="color:green;border-bottom:hidden;">
                                                     <th colspan="100">@Report</th>
                                                 </tr>
-                                                <tr class="text-center" style="color:red;">
+                                                <tr class="text-center" style="color:red;border-bottom:hidden;">
                                                     <th colspan="100">*(FIGURES IN CRORES)</th>
                                                 </tr>
                                                     <tr>
@@ -991,18 +998,18 @@
                                     }
                                     else
                                     {
-                                        <table id="@identi-outertable" class="table table-borderless table-responsive table-hover ">
+                                        <table id="@identi-outertable" class="table table-responsive table-hover ">
                                             <thead>
-                                                <tr class="text-center" style="color:chocolate;">
+                                                <tr class="text-center" style="color:chocolate;border-bottom:hidden;">
                                                     <th colspan="100">CENTRAL BOARD OF SECONDARY EDUCATION</th>
                                                 </tr>
-                                                <tr class="text-center" style="color:chocolate;">
+                                                <tr class="text-center" style="color:chocolate;border-bottom:hidden;">
                                                     <th colspan="100">Shiksha Kendra 2, Community Centre, Preet Vihar, Delhi - 110 092</th>
                                                 </tr>
-                                                <tr class="text-center"  style="color:green;">
+                                                <tr class="text-center" style="color:green;border-bottom:hidden;">
                                                     <th colspan="100">Consolidated @Report </th>
                                                 </tr>
-                                                <tr class="text-center" style="color:red;">
+                                                <tr class="text-center" style="color:red;border-bottom:hidden;">
                                                     <th colspan="100">*(FIGURES IN CRORES)</th>
                                                 </tr>
                                                 <tr>
@@ -1413,17 +1420,17 @@
                                 <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab" style="width: 1750px;">
                                     @if (ReportName!=null && ReportName.Equals("Headwise Consolidation"))
                                     {
-                                        <table id="@identi-outertable" class="table table-borderless table-responsive table-hover">
+                                        <table id="@identi-outertable" class="table table-responsive table-hover">
                                             
                                             <thead>
-                                            <tr class="text-center" style="color:chocolate;"><th colspan="100">CENTRAL BOARD OF SECONDARY EDUCATION</th></tr>
-                                                <tr class="text-center" style="color:chocolate;">
+                                            <tr class="text-center" style="color:chocolate;border-bottom:hidden;"><th colspan="100">CENTRAL BOARD OF SECONDARY EDUCATION</th></tr>
+                                                <tr class="text-center" style="color:chocolate;border-bottom:hidden;">
                                                     <th colspan="100" >Shiksha Kendra 2, Community Centre, Preet Vihar, Delhi - 110 092</th>
                                                 </tr>
-                                                <tr class="text-center" style="color:green;">
+                                                <tr class="text-center" style="color:green;border-bottom:hidden;">
                                                     <th colspan="100">@Report</th>
                                                 </tr>
-                                                <tr class="text-center" style="color:red;">
+                                                <tr class="text-center" style="color:red;border-bottom:hidden;">
                                                     <th colspan="100">*(FIGURES IN CRORES)</th>
                                                 </tr>
                                             <tr>
@@ -1620,14 +1627,14 @@
                                     }
                                     else
                                     {
-                                        <table id="@identi-outertable" class="table table-borderless table-responsive table-hover">
+                                        <table id="@identi-outertable" class="table table-responsive table-hover">
                                             
                                             <thead>
-                                                <tr class="text-center" style="color:chocolate"><th colspan="100">CENTRAL BOARD OF SECONDARY EDUCATION</th></tr>
-                                                <tr class="text-center" style="color:chocolate">
+                                                <tr class="text-center" style="color:chocolate;border-bottom:hidden;"><th colspan="100">CENTRAL BOARD OF SECONDARY EDUCATION</th></tr>
+                                                <tr class="text-center" style="color:chocolate;border-bottom:hidden;">
                                                     <th colspan="100">Shiksha Kendra 2, Community Centre, Preet Vihar, Delhi - 110 092</th>
                                                 </tr>
-                                                <tr class="text-center" style="color:green">
+                                                <tr class="text-center" style="color:green;border-bottom:hidden;">
                                                     <th colspan="100">Consolidated @Report</th>
                                                 </tr>
                                                 <tr class="text-center" style="color:red">
@@ -1928,16 +1935,16 @@
                                     <br />
                                      @if (ReportName!=null && ReportName.Equals("Headwise Consolidation"))
                                     {
-                                        <table id="@identi-outertable" class="table table-borderless table-responsive table-hover">
+                                        <table id="@identi-outertable" class="table table-responsive table-hover">
                                             <thead>
-                                                <tr class="text-center" style="color:chocolate;" ><th colspan="100">CENTRAL BOARD OF SECONDARY EDUCATION</th></tr>
-                                                <tr class="text-center" style="color:chocolate;">
+                                                <tr class="text-center" style="color:chocolate;border-bottom:hidden;" ><th colspan="100">CENTRAL BOARD OF SECONDARY EDUCATION</th></tr>
+                                                <tr class="text-center" style="color:chocolate;border-bottom:hidden;">
                                                     <th colspan="100">Shiksha Kendra 2, Community Centre, Preet Vihar, Delhi - 110 092</th>
                                                 </tr>
-                                                <tr class="text-center" style="color:green;">
+                                                <tr class="text-center" style="color:green;border-bottom:hidden;">
                                                     <th colspan="100">@Report</th>
                                                 </tr>
-                                                <tr class="text-center" style="color:red;">
+                                                <tr class="text-center" style="color:red;border-bottom:hidden;">
                                                     <th colspan="100">*(FIGURES IN CRORES)</th>
                                                 </tr>
                                                 <tr>
@@ -2135,16 +2142,16 @@
                                     }
                                     else
                                     {
-                                        <table id="@identi-outertable" class="table table-borderless table-responsive table-hover">
+                                        <table id="@identi-outertable" class="table table-responsive table-hover">
                                             <thead>
-                                                <tr class="text-center" style="color:chocolate;"><th colspan="100">CENTRAL BOARD OF SECONDARY EDUCATION</th></tr>
-                                                <tr class="text-center" style="color:chocolate;">
+                                                <tr class="text-center" style="color:chocolate;border-bottom:hidden;"><th colspan="100">CENTRAL BOARD OF SECONDARY EDUCATION</th></tr>
+                                                <tr class="text-center" style="color:chocolate;border-bottom:hidden;">
                                                     <th colspan="100">Shiksha Kendra 2, Community Centre, Preet Vihar, Delhi - 110 092</th>
                                                 </tr>
-                                                <tr class="text-center" style="color:green;">
+                                                <tr class="text-center" style="color:green;border-bottom:hidden;">
                                                     <th colspan="100">Consolidated @Report</th>
                                                 </tr>
-                                                <tr class="text-center" style="color:red;">
+                                                <tr class="text-center" style="color:red;border-bottom:hidden;">
                                                     <th colspan="100">*(FIGURES IN CRORES)</th>
                                                 </tr>
                                                 <tr>

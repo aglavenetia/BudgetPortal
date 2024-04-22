@@ -20,12 +20,30 @@ namespace BudgetPortal.Controllers
         }
 
         // GET: Ledgers
-        public async Task<IActionResult> Index(String SubGroupid)
+        public async Task<IActionResult> Index(String SubGroupid, String sortOrder)
         {
-            var applicationDbContext = _context.BudgetLedgers.Where (b=> (b.SubGroupNo).Equals(SubGroupid) ).Include(b => b.subGroups);
+            //var applicationDbContext = _context.BudgetLedgers.Where (b=> (b.SubGroupNo).Equals(SubGroupid) ).Include(b => b.subGroups);
+
+            var applicationDbContext = from b in _context.BudgetLedgers where(b.SubGroupNo.Equals(SubGroupid)) select b;
             ViewData["SubGroupNo"] = SubGroupid;
             var GroupNo = _context.BudgetSubGroups.Where(a=>a.SubGroupNo.Equals(SubGroupid)).Select(a=>a.GroupNo).FirstOrDefault();
             ViewData["GroupNo"] = GroupNo.ToString();
+
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+
+            switch (sortOrder)
+            {
+                case "Date":
+                    applicationDbContext = applicationDbContext.OrderBy(s => s.CreatedDateTime);
+                    break;
+                case "date_desc":
+                    applicationDbContext = applicationDbContext.OrderByDescending(s => s.CreatedDateTime);
+                    break;
+                default:
+                    applicationDbContext = applicationDbContext.OrderBy(s => s.CreatedDateTime);
+                    break;
+            }
+
             return View(await applicationDbContext.ToListAsync());
         }
 

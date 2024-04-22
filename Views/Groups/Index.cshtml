@@ -9,7 +9,8 @@
 
 <p>
     
-    <a asp-action="Create" asp-route-Sectionid=@ViewData["SecNo"] >Create New</a>
+    <a asp-action="Create" asp-route-Sectionid=@ViewData["SecNo"] >Create New</a>|
+    <a asp-action="Index" asp-controller="Sections">Back to Sections</a>
 </p>
 <table class="table">
     <thead>
@@ -24,7 +25,7 @@
                 @Html.DisplayNameFor(model => model.Sections)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CreatedDateTime)
+               @Html.DisplayNameFor(model => model.CreatedDateTime)
             </th>
             <th></th>
         </tr>
@@ -40,7 +41,7 @@
                 @Html.DisplayFor(modelItem => item.GroupName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Sections.SectionNo)
+                @Html.DisplayFor(modelItem => item.SectionNo)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedDateTime)
@@ -49,7 +50,7 @@
                 <a asp-action="Edit" asp-route-id="@item.GroupNo">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.GroupNo">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.GroupNo">Delete</a> |
-                <a asp-controller="SubGroups" asp-action="Index" asp-route-Groupid="@item.GroupNo">Add SubGroups</a>
+                    <a asp-controller="SubGroups" asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-Groupid="@item.GroupNo">Add SubGroups</a>
             </td>
         </tr>
       }

@@ -38,11 +38,18 @@ namespace BudgetPortal.ViewModel
         public IEnumerable<SelectListItem>? AcademicYears { get; set; }
         public String? SelectedAcademicYearID { get; set; }
         
-        
         public String? SelectedAcademicYear { get; set; }
         public String? SelectedDivisionName { get; set; }
         public String? SectionName { get; set; }
 
         public String? GroupName { get; set; }
+
+        public Export ExportTypes { get; set; }
+    }
+
+    public enum Export
+    {
+        ExportReportAsPDF,
+        ExportReportAsExcel
     }
 }
