@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using System.Drawing;
 using Rotativa;
-using Rotativa.Options;
 
 namespace BudgetPortal.Controllers
 {
@@ -205,14 +204,14 @@ namespace BudgetPortal.Controllers
             mymodel.Detailss = _context.BudgetDetails.Where(x => x.FinancialYear1 == Year).ToList();
             mymodel.Divisionss = _context.Division.ToList();
             mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.FinancialYear1 == (Year - 1)).ToList();
+
+            return View("PrintPDF",mymodel);
+        }
+
+        public IActionResult ExportPDF()
+        {
+            return new Rotativa.AspNetCore.ViewAsPdf("Reports");
             
-            return new PartialViewAsPdf("_JobPrint", mymodel)
-            {
-                PageOrientation = Orientation.Landscape,
-                PageSize = System.Drawing.Size.A3,
-                CustomSwitches = "--footer-center \" [page] Page of [toPage] Pages\" --footer-line --footer-font-size \"9\" --footer-spacing 5 --footer-font-name \"calibri light\"",
-                FileName = "TestPartialViewAsPdf.pdf"
-            };
         }
     }
 }

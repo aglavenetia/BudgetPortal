@@ -2,6 +2,7 @@ using BudgetPortal.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Rotativa.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,7 +38,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseRotativa();
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -47,3 +48,4 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 app.Run();
+
