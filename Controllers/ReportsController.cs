@@ -205,13 +205,57 @@ namespace BudgetPortal.Controllers
             mymodel.Divisionss = _context.Division.ToList();
             mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.FinancialYear1 == (Year - 1)).ToList();
 
-            return View("PrintPDF",mymodel);
+            mymodel.ReportNames = _context.BudgetReports.AsEnumerable().Select(x =>
+                    new SelectListItem()
+                    {
+                        Selected = false,
+                        Text = x.ReportID.ToString().Equals("4") ? x.ReportName + " " + AcademicYear : x.ReportID.ToString().Equals("6") ? x.ReportName + " " + NextAcademicYear : x.ReportName,
+                        Value = x.ReportID.ToString()
+
+                    }).ToList();
+            mymodel.ReportNames.Where(x => x.Text.Equals(Report)).Single().Selected = true;
+
+            mymodel.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
+                    new SelectListItem()
+                    {
+                        Selected = false,
+                        Text = x.Year1 + "-" + x.Year2,
+                        Value = x.Id.ToString()
+
+                    }).ToList();
+            mymodel.AcademicYears.Where(x => x.Text.Equals(AcademicYear)).Single().Selected = true;
+
+            String[] DivisionTypes = _context.Division.Select(x => x.DivisionType).Distinct().ToArray();
+
+            mymodel.DivisionTypeNames = new List<SelectListItem>();
+            for (var i = 1; i <= DivisionTypes.Length; i++)
+            {
+                mymodel.DivisionTypeNames.Add(
+                new SelectListItem
+                {
+                    Text = DivisionTypes[i - 1],
+                    Value = i.ToString()
+                });
+            }
+            
+            mymodel.DivisionTypeNames.Where(x => x.Text.Equals(DivisionType)).Single().Selected = true;
+
+            //return View("PrintPDF",mymodel);
+
+            /*string customSwitches = string.Format("--header-html  \"{0}\" " +
+                               "--header-spacing \"0\" " +
+                               "--footer-html \"{1}\" " +
+                               "--footer-spacing \"10\" " +
+                               "--footer-font-size \"10\" " +
+                               "--header-font-size \"10\" ", header, footer);*/
+
+            return new Rotativa.AspNetCore.ViewAsPdf("PrintPDF", mymodel)
+            {
+                FileName = "ReportGenerated.pdf",
+                
+                PageOrientation = Rotativa.AspNetCore.Options.Orientation.Landscape,
+            };
         }
 
-        public IActionResult ExportPDF()
-        {
-            return new Rotativa.AspNetCore.ViewAsPdf("Reports");
-            
-        }
     }
 }

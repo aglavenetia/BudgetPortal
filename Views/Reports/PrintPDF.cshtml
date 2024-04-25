@@ -11,7 +11,7 @@
 @inject UserManager<ApplicationUser> UserManager
 
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Reports";
     int OuterHeaderCount = 0;
     int OuterBodyCount = 0;
@@ -22,12 +22,28 @@
     var SumActCurrFinTill2ndQuart = 0.00;
     var SumRevEstCurrFin = 0.00; 
     var SumBudgEstNexFin= 0.00;
-    var ReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
+    var SelectedAcademicYear = (from a in Model.AcademicYears where a.Selected == true select a.Text).FirstOrDefault();
+    var ReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault(); 
+    var Report = (ReportName != null && @ReportName.Contains("Budget")) ? @ReportName : @ReportName + " " + @SelectedAcademicYear;
     var NextAcademicYear = "";
     String[] SplitAcademicYear = new String[1];
 }
 <br />
 
+<table class="table" style="border-right:hidden;border-left:hidden ;border-top:hidden;border-bottom:hidden;align-content:center">
+<thead>
+     <tr class="text-center" style="color:chocolate;border-bottom:hidden;"><th colspan="100">CENTRAL BOARD OF SECONDARY EDUCATION</th></tr>
+     <tr class="text-center" style="color:chocolate;border-bottom:hidden;">
+        <th colspan="100">Shiksha Kendra 2, Community Centre, Preet Vihar, Delhi - 110 092</th>
+     </tr>
+     <tr class="text-center" style="color:green;border-bottom:hidden;">
+       <th colspan="100">Consolidated @Report</th>
+     </tr>
+     <tr class="text-center" style="color:red;border-bottom:hidden;">
+        <th colspan="100">(*FIGURES IN CRORES)</th>
+     </tr>
+</thead>
+</table>
 
 @foreach (var inner in Model.Sectionss)
 {
@@ -47,11 +63,6 @@
 
     
         var SelectedDivisionTypeName = (from a in Model.DivisionTypeNames where a.Selected == true select a.Text).FirstOrDefault();
-
-        
-            
-             
-
             
                 <br />
      @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
@@ -110,8 +121,8 @@
                     }
                     
                         //var ReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
-                        var SelectedAcademicYear = (from a in Model.AcademicYears where a.Selected == true select a.Text).FirstOrDefault();
-                        var Report = (ReportName != null && @ReportName.Contains("Budget")) ? @ReportName : @ReportName + " " + @SelectedAcademicYear;
+                         SelectedAcademicYear = (from a in Model.AcademicYears where a.Selected == true select a.Text).FirstOrDefault();
+                         Report = (ReportName != null && @ReportName.Contains("Budget")) ? @ReportName : @ReportName + " " + @SelectedAcademicYear;
                         if (SelectedAcademicYear != null)
                         {
                             SplitAcademicYear = SelectedAcademicYear.Split("-");
@@ -172,16 +183,7 @@
                                 <table id="@identi-outertable" class="table table-responsive table-hover">
 
                                     <thead>
-                                        <tr class="text-center" style="color:chocolate;border-bottom:hidden;"><th colspan="100">CENTRAL BOARD OF SECONDARY EDUCATION</th></tr>
-                                        <tr class="text-center" style="color:chocolate;border-bottom:hidden;">
-                                            <th colspan="100">Shiksha Kendra 2, Community Centre, Preet Vihar, Delhi - 110 092</th>
-                                        </tr>
-                                        <tr class="text-center" style="color:green;border-bottom:hidden;">
-                                            <th colspan="100">@Report</th>
-                                        </tr>
-                                        <tr class="text-center" style="color:red;border-bottom:hidden;">
-                                            <th colspan="100">(*FIGURES IN CRORES)</th>
-                                        </tr>
+                                        
                                         <tr>
                                             <th></th>
                                             <th class="w-5">
@@ -373,13 +375,15 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                                       <div class="breakhere "></div>
+            
                             }
                             else
                             {
                                 <table id="@identi-outertable" class="table table-responsive table-hover">
 
                                     <thead>
-                                        <tr class="text-center" style="color:chocolate;border-bottom:hidden;"><th colspan="100">CENTRAL BOARD OF SECONDARY EDUCATION</th></tr>
+                                        <!--<tr class="text-center" style="color:chocolate;border-bottom:hidden;"><th colspan="100">CENTRAL BOARD OF SECONDARY EDUCATION</th></tr>
                                         <tr class="text-center" style="color:chocolate;border-bottom:hidden;">
                                             <th colspan="100">Shiksha Kendra 2, Community Centre, Preet Vihar, Delhi - 110 092</th>
                                         </tr>
@@ -388,7 +392,7 @@
                                         </tr>
                                         <tr class="text-center" style="color:red;border-bottom:hidden;">
                                             <th colspan="100">*(FIGURES IN CRORES)</th>
-                                        </tr>
+                                        </tr> -->
                                         <tr>
                                             <th></th>
                                             <th>
@@ -643,6 +647,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                                 <div class="breakhere "></div>
                             }
                         
 
@@ -654,3 +659,42 @@
 
     OuterBodyCount++;
 }
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="~/js/nestedtable.js"></script>
+@section Scripts
+{
+    <script type="text/javascript">
+
+        $(document).ready(
+            function () {
+                onceDocReady();
+                 });
+    function onceDocReady() {
+        $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
+        //alert($("#SelectedAcademicYear").val());
+        $("#SelectedDivisionTypeName").val($("#DivisionType option:selected").text().trim());
+        //alert($("#SelectedDivisionTypeName").val());
+        $("#SelectedReportName").val($("#Reports option:selected").text().trim());
+        //alert($("#SelectedReportName").val());
+
+        var academicyear = $("#SelectedAcademicYear").val();
+        var DivisionTypeName = $("#SelectedDivisionTypeName").val();
+        //alert(DivisionTypeName);
+        var ReportName = $("#SelectedReportName").val();
+        var year = academicyear.split('-');
+        //alert(year[1]);
+
+        $(".CurrentBudgetEstimates").text('Budget Estimates ' + $("#SelectedAcademicYear").val());
+        $(".PreviousActualBudget").text('Actual ' + (Number.parseInt(year[0]) - Number.parseInt(1)) + '-' + Number.parseInt(year[0]));
+        $(".PreviousHalfYearActualBudget").text('Actual upto 30.09.' + Number.parseInt(year[0]));
+        $(".CurrentYearRevisedEstimates").text('Revised Estimates ' + $("#SelectedAcademicYear").val());
+        $(".BudgetEstimatesNextYear").text('Budget Estimates ' + Number.parseInt(year[1]) + '-' + (Number.parseInt(year[1]) + Number.parseInt(1)));
+
+    }
+    </script>
+}
+<style>
+    thead {
+        display: table-row-group;
+    }
+</style>
