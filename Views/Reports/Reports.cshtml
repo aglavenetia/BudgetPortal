@@ -271,12 +271,12 @@
                                                     <th colspan="100">(*FIGURES IN CRORES)</th>
                                                 </tr>
                                                     <tr>
-                                                        <th></th>
+                                                        <th class="w-5">HEAD NO.</th>
                                                         <th class="w-5">
-                                                            SubGroupNumber
+                                                            SUB HEAD NO.
                                                         </th>
                                                         <th class="w-5">
-                                                            SubGroupName
+                                                            HEAD NAME
                                                         </th>
                                                         <th class="CurrentBudgetEstimates w-20">
 
@@ -346,67 +346,10 @@
                                                         
                                                         <tr>
                                                             <td>
-                                                                @if (LedgerCount > 0)
-                                                                {
-                                                                    <img src="~/Images/plus.png" />
-                                                                    <div id="NestedTable" style="display:none">
-                                                                        @if (@Subs.RequireInput)
-                                                                        {
-                                                                            <table class="table ChildGrid">
-                                                                                @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
-                                                                                {
-                                                                                 var BudEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.BudEstCurrFin).Sum();
-                                                                                 var ActPrevFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActPrevFin).Sum();
-                                                                                 var ActCurrFinTill2ndQuartLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActCurrFinTill2ndQuart).Sum();
-                                                                                 var RevEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRECurrFin).Sum();
-                                                                                 var BudgEstNexFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRENxtFin).Sum();
-                                                                                 
-                                                                                 
-                                                                                 <tr>
-                                                                                        <td class = "w-5">
-                                                                                            @Ledgers.LedgerNo
-                                                                                        </td>
-                                                                                        <td class = "w-5">@Ledgers.LedgerName</td>
-                                                                                        <td class = "w-20">
-                                                                                            @Html.Label("BudEstCurrFinLedgerHeadwiseConsolidation" ,BudEstCurrFinLedgerSum!=null ? Convert.ToDecimal(BudEstCurrFinLedgerSum).ToString("F") : "-")
-                                                                                        </td>
-                                                                                        <td class = "w-20">
-                                                                                            @Html.Label("ActPrevFinLedgerHeadwiseConsolidation" ,ActPrevFinLedgerSum!=null ? Convert.ToDecimal(ActPrevFinLedgerSum).ToString("F") : "-")
-                                                                                        </td>
-                                                                                        <td class = "w-20">
-                                                                                            @Html.Label("ActCurrFinTill2ndQuartLedgerHeadwiseConsolidation" ,ActCurrFinTill2ndQuartLedgerSum!=null ? Convert.ToDecimal(ActCurrFinTill2ndQuartLedgerSum).ToString("F") : "-")
-                                                                                        </td>
-                                                                                        <td class = "w-20">
-                                                                                            @Html.Label("RevEstCurrFinLedgerHeadwiseConsolidation" ,RevEstCurrFinLedgerSum!=null ? Convert.ToDecimal(RevEstCurrFinLedgerSum).ToString("F") : "-")
-                                                                                        </td>
-                                                                                    <td class="w-20">
-                                                                                           @Html.Label("BudgEstNexFinLedgerHeadwiseConsolidation" ,BudgEstNexFinLedgerSum!=null ? Convert.ToDecimal(BudgEstNexFinLedgerSum).ToString("F") : "-")
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                }
-                                                                            </table>
-                                                                          
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <table class="table ChildGrid">
-                                                                                @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
-                                                                                {
-                                                                                    <tr>
-                                                                                        <td>
-                                                                                            @Ledgers.LedgerNo
-                                                                                        </td>
-                                                                                        <td>@Ledgers.LedgerName</td>
-                                                                                    </tr>
-                                                                                }
-                                                                            </table>
-                                                                        }
-                                                                    </div>
-
-                                                                }
+                                                            @Subs.SubGroupNo
                                                             </td>
                                                             <td>
-                                                                @Subs.SubGroupNo
+                                                                
                                                             </td>
                                                             <td>
                                                                 @Subs.subGroupName
@@ -429,8 +372,42 @@
                                                             
                                                         </tr>
 
-                                                        
-                                                        TableCount++;
+                                                    @if (LedgerCount > 0)
+                                                    {
+                                                        @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
+                                                        {
+                                                            var BudEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.BudEstCurrFin).Sum();
+                                                            var ActPrevFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActPrevFin).Sum();
+                                                            var ActCurrFinTill2ndQuartLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActCurrFinTill2ndQuart).Sum();
+                                                            var RevEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRECurrFin).Sum();
+                                                            var BudgEstNexFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRENxtFin).Sum();
+
+
+                                                            <tr>
+                                                                <td></td>
+                                                                <td>
+                                                                    @Ledgers.LedgerNo
+                                                                </td>
+                                                                <td>@Ledgers.LedgerName</td>
+                                                                <td>
+                                                                    @Html.Label("BudEstCurrFinLedgerHeadwiseConsolidation" ,BudEstCurrFinLedgerSum!=null ? Convert.ToDecimal(BudEstCurrFinLedgerSum).ToString("F") : "-")
+                                                                </td>
+                                                                <td>
+                                                                    @Html.Label("ActPrevFinLedgerHeadwiseConsolidation" ,ActPrevFinLedgerSum!=null ? Convert.ToDecimal(ActPrevFinLedgerSum).ToString("F") : "-")
+                                                                </td>
+                                                                <td>
+                                                                    @Html.Label("ActCurrFinTill2ndQuartLedgerHeadwiseConsolidation" ,ActCurrFinTill2ndQuartLedgerSum!=null ? Convert.ToDecimal(ActCurrFinTill2ndQuartLedgerSum).ToString("F") : "-")
+                                                                </td>
+                                                                <td>
+                                                                    @Html.Label("RevEstCurrFinLedgerHeadwiseConsolidation" ,RevEstCurrFinLedgerSum!=null ? Convert.ToDecimal(RevEstCurrFinLedgerSum).ToString("F") : "-")
+                                                                </td>
+                                                                <td>
+                                                                    @Html.Label("BudgEstNexFinLedgerHeadwiseConsolidation" ,BudgEstNexFinLedgerSum!=null ? Convert.ToDecimal(BudgEstNexFinLedgerSum).ToString("F") : "-")
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                    TableCount++;
                                                     }
                                                     <tr>
                                                         <td>
@@ -478,24 +455,22 @@
                                                     <th colspan="100">*(FIGURES IN CRORES)</th>
                                                 </tr>
                                                 <tr>
-                                                    <th></th>
-                                                    <th >
-                                                        SubGroupNumber
+                                                    <th class="w-5">
+                                                       HEAD NO.
                                                     </th>
-                                                    <th >
-                                                        SubGroupName
+                                                    <th class="w-5">
+                                                        SUB HEAD NO.
                                                     </th>
-                                                    <th >
+                                                    <th class="w-5">
+                                                        NAME OF THE HEAD
+                                                    </th>
+                                                    <th class="w-5">
                                                        @Report
                                                     </th>
-
                                                     @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
                                                     {
-                                                        <th >
-                                                            @Html.Label("RegionDivisionNames-"+Regions.DivisionID, Regions.DivisionName)
-                                                        </th>
-                                                     }
-                                                   
+                                                       <th class="w-5"> @Html.Label("RegionDivisionNames-"+Regions.DivisionID,Regions.DivisionName)</th>
+                                                    }
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -552,34 +527,15 @@
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                     
                                                     <tr>
-                                                        <td class="w-20">
-                                                        @if(LedgerCount >0)
-                                                        {
-                                                            <img src="~/Images/plus.png" />
-                                                            <div id="NestedTable" style="display:none">
-                                                                <table class="table ChildGrid">
-                                                                    <tr>
-                                                                        <th>Ledger Number</th>
-                                                                        <th>Ledger Name</th>
-                                                                    </tr>
-                                                                    @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
-                                                                    {
-                                                                        <tr>
-                                                                            <td class="w-20">@Ledgers.LedgerNo</td>
-                                                                            <td class="w-20">@Ledgers.LedgerName</td>
-                                                                        </tr>
-                                                                    }
-                                                                </table>
-                                                            </div>
-                                                        }
-                                                        </td>
-                                                        <td class="w-20">
+                                                       
+                                                        <td>
                                                             @Subs.SubGroupNo
                                                         </td>
-                                                        <td class="w-20">
+                                                        <td></td>
+                                                        <td>
                                                             @Subs.subGroupName
                                                         </td>
-                                                        <td class="w-20">
+                                                        <td>
                                                               @Html.Label("SumSubGroupReport"+@Subs.SubGroupNo,@SumSubGroupReport!=0.00 ? @SumSubGroupReport.ToString("F") : "-")
                                                         </td>
                                                         @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
@@ -592,13 +548,13 @@
                                                                 if(Subs.RequireInput)
                                                                 {
                                                                   var LedgersSum =(Double) (from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ActPrevFin).Sum();
-                                                                  <td align="right" class="w-20">
+                                                                  <td align="right">
                                                                     @Html.Label("Actual" + Regions.DivisionName,@LedgersSum!= 0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
                                                                   </td>
                                                                 }
                                                                 else
                                                                 {
-                                                                   <td align="right" class="w-20">
+                                                                   <td align="right">
                                                                      @Html.Label("Actual" + Regions.DivisionName,result!=null ? Convert.ToDecimal(result.ActPrevFin).ToString("F") : "-")
                                                                    </td>
                                                                 }
@@ -609,13 +565,13 @@
                                                                 {
                                                                 var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ActCurrFinTill2ndQuart).Sum();
                                                                   
-                                                                  <td align="right" class="w-20">
+                                                                  <td align="right">
                                                                     @Html.Label("Actual Half Year" + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
                                                                   </td>
                                                                 }
                                                                 else
                                                                 {
-                                                                  <td align="right" class="w-20">
+                                                                  <td align="right">
                                                                     @Html.Label("Actual Half Year" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ActCurrFinTill2ndQuart).ToString("F") : "-")
                                                                   </td>
                                                                 }
@@ -626,13 +582,13 @@
                                                                 {
                                                                 var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ACAndBWPropRECurrFin).Sum();
                                                                   
-                                                                  <td align="right" class="w-20">
+                                                                  <td align="right">
                                                                     @Html.Label("Revised Estimates" + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
                                                                   </td>
                                                                 }
                                                                 else
                                                                 {
-                                                                  <td align="right" class="w-20">
+                                                                  <td align="right">
                                                                      @Html.Label("Revised Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRECurrFin).ToString("F") : "-")
                                                                   </td>
                                                                 }
@@ -643,13 +599,13 @@
                                                                 {
                                                                 var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ACAndBWPropRENxtFin).Sum();
                                                                   
-                                                                  <td align="right" class="w-20">
+                                                                  <td align="right">
                                                                     @Html.Label("Budget Estimates" +@NextAcademicYear+ Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
                                                                   </td>
                                                                 }
                                                                 else
                                                                 {
-                                                                   <td align="right" class="w-20">
+                                                                   <td align="right">
                                                                       @Html.Label("Budget Estimates"+@NextAcademicYear+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRENxtFin).ToString("F") : "-")
                                                                    </td>
                                                                 }
@@ -674,6 +630,54 @@
                                                         }
                                                     </tr>
 
+                                                    @if(LedgerCount >0)
+                                                    {
+                                                        @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
+                                                        {
+                                                                        <tr>
+                                                                            <td></td>
+                                                                            <td>@Ledgers.LedgerNo</td>
+                                                                            <td>@Ledgers.LedgerName</td>
+                                                                            <td>
+                                                                                @Html.Label("SumSubGroupReport"+@Subs.SubGroupNo,@SumSubGroupReport!=0.00 ? @SumSubGroupReport.ToString("F") : "-")
+                                                                            </td>
+                                                                            @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
+                                                                            {
+                                                                               var result = (from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.LedgerNumber.Equals(@Ledgers.LedgerNo))) select a).FirstOrDefault();
+
+                                                                               if (ReportName!=null && ReportName.Equals("Actual"))
+                                                                               {
+                                                                                  <td align="right">
+                                                                                      @Html.Label("Actual" + Regions.DivisionName,result!=null ? Convert.ToDecimal(result.ActPrevFin).ToString("F") : "-")
+                                                                                  </td>
+                                                                               }
+                                                                               else if(ReportName!=null && ReportName.Equals("Actual Half Year"))
+                                                                               {
+                                                                                    <td align="right">
+                                                                                         @Html.Label("Actual Half Year" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ActCurrFinTill2ndQuart).ToString("F") : "-")
+                                                                                    </td>
+                                                                               }
+                                                                               else if(ReportName!=null && ReportName.Equals("Revised Estimates"))
+                                                                               {
+                                                                
+                                                                                     <td align="right">
+                                                                                        @Html.Label("Revised Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRECurrFin).ToString("F") : "-")
+                                                                                     </td>
+                                                                               }
+                                                                               else if (ReportName!=null && ReportName.Equals("Budget Estimates "+@NextAcademicYear))
+                                                                               {
+                                                                
+                                                                                      <td align="right">
+                                                                                          @Html.Label("Budget Estimates"+@NextAcademicYear+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRENxtFin).ToString("F") : "-")
+                                                                                      </td>
+                                                                               }
+                                                            
+                                                                            }
+                                                                        </tr>
+                                                         }
+                                                                
+                                                    }
+
                                                     TableCount++;
                                                 }
                                             <tr>
@@ -685,7 +689,6 @@
                                                 <td>
                                                     Total
                                                 </td>
-
                                                 <td>
                                                     @Html.Label("SumGroupReport"+@item.GroupNo,@SumGroupReport!=0.00 ? @SumGroupReport.ToString("F") : "-")
                                                 </td>
@@ -694,21 +697,21 @@
                                                     if (ReportName!=null && ReportName.Equals("Actual"))
                                                     {
                                                         var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID)&&(item.GroupNo.Equals(a.GroupNumber))) select a.ActPrevFin).Sum();
-                                                        <td align="right" class="w-20">
+                                                        <td align="right">
                                                             @Html.Label("ActualSum" + Regions.DivisionName,result!=0.00 ? Convert.ToDecimal(result).ToString("F") : "-")
                                                         </td>
                                                     }
                                                     else if (ReportName!=null && ReportName.Equals("Actual Half Year"))
                                                     {
                                                         var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ActCurrFinTill2ndQuart).Sum();
-                                                        <td align="right" class="w-20">
+                                                        <td align="right">
                                                             @Html.Label("Actual Half Year Sum" + Regions.DivisionName, result!=0.00 ? Convert.ToDecimal(result).ToString("F") : "-")
                                                         </td>
                                                     }
                                                     else if (ReportName!=null && ReportName.Equals("Revised Estimates"))
                                                     {
                                                         var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ACAndBWPropRECurrFin).Sum();
-                                                        <td align="right" class="w-20">
+                                                        <td align="right">
                                                             @Html.Label("Revised Estimates Sum" + Regions.DivisionName, result!=0.00 ? Convert.ToDecimal(result).ToString("F") : "-")
 
                                                         </td>
@@ -716,7 +719,7 @@
                                                     else if (ReportName!=null && ReportName.Equals("Budget Estimates "+@NextAcademicYear))
                                                     {
                                                         var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ACAndBWPropRENxtFin).Sum();
-                                                        <td align="right" class="w-20">
+                                                        <td align="right">
                                                             @Html.Label("Budget Estimates Sum "+@NextAcademicYear+ Regions.DivisionName, result!=0.00 ? Convert.ToDecimal(result).ToString("F") : "-")
                                                         </td>
                                                     }
@@ -812,12 +815,12 @@
                                                     <th colspan="100">*(FIGURES IN CRORES)</th>
                                                 </tr>
                                                     <tr>
-                                                        <th></th>
-                                                        <th class="w-5">
-                                                            SubGroupNumber
+                                                        <th>HEAD NO.</th>
+                                                        <th>
+                                                            SUB HEAD NO.
                                                         </th>
-                                                        <th class="w-5">
-                                                            SubGroupName
+                                                        <th>
+                                                            SUB HEAD NAME
                                                         </th>
                                                         <th class="CurrentBudgetEstimates w-20">
 
@@ -887,67 +890,10 @@
                                                         
                                                         <tr>
                                                             <td>
-                                                                @if (LedgerCount > 0)
-                                                                {
-                                                                    <img src="~/Images/plus.png" />
-                                                                    <div id="NestedTable" style="display:none">
-                                                                        @if (@Subs.RequireInput)
-                                                                        {
-                                                                            <table class="table ChildGrid">
-                                                                                @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
-                                                                                {
-                                                                                 var BudEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.BudEstCurrFin).Sum();
-                                                                                 var ActPrevFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActPrevFin).Sum();
-                                                                                 var ActCurrFinTill2ndQuartLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActCurrFinTill2ndQuart).Sum();
-                                                                                 var RevEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRECurrFin).Sum();
-                                                                                 var BudgEstNexFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRENxtFin).Sum();
-                                                                                 
-                                                                                 
-                                                                                 <tr>
-                                                                                    <td class="w-5">
-                                                                                            @Ledgers.LedgerNo
-                                                                                        </td>
-                                                                                        <td class = "w-5">@Ledgers.LedgerName</td>
-                                                                                        <td class = "w-20">
-                                                                                        @Html.Label("BudEstCurrFinLedgerHeadwiseConsolidation" ,BudEstCurrFinLedgerSum!=null ? Convert.ToDecimal(BudEstCurrFinLedgerSum).ToString("F") : "-")
-                                                                                        </td>
-                                                                                        <td class = "w-20">
-                                                                                        @Html.Label("ActPrevFinLedgerHeadwiseConsolidation" ,ActPrevFinLedgerSum!=null ? Convert.ToDecimal(ActPrevFinLedgerSum).ToString("F") : "-")
-                                                                                        </td>
-                                                                                        <td class = "w-20">
-                                                                                        @Html.Label("ActCurrFinTill2ndQuartLedgerHeadwiseConsolidation" ,ActCurrFinTill2ndQuartLedgerSum!=null ? Convert.ToDecimal(ActCurrFinTill2ndQuartLedgerSum).ToString("F") : "-")
-                                                                                        </td>
-                                                                                        <td class = "w-20">
-                                                                                        @Html.Label("RevEstCurrFinLedgerHeadwiseConsolidation" ,RevEstCurrFinLedgerSum!=null ? Convert.ToDecimal(RevEstCurrFinLedgerSum).ToString("F") : "-")
-                                                                                        </td>
-                                                                                    <td class="w-20">
-                                                                                        @Html.Label("BudgEstNexFinLedgerHeadwiseConsolidation" ,BudgEstNexFinLedgerSum!=null ? Convert.ToDecimal(BudgEstNexFinLedgerSum).ToString("F") : "-")
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                }
-                                                                            </table>
-                                                                          
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <table class="table ChildGrid">
-                                                                                @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
-                                                                                {
-                                                                                    <tr>
-                                                                                        <td>
-                                                                                            @Ledgers.LedgerNo
-                                                                                        </td>
-                                                                                        <td>@Ledgers.LedgerName</td>
-                                                                                    </tr>
-                                                                                }
-                                                                            </table>
-                                                                        }
-                                                                    </div>
-
-                                                                }
+                                                               @Subs.SubGroupNo
                                                             </td>
                                                             <td>
-                                                                @Subs.SubGroupNo
+                                                                
                                                             </td>
                                                             <td>
                                                                 @Subs.subGroupName
@@ -970,7 +916,43 @@
                                                             
                                                         </tr>
 
-                                                        
+                                                    @if (LedgerCount > 0)
+                                                    {
+
+                                                        @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
+                                                        {
+                                                            var BudEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.BudEstCurrFin).Sum();
+                                                            var ActPrevFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActPrevFin).Sum();
+                                                            var ActCurrFinTill2ndQuartLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActCurrFinTill2ndQuart).Sum();
+                                                            var RevEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRECurrFin).Sum();
+                                                            var BudgEstNexFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRENxtFin).Sum();
+
+
+                                                            <tr>
+                                                                <td></td>
+                                                                <td>
+                                                                    @Ledgers.LedgerNo
+                                                                </td>
+                                                                <td>@Ledgers.LedgerName</td>
+                                                                <td>
+                                                                    @Html.Label("BudEstCurrFinLedgerHeadwiseConsolidation" ,BudEstCurrFinLedgerSum!=null ? Convert.ToDecimal(BudEstCurrFinLedgerSum).ToString("F") : "-")
+                                                                </td>
+                                                                <td>
+                                                                    @Html.Label("ActPrevFinLedgerHeadwiseConsolidation" ,ActPrevFinLedgerSum!=null ? Convert.ToDecimal(ActPrevFinLedgerSum).ToString("F") : "-")
+                                                                </td>
+                                                                <td>
+                                                                    @Html.Label("ActCurrFinTill2ndQuartLedgerHeadwiseConsolidation" ,ActCurrFinTill2ndQuartLedgerSum!=null ? Convert.ToDecimal(ActCurrFinTill2ndQuartLedgerSum).ToString("F") : "-")
+                                                                </td>
+                                                                <td>
+                                                                    @Html.Label("RevEstCurrFinLedgerHeadwiseConsolidation" ,RevEstCurrFinLedgerSum!=null ? Convert.ToDecimal(RevEstCurrFinLedgerSum).ToString("F") : "-")
+                                                                </td>
+                                                                <td>
+                                                                    @Html.Label("BudgEstNexFinLedgerHeadwiseConsolidation" ,BudgEstNexFinLedgerSum!=null ? Convert.ToDecimal(BudgEstNexFinLedgerSum).ToString("F") : "-")
+                                                                </td>
+                                                            </tr>
+                                                        }
+
+                                                    }
                                                         TableCount++;
                                                     }
                                                     <tr>
@@ -1020,12 +1002,12 @@
                                                     <th colspan="100">*(FIGURES IN CRORES)</th>
                                                 </tr>
                                                 <tr>
-                                                    <th></th>
+                                                    <th>HEAD NO.</th>
                                                     <th >
-                                                        SubGroupNumber
+                                                        SUB HEAD NO.
                                                     </th>
                                                     <th >
-                                                        SubGroupName
+                                                        HEAD NAME
                                                     </th>
                                                     <th >
                                                     @Report
@@ -1089,73 +1071,16 @@
                                                  var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();   
                                                     
                                                  <tr>
-                                                        <td class="w-20">
-                                                         @if (LedgerCount > 0)
-                                                         {
-                                                                    <img src="~/Images/plus.png" />
-                                                                    <div id="NestedTable" style="display:none">
-                                                                        @if (@Subs.RequireInput)
-                                                                        {
-                                                                            <table class="table ChildGrid">
-                                                                                @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
-                                                                                {
-                                                                                 var BudEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.BudEstCurrFin).Sum();
-                                                                                 var ActPrevFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActPrevFin).Sum();
-                                                                                 var ActCurrFinTill2ndQuartLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActCurrFinTill2ndQuart).Sum();
-                                                                                 var RevEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRECurrFin).Sum();
-                                                                                 var BudgEstNexFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRENxtFin).Sum();
-                                                                                 
-                                                                                 
-                                                                                 <tr>
-                                                                                        <td>
-                                                                                            @Ledgers.LedgerNo
-                                                                                        </td>
-                                                                                        <td>@Ledgers.LedgerName</td>
-                                                                                        <td>
-                                                                                        @Html.Label("BudEstCurrFinLedgerHeadwiseConsolidation" ,BudEstCurrFinLedgerSum!=null ? Convert.ToDecimal(BudEstCurrFinLedgerSum).ToString("F") : "-")
-                                                                                        </td>
-                                                                                        <td>
-                                                                                        @Html.Label("ActPrevFinLedgerHeadwiseConsolidation" ,ActPrevFinLedgerSum!=null ? Convert.ToDecimal(ActPrevFinLedgerSum).ToString("F") : "-")
-                                                                                        </td>
-                                                                                        <td>
-                                                                                        @Html.Label("ActCurrFinTill2ndQuartLedgerHeadwiseConsolidation" ,ActCurrFinTill2ndQuartLedgerSum!=null ? Convert.ToDecimal(ActCurrFinTill2ndQuartLedgerSum).ToString("F") : "-")
-                                                                                        </td>
-                                                                                        <td>
-                                                                                        @Html.Label("RevEstCurrFinLedgerHeadwiseConsolidation" ,RevEstCurrFinLedgerSum!=null ? Convert.ToDecimal(RevEstCurrFinLedgerSum).ToString("F") : "-")
-                                                                                        </td>
-                                                                                        <td>
-                                                                                        @Html.Label("BudgEstNexFinLedgerHeadwiseConsolidation" ,BudgEstNexFinLedgerSum!=null ? Convert.ToDecimal(BudgEstNexFinLedgerSum).ToString("F") : "-")
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                }
-                                                                            </table>
-                                                                          
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <table class="table ChildGrid">
-                                                                                @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
-                                                                                {
-                                                                                    <tr>
-                                                                                        <td>
-                                                                                            @Ledgers.LedgerNo
-                                                                                        </td>
-                                                                                        <td>@Ledgers.LedgerName</td>
-                                                                                    </tr>
-                                                                                }
-                                                                            </table>
-                                                                        }
-                                                                    </div>
-
-                                                         }
-                                                        </td>
-                                                        <td class="w-20">
+                                                        <td>
                                                             @Subs.SubGroupNo
                                                         </td>
-                                                        <td class="w-20">
+                                                        <td>
+                                                            
+                                                        </td>
+                                                        <td>
                                                             @Subs.subGroupName
                                                         </td>
-                                                        <td class="w-20">
+                                                        <td>
                                                         @Html.Label("SumSubGroupReport"+@Subs.SubGroupNo,@SumSubGroupReport!=0.00 ? @SumSubGroupReport.ToString("F") : "-")
                                                         </td>
                                                     @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
@@ -1168,13 +1093,13 @@
                                                             if (Subs.RequireInput)
                                                             {
                                                                 var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ActPrevFin).Sum();
-                                                                <td align="right" class="w-20">
+                                                                <td align="right">
                                                                     @Html.Label("Actual" + Regions.DivisionName,@LedgersSum!= 0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
                                                                 </td>
                                                             }
                                                             else
                                                             {
-                                                                <td align="right" class="w-20">
+                                                                <td align="right">
                                                                     @Html.Label("Actual" + Regions.DivisionName,result!=null ? Convert.ToDecimal(result.ActPrevFin).ToString("F") : "-")
                                                                 </td>
                                                             }
@@ -1185,13 +1110,13 @@
                                                             {
                                                                 var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ActCurrFinTill2ndQuart).Sum();
 
-                                                                <td align="right" class="w-20">
+                                                                <td align="right">
                                                                     @Html.Label("Actual Half Year" + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
                                                                 </td>
                                                             }
                                                             else
                                                             {
-                                                                <td align="right" class="w-20">
+                                                                <td align="right">
                                                                     @Html.Label("Actual Half Year" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ActCurrFinTill2ndQuart).ToString("F") : "-")
                                                                 </td>
                                                             }
@@ -1202,13 +1127,13 @@
                                                             {
                                                                 var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ACAndBWPropRECurrFin).Sum();
 
-                                                                <td align="right" class="w-20">
+                                                                <td align="right">
                                                                     @Html.Label("Revised Estimates" + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
                                                                 </td>
                                                             }
                                                             else
                                                             {
-                                                                <td align="right" class="w-20">
+                                                                <td align="right">
                                                                     @Html.Label("Revised Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRECurrFin).ToString("F") : "-")
                                                                 </td>
                                                             }
@@ -1219,13 +1144,13 @@
                                                             {
                                                                 var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ACAndBWPropRENxtFin).Sum();
 
-                                                                <td align="right" class="w-20">
+                                                                <td align="right">
                                                                     @Html.Label("Budget Estimates " +@NextAcademicYear + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
                                                                 </td>
                                                             }
                                                             else
                                                             {
-                                                                <td align="right" class="w-20">
+                                                                <td align="right">
                                                                     @Html.Label("Budget Estimates "+@NextAcademicYear+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRENxtFin).ToString("F") : "-")
                                                                 </td>
                                                             }
@@ -1250,6 +1175,62 @@
                                                     }
                                                     </tr>
 
+                                                    @if (LedgerCount > 0)
+                                                    {
+                                                         @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
+                                                                    {
+                                                                        var BudEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.BudEstCurrFin).Sum();
+                                                                        var ActPrevFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActPrevFin).Sum();
+                                                                        var ActCurrFinTill2ndQuartLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActCurrFinTill2ndQuart).Sum();
+                                                                        var RevEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRECurrFin).Sum();
+                                                                        var BudgEstNexFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRENxtFin).Sum();
+
+
+                                                                        <tr>
+                                                                            <td></td>
+                                                                            <td>
+                                                                                @Ledgers.LedgerNo
+                                                                            </td>
+                                                                            <td>@Ledgers.LedgerName</td>
+                                                                            <td>
+                                                                                @Html.Label("SumSubGroupReport"+@Ledgers.LedgerNo,@SumSubGroupReport!=0.00 ? @SumSubGroupReport.ToString("F") : "-")
+                                                                            </td>
+                                                                            @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
+                                                                            {
+                                                                                var result = (from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.LedgerNumber.Equals(@Ledgers.LedgerNo))) select a).FirstOrDefault();
+
+                                                                                if (ReportName != null && ReportName.Equals("Actual"))
+                                                                                {
+                                                                                    <td align="right">
+                                                                                        @Html.Label("Actual" + Regions.DivisionName,result!=null ? Convert.ToDecimal(result.ActPrevFin).ToString("F") : "-")
+                                                                                    </td>
+                                                                                }
+                                                                                else if (ReportName != null && ReportName.Equals("Actual Half Year"))
+                                                                                {
+
+                                                                                    <td align="right">
+                                                                                        @Html.Label("Actual Half Year" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ActCurrFinTill2ndQuart).ToString("F") : "-")
+                                                                                    </td>
+                                                                                }
+                                                                                else if (ReportName != null && ReportName.Equals("Revised Estimates"))
+                                                                                {
+
+                                                                                    <td align="right">
+                                                                                        @Html.Label("Revised Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRECurrFin).ToString("F") : "-")
+                                                                                    </td>
+                                                                                }
+                                                                                else if (ReportName != null && ReportName.Equals("Budget Estimates " + @NextAcademicYear))
+                                                                                {
+
+                                                                                    <td align="right">
+                                                                                        @Html.Label("Budget Estimates"+@NextAcademicYear+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRENxtFin).ToString("F") : "-")
+                                                                                    </td>
+                                                                                }
+
+                                                                            }
+                                                                        </tr>
+                                                                    }
+                                                    }
                                                     TableCount++;
                                                 }
                                             <tr>
@@ -1270,21 +1251,21 @@
                                                     if (ReportName!=null && ReportName.Equals("Actual"))
                                                     {
                                                         var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ActPrevFin).Sum();
-                                                        <td align="right" class="w-20">
+                                                        <td align="right">
                                                             @Html.Label("ActualSum" + Regions.DivisionName,result!=0.00 ? Convert.ToDecimal(result).ToString("F") : "-")
                                                         </td>
                                                     }
                                                     else if (ReportName!=null && ReportName.Equals("Actual Half Year"))
                                                     {
                                                         var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ActCurrFinTill2ndQuart).Sum();
-                                                        <td align="right" class="w-20">
+                                                        <td align="right">
                                                             @Html.Label("Actual Half Year Sum" + Regions.DivisionName, result!=0.00 ? Convert.ToDecimal(result).ToString("F") : "-")
                                                         </td>
                                                     }
                                                     else if (ReportName!=null && ReportName.Equals("Revised Estimates"))
                                                     {
                                                         var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ACAndBWPropRECurrFin).Sum();
-                                                        <td align="right" class="w-20">
+                                                        <td align="right">
                                                             @Html.Label("Revised Estimates Sum" + Regions.DivisionName, result!=0.00 ? Convert.ToDecimal(result).ToString("F") : "-")
 
                                                         </td>
@@ -1292,7 +1273,7 @@
                                                     else if (ReportName!=null && ReportName.Equals("Budget Estimates "+@NextAcademicYear))
                                                     {
                                                         var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ACAndBWPropRENxtFin).Sum();
-                                                        <td align="right" class="w-20">
+                                                        <td align="right">
                                                             @Html.Label("Budget Estimates Sum "+@NextAcademicYear+ Regions.DivisionName, result!=0.00 ? Convert.ToDecimal(result).ToString("F") : "-")
                                                         </td>
                                                     }
@@ -1480,12 +1461,12 @@
                                                     <th colspan="100">*(FIGURES IN CRORES)</th>
                                                 </tr>
                                             <tr>
-                                                    <th></th>
-                                                    <th class="w-5">
-                                                        SubGroupNumber
+                                                    <th>HEAD NO.</th>
+                                                    <th>
+                                                       SUB HEAD NO. 
                                                     </th>
-                                                    <th class="w-5">
-                                                        SubGroupName
+                                                    <th>
+                                                        SUB HEAD NAME
                                                     </th>
                                                     <th class="CurrentBudgetEstimates w-20">
 
@@ -1555,67 +1536,10 @@
                                                     
                                                     <tr>
                                                         <td>
-                                                            @if (LedgerCount > 0)
-                                                            {
-                                                                <img src="~/Images/plus.png" />
-                                                                <div id="NestedTable" style="display:none">
-                                                                    @if (@Subs.RequireInput)
-                                                                    {
-                                                                        <table class="table ChildGrid">
-                                                                            @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
-                                                                            {
-                                                                                var BudEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.BudEstCurrFin).Sum();
-                                                                                var ActPrevFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActPrevFin).Sum();
-                                                                                var ActCurrFinTill2ndQuartLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActCurrFinTill2ndQuart).Sum();
-                                                                                var RevEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRECurrFin).Sum();
-                                                                                var BudgEstNexFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRENxtFin).Sum();
-
-
-                                                                                <tr>
-                                                                                    <td class="w-5">
-                                                                                        @Ledgers.LedgerNo
-                                                                                    </td>
-                                                                                    <td>@Ledgers.LedgerName</td>
-                                                                                    <td class="w-5">
-                                                                                        @Html.Label("BudEstCurrFinLedgerHeadwiseConsolidation" ,BudEstCurrFinLedgerSum!=null ? Convert.ToDecimal(BudEstCurrFinLedgerSum).ToString("F") : "-")
-                                                                                    </td>
-                                                                                    <td class="w-20">
-                                                                                        @Html.Label("ActPrevFinLedgerHeadwiseConsolidation" ,ActPrevFinLedgerSum!=null ? Convert.ToDecimal(ActPrevFinLedgerSum).ToString("F") : "-")
-                                                                                    </td>
-                                                                                    <td class="w-20">
-                                                                                        @Html.Label("ActCurrFinTill2ndQuartLedgerHeadwiseConsolidation" ,ActCurrFinTill2ndQuartLedgerSum!=null ? Convert.ToDecimal(ActCurrFinTill2ndQuartLedgerSum).ToString("F") : "-")
-                                                                                    </td>
-                                                                                    <td class="w-20">
-                                                                                        @Html.Label("RevEstCurrFinLedgerHeadwiseConsolidation" ,RevEstCurrFinLedgerSum!=null ? Convert.ToDecimal(RevEstCurrFinLedgerSum).ToString("F") : "-")
-                                                                                    </td>
-                                                                                    <td class="w-20">
-                                                                                        @Html.Label("BudgEstNexFinLedgerHeadwiseConsolidation" ,BudgEstNexFinLedgerSum!=null ? Convert.ToDecimal(BudgEstNexFinLedgerSum).ToString("F") : "-")
-                                                                                    </td>
-                                                                                </tr>
-                                                                            }
-                                                                        </table>
-
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <table class="table ChildGrid">
-                                                                            @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
-                                                                            {
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        @Ledgers.LedgerNo
-                                                                                    </td>
-                                                                                    <td>@Ledgers.LedgerName</td>
-                                                                                </tr>
-                                                                            }
-                                                                        </table>
-                                                                    }
-                                                                </div>
-
-                                                            }
+                                                            @Subs.SubGroupNo
                                                         </td>
                                                         <td>
-                                                            @Subs.SubGroupNo
+                                                            
                                                         </td>
                                                         <td>
                                                             @Subs.subGroupName
@@ -1638,7 +1562,42 @@
 
                                                     </tr>
 
+                                                        @if (LedgerCount > 0)
+                                                        {
+                                                             @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
+                                                                        {
+                                                                            var BudEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.BudEstCurrFin).Sum();
+                                                                            var ActPrevFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActPrevFin).Sum();
+                                                                            var ActCurrFinTill2ndQuartLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActCurrFinTill2ndQuart).Sum();
+                                                                            var RevEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRECurrFin).Sum();
+                                                                            var BudgEstNexFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRENxtFin).Sum();
 
+
+                                                                            <tr>
+                                                                                <td></td>
+                                                                                <td>
+                                                                                    @Ledgers.LedgerNo
+                                                                                </td>
+                                                                                <td>@Ledgers.LedgerName</td>
+                                                                                <td>
+                                                                                    @Html.Label("BudEstCurrFinLedgerHeadwiseConsolidation" ,BudEstCurrFinLedgerSum!=null ? Convert.ToDecimal(BudEstCurrFinLedgerSum).ToString("F") : "-")
+                                                                                </td>
+                                                                                <td>
+                                                                                    @Html.Label("ActPrevFinLedgerHeadwiseConsolidation" ,ActPrevFinLedgerSum!=null ? Convert.ToDecimal(ActPrevFinLedgerSum).ToString("F") : "-")
+                                                                                </td>
+                                                                                <td>
+                                                                                    @Html.Label("ActCurrFinTill2ndQuartLedgerHeadwiseConsolidation" ,ActCurrFinTill2ndQuartLedgerSum!=null ? Convert.ToDecimal(ActCurrFinTill2ndQuartLedgerSum).ToString("F") : "-")
+                                                                                </td>
+                                                                                <td>
+                                                                                    @Html.Label("RevEstCurrFinLedgerHeadwiseConsolidation" ,RevEstCurrFinLedgerSum!=null ? Convert.ToDecimal(RevEstCurrFinLedgerSum).ToString("F") : "-")
+                                                                                </td>
+                                                                                <td>
+                                                                                    @Html.Label("BudgEstNexFinLedgerHeadwiseConsolidation" ,BudgEstNexFinLedgerSum!=null ? Convert.ToDecimal(BudgEstNexFinLedgerSum).ToString("F") : "-")
+                                                                                </td>
+                                                                            </tr>
+                                                                        }
+                                                        }
+                                                    
                                                     TableCount++;
                                                 }
                                                 <tr>
@@ -1687,12 +1646,12 @@
                                                     <th colspan="100">*(FIGURES IN CRORES)</th>
                                                 </tr>
                                                 <tr>
-                                                    <th></th>
-                                                <th >
-                                                        SubGroupNumber
+                                                    <th>HEAD NO.</th>
+                                                    <th >
+                                                        SUB HEAD NO.
                                                     </th>
                                                     <th >
-                                                        SubGroupName
+                                                        HEAD NAME
                                                     </th>
                                                 <th >
                                                     @Report
@@ -1754,89 +1713,16 @@
                                                 }
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                     <tr>
-                                                        <td class="w-20">
-                                                            @* <img src="~/Images/plus.png" />
-                                                            <div id="NestedTable" style="display:none">
-                                                                <table class="table ChildGrid">
-                                                                    <tr>
-                                                                        <th>Ledger Number</th>
-                                                                        <th>Ledger Name</th>
-                                                                    </tr>
-                                                                    @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
-                                                                    {
-                                                                        <tr>
-                                                                            <td class="w-20">@Ledgers.LedgerNo</td>
-                                                                            <td class="w-20">@Ledgers.LedgerName</td>
-                                                                        </tr>
-                                                                    }
-                                                                </table>
-                                                            </div> *@
-                                                             @if (LedgerCount > 0)
-                                                            {
-                                                                <img src="~/Images/plus.png" />
-                                                                <div id="NestedTable" style="display:none">
-                                                                    @if (@Subs.RequireInput)
-                                                                    {
-                                                                        <table class="table ChildGrid">
-                                                                            @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
-                                                                            {
-                                                                                var BudEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.BudEstCurrFin).Sum();
-                                                                                var ActPrevFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActPrevFin).Sum();
-                                                                                var ActCurrFinTill2ndQuartLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActCurrFinTill2ndQuart).Sum();
-                                                                                var RevEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRECurrFin).Sum();
-                                                                                var BudgEstNexFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRENxtFin).Sum();
-
-
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        @Ledgers.LedgerNo
-                                                                                    </td>
-                                                                                    <td>@Ledgers.LedgerName</td>
-                                                                                    <td>
-                                                                                        @Html.Label("BudEstCurrFinLedgerHeadwiseConsolidation" ,BudEstCurrFinLedgerSum!=null ? Convert.ToDecimal(BudEstCurrFinLedgerSum).ToString("F") : "-")
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        @Html.Label("ActPrevFinLedgerHeadwiseConsolidation" ,ActPrevFinLedgerSum!=null ? Convert.ToDecimal(ActPrevFinLedgerSum).ToString("F") : "-")
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        @Html.Label("ActCurrFinTill2ndQuartLedgerHeadwiseConsolidation" ,ActCurrFinTill2ndQuartLedgerSum!=null ? Convert.ToDecimal(ActCurrFinTill2ndQuartLedgerSum).ToString("F") : "-")
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        @Html.Label("RevEstCurrFinLedgerHeadwiseConsolidation" ,RevEstCurrFinLedgerSum!=null ? Convert.ToDecimal(RevEstCurrFinLedgerSum).ToString("F") : "-")
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        @Html.Label("BudgEstNexFinLedgerHeadwiseConsolidation" ,BudgEstNexFinLedgerSum!=null ? Convert.ToDecimal(BudgEstNexFinLedgerSum).ToString("F") : "-")
-                                                                                    </td>
-                                                                                </tr>
-                                                                            }
-                                                                        </table>
-
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <table class="table ChildGrid">
-                                                                            @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
-                                                                            {
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        @Ledgers.LedgerNo
-                                                                                    </td>
-                                                                                    <td>@Ledgers.LedgerName</td>
-                                                                                </tr>
-                                                                            }
-                                                                        </table>
-                                                                    }
-                                                                </div>
-
-                                                            }
-                                                        </td>
-                                                        <td class="w-20">
+                                                        <td>
                                                             @Subs.SubGroupNo
                                                         </td>
-                                                        <td class="w-20">
+                                                        <td>
+                                                           
+                                                        </td>
+                                                        <td>
                                                             @Subs.subGroupName
                                                         </td>
-                                                        <td class="w-20">
+                                                        <td>
                                                         @Html.Label("SumSubGroupReport"+@Subs.SubGroupNo,@SumSubGroupReport!=0.00 ? @SumSubGroupReport.ToString("F") : "-")
                                                         </td>
                                                     @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
@@ -1849,13 +1735,13 @@
                                                             if (Subs.RequireInput)
                                                             {
                                                                 var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ActPrevFin).Sum();
-                                                                <td align="right" class="w-20">
+                                                                <td align="right">
                                                                     @Html.Label("Actual" + Regions.DivisionName,@LedgersSum!= 0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
                                                                 </td>
                                                             }
                                                             else
                                                             {
-                                                                <td align="right" class="w-20">
+                                                                <td align="right">
                                                                     @Html.Label("Actual" + Regions.DivisionName,result!=null ? Convert.ToDecimal(result.ActPrevFin).ToString("F") : "-")
                                                                 </td>
                                                             }
@@ -1866,13 +1752,13 @@
                                                             {
                                                                 var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ActCurrFinTill2ndQuart).Sum();
 
-                                                                <td align="right" class="w-20">
+                                                                <td align="right">
                                                                     @Html.Label("Actual Half Year" + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
                                                                 </td>
                                                             }
                                                             else
                                                             {
-                                                                <td align="right" class="w-20">
+                                                                <td align="right">
                                                                     @Html.Label("Actual Half Year" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ActCurrFinTill2ndQuart).ToString("F") : "-")
                                                                 </td>
                                                             }
@@ -1883,13 +1769,13 @@
                                                             {
                                                                 var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ACAndBWPropRECurrFin).Sum();
 
-                                                                <td align="right" class="w-20">
+                                                                <td align="right">
                                                                     @Html.Label("Revised Estimates" + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
                                                                 </td>
                                                             }
                                                             else
                                                             {
-                                                                <td align="right" class="w-20">
+                                                                <td align="right">
                                                                     @Html.Label("Revised Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRECurrFin).ToString("F") : "-")
                                                                 </td>
                                                             }
@@ -1900,13 +1786,13 @@
                                                             {
                                                                 var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ACAndBWPropRENxtFin).Sum();
 
-                                                                <td align="right" class="w-20">
+                                                                <td align="right">
                                                                     @Html.Label("Budget Estimates "+@NextAcademicYear + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
                                                                 </td>
                                                             }
                                                             else
                                                             {
-                                                                <td align="right" class="w-20">
+                                                                <td align="right">
                                                                     @Html.Label("Budget Estimates "+@NextAcademicYear+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRENxtFin).ToString("F") : "-")
                                                                 </td>
                                                             }
@@ -1915,6 +1801,62 @@
                                                     }
                                                     </tr>
 
+                                                    @if (LedgerCount > 0)
+                                                    {
+                                                        @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
+                                                        {
+                                                            var BudEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.BudEstCurrFin).Sum();
+                                                            var ActPrevFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActPrevFin).Sum();
+                                                            var ActCurrFinTill2ndQuartLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActCurrFinTill2ndQuart).Sum();
+                                                            var RevEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRECurrFin).Sum();
+                                                            var BudgEstNexFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRENxtFin).Sum();
+
+
+                                                            <tr>
+                                                                <td></td>
+                                                                <td>
+                                                                    @Ledgers.LedgerNo
+                                                                </td>
+                                                                <td>@Ledgers.LedgerName</td>
+                                                                <td>
+                                                                    @Html.Label("SumSubGroupReport"+@Ledgers.LedgerNo,@SumSubGroupReport!=0.00 ? @SumSubGroupReport.ToString("F") : "-")
+                                                                </td>
+                                                                @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
+                                                                {
+                                                                    var result = (from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.LedgerNumber.Equals(@Ledgers.LedgerNo))) select a).FirstOrDefault();
+
+                                                                    if (ReportName != null && ReportName.Equals("Actual"))
+                                                                    {
+                                                                        <td align="right">
+                                                                            @Html.Label("Actual" + Regions.DivisionName,result!=null ? Convert.ToDecimal(result.ActPrevFin).ToString("F") : "-")
+                                                                        </td>
+                                                                    }
+                                                                    else if (ReportName != null && ReportName.Equals("Actual Half Year"))
+                                                                    {
+
+                                                                        <td align="right">
+                                                                            @Html.Label("Actual Half Year" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ActCurrFinTill2ndQuart).ToString("F") : "-")
+                                                                        </td>
+                                                                    }
+                                                                    else if (ReportName != null && ReportName.Equals("Revised Estimates"))
+                                                                    {
+
+                                                                        <td align="right">
+                                                                            @Html.Label("Revised Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRECurrFin).ToString("F") : "-")
+                                                                        </td>
+                                                                    }
+                                                                    else if (ReportName != null && ReportName.Equals("Budget Estimates " + @NextAcademicYear))
+                                                                    {
+
+                                                                        <td align="right">
+                                                                            @Html.Label("Budget Estimates"+@NextAcademicYear+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRENxtFin).ToString("F") : "-")
+                                                                        </td>
+                                                                    }
+
+                                                                }
+                                                            </tr>
+                                                        }
+                                                    }
                                                     TableCount++;
                                                 }
                                             <tr>
@@ -1935,21 +1877,21 @@
                                                     if (ReportName!=null && ReportName.Equals("Actual"))
                                                     {
                                                         var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ActPrevFin).Sum();
-                                                        <td align="right" class="w-20">
+                                                        <td align="right">
                                                             @Html.Label("ActualSum" + Regions.DivisionName,result!=0.00 ? Convert.ToDecimal(result).ToString("F") : "-")
                                                         </td>
                                                     }
                                                     else if (ReportName!=null && ReportName.Equals("Actual Half Year"))
                                                     {
                                                         var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ActCurrFinTill2ndQuart).Sum();
-                                                        <td align="right" class="w-20">
+                                                        <td align="right">
                                                             @Html.Label("Actual Half Year Sum" + Regions.DivisionName, result!=0.00 ? Convert.ToDecimal(result).ToString("F") : "-")
                                                         </td>
                                                     }
                                                     else if (ReportName!=null && ReportName.Equals("Revised Estimates"))
                                                     {
                                                         var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ACAndBWPropRECurrFin).Sum();
-                                                        <td align="right" class="w-20">
+                                                        <td align="right">
                                                             @Html.Label("Revised Estimates Sum" + Regions.DivisionName, result!=0.00 ? Convert.ToDecimal(result).ToString("F") : "-")
 
                                                         </td>
@@ -1957,7 +1899,7 @@
                                                     else if (ReportName!=null && ReportName.Equals("Budget Estimates "+@NextAcademicYear))
                                                     {
                                                         var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ACAndBWPropRENxtFin).Sum();
-                                                        <td align="right" class="w-20">
+                                                        <td align="right">
                                                             @Html.Label("Budget Estimates Sum "+@NextAcademicYear+ Regions.DivisionName, result!=0.00 ? Convert.ToDecimal(result).ToString("F") : "-")
                                                         </td>
                                                     }
@@ -2052,12 +1994,12 @@
                                                     <th colspan="100">*(FIGURES IN CRORES)</th>
                                                 </tr>
                                                 <tr>
-                                                    <th></th>
+                                                    <th class="w-5">HEAD NO.</th>
                                                     <th class="w-5">
-                                                        SubGroupNumber
+                                                        SUB HEAD NO.
                                                     </th>
                                                     <th class="w-5">
-                                                        SubGroupName
+                                                        HEAD NAME
                                                     </th>
                                                     <th class="CurrentBudgetEstimates w-20">
 
@@ -2128,67 +2070,10 @@
                                                     
                                                     <tr>
                                                         <td>
-                                                            @if (LedgerCount > 0)
-                                                            {
-                                                                <img src="~/Images/plus.png" />
-                                                                <div id="NestedTable" style="display:none">
-                                                                    @if (@Subs.RequireInput)
-                                                                    {
-                                                                        <table class="table ChildGrid">
-                                                                            @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
-                                                                            {
-                                                                                var BudEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.BudEstCurrFin).Sum();
-                                                                                var ActPrevFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActPrevFin).Sum();
-                                                                                var ActCurrFinTill2ndQuartLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActCurrFinTill2ndQuart).Sum();
-                                                                                var RevEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRECurrFin).Sum();
-                                                                                var BudgEstNexFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRENxtFin).Sum();
-
-
-                                                                                <tr>
-                                                                                    <td class="w-5">
-                                                                                        @Ledgers.LedgerNo
-                                                                                    </td>
-                                                                                    <td class="w-5">@Ledgers.LedgerName</td>
-                                                                                    <td class="w-20">
-                                                                                        @Html.Label("BudEstCurrFinLedgerHeadwiseConsolidation" ,BudEstCurrFinLedgerSum!=null ? Convert.ToDecimal(BudEstCurrFinLedgerSum).ToString("F") : "-")
-                                                                                    </td>
-                                                                                    <td class="w-20">
-                                                                                        @Html.Label("ActPrevFinLedgerHeadwiseConsolidation" ,ActPrevFinLedgerSum!=null ? Convert.ToDecimal(ActPrevFinLedgerSum).ToString("F") : "-")
-                                                                                    </td>
-                                                                                    <td class="w-20">
-                                                                                        @Html.Label("ActCurrFinTill2ndQuartLedgerHeadwiseConsolidation" ,ActCurrFinTill2ndQuartLedgerSum!=null ? Convert.ToDecimal(ActCurrFinTill2ndQuartLedgerSum).ToString("F") : "-")
-                                                                                    </td>
-                                                                                    <td class="w-20">
-                                                                                        @Html.Label("RevEstCurrFinLedgerHeadwiseConsolidation" ,RevEstCurrFinLedgerSum!=null ? Convert.ToDecimal(RevEstCurrFinLedgerSum).ToString("F") : "-")
-                                                                                    </td>
-                                                                                    <td class="w-20">
-                                                                                        @Html.Label("BudgEstNexFinLedgerHeadwiseConsolidation" ,BudgEstNexFinLedgerSum!=null ? Convert.ToDecimal(BudgEstNexFinLedgerSum).ToString("F") : "-")
-                                                                                    </td>
-                                                                                </tr>
-                                                                            }
-                                                                        </table>
-
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <table class="table ChildGrid">
-                                                                            @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
-                                                                            {
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        @Ledgers.LedgerNo
-                                                                                    </td>
-                                                                                    <td>@Ledgers.LedgerName</td>
-                                                                                </tr>
-                                                                            }
-                                                                        </table>
-                                                                    }
-                                                                </div>
-
-                                                            }
+                                                           @Subs.SubGroupNo
                                                         </td>
                                                         <td>
-                                                            @Subs.SubGroupNo
+                                                            
                                                         </td>
                                                         <td>
                                                             @Subs.subGroupName
@@ -2211,7 +2096,42 @@
 
                                                     </tr>
 
+                                                    @if (LedgerCount > 0)
+                                                    {
+                                                            
+                                                        @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
+                                                                    {
+                                                                        var BudEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.BudEstCurrFin).Sum();
+                                                                        var ActPrevFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActPrevFin).Sum();
+                                                                        var ActCurrFinTill2ndQuartLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActCurrFinTill2ndQuart).Sum();
+                                                                        var RevEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRECurrFin).Sum();
+                                                                        var BudgEstNexFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRENxtFin).Sum();
 
+
+                                                                        <tr>
+                                                                            <td></td>
+                                                                            <td>
+                                                                                @Ledgers.LedgerNo
+                                                                            </td>
+                                                                            <td>@Ledgers.LedgerName</td>
+                                                                            <td>
+                                                                                @Html.Label("BudEstCurrFinLedgerHeadwiseConsolidation" ,BudEstCurrFinLedgerSum!=null ? Convert.ToDecimal(BudEstCurrFinLedgerSum).ToString("F") : "-")
+                                                                            </td>
+                                                                            <td>
+                                                                                @Html.Label("ActPrevFinLedgerHeadwiseConsolidation" ,ActPrevFinLedgerSum!=null ? Convert.ToDecimal(ActPrevFinLedgerSum).ToString("F") : "-")
+                                                                            </td>
+                                                                            <td>
+                                                                                @Html.Label("ActCurrFinTill2ndQuartLedgerHeadwiseConsolidation" ,ActCurrFinTill2ndQuartLedgerSum!=null ? Convert.ToDecimal(ActCurrFinTill2ndQuartLedgerSum).ToString("F") : "-")
+                                                                            </td>
+                                                                            <td>
+                                                                                @Html.Label("RevEstCurrFinLedgerHeadwiseConsolidation" ,RevEstCurrFinLedgerSum!=null ? Convert.ToDecimal(RevEstCurrFinLedgerSum).ToString("F") : "-")
+                                                                            </td>
+                                                                            <td>
+                                                                                @Html.Label("BudgEstNexFinLedgerHeadwiseConsolidation" ,BudgEstNexFinLedgerSum!=null ? Convert.ToDecimal(BudgEstNexFinLedgerSum).ToString("F") : "-")
+                                                                            </td>
+                                                                        </tr>
+                                                                    }
+                                                    }
                                                     TableCount++;
                                                 }
                                                 <tr>
@@ -2259,12 +2179,12 @@
                                                     <th colspan="100">*(FIGURES IN CRORES)</th>
                                                 </tr>
                                                 <tr>
-                                                    <th></th>
+                                                    <th>HEAD NO.</th>
                                                     <th >
-                                                        SubGroupNumber
+                                                        SUB HEAD NO.
                                                     </th>
                                                     <th >
-                                                        SubGroupName
+                                                        HEAD NAME
                                                     </th>
                                                     <th >
                                                         @Report
@@ -2326,90 +2246,16 @@
                                                     }
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                     <tr>
-                                                        <td class="w-20">
-                                                           @* <img src="~/Images/plus.png" />
-                                                            <div id="NestedTable" style="display:none">
-                                                                <table class="table ChildGrid">
-                                                                    <tr>
-                                                                        <th>Ledger Number</th>
-                                                                        <th>Ledger Name</th>
-                                                                    </tr>
-                                                                    @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
-                                                                    {
-                                                                        <tr>
-                                                                            <td class="w-20">@Ledgers.LedgerNo</td>
-                                                                            <td class="w-20">@Ledgers.LedgerName</td>
-                                                                        </tr>
-                                                                    }
-                                                                </table>
-                                                            </div> *@
-
-                                                            @if (LedgerCount > 0)
-                                                            {
-                                                                <img src="~/Images/plus.png" />
-                                                                <div id="NestedTable" style="display:none">
-                                                                    @if (@Subs.RequireInput)
-                                                                    {
-                                                                        <table class="table ChildGrid">
-                                                                            @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
-                                                                            {
-                                                                                var BudEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.BudEstCurrFin).Sum();
-                                                                                var ActPrevFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActPrevFin).Sum();
-                                                                                var ActCurrFinTill2ndQuartLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActCurrFinTill2ndQuart).Sum();
-                                                                                var RevEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRECurrFin).Sum();
-                                                                                var BudgEstNexFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRENxtFin).Sum();
-
-
-                                                                                <tr>
-                                                                                    <td class="w-5">
-                                                                                        @Ledgers.LedgerNo
-                                                                                    </td>
-                                                                                    <td class="w-5">@Ledgers.LedgerName</td>
-                                                                                    <td class="w-20">
-                                                                                        @Html.Label("BudEstCurrFinLedgerHeadwiseConsolidation" ,BudEstCurrFinLedgerSum!=null ? Convert.ToDecimal(BudEstCurrFinLedgerSum).ToString("F") : "-")
-                                                                                    </td>
-                                                                                    <td class="w-20">
-                                                                                        @Html.Label("ActPrevFinLedgerHeadwiseConsolidation" ,ActPrevFinLedgerSum!=null ? Convert.ToDecimal(ActPrevFinLedgerSum).ToString("F") : "-")
-                                                                                    </td>
-                                                                                    <td class="w-20"> 
-                                                                                        @Html.Label("ActCurrFinTill2ndQuartLedgerHeadwiseConsolidation" ,ActCurrFinTill2ndQuartLedgerSum!=null ? Convert.ToDecimal(ActCurrFinTill2ndQuartLedgerSum).ToString("F") : "-")
-                                                                                    </td>
-                                                                                    <td class="w-20">
-                                                                                        @Html.Label("RevEstCurrFinLedgerHeadwiseConsolidation" ,RevEstCurrFinLedgerSum!=null ? Convert.ToDecimal(RevEstCurrFinLedgerSum).ToString("F") : "-")
-                                                                                    </td>
-                                                                                    <td class="w-20">
-                                                                                        @Html.Label("BudgEstNexFinLedgerHeadwiseConsolidation" ,BudgEstNexFinLedgerSum!=null ? Convert.ToDecimal(BudgEstNexFinLedgerSum).ToString("F") : "-")
-                                                                                    </td>
-                                                                                </tr>
-                                                                            }
-                                                                        </table>
-
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <table class="table ChildGrid">
-                                                                            @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
-                                                                            {
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        @Ledgers.LedgerNo
-                                                                                    </td>
-                                                                                    <td>@Ledgers.LedgerName</td>
-                                                                                </tr>
-                                                                            }
-                                                                        </table>
-                                                                    }
-                                                                </div>
-
-                                                            }
+                                                        <td>
+                                                           @Subs.SubGroupNo 
                                                         </td>
-                                                        <td class="w-20">
-                                                            @Subs.SubGroupNo
+                                                        <td>
+                                                            
                                                         </td>
-                                                        <td class="w-20">
+                                                        <td>
                                                             @Subs.subGroupName
                                                         </td>
-                                                        <td class="w-20">
+                                                        <td>
                                                             @Html.Label("SumSubGroupReport"+@Subs.SubGroupNo,@SumSubGroupReport!=0.00 ? @SumSubGroupReport.ToString("F") : "-")
                                                         </td>
                                                         @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
@@ -2422,13 +2268,13 @@
                                                                 if (Subs.RequireInput)
                                                                 {
                                                                     var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ActPrevFin).Sum();
-                                                                    <td align="right" class="w-20">
+                                                                    <td align="right">
                                                                         @Html.Label("Actual" + Regions.DivisionName,@LedgersSum!= 0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
                                                                     </td>
                                                                 }
                                                                 else
                                                                 {
-                                                                    <td align="right" class="w-20">
+                                                                    <td align="right">
                                                                         @Html.Label("Actual" + Regions.DivisionName,result!=null ? Convert.ToDecimal(result.ActPrevFin).ToString("F") : "-")
                                                                     </td>
                                                                 }
@@ -2439,13 +2285,13 @@
                                                                 {
                                                                     var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ActCurrFinTill2ndQuart).Sum();
 
-                                                                    <td align="right" class="w-20">
+                                                                    <td align="right">
                                                                         @Html.Label("Actual Half Year" + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
                                                                     </td>
                                                                 }
                                                                 else
                                                                 {
-                                                                    <td align="right" class="w-20">
+                                                                    <td align="right">
                                                                         @Html.Label("Actual Half Year" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ActCurrFinTill2ndQuart).ToString("F") : "-")
                                                                     </td>
                                                                 }
@@ -2456,13 +2302,13 @@
                                                                 {
                                                                     var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ACAndBWPropRECurrFin).Sum();
 
-                                                                    <td align="right" class="w-20">
+                                                                    <td align="right">
                                                                         @Html.Label("Revised Estimates" + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
                                                                     </td>
                                                                 }
                                                                 else
                                                                 {
-                                                                    <td align="right" class="w-20">
+                                                                    <td align="right">
                                                                         @Html.Label("Revised Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRECurrFin).ToString("F") : "-")
                                                                     </td>
                                                                 }
@@ -2473,13 +2319,13 @@
                                                                 {
                                                                     var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ACAndBWPropRENxtFin).Sum();
 
-                                                                    <td align="right" class="w-20">
+                                                                    <td align="right">
                                                                         @Html.Label("Budget Estimates " +@NextAcademicYear+ Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-")
                                                                     </td>
                                                                 }
                                                                 else
                                                                 {
-                                                                    <td align="right" class="w-20">
+                                                                    <td align="right">
                                                                         @Html.Label("Budget Estimates "+@NextAcademicYear+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRENxtFin).ToString("F") : "-")
                                                                     </td>
                                                                 }
@@ -2504,6 +2350,64 @@
                                                         }
                                                     </tr>
 
+
+                                                    @if (LedgerCount > 0)
+                                                    {
+                                                        @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
+                                                        {
+                                                            var BudEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.BudEstCurrFin).Sum();
+                                                            var ActPrevFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActPrevFin).Sum();
+                                                            var ActCurrFinTill2ndQuartLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActCurrFinTill2ndQuart).Sum();
+                                                            var RevEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRECurrFin).Sum();
+                                                            var BudgEstNexFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRENxtFin).Sum();
+
+
+                                                            <tr>
+                                                                <td></td>
+                                                                <td>
+                                                                    @Ledgers.LedgerNo
+                                                                </td>
+                                                                <td>@Ledgers.LedgerName</td>
+                                                                <td>
+                                                                    @Html.Label("SumSubGroupReport"+@Ledgers.LedgerNo,@SumSubGroupReport!=0.00 ? @SumSubGroupReport.ToString("F") : "-")
+                                                                </td>
+                                                                @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
+                                                                {
+                                                                    var result = (from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.LedgerNumber.Equals(@Ledgers.LedgerNo))) select a).FirstOrDefault();
+
+                                                                    if (ReportName != null && ReportName.Equals("Actual"))
+                                                                    {
+                                                                        <td align="right">
+                                                                            @Html.Label("Actual" + Regions.DivisionName,result!=null ? Convert.ToDecimal(result.ActPrevFin).ToString("F") : "-")
+                                                                        </td>
+                                                                    }
+                                                                    else if (ReportName != null && ReportName.Equals("Actual Half Year"))
+                                                                    {
+
+                                                                        <td align="right">
+                                                                            @Html.Label("Actual Half Year" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ActCurrFinTill2ndQuart).ToString("F") : "-")
+                                                                        </td>
+                                                                    }
+                                                                    else if (ReportName != null && ReportName.Equals("Revised Estimates"))
+                                                                    {
+
+                                                                        <td align="right">
+                                                                            @Html.Label("Revised Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRECurrFin).ToString("F") : "-")
+                                                                        </td>
+                                                                    }
+                                                                    else if (ReportName != null && ReportName.Equals("Budget Estimates " + @NextAcademicYear))
+                                                                    {
+
+                                                                        <td align="right">
+                                                                            @Html.Label("Budget Estimates"+@NextAcademicYear+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRENxtFin).ToString("F") : "-")
+                                                                        </td>
+                                                                    }
+
+                                                                }
+                                                            </tr>
+                                                        }
+                                                     
+                                                    }
                                                     TableCount++;
                                                 }
                                                 <tr>
@@ -2524,21 +2428,21 @@
                                                         if (ReportName!=null && ReportName.Equals("Actual"))
                                                         {
                                                             var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ActPrevFin).Sum();
-                                                            <td align="right" class="w-20">
+                                                            <td align="right">
                                                                 @Html.Label("ActualSum" + Regions.DivisionName,result!=0.00 ? Convert.ToDecimal(result).ToString("F") : "-")
                                                             </td>
                                                         }
                                                         else if (ReportName!=null && ReportName.Equals("Actual Half Year"))
                                                         {
                                                             var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ActCurrFinTill2ndQuart).Sum();
-                                                            <td align="right" class="w-20">
+                                                            <td align="right">
                                                                 @Html.Label("Actual Half Year Sum" + Regions.DivisionName, result!=0.00 ? Convert.ToDecimal(result).ToString("F") : "-")
                                                             </td>
                                                         }
                                                         else if (ReportName!=null && ReportName.Equals("Revised Estimates"))
                                                         {
                                                             var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ACAndBWPropRECurrFin).Sum();
-                                                            <td align="right" class="w-20">
+                                                            <td align="right">
                                                                 @Html.Label("Revised Estimates Sum" + Regions.DivisionName, result!=0.00 ? Convert.ToDecimal(result).ToString("F") : "-")
 
                                                             </td>
@@ -2546,7 +2450,7 @@
                                                         else if (ReportName!=null && ReportName.Equals("Budget Estimates " + @NextAcademicYear))
                                                         {
                                                             var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ACAndBWPropRENxtFin).Sum();
-                                                            <td align="right" class="w-20">
+                                                            <td align="right">
                                                                 @Html.Label("Budget Estimates Sum "+@NextAcademicYear+ Regions.DivisionName, result!=0.00 ? Convert.ToDecimal(result).ToString("F") : "-")
                                                             </td>
                                                         }
