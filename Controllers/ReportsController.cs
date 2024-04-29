@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using System.Drawing;
 using Rotativa;
+using BudgetPortal.Data.Migrations;
 
 namespace BudgetPortal.Controllers
 {
@@ -248,11 +249,11 @@ namespace BudgetPortal.Controllers
                                "--footer-spacing \"10\" " +
                                "--footer-font-size \"10\" " +
                                "--header-font-size \"10\" ", header, footer);*/
-
+            var SelectedFileName = mymodel.ReportNames.Where (x=>x.Selected == true).Select(x => x.Text).FirstOrDefault();
             return new Rotativa.AspNetCore.ViewAsPdf("PrintPDF", mymodel)
             {
-                FileName = "ReportGenerated.pdf",
-                
+                FileName = "Consolidated "+Report + " in "+AcademicYear+" for "+DivisionType+"_" + DateTime.Now + ".pdf",
+
                 PageOrientation = Rotativa.AspNetCore.Options.Orientation.Landscape,
             };
         }
