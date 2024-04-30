@@ -38,6 +38,7 @@
         }  
     @Html.DropDownListFor(m => m.ExportTypes, new SelectList(Enum.GetValues(typeof(Export))), "Select--")
         @Html.ActionLink("Export To PDF","PrintPDF", "Reports", new { Year = SplitAcademicYear[0], DivisionType=DivType , Report= Rep }, null)
+        @Html.ActionLink("Export To Excel","ExportBudgetInExcel", "Reports", new { Year = SplitAcademicYear[0], DivisionType=DivType , Rep= Rep }, null)
     </div>
     <div style="float:right">
 
