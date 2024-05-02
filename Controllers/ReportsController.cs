@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Routing.Constraints;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Bibliography;
 using DocumentFormat.OpenXml.Drawing;
+using System;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace BudgetPortal.Controllers
 {
@@ -368,6 +370,7 @@ namespace BudgetPortal.Controllers
                             new DataColumn("Revised Estimates"+ SelectedAcademicYear),
                             new DataColumn("Budget Estimates "+NextAcademicYear),
                    });
+                    
                 }
                 else
                 {
@@ -379,6 +382,8 @@ namespace BudgetPortal.Controllers
                     {
                         dataTable1.Columns.Add(Regions.DivisionName);
                     }
+
+                    
                 }
 
                 foreach (var inner in mymodel.Sectionss)
@@ -401,61 +406,18 @@ namespace BudgetPortal.Controllers
 
                         foreach (var item in mymodel.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                         {
-                            
-                            if (ReportName != null && ReportName.Equals("Headwise Consolidation"))
-                        {
-                            SumBudEstCurrFin = (double)(from a in mymodel.Detailss
-                                                        where (a.GroupNumber.Equals(item.GroupNo))
-                                                        select a.BudEstCurrFin).Sum();
-                            SumActPrevFin = (double)(from a in mymodel.Detailss
-                                                     where (a.GroupNumber.Equals(item.GroupNo))
-                                                     select a.ActPrevFin).Sum();
-                            SumActCurrFinTill2ndQuart = (double)(from a in mymodel.Detailss
-                                                                 where (a.GroupNumber.Equals(item.GroupNo))
-                                                                 select a.ActCurrFinTill2ndQuart).Sum();
-                            SumRevEstCurrFin = (double)(from a in mymodel.Detailss
-                                                        where (a.GroupNumber.Equals(item.GroupNo))
-                                                        select a.ACAndBWPropRECurrFin).Sum();
-                            SumBudgEstNexFin = (double)(from a in mymodel.Detailss
-                                                        where (a.GroupNumber.Equals(item.GroupNo))
-                                                        select a.ACAndBWPropRENxtFin).Sum();
-                        }
-                           else
-                        {
-                            SumBudEstCurrFin = (double)(from a in mymodel.Detailss
-                                                        join b in mymodel.Divisionss on a.DivisionID equals b.DivisionID
-                                                        where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(item.GroupNo))
-                                                        select a.BudEstCurrFin).Sum();
-                            SumActPrevFin = (double)(from a in mymodel.Detailss
-                                                     join b in mymodel.Divisionss on a.DivisionID equals b.DivisionID
-                                                     where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(item.GroupNo))
-                                                     select a.ActPrevFin).Sum();
-                            SumActCurrFinTill2ndQuart = (double)(from a in mymodel.Detailss
-                                                                 join b in mymodel.Divisionss on a.DivisionID equals b.DivisionID
-                                                                 where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(item.GroupNo))
-                                                                 select a.ActCurrFinTill2ndQuart).Sum();
-                            SumRevEstCurrFin = (double)(from a in mymodel.Detailss
-                                                        join b in mymodel.Divisionss on a.DivisionID equals b.DivisionID
-                                                        where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(item.GroupNo))
-                                                        select a.ACAndBWPropRECurrFin).Sum();
-                            SumBudgEstNexFin = (double)(from a in mymodel.Detailss
-                                                        join b in mymodel.Divisionss on a.DivisionID equals b.DivisionID
-                                                        where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(item.GroupNo))
-                                                        select a.ACAndBWPropRENxtFin).Sum();
-                        }
-
                         //var SelectedAcademicYear = (from a in mymodel.AcademicYears where a.Selected == true select a.Text).FirstOrDefault();
                            Report = (ReportName != null && @ReportName.Contains("Budget")) ? @ReportName : @ReportName + " " + @SelectedAcademicYear;
                            if (SelectedAcademicYear != null)
-                        {
+                           {
                             SplitAcademicYear = SelectedAcademicYear.Split("-");
 
                             NextAcademicYear = SplitAcademicYear[1] + "-" + (Convert.ToInt32(SplitAcademicYear[1]) + Convert.ToInt32(1));
-                        }
+                           }
                             var SumGroupReport = 0.00;
 
                             if (ReportName != null && ReportName.Equals("Actual"))
-                        {
+                          {
                             //SumGroupReport = (Double)(from a in mymodel.Detailss where (a.GroupNumber.Equals(@item.GroupNo) ) select a.ActPrevFin).Sum();
                             SumGroupReport = (Double)(from a in mymodel.Detailss
                                                       join b in mymodel.Divisionss on a.DivisionID equals b.DivisionID
@@ -494,6 +456,23 @@ namespace BudgetPortal.Controllers
 
                             if (ReportName != null && ReportName.Equals("Headwise Consolidation"))
                             {
+                                dataTable.Rows.Add(item.GroupNo + " " + item.GroupName);
+                                SumBudEstCurrFin = (double)(from a in mymodel.Detailss
+                                                            where (a.GroupNumber.Equals(item.GroupNo))
+                                                            select a.BudEstCurrFin).Sum();
+                                SumActPrevFin = (double)(from a in mymodel.Detailss
+                                                         where (a.GroupNumber.Equals(item.GroupNo))
+                                                         select a.ActPrevFin).Sum();
+                                SumActCurrFinTill2ndQuart = (double)(from a in mymodel.Detailss
+                                                                     where (a.GroupNumber.Equals(item.GroupNo))
+                                                                     select a.ActCurrFinTill2ndQuart).Sum();
+                                SumRevEstCurrFin = (double)(from a in mymodel.Detailss
+                                                            where (a.GroupNumber.Equals(item.GroupNo))
+                                                            select a.ACAndBWPropRECurrFin).Sum();
+                                SumBudgEstNexFin = (double)(from a in mymodel.Detailss
+                                                            where (a.GroupNumber.Equals(item.GroupNo))
+                                                            select a.ACAndBWPropRENxtFin).Sum();
+
                                 foreach (var Subs in mymodel.SubGroupss.Where(d => d.GroupNo.Equals(item.GroupNo)))
                                 {
 
@@ -564,20 +543,34 @@ namespace BudgetPortal.Controllers
                              SumActCurrFinTill2ndQuart.ToString("F"),
                              SumRevEstCurrFin.ToString("F"),
                              SumBudgEstNexFin.ToString("F"));
-                                using (XLWorkbook wb = new XLWorkbook())
-                                {
-                                    wb.Worksheets.Add(dataTable);
-                                    using (MemoryStream stream = new MemoryStream())
-                                    {
-                                        wb.SaveAs(stream);
-                                        return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
-                                    }
-                                }
+                                
 
                             }
 
                             else
                             {
+                                dataTable1.Rows.Add(item.GroupNo + " " + item.GroupName);
+                                SumBudEstCurrFin = (double)(from a in mymodel.Detailss
+                                                            join b in mymodel.Divisionss on a.DivisionID equals b.DivisionID
+                                                            where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(item.GroupNo))
+                                                            select a.BudEstCurrFin).Sum();
+                                SumActPrevFin = (double)(from a in mymodel.Detailss
+                                                         join b in mymodel.Divisionss on a.DivisionID equals b.DivisionID
+                                                         where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(item.GroupNo))
+                                                         select a.ActPrevFin).Sum();
+                                SumActCurrFinTill2ndQuart = (double)(from a in mymodel.Detailss
+                                                                     join b in mymodel.Divisionss on a.DivisionID equals b.DivisionID
+                                                                     where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(item.GroupNo))
+                                                                     select a.ActCurrFinTill2ndQuart).Sum();
+                                SumRevEstCurrFin = (double)(from a in mymodel.Detailss
+                                                            join b in mymodel.Divisionss on a.DivisionID equals b.DivisionID
+                                                            where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(item.GroupNo))
+                                                            select a.ACAndBWPropRECurrFin).Sum();
+                                SumBudgEstNexFin = (double)(from a in mymodel.Detailss
+                                                            join b in mymodel.Divisionss on a.DivisionID equals b.DivisionID
+                                                            where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(item.GroupNo))
+                                                            select a.ACAndBWPropRENxtFin).Sum();
+
                                 foreach (var Subs in mymodel.SubGroupss.Where(d => d.GroupNo.Equals(item.GroupNo)))
                                 {
                                     DataRow row = dataTable1.NewRow();
@@ -758,19 +751,12 @@ namespace BudgetPortal.Controllers
 
                                 dataTable1.Rows.Add(row1);
 
-                                using (XLWorkbook wb = new XLWorkbook())
-                                {
-
-                                    wb.Worksheets.Add(dataTable1);
-                                    using (MemoryStream stream = new MemoryStream())
-                                    {
-                                        wb.SaveAs(stream);
-                                        return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
-                                    }
-                                }
+                               
                             }
                         
                         }
+
+                        
                     }
                     else
                     {
@@ -778,13 +764,127 @@ namespace BudgetPortal.Controllers
                     }
 
                 }
+
+                if (ReportName != null && ReportName.Equals("Headwise Consolidation"))
+                {
+                    using (XLWorkbook wb = new XLWorkbook())
+                    {
+                        var ws = wb.Worksheets.Add();
+                        var Row1 = ws.Range(ws.Cell(1, 1), ws.Cell(1, dataTable.Columns.Count));
+                        var Row2 = ws.Range(ws.Cell(2, 1), ws.Cell(2, dataTable.Columns.Count));
+                        var Row3a = ws.Range(ws.Cell(3, 1), ws.Cell(3, dataTable.Columns.Count/2));
+                        var Row3b = ws.Range(ws.Cell(3, (dataTable.Columns.Count / 2)+1), ws.Cell(3, dataTable.Columns.Count));
+                        var Col2 = ws.Column(2);
+                        var Col3 = ws.Column(3);
+
+                        Row1.Merge();
+                        Row1.Value = "CENTRAL BOARD OF SECONDARY EDUCATION";
+                        Row1.Style.Font.Bold = true;
+
+                        Row2.Merge();
+                        Row2.Value = "Shiksha Kendra 2, Community Centre, Preet Vihar, Delhi - 110 092";
+                        Row2.Style.Font.Bold = true;
+
+                        Row3a.Merge();
+                        Row3a.Value = Rep + " in " + AcademicYear + " for " + DivisionType;
+                        Row3a.Style.Font.Bold = true;
+
+                        Row3b.Merge();
+                        Row3b.Value = "FIGURES IN CRORES";
+                        Row3b.Style.Font.Bold = true;
+
+                        
+                        wb.Worksheet(1).Cell(4, 1).InsertTable(dataTable);
+
+                        var Rows = Col2.Search("Total") ;
+                        
+                            foreach (var row in Rows)
+                            {
+                                var CellAddress = row.Address;
+                                var RowNo = CellAddress.RowNumber;
+                                var Range = ws.Range(ws.Cell(CellAddress.RowNumber, 2), ws.Cell(CellAddress.RowNumber, dataTable.Columns.Count));
+                                Range.Style.Fill.BackgroundColor = XLColor.YellowGreen;
+                            }
+
+                        ws.RangeUsed().Style.Border.TopBorder = XLBorderStyleValues.Thin;
+                        ws.RangeUsed().Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+                        ws.RangeUsed().Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                        ws.RangeUsed().Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+                        ws.RangeUsed().Style.Border.LeftBorder = XLBorderStyleValues.Thin;
+                        ws.RangeUsed().Style.Border.RightBorder = XLBorderStyleValues.Thin;
+
+                        using (MemoryStream stream = new MemoryStream())
+                        {
+                            wb.SaveAs(stream);
+                            return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+                        }
+                    }
+
+                }
+                else
+                { 
+                    using (XLWorkbook wb = new XLWorkbook())
+                    {
+                        var ws = wb.Worksheets.Add();
+
+                        var Row1 = ws.Range(ws.Cell(1, 1), ws.Cell(1, dataTable1.Columns.Count));
+                        var Row2 = ws.Range(ws.Cell(2, 1), ws.Cell(2, dataTable1.Columns.Count));
+                        var Row3a = ws.Range(ws.Cell(3, 1), ws.Cell(3, dataTable1.Columns.Count / 2));
+                        var Row3b = ws.Range(ws.Cell(3, (dataTable1.Columns.Count / 2) + 1), ws.Cell(3, dataTable1.Columns.Count));
+                        var Col2 = ws.Column(2);
+
+                        Row1.Merge();
+                        Row1.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                        Row1.Value = "CENTRAL BOARD OF SECONDARY EDUCATION";
+                        Row1.Style.Font.Bold = true;
+
+                        Row2.Merge();
+                        Row2.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                        Row2.Value = "Shiksha Kendra 2, Community Centre, Preet Vihar, Delhi - 110 092";
+                        Row2.Style.Font.Bold = true;
+
+                        Row3a.Merge();
+                        Row3a.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                        Row3a.Value = "Consolidated "+Rep + " in " + AcademicYear + " for " + DivisionType;
+                        Row3a.Style.Font.Bold = true;
+
+                        Row3b.Merge();
+                        Row3b.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                        Row3b.Value = "FIGURES IN CRORES";
+                        Row3b.Style.Font.Bold = true;
+
+                        wb.Worksheet(1).Cell(4, 1).InsertTable(dataTable1);
+
+                        var Rows = Col2.Search("Total");
+                        foreach (var row in Rows)
+                        {
+                            var CellAddress = row.Address;
+                            var RowNo = CellAddress.RowNumber;
+                            var Range = ws.Range(ws.Cell(CellAddress.RowNumber, 2), ws.Cell(CellAddress.RowNumber, dataTable1.Columns.Count));
+                            Range.Style.Fill.BackgroundColor = XLColor.YellowGreen;
+                        }
+
+                        ws.RangeUsed().Style.Border.TopBorder = XLBorderStyleValues.Thin;
+                        ws.RangeUsed().Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+                        ws.RangeUsed().Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                        ws.RangeUsed().Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+                        ws.RangeUsed().Style.Border.LeftBorder = XLBorderStyleValues.Thin;
+                        ws.RangeUsed().Style.Border.RightBorder = XLBorderStyleValues.Thin;
+
+                        using (MemoryStream stream = new MemoryStream())
+                        {
+                          wb.SaveAs(stream);
+                          return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+                        }
+                }
+                }
             }
             else
             {
                 return NotFound();
             }
 
-            return Ok();
+               return Ok();
             }
 
     }
