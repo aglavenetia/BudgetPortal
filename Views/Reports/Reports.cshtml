@@ -29,17 +29,7 @@
 <br />
 
 <div id="outerdiv">
-    <div style="float:left">
-        @{
-            var SelAcademicYear = (from a in Model.AcademicYears where a.Selected == true select a.Text).FirstOrDefault();
-            SplitAcademicYear = SelAcademicYear.Split("-");
-            var Rep = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
-            var DivType = (from a in Model.DivisionTypeNames where a.Selected == true select a.Text).FirstOrDefault();
-        }  
-    @Html.DropDownListFor(m => m.ExportTypes, new SelectList(Enum.GetValues(typeof(Export))), "Select--")
-        @Html.ActionLink("Export To PDF","PrintPDF", "Reports", new { Year = SplitAcademicYear[0], DivisionType=DivType , Report= Rep }, null)
-        @Html.ActionLink("Export To Excel","ExportBudgetInExcel", "Reports", new { Year = SplitAcademicYear[0], DivisionType=DivType , Rep= Rep }, null)
-    </div>
+    
     <div style="float:right">
 
         @Html.AntiForgeryToken()
@@ -69,6 +59,21 @@
 
         </table>
   
+    </div>
+
+    <br />
+    <br />
+    <div style="float:right;margin:50px">
+        @{
+            var SelAcademicYear = (from a in Model.AcademicYears where a.Selected == true select a.Text).FirstOrDefault();
+            SplitAcademicYear = SelAcademicYear.Split("-");
+            var Rep = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
+            var DivType = (from a in Model.DivisionTypeNames where a.Selected == true select a.Text).FirstOrDefault();
+        }
+        
+        @Html.ActionLink("Export To PDF","PrintPDF", "Reports", new { Year = SplitAcademicYear[0], DivisionType=DivType , Report= Rep}, new {@class = "btn btn-primary"})
+        @Html.ActionLink("Export To Excel","ExportBudgetInExcel", "Reports", new { Year = SplitAcademicYear[0], DivisionType=DivType , Rep= Rep}, new {@class = "btn btn-primary"})
+        
     </div>
     <br />
     <br />

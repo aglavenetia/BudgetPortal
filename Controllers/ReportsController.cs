@@ -261,7 +261,7 @@ namespace BudgetPortal.Controllers
             return new Rotativa.AspNetCore.ViewAsPdf("PrintPDF", mymodel)
             {
                 FileName = "Consolidated " + Report + " in " + AcademicYear + " for " + DivisionType + "_" + DateTime.Now + ".pdf",
-
+                CustomSwitches = "--page-offset 0 --footer-center [page] --footer-font-size 8",
                 PageOrientation = Rotativa.AspNetCore.Options.Orientation.Landscape,
             };
         }
@@ -772,28 +772,33 @@ namespace BudgetPortal.Controllers
                         var ws = wb.Worksheets.Add();
                         var Row1 = ws.Range(ws.Cell(1, 1), ws.Cell(1, dataTable.Columns.Count));
                         var Row2 = ws.Range(ws.Cell(2, 1), ws.Cell(2, dataTable.Columns.Count));
-                        var Row3a = ws.Range(ws.Cell(3, 1), ws.Cell(3, dataTable.Columns.Count/2));
-                        var Row3b = ws.Range(ws.Cell(3, (dataTable.Columns.Count / 2)+1), ws.Cell(3, dataTable.Columns.Count));
+                        var Row3a = ws.Range(ws.Cell(3, 1), ws.Cell(3,4));
+                        var Row3b = ws.Range(ws.Cell(3,5), ws.Cell(3,dataTable.Columns.Count));
                         var Col2 = ws.Column(2);
                         var Col3 = ws.Column(3);
 
                         Row1.Merge();
                         Row1.Value = "CENTRAL BOARD OF SECONDARY EDUCATION";
                         Row1.Style.Font.Bold = true;
+                        Row1.Style.Fill.BackgroundColor = XLColor.BabyPink;
 
                         Row2.Merge();
                         Row2.Value = "Shiksha Kendra 2, Community Centre, Preet Vihar, Delhi - 110 092";
                         Row2.Style.Font.Bold = true;
+                        Row2.Style.Fill.BackgroundColor = XLColor.Champagne;
 
                         Row3a.Merge();
                         Row3a.Value = Rep + " in " + AcademicYear + " for " + DivisionType;
                         Row3a.Style.Font.Bold = true;
+                        Row3a.Style.Fill.BackgroundColor = XLColor.LightGoldenrodYellow;
+                        Row3a.Style.Font.SetFontColor(XLColor.Green);
 
                         Row3b.Merge();
-                        Row3b.Value = "FIGURES IN CRORES";
+                        Row3b.Value = "* FIGURES IN CRORES";
                         Row3b.Style.Font.Bold = true;
+                        Row3b.Style.Fill.BackgroundColor = XLColor.LightGoldenrodYellow;
+                        Row3b.Style.Font.SetFontColor(XLColor.Red);
 
-                        
                         wb.Worksheet(1).Cell(4, 1).InsertTable(dataTable);
 
                         var Rows = Col2.Search("Total") ;
@@ -813,6 +818,21 @@ namespace BudgetPortal.Controllers
                         ws.RangeUsed().Style.Border.LeftBorder = XLBorderStyleValues.Thin;
                         ws.RangeUsed().Style.Border.RightBorder = XLBorderStyleValues.Thin;
 
+                        int lastrow = ws.LastRowUsed().RowNumber();
+                        var rows = ws.Rows(4, lastrow);
+                        foreach (IXLRow row in rows)
+                        {
+                            if (!ws.Cell(row.RowNumber(), 1).IsEmpty() && ws.Cell(row.RowNumber(), 2).IsEmpty() && ws.Cell(row.RowNumber(), 3).IsEmpty())
+                            {
+
+                                var Range = ws.Range(ws.Cell(row.RowNumber(), 1), ws.Cell(row.RowNumber(), 4));
+                                var Content = ws.Cell(row.RowNumber(), 1).GetText();
+                                Range.Merge();
+                                Range.Style.Fill.BackgroundColor = XLColor.CanaryYellow;
+                                Range.Style.Font.SetBold(true);
+                            }
+                        }
+
                         using (MemoryStream stream = new MemoryStream())
                         {
                             wb.SaveAs(stream);
@@ -829,29 +849,35 @@ namespace BudgetPortal.Controllers
 
                         var Row1 = ws.Range(ws.Cell(1, 1), ws.Cell(1, dataTable1.Columns.Count));
                         var Row2 = ws.Range(ws.Cell(2, 1), ws.Cell(2, dataTable1.Columns.Count));
-                        var Row3a = ws.Range(ws.Cell(3, 1), ws.Cell(3, dataTable1.Columns.Count / 2));
-                        var Row3b = ws.Range(ws.Cell(3, (dataTable1.Columns.Count / 2) + 1), ws.Cell(3, dataTable1.Columns.Count));
+                        var Row3a = ws.Range(ws.Cell(3, 1), ws.Cell(3, 4));
+                        var Row3b = ws.Range(ws.Cell(3, 5), ws.Cell(3, dataTable1.Columns.Count));
                         var Col2 = ws.Column(2);
 
                         Row1.Merge();
                         Row1.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                         Row1.Value = "CENTRAL BOARD OF SECONDARY EDUCATION";
                         Row1.Style.Font.Bold = true;
+                        Row1.Style.Fill.BackgroundColor = XLColor.BabyPink;
 
                         Row2.Merge();
                         Row2.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                         Row2.Value = "Shiksha Kendra 2, Community Centre, Preet Vihar, Delhi - 110 092";
                         Row2.Style.Font.Bold = true;
+                        Row2.Style.Fill.BackgroundColor = XLColor.Champagne;
 
                         Row3a.Merge();
                         Row3a.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                         Row3a.Value = "Consolidated "+Rep + " in " + AcademicYear + " for " + DivisionType;
                         Row3a.Style.Font.Bold = true;
+                        Row3a.Style.Fill.BackgroundColor = XLColor.LightGoldenrodYellow;
+                        Row3a.Style.Font.SetFontColor(XLColor.Green);
 
                         Row3b.Merge();
                         Row3b.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                        Row3b.Value = "FIGURES IN CRORES";
+                        Row3b.Value = "* FIGURES IN CRORES";
                         Row3b.Style.Font.Bold = true;
+                        Row3b.Style.Fill.BackgroundColor = XLColor.LightGoldenrodYellow;
+                        Row3b.Style.Font.SetFontColor(XLColor.Red);
 
                         wb.Worksheet(1).Cell(4, 1).InsertTable(dataTable1);
 
@@ -862,6 +888,7 @@ namespace BudgetPortal.Controllers
                             var RowNo = CellAddress.RowNumber;
                             var Range = ws.Range(ws.Cell(CellAddress.RowNumber, 2), ws.Cell(CellAddress.RowNumber, dataTable1.Columns.Count));
                             Range.Style.Fill.BackgroundColor = XLColor.YellowGreen;
+                            Range.Style.Font.SetBold(true);
                         }
 
                         ws.RangeUsed().Style.Border.TopBorder = XLBorderStyleValues.Thin;
@@ -870,6 +897,22 @@ namespace BudgetPortal.Controllers
                         ws.RangeUsed().Style.Border.BottomBorder = XLBorderStyleValues.Thin;
                         ws.RangeUsed().Style.Border.LeftBorder = XLBorderStyleValues.Thin;
                         ws.RangeUsed().Style.Border.RightBorder = XLBorderStyleValues.Thin;
+
+                        int lastrow = ws.LastRowUsed().RowNumber();
+                        var rows = ws.Rows(4, lastrow);
+                        foreach (IXLRow row in rows)
+                        {
+                            if (!ws.Cell(row.RowNumber(), 1).IsEmpty() && ws.Cell(row.RowNumber(), 2).IsEmpty() && ws.Cell(row.RowNumber(), 3).IsEmpty())
+                            {
+
+                                var Range = ws.Range(ws.Cell(row.RowNumber(), 1), ws.Cell(row.RowNumber(), 4));
+                                var Content = ws.Cell(row.RowNumber(), 1).GetText();
+                                Range.Merge();
+                                Range.Style.Fill.BackgroundColor = XLColor.CanaryYellow;
+                                Range.Style.Font.SetBold(true);
+                            }
+                        }
+
 
                         using (MemoryStream stream = new MemoryStream())
                         {
