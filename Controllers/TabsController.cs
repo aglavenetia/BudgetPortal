@@ -37,6 +37,7 @@ namespace BudgetPortal.Controllers
             }
             var AcademicYear = String.Concat(Year, "-", (Year + 1));
             var mymodel = new MultipleData();
+            mymodel.SelectedAcademicYear = AcademicYear;
             mymodel.Sectionss = _context.BudgetSections.ToList();
             mymodel.Groupss = _context.BudgetGroups.ToList();
             mymodel.SubGroupss = _context.BudgetSubGroups.ToList();
@@ -60,7 +61,7 @@ namespace BudgetPortal.Controllers
                 mymodel.ApprovedMessage = "Budget Details Approved for the Financial Year " + AcademicYear + "!!!";
                 mymodel.WaitingForApprovalMessage = " ";
             }
-            else if (FinalApproved == 0 && SubmittedForApproval <= NumberOfGroups && SubmittedForApproval != 0)
+            else if (FinalApproved == 0 && SubmittedForApproval == NumberOfGroups && SubmittedForApproval != 0)
             {
                 mymodel.WaitingForApprovalMessage = "Budget Details for the Financial Year " + AcademicYear + " is pending with AC&BW for Approval.";
                 mymodel.ApprovedMessage = " ";
@@ -892,6 +893,7 @@ namespace BudgetPortal.Controllers
 
                 var AcademicYear = String.Concat(Year, "-", (Year + 1));
                 var mymodel = new MultipleData();
+                mymodel.SelectedAcademicYear = AcademicYear;
                 mymodel.Sectionss = _context.BudgetSections.ToList();
                 mymodel.Groupss = _context.BudgetGroups.ToList();
                 mymodel.SubGroupss = _context.BudgetSubGroups.ToList();
@@ -916,7 +918,7 @@ namespace BudgetPortal.Controllers
                 mymodel.ApprovedMessage = "Budget Details Approved for the Financial Year " + AcademicYear + "!!!";
                 mymodel.WaitingForApprovalMessage = " ";
             }
-            else if (FinalApproved == 0 && SubmittedForApproval <= NumberOfGroups && SubmittedForApproval!=0)
+            else if (FinalApproved == 0 && SubmittedForApproval == NumberOfGroups && SubmittedForApproval!=0)
             {
                 mymodel.WaitingForApprovalMessage = "Budget Details for the Financial Year " + AcademicYear + " is pending with AC&BW for Approval.";
                 mymodel.ApprovedMessage = " ";
