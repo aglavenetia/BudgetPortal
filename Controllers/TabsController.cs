@@ -915,17 +915,17 @@ namespace BudgetPortal.Controllers
             
             if (FinalApproved > 0)
             {
-                mymodel.ApprovedMessage = "Budget Details Approved for the Financial Year " + AcademicYear + "!!!";
+                mymodel.ApprovedMessage = "* Budget Details Approved for the Financial Year " + AcademicYear + "!!!";
                 mymodel.WaitingForApprovalMessage = " ";
             }
             else if (FinalApproved == 0 && SubmittedForApproval == NumberOfGroups && SubmittedForApproval!=0)
             {
-                mymodel.WaitingForApprovalMessage = "Budget Details for the Financial Year " + AcademicYear + " is pending with AC&BW for Approval.";
+                mymodel.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + AcademicYear + " is pending with AC&BW for Approval.";
                 mymodel.ApprovedMessage = " ";
             }
             else if(PendingForFinalSubmission > 0)
             {
-                mymodel.WaitingForApprovalMessage = "Budget Details for the Financial Year " + AcademicYear + " is pending with CMD for Approval.";
+                mymodel.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + AcademicYear + " is pending with CMD for Approval.";
                 mymodel.ApprovedMessage = " ";
             }
             else
@@ -1123,17 +1123,17 @@ namespace BudgetPortal.Controllers
 
                 if (FinalApproved > 0)
                 {
-                    MD.ApprovedMessage = "Budget Details Approved for the Financial Year " + MD.SelectedAcademicYear + "!!!";
+                    MD.ApprovedMessage = "* Budget Details Approved for the Financial Year " + MD.SelectedAcademicYear + "!!!";
                     MD.WaitingForApprovalMessage = " ";
                 }
                 else if (FinalApproved == 0 && SubmittedForApproval <= NumberOfGroups && SubmittedForApproval != 0)
                 {
-                    MD.WaitingForApprovalMessage = "Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
+                    MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
                     MD.ApprovedMessage = " ";
                 }
                 else if (PendingForFinalSubmission > 0)
                 {
-                    MD.WaitingForApprovalMessage = "Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with CMD for Approval.";
+                    MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with CMD for Approval.";
                     MD.ApprovedMessage = " ";
                 }
                 else
