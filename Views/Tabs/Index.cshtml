@@ -331,8 +331,8 @@
 
                          @if(Model.PreviousYearAdminCount > 0 && GroupsStatusRowCount > 0)
                          {
-                             SumPerVarRevEstOverBudgEstCurrFin = Convert.ToInt32(Convert.ToDecimal((SectionSumRevEstCurrFin - SectionSumBudEstCurrFin) / SectionSumBudEstCurrFin)*100);
-                             SumPerVarRevEstOverBudgEstNxtFin = Convert.ToInt32(Convert.ToDecimal((SectionSumBudgEstNexFin - SectionSumRevEstCurrFin) / SectionSumRevEstCurrFin)*100);
+                             SumPerVarRevEstOverBudgEstCurrFin = Convert.ToInt32(Convert.ToDecimal((SumRevEstCurrFin - SumBudEstCurrFin) / SumBudEstCurrFin)*100);
+                             SumPerVarRevEstOverBudgEstNxtFin = Convert.ToInt32(Convert.ToDecimal((SumBudgEstNexFin - SumRevEstCurrFin) / SumRevEstCurrFin)*100);
                          }
                          else
                          {
@@ -360,7 +360,7 @@
                                 {
                                    <div style="color:green"> * Budget proposal @Model.SelectedAcademicYear for <span style="color:red">'@item.GroupName'</span> has been submitted to AC&BW successfully </div>
                                 }
-                                else if(User.IsInRole("Admin") && !AdminEditStatus && @Model.WaitingForApprovalMessage.Equals(" ") && @Model.ApprovedMessage.Equals(" "))
+                                else if(User.IsInRole("Admin") && !AdminEditStatus && !@Model.WaitingForApprovalMessage.Equals(" "))
                                 {
                                     <div style="color:green"> * Budget values for @Model.SelectedAcademicYear for <span style="color:red">'@item.GroupName'</span> has been saved successfully </div>
                                 }
@@ -1417,7 +1417,7 @@
                                  {
                                    <div style="color:green"> * Budget proposal @Model.SelectedAcademicYear for <span style="color:red">'@item.GroupName'</span> has been submitted to AC&BW successfully </div>
                                  }
-                                 else if(User.IsInRole("Admin") && !AdminEditStatus && @Model.WaitingForApprovalMessage.Equals(" ") && @Model.ApprovedMessage.Equals(" "))
+                                 else if(User.IsInRole("Admin") && !AdminEditStatus && !@Model.WaitingForApprovalMessage.Equals(" "))
                                 {
                                     <div style="color:green"> * Budget values for @Model.SelectedAcademicYear for <span style="color:red">'@item.GroupName'</span> has been saved successfully </div>
                                 }
@@ -2699,8 +2699,8 @@
 
                             @if(Model.PreviousYearAdminCount > 0 && GroupsStatusRowCount > 0)
                             {
-                               SumPerVarRevEstOverBudgEstCurrFin = Convert.ToInt32(Convert.ToDouble((SectionSumRevEstCurrFin - SectionSumBudEstCurrFin) / SectionSumBudEstCurrFin)*100);
-                               SumPerVarRevEstOverBudgEstNxtFin = Convert.ToInt32(Convert.ToDouble((SectionSumBudgEstNexFin - SectionSumRevEstCurrFin) / SectionSumRevEstCurrFin)*100);
+                               SumPerVarRevEstOverBudgEstCurrFin = Convert.ToInt32(Convert.ToDouble((SumRevEstCurrFin - SumBudEstCurrFin) / SumBudEstCurrFin)*100);
+                               SumPerVarRevEstOverBudgEstNxtFin = Convert.ToInt32(Convert.ToDouble((SumBudgEstNexFin - SumRevEstCurrFin) / SumRevEstCurrFin)*100);
                             }
                             else
                             {
@@ -2729,7 +2729,7 @@
                                 {
                                     <div style="color:green"> * Budget proposal @Model.SelectedAcademicYear for <span style="color:red">'@item.GroupName'</span> has been submitted to AC&BW successfully </div>
                                 }
-                                else if(User.IsInRole("Admin") && !AdminEditStatus && @Model.WaitingForApprovalMessage.Equals(" ") && @Model.ApprovedMessage.Equals(" "))
+                                else if(User.IsInRole("Admin") && !AdminEditStatus && !@Model.WaitingForApprovalMessage.Equals(" "))
                                 {
                                     <div style="color:green"> * Budget values for @Model.SelectedAcademicYear for <span style="color:red">'@item.GroupName'</span> has been saved successfully </div>
                                 }
@@ -3854,7 +3854,7 @@
                                  {
                                    <div style="color:green"> * Budget proposal @Model.SelectedAcademicYear for <span style="color:red">'@item.GroupName'</span> has been submitted to AC&BW successfully </div>
                                  }
-                                 else if(User.IsInRole("Admin") && !AdminEditStatus && @Model.WaitingForApprovalMessage.Equals(" ") && @Model.ApprovedMessage.Equals(" "))
+                                        else if (User.IsInRole("Admin") && !AdminEditStatus && !@Model.WaitingForApprovalMessage.Equals(" "))
                                  {
                                     <div style="color:green"> * Budget values for @Model.SelectedAcademicYear for <span style="color:red">'@item.GroupName'</span> has been saved successfully </div>
                                  }

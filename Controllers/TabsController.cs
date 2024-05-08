@@ -841,7 +841,7 @@ namespace BudgetPortal.Controllers
                         MD.ApprovedMessage = "Budget Details Approved for the Financial Year " + MD.SelectedAcademicYear + "!!!";
                         MD.WaitingForApprovalMessage = " ";
                     }
-                    else if (FinalApproved == 0 && SubmittedForApproval <= NumberOfGroups && SubmittedForApproval != 0)
+                    else if (FinalApproved == 0 && SubmittedForApproval == NumberOfGroups && SubmittedForApproval != 0)
                     {
                         MD.WaitingForApprovalMessage = "Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
                         MD.ApprovedMessage = " ";

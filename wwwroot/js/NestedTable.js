@@ -24,11 +24,16 @@ $(document).ready(
             //alert(elementid);
             var Pervariationid = $(this).closest("tr").find($("input[id^='PerVarRevEstOverBudgEstCurrFin']"));
             //alert(Pervariationid);
-            var PerVariation = (parseFloat($(this).val()) - parseFloat(elementid.val())) / parseFloat(elementid.val());
+            var PerVariation = parseInt((parseFloat($(this).val()) - parseFloat(elementid.val())) / parseFloat(elementid.val())*100);
             Pervariationid.val(PerVariation);
 
-            if (PerVariation > 0.1) {
+            if (PerVariation > 10) {
+                alert(PerVariation);
                 $(this).closest("tr").find($("textarea[id^='Justification']")).prop('required', true);
+            }
+            else {
+                $(this).closest("tr").find($("textarea[id^='Justification']")).removeProp('required', true);
+                alert("Removed");
             }
 
         });
@@ -41,11 +46,16 @@ $(document).ready(
                 //alert(elementid);
                 var Pervariationid = $(this).closest("tr").find($("input[id^='PerVarRevEstOverBudgEstNxtFin']"));
                 //alert(Pervariationid);
-                var PerVariation = (parseFloat($(this).val()) - parseFloat(elementid.val())) / parseFloat(elementid.val());
+                var PerVariation = parseInt((parseFloat($(this).val()) - parseFloat(elementid.val())) / parseFloat(elementid.val())*100);
                 Pervariationid.val(PerVariation);
 
-                if (PerVariation > 0.1) {
+                if (PerVariation > 10) {
+                    alert(PerVariation);
                     $(this).closest("tr").find($("textarea[id^='Justification']")).prop('required', true);
+                }
+                else {
+                    $(this).closest("tr").find($("textarea[id^='Justification']")).removeProp('required', true);
+                    alert("Removed");
                 }
             }
         );
