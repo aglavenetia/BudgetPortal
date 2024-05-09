@@ -504,11 +504,11 @@ namespace BudgetPortal.Controllers
                                         Subs.SubGroupNo,
                                         " ",
                                         Subs.subGroupName,
-                                        BudEstCurrFinSum != null ? Convert.ToDecimal(BudEstCurrFinSum).ToString("F") : "-",
-                                        ActPrevFinSum != null ? Convert.ToDecimal(ActPrevFinSum).ToString("F") : "-",
-                                        ActCurrFinTill2ndQuartSum != null ? Convert.ToDecimal(ActCurrFinTill2ndQuartSum).ToString("F") : "-",
-                                        RevEstCurrFinSum != null ? Convert.ToDecimal(RevEstCurrFinSum).ToString("F") : "-",
-                                        BudgEstNexFinSum != null ? Convert.ToDecimal(BudgEstNexFinSum).ToString("F") : "-"
+                                        BudEstCurrFinSum != null ? Convert.ToDecimal(BudEstCurrFinSum).ToString("F4") : "-",
+                                        ActPrevFinSum != null ? Convert.ToDecimal(ActPrevFinSum).ToString("F4") : "-",
+                                        ActCurrFinTill2ndQuartSum != null ? Convert.ToDecimal(ActCurrFinTill2ndQuartSum).ToString("F4") : "-",
+                                        RevEstCurrFinSum != null ? Convert.ToDecimal(RevEstCurrFinSum).ToString("F4") : "-",
+                                        BudgEstNexFinSum != null ? Convert.ToDecimal(BudgEstNexFinSum).ToString("F4") : "-"
                                         );
 
                                     if (LedgerCount > 0)
@@ -525,11 +525,11 @@ namespace BudgetPortal.Controllers
                                              " ",
                                               Ledgers.LedgerNo,
                                               Ledgers.LedgerName,
-                                              BudEstCurrFinLedgerSum != null ? Convert.ToDecimal(BudEstCurrFinLedgerSum).ToString("F") : "-",
-                                              ActPrevFinLedgerSum != null ? Convert.ToDecimal(ActPrevFinLedgerSum).ToString("F") : "-",
-                                              ActCurrFinTill2ndQuartSum != null ? Convert.ToDecimal(ActCurrFinTill2ndQuartSum).ToString("F") : "-",
-                                              RevEstCurrFinLedgerSum != null ? Convert.ToDecimal(RevEstCurrFinLedgerSum).ToString("F") : "-",
-                                              BudgEstNexFinLedgerSum != null ? Convert.ToDecimal(BudgEstNexFinLedgerSum).ToString("F") : "-"
+                                              BudEstCurrFinLedgerSum != null ? Convert.ToDecimal(BudEstCurrFinLedgerSum).ToString("F4") : "-",
+                                              ActPrevFinLedgerSum != null ? Convert.ToDecimal(ActPrevFinLedgerSum).ToString("F4") : "-",
+                                              ActCurrFinTill2ndQuartSum != null ? Convert.ToDecimal(ActCurrFinTill2ndQuartSum).ToString("F4") : "-",
+                                              RevEstCurrFinLedgerSum != null ? Convert.ToDecimal(RevEstCurrFinLedgerSum).ToString("F4") : "-",
+                                              BudgEstNexFinLedgerSum != null ? Convert.ToDecimal(BudgEstNexFinLedgerSum).ToString("F4") : "-"
                                               );
                                         }
                                     }
@@ -538,11 +538,11 @@ namespace BudgetPortal.Controllers
                             " ",
                             "Total",
                             "Total",
-                             SumBudEstCurrFin.ToString("F"),
-                             SumActPrevFin.ToString("F"),
-                             SumActCurrFinTill2ndQuart.ToString("F"),
-                             SumRevEstCurrFin.ToString("F"),
-                             SumBudgEstNexFin.ToString("F"));
+                             SumBudEstCurrFin.ToString("F4"),
+                             SumActPrevFin.ToString("F4"),
+                             SumActCurrFinTill2ndQuart.ToString("F4"),
+                             SumRevEstCurrFin.ToString("F4"),
+                             SumBudgEstNexFin.ToString("F4"));
                                 
 
                             }
@@ -611,7 +611,7 @@ namespace BudgetPortal.Controllers
                                     row["HEAD NO."] = Subs.SubGroupNo;
                                     row["SUB HEAD NO."] = " ";
                                     row["HEAD NAME"] = Subs.subGroupName;
-                                    row[@Report] = SumSubGroupReport != 0.00 ? SumSubGroupReport.ToString("F") : "-";
+                                    row[@Report] = SumSubGroupReport != 0.00 ? SumSubGroupReport.ToString("F4") : "-";
 
                                     foreach (var Regions in mymodel.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
                                     {
@@ -623,11 +623,11 @@ namespace BudgetPortal.Controllers
                                             if (Subs.RequireInput)
                                             {
                                                 var LedgersSum = (Double)(from a in mymodel.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ActPrevFin).Sum();
-                                                row[Regions.DivisionName] = LedgersSum != 0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-";
+                                                row[Regions.DivisionName] = LedgersSum != 0.00 ? Convert.ToDecimal(LedgersSum).ToString("F4") : "-";
                                             }
                                             else
                                             {
-                                                row[Regions.DivisionName] = result != null ? Convert.ToDecimal(result.ActPrevFin).ToString("F") : "-";
+                                                row[Regions.DivisionName] = result != null ? Convert.ToDecimal(result.ActPrevFin).ToString("F4") : "-";
                                             }
                                         }
                                         else if (ReportName != null && ReportName.Equals("Actual Half Year"))
@@ -635,11 +635,11 @@ namespace BudgetPortal.Controllers
                                             if (Subs.RequireInput)
                                             {
                                                 var LedgersSum = (Double)(from a in mymodel.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(Subs.SubGroupNo))) select a.ActCurrFinTill2ndQuart).Sum();
-                                                row[Regions.DivisionName] = LedgersSum != 0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-";
+                                                row[Regions.DivisionName] = LedgersSum != 0.00 ? Convert.ToDecimal(LedgersSum).ToString("F4") : "-";
                                             }
                                             else
                                             {
-                                                row[Regions.DivisionName] = result != null ? Convert.ToDecimal(result.ActCurrFinTill2ndQuart).ToString("F") : "-";
+                                                row[Regions.DivisionName] = result != null ? Convert.ToDecimal(result.ActCurrFinTill2ndQuart).ToString("F4") : "-";
                                             }
                                         }
                                         else if (ReportName != null && ReportName.Equals("Revised Estimates"))
@@ -647,11 +647,11 @@ namespace BudgetPortal.Controllers
                                             if (Subs.RequireInput)
                                             {
                                                 var LedgersSum = (Double)(from a in mymodel.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ACAndBWPropRECurrFin).Sum();
-                                                row[Regions.DivisionName] = LedgersSum != 0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-";
+                                                row[Regions.DivisionName] = LedgersSum != 0.00 ? Convert.ToDecimal(LedgersSum).ToString("F4") : "-";
                                             }
                                             else
                                             {
-                                                row[Regions.DivisionName] = result != null ? Convert.ToDecimal(result.ACAndBWPropRECurrFin).ToString("F") : "-";
+                                                row[Regions.DivisionName] = result != null ? Convert.ToDecimal(result.ACAndBWPropRECurrFin).ToString("F4") : "-";
                                             }
                                         }
                                         else if (ReportName != null && ReportName.Equals("Budget Estimates " + @NextAcademicYear))
@@ -659,11 +659,11 @@ namespace BudgetPortal.Controllers
                                             if (Subs.RequireInput)
                                             {
                                                 var LedgersSum = (Double)(from a in mymodel.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(Subs.SubGroupNo))) select a.ACAndBWPropRENxtFin).Sum();
-                                                row[Regions.DivisionName] = LedgersSum != 0.00 ? Convert.ToDecimal(LedgersSum).ToString("F") : "-";
+                                                row[Regions.DivisionName] = LedgersSum != 0.00 ? Convert.ToDecimal(LedgersSum).ToString("F4") : "-";
                                             }
                                             else
                                             {
-                                                row[Regions.DivisionName] = result != null ? Convert.ToDecimal(result.ACAndBWPropRENxtFin).ToString("F") : "-";
+                                                row[Regions.DivisionName] = result != null ? Convert.ToDecimal(result.ACAndBWPropRENxtFin).ToString("F4") : "-";
                                             }
                                         }
 
@@ -684,12 +684,42 @@ namespace BudgetPortal.Controllers
                                             var RevEstCurrFinLedgerSum = (from a in mymodel.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRECurrFin).Sum();
                                             var BudgEstNexFinLedgerSum = (from a in mymodel.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRENxtFin).Sum();
 
+                                            var LedgerSumSubGroupReport = 0.00;
 
+                                            if (ReportName != null && ReportName.Equals("Actual"))
+                                            {
+                                                LedgerSumSubGroupReport = (Double)(from a in mymodel.Detailss
+                                                                             join b in mymodel.Divisionss on a.DivisionID equals b.DivisionID
+                                                                             where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.LedgerNumber.Equals(Ledgers.LedgerNo))
+                                                                             select a.ActPrevFin).Sum();
+
+                                            }
+                                            else if (ReportName != null && ReportName.Equals("Actual Half Year"))
+                                            {
+                                                LedgerSumSubGroupReport = (Double)(from a in mymodel.Detailss
+                                                                             join b in mymodel.Divisionss on a.DivisionID equals b.DivisionID
+                                                                             where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.LedgerNumber.Equals(Ledgers.LedgerNo))
+                                                                             select a.ActCurrFinTill2ndQuart).Sum();
+                                            }
+                                            else if (ReportName != null && ReportName.Equals("Revised Estimates"))
+                                            {
+                                                LedgerSumSubGroupReport = (Double)(from a in mymodel.Detailss
+                                                                             join b in mymodel.Divisionss on a.DivisionID equals b.DivisionID
+                                                                             where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.LedgerNumber.Equals(Ledgers.LedgerNo))
+                                                                             select a.ACAndBWPropRECurrFin).Sum();
+                                            }
+                                            else if (ReportName != null && ReportName.Equals("Budget Estimates " + @NextAcademicYear))
+                                            {
+                                                LedgerSumSubGroupReport = (Double)(from a in mymodel.Detailss
+                                                                             join b in mymodel.Divisionss on a.DivisionID equals b.DivisionID
+                                                                             where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.LedgerNumber.Equals(Ledgers.LedgerNo))
+                                                                             select a.ACAndBWPropRENxtFin).Sum();
+                                            }
 
                                             row2["HEAD NO."] = " ";
                                             row2["SUB HEAD NO."] = Ledgers.LedgerNo;
                                             row2["HEAD NAME"] = Ledgers.LedgerName;
-                                            row2[@Report] = SumSubGroupReport != 0.00 ? @SumSubGroupReport.ToString("F") : "-";
+                                            row2[@Report] = @LedgerSumSubGroupReport != 0.00 ? @LedgerSumSubGroupReport.ToString("F") : "-";
 
                                             foreach (var Regions in mymodel.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
                                             {
@@ -697,19 +727,19 @@ namespace BudgetPortal.Controllers
 
                                                 if (ReportName != null && ReportName.Equals("Actual"))
                                                 {
-                                                    row2[Regions.DivisionName] = result != null ? Convert.ToDecimal(result.ActPrevFin).ToString("F") : "-";
+                                                    row2[Regions.DivisionName] = result != null ? Convert.ToDecimal(result.ActPrevFin).ToString("F4") : "-";
                                                 }
                                                 else if (ReportName != null && ReportName.Equals("Actual Half Year"))
                                                 {
-                                                    row2[Regions.DivisionName] = result != null ? Convert.ToDecimal(result.ActCurrFinTill2ndQuart).ToString("F") : "-";
+                                                    row2[Regions.DivisionName] = result != null ? Convert.ToDecimal(result.ActCurrFinTill2ndQuart).ToString("F4") : "-";
                                                 }
                                                 else if (ReportName != null && ReportName.Equals("Revised Estimates"))
                                                 {
-                                                    row2[Regions.DivisionName] = result != null ? Convert.ToDecimal(result.ACAndBWPropRECurrFin).ToString("F") : "-";
+                                                    row2[Regions.DivisionName] = result != null ? Convert.ToDecimal(result.ACAndBWPropRECurrFin).ToString("F4") : "-";
                                                 }
                                                 else if (ReportName != null && ReportName.Equals("Budget Estimates " + @NextAcademicYear))
                                                 {
-                                                    row2[Regions.DivisionName] = result != null ? Convert.ToDecimal(result.ACAndBWPropRENxtFin).ToString("F") : "-";
+                                                    row2[Regions.DivisionName] = result != null ? Convert.ToDecimal(result.ACAndBWPropRENxtFin).ToString("F4") : "-";
                                                 }
                                             }
                                             dataTable1.Rows.Add(row2);
@@ -723,29 +753,29 @@ namespace BudgetPortal.Controllers
                                 row1["HEAD NO."] = " ";
                                 row1["SUB HEAD NO."] = "Total";
                                 row1["HEAD NAME"] = "Total";
-                                row1[@Report] = SumGroupReport != 0.00 ? SumGroupReport.ToString("F") : "-";
+                                row1[@Report] = SumGroupReport != 0.00 ? SumGroupReport.ToString("F4") : "-";
 
                                 foreach (var Regions in mymodel.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
                                 {
                                     if (ReportName != null && ReportName.Equals("Actual"))
                                     {
                                         var result = (Double)(from a in mymodel.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ActPrevFin).Sum();
-                                        row1[Regions.DivisionName] = result != 0.00 ? Convert.ToDecimal(result).ToString("F") : "-";
+                                        row1[Regions.DivisionName] = result != 0.00 ? Convert.ToDecimal(result).ToString("F4") : "-";
                                     }
                                     else if (ReportName != null && ReportName.Equals("Actual Half Year"))
                                     {
                                         var result = (Double)(from a in mymodel.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ActCurrFinTill2ndQuart).Sum();
-                                        row1[Regions.DivisionName] = result != 0.00 ? Convert.ToDecimal(result).ToString("F") : "-";
+                                        row1[Regions.DivisionName] = result != 0.00 ? Convert.ToDecimal(result).ToString("F4") : "-";
                                     }
                                     else if (ReportName != null && ReportName.Equals("Revised Estimates"))
                                     {
                                         var result = (Double)(from a in mymodel.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ACAndBWPropRECurrFin).Sum();
-                                        row1[Regions.DivisionName] = result != 0.00 ? Convert.ToDecimal(result).ToString("F") : "-";
+                                        row1[Regions.DivisionName] = result != 0.00 ? Convert.ToDecimal(result).ToString("F4") : "-";
                                     }
                                     else if (ReportName != null && ReportName.Equals("Budget Estimates " + @NextAcademicYear))
                                     {
                                         var result = (Double)(from a in mymodel.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ACAndBWPropRENxtFin).Sum();
-                                        row1[Regions.DivisionName] = result != 0.00 ? Convert.ToDecimal(result).ToString("F") : "-";
+                                        row1[Regions.DivisionName] = result != 0.00 ? Convert.ToDecimal(result).ToString("F4") : "-";
                                     }
                                 }
 

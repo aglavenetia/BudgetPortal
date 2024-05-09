@@ -372,10 +372,15 @@
                                         <tr>
                                             <th></th>
                                             <th class="w-5">
-                                                SubGroupNumber
+                                                @*SubGroupNumber*@
+                                                HEAD NO.
                                             </th>
                                             <th class="w-5">
-                                                SubGroupName
+                                                SUBHEAD NO.
+                                            </th>
+                                            <th class="w-5">
+                                                @*SubGroupName*@
+                                                HEAD NAME
                                             </th>
                                             <th class="CurrentBudgetEstimates w-10" >
                                                         
@@ -446,7 +451,7 @@
                                                      
                                                     <tr>
                                                         
-                                                        <td>
+                                                        <td class="w-5">
                                                             @if(LedgerCount > 0)
                                                             {
                                                                 <img src="~/Images/plus.png" />
@@ -463,6 +468,8 @@
                                                                          var LedPrevYearApp = (from a in Model.Approved where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault(); 
                                                                           
                                                                             <tr>
+                                                                                <td></td>
+                                                                                <td></td>
                                                                                 <td>
                                                                                     @{
                                                                                         Model.SubGroupNameOrLedgerName.Insert(LedgerNo, Ledgers.LedgerNo);
@@ -791,6 +798,8 @@
                                                                       @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
                                                                       {
                                                                         <tr>
+                                                                            <td></td>
+                                                                            <td></td>
                                                                             <td>
                                                                                 @Ledgers.LedgerNo
                                                                             </td>
@@ -803,7 +812,7 @@
                                                                
                                                             }
                                                         </td>
-                                                        <td>
+                                                        <td class="w-5">
                                                             @{
                                                               Model.SubGroupNameOrLedgerName.Insert(Count, Subs.SubGroupNo);
                                                              }
@@ -811,10 +820,11 @@
                                                             @Html.DisplayFor(model => model.SubGroupNameOrLedgerName[Count])
                                                             @Html.HiddenFor(model => model.SubGroupNameOrLedgerName[Count])
                                                         </td>
-                                                        <td>
+                                                        <td class="w-5"></td>
+                                                        <td class="w-5">
                                                             @Subs.subGroupName
-                                                        </td>
-                                                        <td>
+                                                        </td class="w-5">
+                                                        <td class="w-5">
                                                         
                                                         @if (@Subs.RequireInput && DelegateEditStatus)
                                                         {
@@ -870,7 +880,7 @@
                                                                 
                                                         }
                                                         </td>
-                                                        <td>
+                                                        <td class="w-5">
                                                         @if (@Subs.RequireInput)
                                                         {
                                                             var LedgerSumActPrevFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActPrevFin).Sum();
@@ -906,7 +916,7 @@
                                                             
                                                         }
                                                         </td>
-                                                        <td>
+                                                        <td class="w-5">
                                                         @if (@Subs.RequireInput)
                                                         {
                                                                 var LedgerSumActCurrFinTill2ndQuart = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActCurrFinTill2ndQuart).Sum();
@@ -942,7 +952,7 @@
                                                             
                                                         }
                                                         </td>
-                                                        <td>
+                                                        <td class="w-5">
                                                         @if (@Subs.RequireInput && DelegateEditStatus)
                                                         {
                                                                 var PastYearBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin ).Sum();
@@ -997,7 +1007,7 @@
                                                             </div>
                                                         }
                                                         </td>
-                                                        <td>
+                                                        <td class="w-5">
                                                         @if (@Subs.RequireInput && DelegateEditStatus)
                                                         {
                                                             
@@ -1047,7 +1057,7 @@
                                                         @if (((User.IsInRole("Admin") && (AdminEditStatus||!AdminEditStatus))||(!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0) ) && @Subs.RequireInput)
                                                         {
                                                             var LedgerSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
-                                                            <td>
+                                                            <td class="w-5">
                                                               <div class="form-group">
                                                                @{
                                                                  Model.ACAndBWPropRECurrFin.Insert(Count, LedgerSumACAndBWPropRECurrFin!=null ? Convert.ToDecimal(LedgerSumACAndBWPropRECurrFin) : Convert.ToDecimal(0.00));
@@ -1059,7 +1069,7 @@
                                                         }
                                                         else if ((User.IsInRole("Admin") && !@Subs.RequireInput && AdminEditStatus))
                                                         {
-                                                            <td>
+                                                            <td class="w-5">
                                                                 <div class="form-group">
                                                                @{ 
                                                                 Model.ACAndBWPropRECurrFin.Insert(Count, details!=null ? Convert.ToDecimal(details.ACAndBWPropRECurrFin) : Convert.ToDecimal(0.00));
@@ -1071,7 +1081,7 @@
                                                         }
                                                         else if (((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0) ) && !@Subs.RequireInput )
                                                         {
-                                                            <td>
+                                                            <td class="w-5">
                                                                 <div class="form-group">
                                                                  @{   
                                                                     Model.ACAndBWPropRECurrFin.Insert(Count, details != null ? Convert.ToDecimal(details.ACAndBWPropRECurrFin) : Convert.ToDecimal(0.00));
@@ -1102,7 +1112,7 @@
                                                            Model.ACAndBWPropRECurrFin.Insert(Count, Convert.ToDecimal(0.00));                                                    
                                                             
                                                         }
-                                                        <td>
+                                                        <td class="w-5">
                                                         @if (@Subs.RequireInput && DelegateEditStatus)
                                                         {
                                                                 var PastYearBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin ).Sum();
@@ -1163,7 +1173,7 @@
                                                            
                                                         }
                                                         </td>
-                                                        <td>
+                                                        <td class="w-5">
                                                             @if (@Subs.RequireInput && DelegateEditStatus)
                                                             {
 
@@ -1217,7 +1227,7 @@
                                                         @if (((User.IsInRole("Admin") && (AdminEditStatus || !AdminEditStatus )) ||(!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0)) && @Subs.RequireInput )
                                                         {
                                                             var LedgerSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
-                                                            <td>
+                                                            <td class="w-5">
                                                                 <div class="form-group">
                                                                     @{
                                                                         Model.ACAndBWPropRENxtFin.Insert(Count, LedgerSumACAndBWPropRENxtFin!=null ? Convert.ToDecimal(LedgerSumACAndBWPropRENxtFin.ToString("F")) : Convert.ToDecimal(0.00));
@@ -1230,7 +1240,7 @@
                                                         }
                                                         else if (User.IsInRole("Admin") && !@Subs.RequireInput && AdminEditStatus) 
                                                         {
-                                                            <td>
+                                                            <td class="w-5">
                                                                 <div class="form-group">
                                                                     @{
                                                                         Model.ACAndBWPropRENxtFin.Insert(Count, details != null ? Convert.ToDecimal(details.ACAndBWPropRENxtFin.ToString("F")) : Convert.ToDecimal(0.00));
@@ -1243,7 +1253,7 @@
                                                         }
                                                         else if (((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0)) && !@Subs.RequireInput ) 
                                                         {
-                                                            <td>
+                                                            <td class="w-5">
                                                                 <div class="form-group">
                                                                     @{
                                                                         Model.ACAndBWPropRENxtFin.Insert(Count, details != null ? Convert.ToDecimal(details.ACAndBWPropRENxtFin.ToString("F")) : Convert.ToDecimal(0.00));
@@ -1274,7 +1284,7 @@
                                                         {
                                                            Model.ACAndBWPropRENxtFin.Insert(Count, Convert.ToDecimal(0.00));                                                   
                                                         }
-                                                        <td>
+                                                        <td class="w-5">
                                                             @if (@Subs.RequireInput || User.IsInRole("Admin") || !DelegateEditStatus)
                                                         {
                                                             <div class="form-group">
@@ -1307,7 +1317,7 @@
                                                         }
                                                         </td>
 
-                                                        <td> 
+                                                        <td class="w-5"> 
                                                                                     
                                                             @if(!@Subs.RequireInput) 
                                                             {
@@ -1351,48 +1361,50 @@
                                                 <tr>
                                                     <td>
                                                     </td>
-                                                    <td>
+                                                    <td class="w-5">
+                                                    </td>
+                                                    <td class="w-5">
                                                         Sub-Total
                                                     </td>
-                                                    <td>
+                                                    <td class="w-5">
                                                         Sub-Total
                                                     </td>
 
-                                                    <td id="@Sumname1-Total">
+                                                    <td class="w-5" id="@Sumname1-Total">
                                                         @SumBudEstCurrFin.ToString("F4")
                                                     </td>
-                                                    <td id="@Sumname2-Total">
+                                                    <td class="w-5" id="@Sumname2-Total">
                                                        @SumActPrevFin.ToString("F4")
                                                     </td>
-                                                    <td id="@Sumname3-Total">
+                                                    <td class="w-5" id="@Sumname3-Total">
                                                         @SumActCurrFinTill2ndQuart.ToString("F4")
                                                     </td>
                                                     <td id="@Sumname4-Total">
                                                        @SumRevEstCurrFin.ToString("F4")
                                                     </td>
-                                                    <td id="@Sumname5-Total">
+                                                    <td class="w-5" id="@Sumname5-Total">
                                                         @SumPerVarRevEstOverBudgEstCurrFin
                                                     </td>
                                                     @if (User.IsInRole("Admin") || (!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0))
                                                     {
-                                                        <td id="@Sumname6-Total">
+                                                        <td class="w-5" id="@Sumname6-Total">
                                                             @SumACAndBWPropRECurrFin.ToString("F4")
                                                         </td>
                                                     }
-                                                    <td id="@Sumname7-Total">
+                                                    <td class="w-5" id="@Sumname7-Total">
                                                        @SumBudgEstNexFin.ToString("F4")
                                                     </td>
-                                                    <td id="@Sumname8-Total">
+                                                    <td class="w-5" id="@Sumname8-Total">
                                                         @SumPerVarRevEstOverBudgEstNxtFin
                                                     </td>
                                                     @if (User.IsInRole("Admin") || (!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0))
                                                     {
-                                                        <td id="@Sumname9-Total">
+                                                        <td class="w-5" id="@Sumname9-Total">
                                                             @SumACAndBWPropRENxtFin.ToString("F4")
                                                         </td>
                                                     }
-                                                    <td></td>
-                                                    <td></td>
+                                                    <td class="w-5"></td>
+                                                    <td class="w-5"></td>
                                                 </tr>
                                     </tbody>
                                 </table>
@@ -1429,10 +1441,13 @@
                                                 <tr>
                                                     <th></th>
                                                     <th class="w-5">
-                                                        SubGroupNumber
+                                                        @*SubGroupNumber*@
+                                                        HEAD NO.
                                                     </th>
+                                                    <th class="w-5">SUB HEAD NO.</th>
                                                     <th class="w-5">
-                                                        SubGroupName
+                                                        @*SubGroupName*@
+                                                        HEAD NAME
                                                     </th>
                                                     <th class="CurrentBudgetEstimates w-10">
 
@@ -1510,6 +1525,8 @@
                                                                             var LedPrevYearApp = (from a in Model.Approved where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();                       
                                                                             
                                                                             <tr>
+                                                                                <td></td>
+                                                                                <td></td>
                                                                                 <td>
                                                                                     @{
                                                                                        Model.SubGroupNameOrLedgerName.Insert(LedgerNo, Ledgers.LedgerNo);
@@ -1870,6 +1887,8 @@
                                                                         @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
                                                                         {
                                                                             <tr>
+                                                                                <td></td>
+                                                                                <td></td>
                                                                                 <td>@Ledgers.LedgerNo</td>
                                                                                 <td>@Ledgers.LedgerName</td>
                                                                             </tr>
@@ -1886,6 +1905,7 @@
                                                              @Html.DisplayFor(model => model.SubGroupNameOrLedgerName[Count])
                                                              @Html.HiddenFor(model => model.SubGroupNameOrLedgerName[Count])
                                                         </td>
+                                                        <td></td>
                                                         <td>
                                                             @Subs.subGroupName
                                                         </td>
@@ -2477,6 +2497,7 @@
                                                 <tr>
                                                     <td>
                                                     </td>
+                                                    <td></td>
                                                     <td>
                                                         Sub-Total
                                                     </td>
@@ -2741,10 +2762,13 @@
                                                 <tr>
                                                     <th></th>
                                                     <th class="w-5">
-                                                        SubGroupNumber
+                                                        @*SubGroupNumber*@
+                                                        HEAD NO.
                                                     </th>
+                                                    <th class="w-5">SUB HEAD NO.</th>
                                                     <th class="w-5">
-                                                        SubGroupName
+                                                        @*SubGroupName*@
+                                                        HEAD NAME
                                                     </th>
                                                     <th class="CurrentBudgetEstimates w-10">
 
@@ -2825,6 +2849,8 @@
                                                                             var LedPrevYearApp = (from a in Model.Approved where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();                       
 
                                                                             <tr>
+                                                                                <td></td>
+                                                                                <td></td>
                                                                                 <td>
                                                                                     @{
                                                                                        Model.SubGroupNameOrLedgerName.Insert(LedgerNo, Ledgers.LedgerNo);
@@ -3194,6 +3220,8 @@
                                                                         @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
                                                                         {
                                                                             <tr>
+                                                                                <td></td>
+                                                                                <td></td>
                                                                                 <td>@Ledgers.LedgerNo</td>
                                                                                 <td>@Ledgers.LedgerName</td>
                                                                             </tr>
@@ -3211,6 +3239,7 @@
                                                              @Html.DisplayFor(model => model.SubGroupNameOrLedgerName[Count])
                                                              @Html.HiddenFor(model => model.SubGroupNameOrLedgerName[Count])
                                                         </td>
+                                                        <td></td>
                                                         <td>
                                                             @Subs.subGroupName
                                                         </td>
@@ -3787,6 +3816,7 @@
                                                 <tr>
                                                     <td>
                                                     </td>
+                                                    <td></td>
                                                     <td>
                                                         Sub-Total
                                                     </td>
@@ -3866,10 +3896,13 @@
                                                 <tr>
                                                     <th></th>
                                                     <th class="w-5">
-                                                        SubGroupNumber
+                                                        @*SubGroupNumber*@
+                                                        HEAD NO.
                                                     </th>
+                                                    <th class="w-5">SUB HEAD NO.</th>
                                                     <th class="w-5">
-                                                        SubGroupName
+                                                        @*SubGroupName*@
+                                                        HEAD NAME
                                                     </th>
                                                     <th class="CurrentBudgetEstimates w-10">
 
@@ -3949,6 +3982,8 @@
                                                                             var LedPrevYearApp = (from a in Model.Approved where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();
 
                                                                             <tr>
+                                                                                <td></td>
+                                                                                <td></td>
                                                                                 <td>
                                                                                     @{
                                                                                        Model.SubGroupNameOrLedgerName.Insert(LedgerNo, Ledgers.LedgerNo);
@@ -4329,6 +4364,7 @@
                                                                         @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
                                                                         {
                                                                             <tr>
+                                                                                <td></td>
                                                                                 <td>@Ledgers.LedgerNo</td>
                                                                                 <td>@Ledgers.LedgerName</td>
                                                                             </tr>
@@ -4346,6 +4382,7 @@
                                                              @Html.DisplayFor(model => model.SubGroupNameOrLedgerName[Count])
                                                              @Html.HiddenFor(model => model.SubGroupNameOrLedgerName[Count])
                                                         </td>
+                                                        <td></td>
                                                         <td>
                                                             @Subs.subGroupName
                                                         </td>
@@ -4937,6 +4974,7 @@
                                                 <tr>
                                                     <td>
                                                     </td>
+                                                    <td></td>
                                                     <td>
                                                         Sub-Total
                                                     </td>
