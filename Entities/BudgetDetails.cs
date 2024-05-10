@@ -56,6 +56,14 @@ namespace BudgetPortal.Entities
 
         [Column(TypeName = "money")]
         [Required]
+        public Decimal InterimRevEst{ get; set; }
+
+        [Column(TypeName = "money")]
+        [Required]
+        public Decimal ProvisionalRevEst { get; set; }
+
+        [Column(TypeName = "money")]
+        [Required]
         public Decimal BudgEstNexFinProposed { get; set; }
 
         [Column(TypeName = "money")]

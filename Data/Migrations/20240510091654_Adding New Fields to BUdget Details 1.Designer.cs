@@ -4,6 +4,7 @@ using BudgetPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetPortal.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240510091654_Adding New Fields to BUdget Details 1")]
+    partial class AddingNewFieldstoBUdgetDetails1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -165,10 +168,16 @@ namespace BudgetPortal.Data.Migrations
                     b.Property<decimal>("BudgEstNexFin")
                         .HasColumnType("money");
 
+                    b.Property<decimal>("BudgEstNexFinProposed")
+                        .HasColumnType("money");
+
                     b.Property<DateTime>("CreatedDateTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<decimal>("InterimRevEst")
+                        .HasColumnType("decimal(4,2)");
 
                     b.Property<string>("Justification")
                         .IsRequired()
@@ -180,20 +189,14 @@ namespace BudgetPortal.Data.Migrations
                     b.Property<decimal>("PerVarRevEstOverBudgEstNxtFin")
                         .HasColumnType("decimal(4,2)");
 
-                    b.Property<decimal>("InterimRevEst")
-                       .HasColumnType("money");
-
                     b.Property<decimal>("ProvisionalRevEst")
-                        .HasColumnType("money");
+                        .HasColumnType("decimal(4,2)");
 
                     b.Property<decimal>("RevEstCurrFin")
                         .HasColumnType("money");
 
                     b.Property<string>("SupportingDocumentPath")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("BudgEstNexFinProposed")
-                        .HasColumnType("money");
 
                     b.HasKey("DivisionID", "FinancialYear1", "FinancialYear2", "SectionNumber", "GroupNumber", "SubGroupNumber", "LedgerNumber");
 
