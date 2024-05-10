@@ -48,7 +48,7 @@ namespace BudgetPortal.Controllers
 
                     }).ToList();
 
-            if (Month > 0 && Month < 4)
+            if (Month >3 && Month < 10)
             {
                 Year = DateTime.Now.Year - 1;
                 mymodel.IsEnabled= true;
