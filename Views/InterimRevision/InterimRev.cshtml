@@ -123,7 +123,8 @@
            if (OuterBodyCount == 0)
            {
             <div id="@inneridenti" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="true" style="width: 1750px;">
-                   <ul id="innertab1" class="nav nav-pills nav-justified" role="tablist">
+                
+                <ul id="innertab1" class="nav nav-pills nav-justified" role="tablist">
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {                           
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
@@ -151,7 +152,7 @@
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
                         int TableCount = 0;
-                        var Submit = String.Concat("Submit", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                        
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
                         
                          var SumBudEstCurrFin = (from a in Model.Approved where a.GroupNumber.Equals(@item.GroupNo) select a.BudEstNextFin).Sum();
@@ -208,9 +209,9 @@
                                                     var name2 = String.Concat("InterimRev", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name3 = String.Concat("ProvisionalRE", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
-                                                    var save = String.Concat("Save", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var edit = String.Concat("Edit", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var delete = String.Concat("Delete", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var save = String.Concat("Save", @inner.SectionNo.ToString(),"_",@Subs.SubGroupNo, @TableCount);
+                                                    var edit = String.Concat("Edit", @inner.SectionNo.ToString(), "_",@Subs.SubGroupNo, @TableCount);
+                                                    var delete = String.Concat("Delete", @inner.SectionNo.ToString(), "_",@Subs.SubGroupNo, @TableCount);
 
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                     
@@ -233,6 +234,9 @@
                                                                          var Ledgerdetails = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();
                                                                          var LedPrevYearApp = (from a in Model.Approved where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault(); 
                                                                           
+                                                                          save = String.Concat("Save", @inner.SectionNo.ToString(),"_",@Ledgers.LedgerNo, @TableCount);
+                                                                          edit = String.Concat("Edit", @inner.SectionNo.ToString(),"_",@Ledgers.LedgerNo, @TableCount);
+                                                                          delete = String.Concat("Delete", @inner.SectionNo.ToString(),"_",@Ledgers.LedgerNo, @TableCount);
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -290,7 +294,7 @@
                                                                                 @if(Model.IsEnabled)
                                                                                 {
                                                                                 <td>
-                                                                                   <input id="@Submit" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
+                                                                                   <input id="@save" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
                                                                                 </td>
                                                                                 <td>
                                                                                    <input id="@edit" class="Submit" formaction=" " type="submit" value="Edit Budget" style="align-self:center"/>
@@ -431,7 +435,7 @@
                                                         @if(!@Subs.RequireInput && Model.IsEnabled)
                                                         {
                                                         <td>
-                                                        <input id="@Submit" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
+                                                        <input id="@save" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
                                                         </td>
                                                         <td>
                                                         <input id="@edit" class="Submit" formaction=" " type="submit" value="Edit Budget" style="align-self:center"/>
@@ -519,9 +523,9 @@
                                                     var name2 = String.Concat("InterimRev", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name3 = String.Concat("ProvisionalRE", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
-                                                    var save = String.Concat("Save", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var edit = String.Concat("Edit", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var delete = String.Concat("Delete", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var save = String.Concat("Save", @inner.SectionNo.ToString(), "_",@Subs.SubGroupNo, @TableCount);
+                                                    var edit = String.Concat("Edit", @inner.SectionNo.ToString(), "_",@Subs.SubGroupNo, @TableCount);
+                                                    var delete = String.Concat("Delete", @inner.SectionNo.ToString(), "_",@Subs.SubGroupNo, @TableCount);
 
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                     
@@ -544,6 +548,9 @@
                                                                          var Ledgerdetails = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();
                                                                          var LedPrevYearApp = (from a in Model.Approved where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault(); 
                                                                           
+                                                                           save = String.Concat("Save", @inner.SectionNo.ToString(),"_",@Ledgers.LedgerNo, @TableCount);
+                                                                           edit = String.Concat("Edit", @inner.SectionNo.ToString(),"_",@Ledgers.LedgerNo, @TableCount);
+                                                                           delete = String.Concat("Delete", @inner.SectionNo.ToString(),"_",@Ledgers.LedgerNo, @TableCount);
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -601,7 +608,7 @@
                                                                                 @if(Model.IsEnabled)
                                                                                 {
                                                                                 <td>
-                                                                                   <input id="@Submit" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
+                                                                                   <input id="@save" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
                                                                                 </td>
                                                                                 <td>
                                                                                    <input id="@edit" class="Submit" formaction=" " type="submit" value="Edit Budget" style="align-self:center"/>
@@ -742,7 +749,7 @@
                                                         @if(!@Subs.RequireInput && Model.IsEnabled)
                                                         {
                                                         <td>
-                                                        <input id="@Submit" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
+                                                        <input id="@save" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
                                                         </td>
                                                         <td>
                                                         <input id="@edit" class="Submit" formaction=" " type="submit" value="Edit Budget" style="align-self:center"/>
@@ -793,7 +800,7 @@
 
            else
            {
-                    <div id="@inneridenti" class="tab-pane fade" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="false" style="width: 1750px;">
+                <div id="@inneridenti" class="tab-pane fade" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="false" style="width: 1750px;">
                
                 <ul id="innertab2" class="nav nav-pills" role="tablist">
 
@@ -822,7 +829,7 @@
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
                           int TableCount = 0;
-                        var Submit = String.Concat("Submit", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                        
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
                         
                          var SumBudEstCurrFin = (from a in Model.Approved where a.GroupNumber.Equals(@item.GroupNo) select a.BudEstNextFin).Sum();
@@ -871,6 +878,7 @@
                                         
                                         @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
                                         {
+                                                    
                                                     var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
                                                     var PrevYearApp =  (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
                                                     
@@ -879,9 +887,10 @@
                                                     var name2 = String.Concat("InterimRev", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name3 = String.Concat("ProvisionalRE", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
-                                                    var save = String.Concat("Save", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var edit = String.Concat("Edit", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var delete = String.Concat("Delete", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                   
+                                                    var save = String.Concat("Save", @inner.SectionNo.ToString(), "_",@Subs.SubGroupNo, @TableCount);
+                                                    var edit = String.Concat("Edit", @inner.SectionNo.ToString(), "_",@Subs.SubGroupNo, @TableCount);
+                                                    var delete = String.Concat("Delete", @inner.SectionNo.ToString(), "_",@Subs.SubGroupNo, @TableCount);
 
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                     
@@ -904,6 +913,9 @@
                                                                          var Ledgerdetails = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();
                                                                          var LedPrevYearApp = (from a in Model.Approved where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault(); 
                                                                           
+                                                                          save = String.Concat("Save", @inner.SectionNo.ToString(),"_",@Ledgers.LedgerNo, @TableCount);
+                                                                          edit = String.Concat("Edit", @inner.SectionNo.ToString(),"_",@Ledgers.LedgerNo, @TableCount);
+                                                                          delete = String.Concat("Delete", @inner.SectionNo.ToString(),"_",@Ledgers.LedgerNo, @TableCount);
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -961,7 +973,7 @@
                                                                                 @if(Model.IsEnabled)
                                                                                 {
                                                                                 <td>
-                                                                                   <input id="@Submit" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
+                                                                                   <input id="@save" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
                                                                                 </td>
                                                                                 <td>
                                                                                    <input id="@edit" class="Submit" formaction=" " type="submit" value="Edit Budget" style="align-self:center"/>
@@ -1102,7 +1114,7 @@
                                                         @if(!@Subs.RequireInput && Model.IsEnabled)
                                                         {
                                                         <td>
-                                                        <input id="@Submit" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
+                                                        <input id="@save" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
                                                         </td>
                                                         <td>
                                                         <input id="@edit" class="Submit" formaction=" " type="submit" value="Edit Budget" style="align-self:center"/>
@@ -1190,9 +1202,9 @@
                                                     var name2 = String.Concat("InterimRev", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name3 = String.Concat("ProvisionalRE", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
-                                                    var save = String.Concat("Save", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var edit = String.Concat("Edit", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var delete = String.Concat("Delete", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var save = String.Concat("Save", @inner.SectionNo.ToString(), "_",@Subs.SubGroupNo, @TableCount);
+                                                    var edit = String.Concat("Edit", @inner.SectionNo.ToString(), "_",@Subs.SubGroupNo, @TableCount);
+                                                    var delete = String.Concat("Delete", @inner.SectionNo.ToString(), "_",@Subs.SubGroupNo, @TableCount);
 
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                     
@@ -1215,6 +1227,9 @@
                                                                          var Ledgerdetails = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();
                                                                          var LedPrevYearApp = (from a in Model.Approved where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault(); 
                                                                           
+                                                                          save = String.Concat("Save", @inner.SectionNo.ToString(),"_",@Ledgers.LedgerNo, @TableCount);
+                                                                          edit = String.Concat("Edit", @inner.SectionNo.ToString(),"_",@Ledgers.LedgerNo, @TableCount);
+                                                                          delete = String.Concat("Delete", @inner.SectionNo.ToString(),"_",@Ledgers.LedgerNo, @TableCount);
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td></td>
@@ -1272,7 +1287,7 @@
                                                                                 @if(Model.IsEnabled)
                                                                                 {
                                                                                 <td>
-                                                                                   <input id="@Submit" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
+                                                                                   <input id="@save" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
                                                                                 </td>
                                                                                 <td>
                                                                                    <input id="@edit" class="Submit" formaction=" " type="submit" value="Edit Budget" style="align-self:center"/>
@@ -1413,7 +1428,7 @@
                                                         @if(!@Subs.RequireInput && Model.IsEnabled)
                                                         {
                                                         <td>
-                                                        <input id="@Submit" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
+                                                        <input id="@save" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
                                                         </td>
                                                         <td>
                                                         <input id="@edit" class="Submit" formaction=" " type="submit" value="Edit Budget" style="align-self:center"/>
@@ -1630,7 +1645,10 @@
                         
                              var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
                              
+                             var SubGroupLedger = $(this).attr('id');
+                             var SubGroupLedger = SubGroupLedger.split('_')
                              //alert($(this).val());
+
                              
                              if($(this).val()=="Delete" || $(this).val()=="Upload")
                              {
