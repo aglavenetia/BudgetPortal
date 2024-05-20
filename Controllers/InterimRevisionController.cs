@@ -1,6 +1,7 @@
 ﻿using BudgetPortal.Data;
 using BudgetPortal.Entities;
 using BudgetPortal.ViewModel;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -85,19 +86,57 @@ namespace BudgetPortal.Controllers
             //Update Budget Details for Admin User
             if (User.Identity.Name.Equals("admin@test.com"))
             {
-
+                int index = IM.SubGroupNameOrLedgerName.IndexOf(IM.SubGroupLedgerName);
                 var username = User.Identity.Name;
                 var DivName = IM.SelectedDivisionName.ToString();
                 var SelectedDivisionID = _context.Division
                                      .Where(d => d.DivisionName == DivName)
                                      .Select(x => x.DivisionID).FirstOrDefault();
                 var splitAcademicYear = IM.SelectedAcademicYear.ToString().Split("-");
+                var SectionNumber = _context.BudgetSections
+                                  .Where(x => x.SectionName.Equals(IM.SectionName))
+                                  .Select(x => x.SectionNo).First();
+                var GroupNumber = _context.BudgetGroups
+                         .Where(x => x.GroupName.Equals(IM.GroupName))
+                         .Select(x => x.GroupNo).First();
+
+                var SubGroupNumber = _context.BudgetSubGroups
+                             .Where(x => x.SubGroupNo.Equals(IM.SubGroupNameOrLedgerName[index]))
+                             .Select(x => x.SubGroupNo).First();
+                var LedgerNumber = 0.ToString();
+
+                if (SubGroupNumber is null)
+                {
+                     LedgerNumber = _context.BudgetLedgers
+                                       .Where(x => x.SubGroupNo.Equals(IM.SubGroupNameOrLedgerName[index]))
+                                       .Select(x => x.LedgerNo).First();
+                    SubGroupNumber = _context.BudgetLedgers
+                                       .Where(x => x.SubGroupNo.Equals(LedgerNumber))
+                                       .Select(x => x.SubGroupNo).First();
+                }
+                else
+                { 
+                     LedgerNumber = 0.ToString();
+                }
 
                 ModelState.Remove("SubGroupLedgerName");
 
                 if (ModelState.IsValid)
                 {
-                   var result = new BudgetDetails();
+                    var result = new BudgetDetails();
+
+                    result.DivisionID = SelectedDivisionID;
+                    result.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
+                    result.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
+                    result.SectionNumber = Convert.ToInt32(SectionNumber);
+                    result.GroupNumber = GroupNumber;
+                    result.SubGroupNumber = SubGroupNumber;
+                    result.LedgerNumber = LedgerNumber;
+                    result.InterimRevEst = IM.InterimRev[index];
+                    result.ProvisionalRevEst = Convert.ToDecimal(IM.BudEstCurrFin[index] + IM.InterimRev[index]);
+
+                    _context.BudgetDetails.Add(result);
+                    _context.SaveChanges();
                 }
 
                 var DivisionID = _context.Division
@@ -109,7 +148,9 @@ namespace BudgetPortal.Controllers
                 IM.Ledgerss = _context.BudgetLedgers.ToList();
                 IM.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == DivisionID)
                                     .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+
                 
+
                 /*int FinalApproved = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(false) select a.AdminEditStatus).Count();
                 int SubmittedForApproval = (from a in MD.Statuss where a.SectionNumber != 0 && !a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
                 int NumberOfGroups = (from a in MD.Groupss select a.GroupNo).Count();
@@ -163,12 +204,116 @@ namespace BudgetPortal.Controllers
 
                 MD.DivisionNames.Where(x => x.Text.Equals(MD.SelectedDivisionName.ToString())).Single().Selected = true;*/
 
-                return View("Index", IM);
+                return View("InterimRev", IM);
 
             }
 
-            return View("Index", IM);
+            return View("InterimRev", IM);
 
+        }
+
+        [HttpGet]
+        public IActionResult GetDetails(int Year, String Division)
+        {
+
+            var username = User.Identity.Name;
+            var LoggedInDivisionID = 0;
+            var DivName = _context.Users
+                          .Where(x => x.UserName.Equals(username))
+                          .Select(x => x.BranchName).First();
+
+           
+                LoggedInDivisionID = _context.Division
+                                    .Where(d => d.DivisionName == Division)
+                                    .Select(x => x.DivisionID).FirstOrDefault();
+            
+
+            var AcademicYear = String.Concat(Year, "-", (Year + 1));
+            var mymodel = new MultipleData();
+            mymodel.SelectedAcademicYear = AcademicYear;
+            mymodel.Sectionss = _context.BudgetSections.ToList();
+            mymodel.Groupss = _context.BudgetGroups.ToList();
+            mymodel.SubGroupss = _context.BudgetSubGroups.ToList();
+            mymodel.Ledgerss = _context.BudgetLedgers.ToList();
+            mymodel.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
+                                .Where(x => x.FinancialYear1 == Year).ToList();
+            mymodel.Filess = _context.BudgetFiles.Where(x => x.DivisionID == LoggedInDivisionID)
+                                    .Where(x => x.FinancialYear1 == Convert.ToInt32(Year)).ToList();
+            mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == LoggedInDivisionID)
+                                         .Where(x => x.FinancialYear1 == (Year - 1)).ToList();
+
+            mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
+                        .Where(x => x.FinancialYear1 == Convert.ToInt32(Year)).ToList();
+
+            /*int FinalApproved = (from a in mymodel.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(false) select a.AdminEditStatus).Count();
+            int SubmittedForApproval = (from a in mymodel.Statuss where a.SectionNumber != 0 && !a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
+            int NumberOfGroups = (from a in mymodel.Groupss select a.GroupNo).Count();
+            int PendingForFinalSubmission = (from a in mymodel.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
+
+            if (FinalApproved > 0)
+            {
+                mymodel.ApprovedMessage = "* Budget Details Approved for the Financial Year " + AcademicYear + "!!!";
+                mymodel.WaitingForApprovalMessage = " ";
+            }
+            else if (FinalApproved == 0 && SubmittedForApproval == NumberOfGroups && SubmittedForApproval != 0)
+            {
+                mymodel.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + AcademicYear + " is pending with AC&BW for Approval.";
+                mymodel.ApprovedMessage = " ";
+            }
+            else if (PendingForFinalSubmission > 0)
+            {
+                mymodel.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + AcademicYear + " is pending with CMD for Approval.";
+                mymodel.ApprovedMessage = " ";
+            }
+            else
+            {
+                mymodel.ApprovedMessage = " ";
+                mymodel.WaitingForApprovalMessage = " ";
+            }
+
+            mymodel.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
+                     .Where(x => x.FinancialYear1 == Convert.ToInt32(Year - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Select(x => x.AdminEditStatus).Count();*/
+
+            mymodel.DivisionNames = _context.Division.AsEnumerable().Select(x =>
+                     new SelectListItem()
+                     {
+                         Selected = false,
+                         Text = x.DivisionName,
+                         Value = x.DivisionID.ToString()
+
+                     }).ToList();
+            mymodel.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
+                    new SelectListItem()
+                    {
+                        Selected = false,
+                        Text = x.Year1 + "-" + x.Year2,
+                        Value = x.Id.ToString()
+
+                    }).ToList();
+            //ViewBag.SelectedAcademicYearID = mymodel.AcademicYears;
+            try
+            {
+                mymodel.AcademicYears.Where(x => x.Text.Equals(AcademicYear)).Single().Selected = true;
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("SelectedAcademicYearID", "Please select any Academic Year");
+
+            }
+            //mymodel.SelectedAcademicYearID = String.Concat(Year.ToString(),"-",(Year+1).ToString());
+            
+            try
+            {
+                    mymodel.DivisionNames.Where(x => x.Text.Equals(Division)).Single().Selected = true;
+            }
+            catch (Exception ex)
+            {
+                    ModelState.AddModelError("SelectedDivisionID", "Please select any Division");
+
+            }
+            
+
+            return View("InterimRev", mymodel);
         }
     }
 }
