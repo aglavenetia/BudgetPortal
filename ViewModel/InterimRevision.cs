@@ -45,8 +45,8 @@ namespace BudgetPortal.ViewModel
         public IEnumerable<SelectListItem>? DivisionNames { get; set; }
 
         [Display(Name = "Division Names")]
+        [Required(ErrorMessage = "Division Name Required")]
         public String? SelectedDivisionID { get; set; }
-
 
         public IEnumerable<SelectListItem>? AcademicYears { get; set; }
 

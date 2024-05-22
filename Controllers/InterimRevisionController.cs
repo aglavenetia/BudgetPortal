@@ -229,7 +229,7 @@ namespace BudgetPortal.Controllers
             
 
             var AcademicYear = String.Concat(Year, "-", (Year + 1));
-            var mymodel = new MultipleData();
+            var mymodel = new InterimRevision();
             mymodel.SelectedAcademicYear = AcademicYear;
             mymodel.Sectionss = _context.BudgetSections.ToList();
             mymodel.Groupss = _context.BudgetGroups.ToList();
@@ -237,13 +237,8 @@ namespace BudgetPortal.Controllers
             mymodel.Ledgerss = _context.BudgetLedgers.ToList();
             mymodel.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
                                 .Where(x => x.FinancialYear1 == Year).ToList();
-            mymodel.Filess = _context.BudgetFiles.Where(x => x.DivisionID == LoggedInDivisionID)
-                                    .Where(x => x.FinancialYear1 == Convert.ToInt32(Year)).ToList();
             mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == LoggedInDivisionID)
                                          .Where(x => x.FinancialYear1 == (Year - 1)).ToList();
-
-            mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
-                        .Where(x => x.FinancialYear1 == Convert.ToInt32(Year)).ToList();
 
             /*int FinalApproved = (from a in mymodel.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(false) select a.AdminEditStatus).Count();
             int SubmittedForApproval = (from a in mymodel.Statuss where a.SectionNumber != 0 && !a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();

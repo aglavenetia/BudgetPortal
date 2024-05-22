@@ -79,7 +79,7 @@ namespace BudgetPortal.Entities
         public Decimal ACAndBWPropRENxtFin { get; set; }
 
         public DateTime CreatedDateTime { get; set; }
-        public string Justification { get; set; }
+        public string? Justification { get; set; }
         public String? SupportingDocumentPath { get; set; }
 
     }
