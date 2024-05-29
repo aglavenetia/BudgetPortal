@@ -587,7 +587,7 @@
                                                                                         {
                                                                                           <div class="form-group"> 
                                                                                               @{
-                                                                                              Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (Ledgerdetails!=null || Ledgerdetails.BudEstCurrFin != Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")) - Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))) / Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))))*100) : Convert.ToDecimal(0.00));
+                                                                                              Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.BudEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")) - Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))) / Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))))*100) : Convert.ToDecimal(0.00));
                                                                                               }
                                                                                               @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
@@ -597,7 +597,7 @@
                                                                                         {
                                                                                            <div class="form-group"> 
                                                                                                @{
-                                                                                                 Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (LedPrevYearApp!=null || LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
+                                                                                                 Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                                }
                                                                                                 @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                                 @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
@@ -679,7 +679,7 @@
                                                                                             <div class="form-group">
                                                                                              
                                                                                              @{
-                                                                                                 Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (Ledgerdetails!=null || Ledgerdetails.RevEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(Ledgerdetails.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
+                                                                                                 Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.RevEstCurrFin!=Convert.ToDecimal(0.00))  ? Convert.ToInt32(((Convert.ToDecimal(Ledgerdetails.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                              }  
                                                                                              
                                                                                               @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @readonly = "readonly"})
@@ -691,7 +691,7 @@
                                                                                         {
                                                                                             <div class="form-group">
                                                                                             @{
-                                                                                              Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (LedPrevYearApp!=null || LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
+                                                                                              Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                               }   
                                                                                               @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
@@ -734,7 +734,7 @@
                                                                                     {
                                                                                             <div class="form-group">
                                                                                              @{  
-                                                                                                Model.Justification.Insert(LedgerNo, Ledgerdetails != null ? Ledgerdetails.Justification.ToString(): "");
+                                                                                                Model.Justification.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.Justification!=null) ? Ledgerdetails.Justification.ToString(): "");
                                                                                               }  
                                                                                             @Html.TextAreaFor(model => model.Justification[LedgerNo], new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.Justification[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
@@ -745,7 +745,7 @@
                                                                                     {
                                                                                         <div class="form-group">
                                                                                            @{ 
-                                                                                              Model.Justification.Insert(LedgerNo, Ledgerdetails != null ? Ledgerdetails.Justification.ToString() : "");
+                                                                                              Model.Justification.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.Justification!=null) ? Ledgerdetails.Justification.ToString() : "");
                                                                                              }   
                                                                                             @Html.TextAreaFor(model => model.Justification[LedgerNo], new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo})
                                                                                             @Html.ValidationMessageFor(model => model.Justification[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
@@ -1039,7 +1039,7 @@
                                                         {
                                                             <div class="form-group">
                                                                @{ 
-                                                                  Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, (details!=null || details.BudEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.RevEstCurrFin)- Convert.ToDecimal(details.BudEstCurrFin))/Convert.ToDecimal(details.BudEstCurrFin))*100)  : Convert.ToDecimal(0.00));
+                                                                  Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, (details!=null && details.BudEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.RevEstCurrFin)- Convert.ToDecimal(details.BudEstCurrFin))/Convert.ToDecimal(details.BudEstCurrFin))*100)  : Convert.ToDecimal(0.00));
                                                                 } 
                                                                 @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
@@ -1049,7 +1049,7 @@
                                                         {
                                                                 <div class="form-group">
                                                                  @{
-                                                                    Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, (PrevYearApp!=null || PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin)- Convert.ToDecimal(PrevYearApp.BudEstNextFin))/Convert.ToDecimal(PrevYearApp.BudEstNextFin))*100)   : Convert.ToDecimal(0.00));
+                                                                    Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin)- Convert.ToDecimal(PrevYearApp.BudEstNextFin))/Convert.ToDecimal(PrevYearApp.BudEstNextFin))*100)   : Convert.ToDecimal(0.00));
                                                                   }
                                                                      @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                      @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
@@ -1207,7 +1207,7 @@
                                                             {
                                                                 <div class="form-group">
                                                                     @{
-                                                                        Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (details!=null || details.RevEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
+                                                                        Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (details!=null && details.RevEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                     }
                                                                    
                                                                     @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name8, @readonly = "readonly"})
@@ -1218,7 +1218,7 @@
                                                             {
                                                                 <div class="form-group">
                                                                     @{
-                                                                        Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (PrevYearApp!=null || PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
+                                                                        Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                     }
                                                                     
                                                                     @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name8, @readonly = "readonly"})
@@ -1291,7 +1291,7 @@
                                                         {
                                                             <div class="form-group">
                                                                 @{
-                                                                    Model.Justification.Insert(Count, details != null ? details.Justification.ToString(): "");
+                                                                    Model.Justification.Insert(Count, (details != null && details.Justification!=null) ? details.Justification.ToString(): "");
                                                                  }
                                                                 
                                                                 @Html.TextAreaFor(model => model.Justification[Count] , new { @class = "form-control", @id = @name10, @readonly = "readonly"})
@@ -1309,7 +1309,7 @@
                                                         {                                                                                                             
                                                             <div class="form-group">
                                                                 @{
-                                                                     Model.Justification.Insert(Count, details != null ? details.Justification.ToString(): "");
+                                                                     Model.Justification.Insert(Count, (details != null && details.Justification!=null) ? details.Justification.ToString(): "");
                                                                  }
                                                                  @*Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10})
                                                                  @Html.ValidationMessage(@name10,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"}) *@
@@ -1660,7 +1660,7 @@
                                                                                     {
                                                                                         <div class="form-group">
                                                                                         @{
-                                                                                            Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (Ledgerdetails!=null || Ledgerdetails.BudEstCurrFin != Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")) - Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))) / Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
+                                                                                            Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.BudEstCurrFin != Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")) - Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))) / Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                          }
                                                                                             @*Html.TextBox(@name5+@Ledgers.LedgerNo, (Ledgerdetails!=null) ? (Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                             @Html.ValidationMessage(@name5+@Ledgers.LedgerNo,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"}) *@
@@ -1672,7 +1672,7 @@
                                                                                         {
                                                                                             <div class="form-group">
                                                                                             @{
-                                                                                                    Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (LedPrevYearApp!=null || LedPrevYearApp.BudEstNextFin != Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) - Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))) / Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
+                                                                                                    Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin != Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) - Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))) / Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                              }
                                                                                                 @*Html.TextBox(@name5+@Ledgers.LedgerNo, LedPrevYearApp!=null ? (Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : " ", new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                                 @Html.ValidationMessage(@name5+@Ledgers.LedgerNo,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"}) *@
@@ -1757,7 +1757,7 @@
                                                                                     {
                                                                                         <div class="form-group">
                                                                                         @{
-                                                                                             Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (Ledgerdetails!=null || Ledgerdetails.RevEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(Ledgerdetails.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
+                                                                                             Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.RevEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(Ledgerdetails.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                          }
                                                                                    @*Html.TextBox(@name8+@Ledgers.LedgerNo, (Ledgerdetails!=null) ? (Convert.ToDecimal(Ledgerdetails.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                             @Html.ValidationMessage(@name8+@Ledgers.LedgerNo,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"}) *@
@@ -1769,7 +1769,7 @@
                                                                                     {
                                                                                          <div class="form-group">
                                                                                          @{
-                                                                                             Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (LedPrevYearApp!=null || LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100)  : Convert.ToDecimal(0.00));
+                                                                                             Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100)  : Convert.ToDecimal(0.00));
                                                                                          }
                                                                                         @*Html.TextBox(@name8+@Ledgers.LedgerNo, LedPrevYearApp!=null ? (Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : " ", new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                                @Html.ValidationMessage(@name8+@Ledgers.LedgerNo,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"}) *@
@@ -1816,7 +1816,7 @@
                                                                                     {
                                                                                         <div class="form-group">
                                                                                             @{
-                                                                                               Model.Justification.Insert(LedgerNo, Ledgerdetails != null ? Ledgerdetails.Justification.ToString(): "");
+                                                                                               Model.Justification.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.Justification!=null)? Ledgerdetails.Justification.ToString(): "");
                                                                                              }
 
                                                                                            @*Html.TextArea(@name10+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.Justification.ToString() : " ", new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @readonly = "readonly"})
@@ -1831,7 +1831,7 @@
 
                                                                                         <div class="form-group">
                                                                                             @{
-                                                                                               Model.Justification.Insert(LedgerNo, Ledgerdetails != null ? Ledgerdetails.Justification.ToString(): "");
+                                                                                               Model.Justification.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.Justification!=null) ? Ledgerdetails.Justification.ToString(): "");
                                                                                              }
 
                                                                                          @*Html.TextArea(@name10+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.Justification.ToString() : " ", new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo})
@@ -2141,7 +2141,7 @@
                                                             {
                                                                 <div class="form-group">
                                                                 @{
-                                                                   Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, (details!=null || details.BudEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))*100)  : Convert.ToDecimal(0.00));
+                                                                   Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, (details!=null && details.BudEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))*100)  : Convert.ToDecimal(0.00));
                                                                  }
                                                                @*Html.TextBox(@name5, (details!=null) ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")) : " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                      @Html.ValidationMessage(@name5,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"}) *@
@@ -2153,7 +2153,7 @@
                                                             {
                                                                 <div class="form-group">
                                                                @{
-                                                                   Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, (PrevYearApp!=null || PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))*100)  : Convert.ToDecimal(0.00));
+                                                                   Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))*100)  : Convert.ToDecimal(0.00));
                                                                  }
                                                                @*Html.TextBox(@name5, (PrevYearApp!=null) ? (Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")) : " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                      @Html.ValidationMessage(@name5,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"}) *@
@@ -2322,7 +2322,7 @@
                                                             {
                                                                 <div class="form-group">
                                                                     @{
-                                                                        Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (details!=null || details.RevEstCurrFin != Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.BudgEstNexFin.ToString("F")) - Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))) / Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
+                                                                        Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (details!=null && details.RevEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.BudgEstNexFin.ToString("F")) - Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))) / Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                     }
                                                                    @*Html.TextBox(@name8, (details!=null) ? (Convert.ToDecimal(details.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(details.RevEstCurrFin.ToString("F")) : " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                               @Html.ValidationMessage(@name8,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"}) *@
@@ -2334,7 +2334,7 @@
                                                             {
                                                                 <div class="form-group">
                                                                     @{
-                                                                        Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (PrevYearApp!=null || PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
+                                                                        Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                     }
                                                                @*Html.TextBox(@name8, (PrevYearApp!=null) ? (Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")) : " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name8,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"}) *@
@@ -2411,7 +2411,7 @@
                                                         {
                                                             <div class="form-group">
                                                                 @{
-                                                                     Model.Justification.Insert(Count, details != null ? details.Justification.ToString(): "");
+                                                                     Model.Justification.Insert(Count, (details != null && details.Justification!=null) ? details.Justification.ToString(): "");
                                                                  }
                                                            @*Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10, @readonly = "readonly"})
                                                                 @Html.ValidationMessage(@name10,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"}) *@
@@ -2430,7 +2430,7 @@
                                                         {                                                                                                             
                                                             <div class="form-group">
                                                                 @{
-                                                                   Model.Justification.Insert(Count, details != null ? details.Justification.ToString(): "");
+                                                                   Model.Justification.Insert(Count, (details != null && details.Justification!=null) ? details.Justification.ToString(): "");
                                                                  }
                                                         @*Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10})
                                                                 @Html.ValidationMessage(@name10,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"}) *@
@@ -2982,7 +2982,7 @@
                                                                                     {
                                                                                         <div class="form-group">
                                                                                         @{
-                                                                                                    Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (Ledgerdetails!=null || Ledgerdetails.BudEstCurrFin != Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")) - Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))) / Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
+                                                                                                    Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.BudEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")) - Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))) / Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                          }
                                                                                        @*Html.TextBox(@name5+@Ledgers.LedgerNo, (Ledgerdetails!=null) ? (Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                                 @Html.ValidationMessage(@name5+@Ledgers.LedgerNo,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"}) *@
@@ -2994,7 +2994,7 @@
                                                                                         {
                                                                                             <div class="form-group">
                                                                                             @{
-                                                                                                    Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (LedPrevYearApp!=null || LedPrevYearApp.BudEstNextFin != Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) - Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))) / Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
+                                                                                                    Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) - Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))) / Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                              }
                                                                                           @*Html.TextBox(@name5+@Ledgers.LedgerNo, LedPrevYearApp!=null ? (Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : " ", new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                                 @Html.ValidationMessage(@name5+@Ledgers.LedgerNo,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"}) *@
@@ -3079,7 +3079,7 @@
                                                                                         {
                                                                                             <div class="form-group">
                                                                                                 @{
-                                                                                                    Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (Ledgerdetails!=null || Ledgerdetails.RevEstCurrFin != Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(Ledgerdetails.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))*100)  : Convert.ToDecimal(0.00));
+                                                                                                    Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.RevEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(Ledgerdetails.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))*100)  : Convert.ToDecimal(0.00));
                                                                                                 }
                                                                                         @*Html.TextBox(@name8+@Ledgers.LedgerNo, (Ledgerdetails!=null) ? (Convert.ToDecimal(Ledgerdetails.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                                 @Html.ValidationMessage(@name8+@Ledgers.LedgerNo,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"}) *@
@@ -3091,7 +3091,7 @@
                                                                                         {
                                                                                             <div class="form-group">
                                                                                             @{
-                                                                                                Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (LedPrevYearApp!=null || LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
+                                                                                                Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                              }
                                                                                         @*Html.TextBox(@name8+@Ledgers.LedgerNo, LedPrevYearApp!=null ? (Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : " ", new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                                 @Html.ValidationMessage(@name8+@Ledgers.LedgerNo,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"}) *@
@@ -3138,7 +3138,7 @@
                                                                                     {
                                                                                         <div class="form-group">
                                                                                             @{
-                                                                                                Model.Justification.Insert(LedgerNo, Ledgerdetails != null ? Ledgerdetails.Justification.ToString(): "");
+                                                                                                Model.Justification.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.Justification!=null) ? Ledgerdetails.Justification.ToString(): "");
                                                                                              }
                                                                                     @*Html.TextArea(@name10+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.Justification.ToString() : " ", new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                             @Html.ValidationMessage(@name10+@Ledgers.LedgerNo,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"}) *@
@@ -3152,7 +3152,7 @@
 
                                                                                         <div class="form-group">
                                                                                             @{
-                                                                                              Model.Justification.Insert(LedgerNo, Ledgerdetails != null ? Ledgerdetails.Justification.ToString(): "");
+                                                                                              Model.Justification.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.Justification!=null)? Ledgerdetails.Justification.ToString(): "");
                                                                                             }
 
                                                                                      @*Html.TextArea(@name10+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.Justification.ToString() : " ", new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo})
@@ -3474,7 +3474,7 @@
                                                         {
                                                             <div class="form-group">
                                                             @{
-                                                                Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, (details!=null || details.BudEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
+                                                                Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, (details!=null && details.BudEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                              }
                                                          @*Html.TextBox(@name5, (details!=null) ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")) : " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                 @Html.ValidationMessage(@name5,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"}) *@
@@ -3486,7 +3486,7 @@
                                                         {
                                                                 <div class="form-group">
                                                             @{
-                                                                Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, (PrevYearApp!=null || PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
+                                                                Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                              }
                                                              @*Html.TextBox(@name5, (PrevYearApp!=null) ? (Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")) : " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name5,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"}) *@
@@ -3657,7 +3657,7 @@
                                                             {
                                                                 <div class="form-group">
                                                                @{
-                                                                  Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (details!=null || details.RevEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
+                                                                  Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (details!=null && details.RevEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                 }
                                                               @*Html.TextBox(@name8, (details!=null) ? (Convert.ToDecimal(details.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(details.RevEstCurrFin.ToString("F")) : " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name8,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"}) *@
@@ -3669,7 +3669,7 @@
                                                             {
                                                                 <div class="form-group">
                                                                 @{
-                                                                  Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (PrevYearApp!=null || PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))*100)  : Convert.ToDecimal(0.00));
+                                                                  Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))*100)  : Convert.ToDecimal(0.00));
                                                                 }
                                                               @*Html.TextBox(@name8, (PrevYearApp!=null) ? (Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")) : " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                      @Html.ValidationMessage(@name8,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"}) *@
@@ -3746,7 +3746,7 @@
                                                             {
                                                                 <div class="form-group">
                                                                     @{
-                                                                        Model.Justification.Insert(Count, details != null ? details.Justification.ToString(): "");
+                                                                        Model.Justification.Insert(Count, (details != null && details.Justification!=null) ? details.Justification.ToString(): "");
                                                                      }
                                                                @*Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10, @readonly = "readonly"})
                                                                      @Html.ValidationMessage(@name10,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"}) *@
@@ -3765,7 +3765,7 @@
                                                             {
                                                                 <div class="form-group">
                                                                     @{
-                                                                        Model.Justification.Insert(Count, details != null ? details.Justification.ToString(): "");
+                                                                        Model.Justification.Insert(Count, (details != null && details.Justification!=null) ? details.Justification.ToString(): "");
                                                                      }
                                                             @*Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10})
                                                                      @Html.ValidationMessage(@name10,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"}) *@
@@ -4122,7 +4122,7 @@
                                                                                     {
                                                                                         <div class="form-group">
                                                                                             @{
-                                                                                                    Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (Ledgerdetails!=null || Ledgerdetails.BudEstCurrFin != Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")) - Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))) / Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
+                                                                                                    Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.BudEstCurrFin!=Convert.ToDecimal(0.00))  ? Convert.ToInt32(((Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")) - Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))) / Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                                 }
 
                                                                                                 @*Html.TextBox(@name5+@Ledgers.LedgerNo, (Ledgerdetails!=null) ? (Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @readonly = "readonly"})
@@ -4136,7 +4136,7 @@
                                                                                     {
                                                                                         <div class="form-group">
                                                                                                 @{
-                                                                                                    Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (LedPrevYearApp!=null || LedPrevYearApp.BudEstNextFin != Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) - Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))) / Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
+                                                                                                    Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) - Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))) / Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                                 }
                                                                                                 @*Html.TextBox(@name5+@Ledgers.LedgerNo, LedPrevYearApp!=null ? (Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : " ", new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                                  @Html.ValidationMessage(@name5+@Ledgers.LedgerNo,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"}) *@
@@ -4215,7 +4215,7 @@
                                                                                         {
                                                                                             <div class="form-group">
                                                                                                 @{
-                                                                                                    Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (Ledgerdetails!=null || Ledgerdetails.RevEstCurrFin != Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(Ledgerdetails.BudgEstNexFin.ToString("F")) - Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F"))) / Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
+                                                                                                    Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.RevEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(Ledgerdetails.BudgEstNexFin.ToString("F")) - Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F"))) / Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                                 }
 
                                                                                                 @*Html.TextBox(@name8+@Ledgers.LedgerNo, (Ledgerdetails!=null) ? (Convert.ToDecimal(Ledgerdetails.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")): " ", new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @readonly = "readonly"})
@@ -4229,7 +4229,7 @@
                                                                                         {
                                                                                             <div class="form-group">
                                                                                                 @{
-                                                                                                    Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (LedPrevYearApp!=null || LedPrevYearApp.BudEstNextFin != Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) - Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))) / Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
+                                                                                                    Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) - Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))) / Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                                 }
                                                                                                 @*Html.TextBox(@name8+@Ledgers.LedgerNo, LedPrevYearApp!=null ? (Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : " ", new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @readonly = "readonly"})
 
@@ -4280,7 +4280,7 @@
                                                                                     {
                                                                                         <div class="form-group">
                                                                                             @{
-                                                                                                Model.Justification.Insert(LedgerNo, Ledgerdetails != null ? Ledgerdetails.Justification.ToString(): "");
+                                                                                                Model.Justification.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.Justification!=null) ? Ledgerdetails.Justification.ToString(): "");
                                                                                              }
 
                                                                                       @*Html.TextArea(@name10+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.Justification.ToString() : " ", new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @readonly = "readonly"})
@@ -4296,7 +4296,7 @@
 
                                                                                         <div class="form-group">
                                                                                             @{
-                                                                                               Model.Justification.Insert(LedgerNo, Ledgerdetails != null ? Ledgerdetails.Justification.ToString(): "");
+                                                                                               Model.Justification.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.Justification!=null)  ? Ledgerdetails.Justification.ToString(): "");
                                                                                              }
                                                                                                 @*Html.TextArea(@name10+@Ledgers.LedgerNo, Ledgerdetails!=null ? Ledgerdetails.Justification.ToString() : " ", new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo})
 
@@ -4618,7 +4618,7 @@
                                                             {
                                                                 <div class="form-group">
                                                                     @{
-                                                                        Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, (details!=null || details.BudEstCurrFin != Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.RevEstCurrFin.ToString("F")) - Convert.ToDecimal(details.BudEstCurrFin.ToString("F"))) / Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
+                                                                        Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, (details!=null && details.BudEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.RevEstCurrFin.ToString("F")) - Convert.ToDecimal(details.BudEstCurrFin.ToString("F"))) / Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                     }
                                                                     @*Html.TextBox(@name5, (details!=null) ? (Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))- Convert.ToDecimal(details.BudEstCurrFin.ToString("F")))/Convert.ToDecimal(details.BudEstCurrFin.ToString("F")) : " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                      @Html.ValidationMessage(@name5,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"}) *@
@@ -4631,7 +4631,7 @@
                                                             {
                                                                 <div class="form-group">
                                                                     @{
-                                                                        Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, (PrevYearApp!=null || PrevYearApp.BudEstNextFin != Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")) - Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))) / Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
+                                                                        Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")) - Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))) / Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                     }
                                                              @*Html.TextBox(@name5, (PrevYearApp!=null) ? (Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")) : " ", new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                     @Html.ValidationMessage(@name5,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"}) *@
@@ -4802,7 +4802,7 @@
                                                             {
                                                                 <div class="form-group">
                                                                     @{
-                                                                        Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (details!=null || details.RevEstCurrFin != Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.BudgEstNexFin.ToString("F")) - Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))) / Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
+                                                                        Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (details!=null && details.RevEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.BudgEstNexFin.ToString("F")) - Convert.ToDecimal(details.RevEstCurrFin.ToString("F"))) / Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                     }
                                                                     @*Html.TextBox(@name8, (details!=null) ? (Convert.ToDecimal(details.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(details.RevEstCurrFin.ToString("F")) : " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                      @Html.ValidationMessage(@name8,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"}) *@
@@ -4814,7 +4814,7 @@
                                                             {
                                                                 <div class="form-group">
                                                                     @{
-                                                                        Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (PrevYearApp!=null || PrevYearApp.BudEstNextFin != Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")) - Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))) / Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
+                                                                        Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")) - Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))) / Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                     }
                                                                    @*Html.TextBox(@name8, (PrevYearApp!=null) ? (Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")) : " ", new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                      @Html.ValidationMessage(@name8,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"}) *@

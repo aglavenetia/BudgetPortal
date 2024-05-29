@@ -1,6 +1,7 @@
 ﻿using BudgetPortal.Data;
 using BudgetPortal.Entities;
 using BudgetPortal.ViewModel;
+using DocumentFormat.OpenXml.Bibliography;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -149,7 +150,7 @@ namespace BudgetPortal.Controllers
                 IM.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == DivisionID)
                                     .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
 
-                
+
 
                 /*int FinalApproved = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(false) select a.AdminEditStatus).Count();
                 int SubmittedForApproval = (from a in MD.Statuss where a.SectionNumber != 0 && !a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
@@ -182,8 +183,8 @@ namespace BudgetPortal.Controllers
                      .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Select(x => x.AdminEditStatus).Count();
 
                 MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == DivisionID)
-                                      .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
-                MD.DivisionNames = _context.Division.AsEnumerable().Select(x =>
+                                      .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();*/
+                IM.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                         new SelectListItem()
                         {
                             Selected = false,
@@ -192,7 +193,7 @@ namespace BudgetPortal.Controllers
 
                         }).ToList();
 
-                MD.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
+                IM.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
                     new SelectListItem()
                     {
                         Selected = false,
@@ -200,9 +201,9 @@ namespace BudgetPortal.Controllers
                         Value = x.Id.ToString()
 
                     }).ToList();
-                MD.AcademicYears.Where(x => x.Text.Equals(MD.SelectedAcademicYear.ToString())).Single().Selected = true;
+                IM.AcademicYears.Where(x => x.Text.Equals(IM.SelectedAcademicYear.ToString())).Single().Selected = true;
 
-                MD.DivisionNames.Where(x => x.Text.Equals(MD.SelectedDivisionName.ToString())).Single().Selected = true;*/
+                IM.DivisionNames.Where(x => x.Text.Equals(IM.SelectedDivisionName.ToString())).Single().Selected = true;
 
                 return View("InterimRev", IM);
 
@@ -227,7 +228,6 @@ namespace BudgetPortal.Controllers
                                     .Where(d => d.DivisionName == Division)
                                     .Select(x => x.DivisionID).FirstOrDefault();
             
-
             var AcademicYear = String.Concat(Year, "-", (Year + 1));
             var mymodel = new InterimRevision();
             mymodel.SelectedAcademicYear = AcademicYear;
@@ -240,6 +240,11 @@ namespace BudgetPortal.Controllers
             mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == LoggedInDivisionID)
                                          .Where(x => x.FinancialYear1 == (Year - 1)).ToList();
 
+            var Month = DateTime.Now.Month;
+            if (Month > 3 && Month < 10)
+            {
+                mymodel.IsEnabled = true;
+            }
             /*int FinalApproved = (from a in mymodel.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(false) select a.AdminEditStatus).Count();
             int SubmittedForApproval = (from a in mymodel.Statuss where a.SectionNumber != 0 && !a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
             int NumberOfGroups = (from a in mymodel.Groupss select a.GroupNo).Count();

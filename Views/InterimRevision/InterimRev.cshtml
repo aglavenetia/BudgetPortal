@@ -259,8 +259,9 @@
                                                                                                 @Html.TextBoxFor(model => model.BudEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name1 + @Ledgers.LedgerNo, @readonly = "readonly" })
                                                                                                 @Html.ValidationMessageFor(model => model.BudEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
+                                                                                </td>
                                                                                 <td>
-                                                                                    @if (!Model.IsEnabled)
+                                                                                    @if (!Model.IsEnabled || Ledgerdetails!=null)
                                                                                     {
                                                                                         <div class="form-group"> 
                                                                                           @{
@@ -291,11 +292,14 @@
                                                                                                @Html.ValidationMessageFor(model => model.ProvisionalRE[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                       </div>  
                                                                                 </td>
-                                                                                @if(Model.IsEnabled)
+                                                                                @if(Model.IsEnabled && Ledgerdetails == null)
                                                                                 {
                                                                                 <td>
                                                                                    <input id="@save" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
                                                                                 </td>
+                                                                                }
+                                                                                @if(Model.IsEnabled && Ledgerdetails != null)
+                                                                                {
                                                                                 <td>
                                                                                    <input id="@edit" class="Submit" formaction=" " type="submit" value="Edit Budget" style="align-self:center"/>
                                                                                 </td>
@@ -382,14 +386,13 @@
                                                             </div>
                                                             
                                                         }
-                                                        else if (!Model.IsEnabled)
+                                                        else if (!Model.IsEnabled || (Model.IsEnabled && details!=null))
                                                         {
-                                                               var LedgerSumInterimRev = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.InterimRevEst).Sum();
-                                                            <div class="form-group">  
+                                                               <div class="form-group">
                                                                @{
-                                                                  Model.InterimRev.Insert(Count, LedgerSumInterimRev != null ? Convert.ToDecimal(LedgerSumInterimRev) : Convert.ToDecimal(0.00));
-                                                                }   
-                                                                @Html.TextBoxFor(model => model.InterimRev[Count], new { @class = "form-control", @id = @name2, @readonly = "readonly"})
+                                                                  Model.InterimRev.Insert(Count, details != null ? Convert.ToDecimal(details.InterimRevEst) : Convert.ToDecimal(0.00));
+                                                                }
+                                                                @Html.TextBoxFor(model => model.InterimRev[Count], new { @class = "form-control", @id = @name2, @readonly = "readonly" })
                                                                 @Html.ValidationMessageFor(model => model.InterimRev[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
                                                                 
@@ -432,18 +435,22 @@
                                                             }
                                                        
                                                         </td>
-                                                        @if(!@Subs.RequireInput && Model.IsEnabled)
+                                                        @if (!@Subs.RequireInput && Model.IsEnabled && details == null)
                                                         {
-                                                        <td>
-                                                        <input id="@save" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
-                                                        </td>
-                                                        <td>
-                                                        <input id="@edit" class="Submit" formaction=" " type="submit" value="Edit Budget" style="align-self:center"/>
-                                                        </td>
-                                                        <td>
-                                                        <input id="@delete" class="Submit" formaction=" " type="submit" value="Delete Budget" style="align-self:center"/>
-                                                        </td>
+                                                            <td>
+                                                                <input id="@save" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
+                                                            </td>
                                                         }
+                                                        @if (!@Subs.RequireInput && Model.IsEnabled && details!=null)
+                                                        {
+                                                             <td>
+                                                                 <input id="@edit" class="Submit" formaction=" " type="submit" value="Edit Budget" style="align-self:center"/>
+                                                             </td>
+                                                             <td>
+                                                                  <input id="@delete" class="Submit" formaction=" " type="submit" value="Delete Budget" style="align-self:center"/>
+                                                             </td>
+                                                        }
+                                                     }
                                                     </tr>
 
                                                     Count++;
@@ -468,7 +475,7 @@
                                                        @SumInterimRev.ToString("F4")
                                                     </td>
                                                     <td class="w-5" id="@Sumname3-Total">
-                                                       @SumProvisionalRE.ToString("F4");
+                                                       @SumProvisionalRE.ToString("F4")
                                                     </td>
                                                 </tr>
                                     </tbody>
@@ -574,7 +581,7 @@
                                                                                                 @Html.ValidationMessageFor(model => model.BudEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                 <td>
-                                                                                    @if (!Model.IsEnabled)
+                                                                                    @if (!Model.IsEnabled || (Model.IsEnabled && Ledgerdetails!=null))
                                                                                     {
                                                                                         <div class="form-group"> 
                                                                                           @{
@@ -605,11 +612,14 @@
                                                                                                @Html.ValidationMessageFor(model => model.ProvisionalRE[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                       </div>  
                                                                                 </td>
-                                                                                @if(Model.IsEnabled)
+                                                                                @if(Model.IsEnabled && Ledgerdetails == null)
                                                                                 {
                                                                                 <td>
                                                                                    <input id="@save" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
                                                                                 </td>
+                                                                                }
+                                                                                @if (Model.IsEnabled && Ledgerdetails!=null)
+                                                                                { 
                                                                                 <td>
                                                                                    <input id="@edit" class="Submit" formaction=" " type="submit" value="Edit Budget" style="align-self:center"/>
                                                                                 </td>
@@ -696,14 +706,13 @@
                                                             </div>
                                                             
                                                         }
-                                                        else if (!Model.IsEnabled)
+                                                        else if (!Model.IsEnabled || (Model.IsEnabled && details!=null))
                                                         {
-                                                               var LedgerSumInterimRev = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.InterimRevEst).Sum();
-                                                            <div class="form-group">  
+                                                               <div class="form-group">
                                                                @{
-                                                                  Model.InterimRev.Insert(Count, LedgerSumInterimRev != null ? Convert.ToDecimal(LedgerSumInterimRev) : Convert.ToDecimal(0.00));
-                                                                }   
-                                                                @Html.TextBoxFor(model => model.InterimRev[Count], new { @class = "form-control", @id = @name2, @readonly = "readonly"})
+                                                                  Model.InterimRev.Insert(Count, details != null ? Convert.ToDecimal(details.InterimRevEst) : Convert.ToDecimal(0.00));
+                                                                }
+                                                                @Html.TextBoxFor(model => model.InterimRev[Count], new { @class = "form-control", @id = @name2, @readonly = "readonly" })
                                                                 @Html.ValidationMessageFor(model => model.InterimRev[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
                                                                 
@@ -746,11 +755,14 @@
                                                             }
                                                        
                                                         </td>
-                                                        @if(!@Subs.RequireInput && Model.IsEnabled)
+                                                        @if(!@Subs.RequireInput && Model.IsEnabled && details == null)
                                                         {
                                                         <td>
                                                         <input id="@save" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
                                                         </td>
+                                                        }
+                                                        @if (!@Subs.RequireInput && Model.IsEnabled && details!=null)
+                                                        {
                                                         <td>
                                                         <input id="@edit" class="Submit" formaction=" " type="submit" value="Edit Budget" style="align-self:center"/>
                                                         </td>
@@ -782,7 +794,7 @@
                                                        @SumInterimRev.ToString("F4")
                                                     </td>
                                                     <td class="w-5" id="@Sumname3-Total">
-                                                       @SumProvisionalRE.ToString("F4");
+                                                       @SumProvisionalRE.ToString("F4")
                                                     </td>
                                                 </tr>
                                     </tbody>
@@ -939,7 +951,7 @@
                                                                                                 @Html.ValidationMessageFor(model => model.BudEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                 <td>
-                                                                                    @if (!Model.IsEnabled)
+                                                                                    @if (!Model.IsEnabled || (Model.IsEnabled && Ledgerdetails!=null))
                                                                                     {
                                                                                         <div class="form-group"> 
                                                                                           @{
@@ -970,11 +982,14 @@
                                                                                                @Html.ValidationMessageFor(model => model.ProvisionalRE[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                       </div>  
                                                                                 </td>
-                                                                                @if(Model.IsEnabled)
+                                                                                @if(Model.IsEnabled && Ledgerdetails == null)
                                                                                 {
                                                                                 <td>
                                                                                    <input id="@save" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
                                                                                 </td>
+                                                                                }
+                                                                                @if (Model.IsEnabled && Ledgerdetails!=null)
+                                                                                {
                                                                                 <td>
                                                                                    <input id="@edit" class="Submit" formaction=" " type="submit" value="Edit Budget" style="align-self:center"/>
                                                                                 </td>
@@ -1061,14 +1076,13 @@
                                                             </div>
                                                             
                                                         }
-                                                        else if (!Model.IsEnabled)
+                                                        else if (!Model.IsEnabled  || (Model.IsEnabled && details!=null))
                                                         {
-                                                               var LedgerSumInterimRev = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.InterimRevEst).Sum();
-                                                            <div class="form-group">  
+                                                               <div class="form-group">
                                                                @{
-                                                                  Model.InterimRev.Insert(Count, LedgerSumInterimRev != null ? Convert.ToDecimal(LedgerSumInterimRev) : Convert.ToDecimal(0.00));
-                                                                }   
-                                                                @Html.TextBoxFor(model => model.InterimRev[Count], new { @class = "form-control", @id = @name2, @readonly = "readonly"})
+                                                                  Model.InterimRev.Insert(Count, details != null ? Convert.ToDecimal(details.InterimRevEst) : Convert.ToDecimal(0.00));
+                                                                }
+                                                                @Html.TextBoxFor(model => model.InterimRev[Count], new { @class = "form-control", @id = @name2, @readonly = "readonly" })
                                                                 @Html.ValidationMessageFor(model => model.InterimRev[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
                                                                 
@@ -1111,11 +1125,14 @@
                                                             }
                                                        
                                                         </td>
-                                                        @if(!@Subs.RequireInput && Model.IsEnabled)
+                                                        @if(!@Subs.RequireInput && Model.IsEnabled && details == null)
                                                         {
                                                         <td>
                                                         <input id="@save" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
                                                         </td>
+                                                        }
+                                                        @if (!@Subs.RequireInput && Model.IsEnabled && details!=null)
+                                                        {
                                                         <td>
                                                         <input id="@edit" class="Submit" formaction=" " type="submit" value="Edit Budget" style="align-self:center"/>
                                                         </td>
@@ -1147,7 +1164,7 @@
                                                        @SumInterimRev.ToString("F4")
                                                     </td>
                                                     <td class="w-5" id="@Sumname3-Total">
-                                                       @SumProvisionalRE.ToString("F4");
+                                                       @SumProvisionalRE.ToString("F4")
                                                     </td>
                                                 </tr>
                                     </tbody>
@@ -1253,7 +1270,7 @@
                                                                                                 @Html.ValidationMessageFor(model => model.BudEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                 <td>
-                                                                                    @if (!Model.IsEnabled)
+                                                                                    @if (!Model.IsEnabled || (Model.IsEnabled && Ledgerdetails!=null))
                                                                                     {
                                                                                         <div class="form-group"> 
                                                                                           @{
@@ -1284,11 +1301,14 @@
                                                                                                @Html.ValidationMessageFor(model => model.ProvisionalRE[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                       </div>  
                                                                                 </td>
-                                                                                @if(Model.IsEnabled)
+                                                                                @if(Model.IsEnabled && Ledgerdetails == null)
                                                                                 {
                                                                                 <td>
                                                                                    <input id="@save" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
                                                                                 </td>
+                                                                                }
+                                                                                @if (Model.IsEnabled && Ledgerdetails!=null)
+                                                                                {
                                                                                 <td>
                                                                                    <input id="@edit" class="Submit" formaction=" " type="submit" value="Edit Budget" style="align-self:center"/>
                                                                                 </td>
@@ -1375,14 +1395,13 @@
                                                             </div>
                                                             
                                                         }
-                                                        else if (!Model.IsEnabled)
+                                                        else if (!Model.IsEnabled || (Model.IsEnabled && details!=null))
                                                         {
-                                                               var LedgerSumInterimRev = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.InterimRevEst).Sum();
-                                                            <div class="form-group">  
+                                                               <div class="form-group">
                                                                @{
-                                                                  Model.InterimRev.Insert(Count, LedgerSumInterimRev != null ? Convert.ToDecimal(LedgerSumInterimRev) : Convert.ToDecimal(0.00));
-                                                                }   
-                                                                @Html.TextBoxFor(model => model.InterimRev[Count], new { @class = "form-control", @id = @name2, @readonly = "readonly"})
+                                                                  Model.InterimRev.Insert(Count, details != null ? Convert.ToDecimal(details.InterimRevEst) : Convert.ToDecimal(0.00));
+                                                                }
+                                                                @Html.TextBoxFor(model => model.InterimRev[Count], new { @class = "form-control", @id = @name2 })
                                                                 @Html.ValidationMessageFor(model => model.InterimRev[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
                                                                 
@@ -1425,11 +1444,14 @@
                                                             }
                                                        
                                                         </td>
-                                                        @if(!@Subs.RequireInput && Model.IsEnabled)
+                                                        @if(!@Subs.RequireInput && Model.IsEnabled && details==null)
                                                         {
                                                         <td>
                                                         <input id="@save" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
                                                         </td>
+                                                        }
+                                                        @if (!@Subs.RequireInput && Model.IsEnabled && details!=null)
+                                                        {
                                                         <td>
                                                         <input id="@edit" class="Submit" formaction=" " type="submit" value="Edit Budget" style="align-self:center"/>
                                                         </td>
@@ -1461,7 +1483,7 @@
                                                        @SumInterimRev.ToString("F4")
                                                     </td>
                                                     <td class="w-5" id="@Sumname3-Total">
-                                                       @SumProvisionalRE.ToString("F4");
+                                                       @SumProvisionalRE.ToString("F4")
                                                     </td>
                                                 </tr>
                                     </tbody>
