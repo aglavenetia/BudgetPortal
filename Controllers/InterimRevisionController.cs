@@ -27,7 +27,7 @@ namespace BudgetPortal.Controllers
             var username = User.Identity.Name;
             var DivName = _context.Users
                           .Where(x => x.UserName.Equals(username))
-                          .Select(x => x.BranchName).First();
+                          .Select(x => x.BranchName).FirstOrDefault();
             var LoggedInDivisionID = _context.Division
                                    .Where(d => d.DivisionName == DivName)
                                    .Select(x => x.DivisionID).FirstOrDefault();
@@ -96,24 +96,24 @@ namespace BudgetPortal.Controllers
                 var splitAcademicYear = IM.SelectedAcademicYear.ToString().Split("-");
                 var SectionNumber = _context.BudgetSections
                                   .Where(x => x.SectionName.Equals(IM.SectionName))
-                                  .Select(x => x.SectionNo).First();
+                                  .Select(x => x.SectionNo).FirstOrDefault();
                 var GroupNumber = _context.BudgetGroups
                          .Where(x => x.GroupName.Equals(IM.GroupName))
-                         .Select(x => x.GroupNo).First();
+                         .Select(x => x.GroupNo).FirstOrDefault();
 
                 var SubGroupNumber = _context.BudgetSubGroups
                              .Where(x => x.SubGroupNo.Equals(IM.SubGroupNameOrLedgerName[index]))
-                             .Select(x => x.SubGroupNo).First();
+                             .Select(x => x.SubGroupNo).FirstOrDefault();
                 var LedgerNumber = 0.ToString();
 
                 if (SubGroupNumber is null)
                 {
                      LedgerNumber = _context.BudgetLedgers
-                                       .Where(x => x.SubGroupNo.Equals(IM.SubGroupNameOrLedgerName[index]))
-                                       .Select(x => x.LedgerNo).First();
+                                       .Where(x => x.LedgerNo.Equals(IM.SubGroupLedgerName))
+                                       .Select(x => x.LedgerNo).FirstOrDefault();
                     SubGroupNumber = _context.BudgetLedgers
-                                       .Where(x => x.SubGroupNo.Equals(LedgerNumber))
-                                       .Select(x => x.SubGroupNo).First();
+                                       .Where(x => x.LedgerNo.Equals(LedgerNumber))
+                                       .Select(x => x.SubGroupNo).FirstOrDefault();
                 }
                 else
                 { 
@@ -149,7 +149,7 @@ namespace BudgetPortal.Controllers
                 IM.Ledgerss = _context.BudgetLedgers.ToList();
                 IM.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == DivisionID)
                                     .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
-
+                IM.ProvisionalRE[index] = Convert.ToDecimal(IM.BudEstCurrFin[index] + IM.InterimRev[index]);
 
 
                 /*int FinalApproved = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(false) select a.AdminEditStatus).Count();
@@ -180,10 +180,15 @@ namespace BudgetPortal.Controllers
 
 
                 MD.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
-                     .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Select(x => x.AdminEditStatus).Count();
+                     .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Select(x => x.AdminEditStatus).Count();*/
 
-                MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == DivisionID)
-                                      .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();*/
+                var Month = DateTime.Now.Month;
+                if (Month > 3 && Month < 10)
+                {
+                    IM.IsEnabled = true;
+                }
+                IM.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == DivisionID)
+                                      .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
                 IM.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                         new SelectListItem()
                         {
@@ -221,7 +226,7 @@ namespace BudgetPortal.Controllers
             var LoggedInDivisionID = 0;
             var DivName = _context.Users
                           .Where(x => x.UserName.Equals(username))
-                          .Select(x => x.BranchName).First();
+                          .Select(x => x.BranchName).FirstOrDefault();
 
            
                 LoggedInDivisionID = _context.Division
@@ -314,6 +319,104 @@ namespace BudgetPortal.Controllers
             
 
             return View("InterimRev", mymodel);
+        }
+
+        [HttpPost]
+        [RequestFormLimits(ValueCountLimit = 20000)]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(InterimRevision IM)
+        {
+            var username = User.Identity.Name;
+            var DivName = " ";
+            var DivisionID = " ";
+            int index = IM.SubGroupNameOrLedgerName.IndexOf(IM.SubGroupLedgerName);
+            var SectionNumber = _context.BudgetSections
+                                  .Where(x => x.SectionName.Equals(IM.SectionName))
+                                  .Select(x => x.SectionNo).FirstOrDefault();
+            var GroupNumber = _context.BudgetGroups
+                     .Where(x => x.GroupName.Equals(IM.GroupName))
+                     .Select(x => x.GroupNo).FirstOrDefault();
+
+            var SubGroupNumber = _context.BudgetSubGroups
+                     .Where(x => x.SubGroupNo.Equals(IM.SubGroupLedgerName))
+                     .Select(x => x.SubGroupNo).FirstOrDefault();
+
+            
+            var LedgerNumber = _context.BudgetLedgers
+                     .Where(x => x.LedgerNo.Equals(IM.SubGroupLedgerName))
+                     .Select(x => x.LedgerNo).FirstOrDefault();
+
+            if (LedgerNumber != null)
+            {
+                SubGroupNumber = _context.BudgetLedgers
+                    .Where(x => x.LedgerNo.Equals(IM.SubGroupLedgerName))
+                    .Select(x => x.SubGroupNo).FirstOrDefault();
+            }
+            else
+            {
+                 LedgerNumber = 0.ToString();
+            }
+
+            if (User.Identity.Name.Equals("admin@test.com"))
+            {
+                DivName = IM.SelectedDivisionName.ToString();
+                DivisionID = _context.Division
+                                     .Where(d => d.DivisionName == DivName)
+                                     .Select(x => x.DivisionID).FirstOrDefault().ToString();
+            }
+
+            var splitAcademicYear = IM.SelectedAcademicYear.ToString().Split("-");
+            ModelState.Remove("ACAndBWPropRECurrFin");
+            ModelState.Remove("ACAndBWPropRENxtFin");
+            var result = new BudgetDetails();
+            result = _context.BudgetDetails
+                                      .Where(b => (b.DivisionID == Convert.ToInt32(DivisionID))
+                                               && (b.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0]))
+                                               && (b.SectionNumber == SectionNumber)
+                                               && (b.GroupNumber == GroupNumber)
+                                               && (b.SubGroupNumber == SubGroupNumber)
+                                               && (b.LedgerNumber == LedgerNumber)).FirstOrDefault();
+            _context.BudgetDetails.Remove(result);
+            _context.SaveChanges();
+
+            var Month = DateTime.Now.Month;
+            if (Month > 3 && Month < 10)
+            {
+                IM.IsEnabled = true;
+            }
+
+            IM.Sectionss = _context.BudgetSections.ToList();
+            IM.Groupss = _context.BudgetGroups.ToList();
+            IM.SubGroupss = _context.BudgetSubGroups.ToList();
+            IM.Ledgerss = _context.BudgetLedgers.ToList();
+            IM.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+            IM.InterimRev[index] = Convert.ToDecimal(0.00);
+            IM.ProvisionalRE[index] = Convert.ToDecimal(0.00);
+
+            IM.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                         .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
+            IM.DivisionNames = _context.Division.AsEnumerable().Select(x =>
+                    new SelectListItem()
+                    {
+                        Selected = false,
+                        Text = x.DivisionName,
+                        Value = x.DivisionID.ToString()
+
+                    }).ToList();
+
+            IM.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
+                new SelectListItem()
+                {
+                    Selected = false,
+                    Text = x.Year1 + "-" + x.Year2,
+                    Value = x.Id.ToString()
+
+                }).ToList();
+            IM.AcademicYears.Where(x => x.Text.Equals(IM.SelectedAcademicYear.ToString())).Single().Selected = true;
+
+            return View("InterimRev", IM);
         }
     }
 }

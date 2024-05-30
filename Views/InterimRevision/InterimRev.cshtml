@@ -239,7 +239,6 @@
                                                                           delete = String.Concat("Delete", @inner.SectionNo.ToString(),"_",@Ledgers.LedgerNo, @TableCount);
                                                                             <tr>
                                                                                 <td></td>
-                                                                                <td></td>
                                                                                 <td>
                                                                                     @{
                                                                                         Model.SubGroupNameOrLedgerName.Insert(LedgerNo, Ledgers.LedgerNo);
@@ -295,16 +294,16 @@
                                                                                 @if(Model.IsEnabled && Ledgerdetails == null)
                                                                                 {
                                                                                 <td>
-                                                                                   <input id="@save" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
+                                                                                   <input id="@save" class="Submit" formaction="InterimRev" type="submit" value="Save Budget" style="align-self:center"/>
                                                                                 </td>
                                                                                 }
                                                                                 @if(Model.IsEnabled && Ledgerdetails != null)
                                                                                 {
                                                                                 <td>
-                                                                                   <input id="@edit" class="Submit" formaction=" " type="submit" value="Edit Budget" style="align-self:center"/>
+                                                                                   <input id="@edit" class="Submit" formaction="InterimRev" type="submit" value="Edit Budget" style="align-self:center"/>
                                                                                 </td>
                                                                                 <td>
-                                                                                   <input id="@delete" class="Submit" formaction=" " type="submit" value="Delete Budget" style="align-self:center"/>
+                                                                                   <input id="@delete" class="Submit" formaction="Delete" type="submit" value="Delete Budget" style="align-self:center"/>
                                                                                 </td>
                                                                                 }
                                                                              </tr>
@@ -345,7 +344,7 @@
                                                         <td class="w-5"></td>
                                                         <td class="w-5">
                                                             @Subs.subGroupName
-                                                        </td class="w-5">
+                                                        </td>
                                                         <td class="w-5">
                                                         
                                                         @if (@Subs.RequireInput)
@@ -412,7 +411,7 @@
                                                         <td class="w-5">
                                                         @if (@Subs.RequireInput)
                                                         {
-                                                                var LedgerSumProvisionalRE = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActCurrFinTill2ndQuart).Sum();
+                                                                var LedgerSumProvisionalRE = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ProvisionalRevEst).Sum();
                                                              <div class="form-group">
                                                                @{
                                                                   Model.ProvisionalRE.Insert(Count, LedgerSumProvisionalRE != null ? Convert.ToDecimal(LedgerSumProvisionalRE) : Convert.ToDecimal(0.00));
@@ -438,16 +437,16 @@
                                                         @if (!@Subs.RequireInput && Model.IsEnabled && details == null)
                                                         {
                                                             <td>
-                                                                <input id="@save" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
+                                                                <input id="@save" class="Submit" formaction="InterimRev" type="submit" value="Save Budget" style="align-self:center"/>
                                                             </td>
                                                         }
                                                         @if (!@Subs.RequireInput && Model.IsEnabled && details!=null)
                                                         {
                                                              <td>
-                                                                 <input id="@edit" class="Submit" formaction=" " type="submit" value="Edit Budget" style="align-self:center"/>
+                                                                 <input id="@edit" class="Submit" formaction="InterimRev" type="submit" value="Edit Budget" style="align-self:center"/>
                                                              </td>
                                                              <td>
-                                                                  <input id="@delete" class="Submit" formaction=" " type="submit" value="Delete Budget" style="align-self:center"/>
+                                                                  <input id="@delete" class="Submit" formaction="Delete" type="submit" value="Delete Budget" style="align-self:center"/>
                                                              </td>
                                                         }
                                                      }
@@ -560,7 +559,6 @@
                                                                            delete = String.Concat("Delete", @inner.SectionNo.ToString(),"_",@Ledgers.LedgerNo, @TableCount);
                                                                             <tr>
                                                                                 <td></td>
-                                                                                <td></td>
                                                                                 <td>
                                                                                     @{
                                                                                         Model.SubGroupNameOrLedgerName.Insert(LedgerNo, Ledgers.LedgerNo);
@@ -615,16 +613,16 @@
                                                                                 @if(Model.IsEnabled && Ledgerdetails == null)
                                                                                 {
                                                                                 <td>
-                                                                                   <input id="@save" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
+                                                                                   <input id="@save" class="Submit" formaction="InterimRev" type="submit" value="Save Budget" style="align-self:center"/>
                                                                                 </td>
                                                                                 }
                                                                                 @if (Model.IsEnabled && Ledgerdetails!=null)
                                                                                 { 
                                                                                 <td>
-                                                                                   <input id="@edit" class="Submit" formaction=" " type="submit" value="Edit Budget" style="align-self:center"/>
+                                                                                   <input id="@edit" class="Submit" formaction="InterimRev" type="submit" value="Edit Budget" style="align-self:center"/>
                                                                                 </td>
                                                                                 <td>
-                                                                                   <input id="@delete" class="Submit" formaction=" " type="submit" value="Delete Budget" style="align-self:center"/>
+                                                                                   <input id="@delete" class="Submit" formaction="Delete" type="submit" value="Delete Budget" style="align-self:center"/>
                                                                                 </td>
                                                                                 }
                                                                              </tr>
@@ -732,7 +730,7 @@
                                                         <td class="w-5">
                                                         @if (@Subs.RequireInput)
                                                         {
-                                                                var LedgerSumProvisionalRE = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActCurrFinTill2ndQuart).Sum();
+                                                                var LedgerSumProvisionalRE = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ProvisionalRevEst).Sum();
                                                              <div class="form-group">
                                                                @{
                                                                   Model.ProvisionalRE.Insert(Count, LedgerSumProvisionalRE != null ? Convert.ToDecimal(LedgerSumProvisionalRE) : Convert.ToDecimal(0.00));
@@ -758,16 +756,16 @@
                                                         @if(!@Subs.RequireInput && Model.IsEnabled && details == null)
                                                         {
                                                         <td>
-                                                        <input id="@save" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
+                                                        <input id="@save" class="Submit" formaction="InterimRev" type="submit" value="Save Budget" style="align-self:center"/>
                                                         </td>
                                                         }
                                                         @if (!@Subs.RequireInput && Model.IsEnabled && details!=null)
                                                         {
                                                         <td>
-                                                        <input id="@edit" class="Submit" formaction=" " type="submit" value="Edit Budget" style="align-self:center"/>
+                                                        <input id="@edit" class="Submit" formaction="InterimRev" type="submit" value="Edit Budget" style="align-self:center"/>
                                                         </td>
                                                         <td>
-                                                        <input id="@delete" class="Submit" formaction=" " type="submit" value="Delete Budget" style="align-self:center"/>
+                                                        <input id="@delete" class="Submit" formaction="Delete" type="submit" value="Delete Budget" style="align-self:center"/>
                                                         </td>
                                                         }
                                                     </tr>
@@ -930,7 +928,6 @@
                                                                           delete = String.Concat("Delete", @inner.SectionNo.ToString(),"_",@Ledgers.LedgerNo, @TableCount);
                                                                             <tr>
                                                                                 <td></td>
-                                                                                <td></td>
                                                                                 <td>
                                                                                     @{
                                                                                         Model.SubGroupNameOrLedgerName.Insert(LedgerNo, Ledgers.LedgerNo);
@@ -985,16 +982,16 @@
                                                                                 @if(Model.IsEnabled && Ledgerdetails == null)
                                                                                 {
                                                                                 <td>
-                                                                                   <input id="@save" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
+                                                                                   <input id="@save" class="Submit" formaction="InterimRev" type="submit" value="Save Budget" style="align-self:center"/>
                                                                                 </td>
                                                                                 }
                                                                                 @if (Model.IsEnabled && Ledgerdetails!=null)
                                                                                 {
                                                                                 <td>
-                                                                                   <input id="@edit" class="Submit" formaction=" " type="submit" value="Edit Budget" style="align-self:center"/>
+                                                                                   <input id="@edit" class="Submit" formaction="InterimRev" type="submit" value="Edit Budget" style="align-self:center"/>
                                                                                 </td>
                                                                                 <td>
-                                                                                   <input id="@delete" class="Submit" formaction=" " type="submit" value="Delete Budget" style="align-self:center"/>
+                                                                                   <input id="@delete" class="Submit" formaction="Delete" type="submit" value="Delete Budget" style="align-self:center"/>
                                                                                 </td>
                                                                                 }
                                                                              </tr>
@@ -1010,7 +1007,6 @@
                                                                       @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
                                                                       {
                                                                         <tr>
-                                                                            <td></td>
                                                                             <td></td>
                                                                             <td>
                                                                                 @Ledgers.LedgerNo
@@ -1102,7 +1098,7 @@
                                                         <td class="w-5">
                                                         @if (@Subs.RequireInput)
                                                         {
-                                                                var LedgerSumProvisionalRE = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActCurrFinTill2ndQuart).Sum();
+                                                                var LedgerSumProvisionalRE = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ProvisionalRevEst).Sum();
                                                              <div class="form-group">
                                                                @{
                                                                   Model.ProvisionalRE.Insert(Count, LedgerSumProvisionalRE != null ? Convert.ToDecimal(LedgerSumProvisionalRE) : Convert.ToDecimal(0.00));
@@ -1128,16 +1124,16 @@
                                                         @if(!@Subs.RequireInput && Model.IsEnabled && details == null)
                                                         {
                                                         <td>
-                                                        <input id="@save" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
+                                                        <input id="@save" class="Submit" formaction="InterimRev" type="submit" value="Save Budget" style="align-self:center"/>
                                                         </td>
                                                         }
                                                         @if (!@Subs.RequireInput && Model.IsEnabled && details!=null)
                                                         {
                                                         <td>
-                                                        <input id="@edit" class="Submit" formaction=" " type="submit" value="Edit Budget" style="align-self:center"/>
+                                                        <input id="@edit" class="Submit" formaction="InterimRev" type="submit" value="Edit Budget" style="align-self:center"/>
                                                         </td>
                                                         <td>
-                                                        <input id="@delete" class="Submit" formaction=" " type="submit" value="Delete Budget" style="align-self:center"/>
+                                                        <input id="@delete" class="Submit" formaction="Delete" type="submit" value="Delete Budget" style="align-self:center"/>
                                                         </td>
                                                         }
                                                     </tr>
@@ -1229,10 +1225,10 @@
                                                     <tr>
                                                         
                                                         <td class="w-5">
-                                                            @if(LedgerCount > 0)
-                                                            {
+                                                          @if(LedgerCount > 0)
+                                                          {
                                                                 <img src="~/Images/plus.png" />
-                                                               <div id="NestedTable" style="display:none"> 
+                                                             <div id="NestedTable" style="display:none"> 
                                                                @if(@Subs.RequireInput)
                                                                {
                                                                  LedgerNo = Count;
@@ -1248,7 +1244,6 @@
                                                                           edit = String.Concat("Edit", @inner.SectionNo.ToString(),"_",@Ledgers.LedgerNo, @TableCount);
                                                                           delete = String.Concat("Delete", @inner.SectionNo.ToString(),"_",@Ledgers.LedgerNo, @TableCount);
                                                                             <tr>
-                                                                                <td></td>
                                                                                 <td></td>
                                                                                 <td>
                                                                                     @{
@@ -1269,6 +1264,7 @@
                                                                                                 @Html.TextBoxFor(model => model.BudEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name1 + @Ledgers.LedgerNo, @readonly = "readonly" })
                                                                                                 @Html.ValidationMessageFor(model => model.BudEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
+                                                                                </td>
                                                                                 <td>
                                                                                     @if (!Model.IsEnabled || (Model.IsEnabled && Ledgerdetails!=null))
                                                                                     {
@@ -1304,16 +1300,16 @@
                                                                                 @if(Model.IsEnabled && Ledgerdetails == null)
                                                                                 {
                                                                                 <td>
-                                                                                   <input id="@save" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
+                                                                                   <input id="@save" class="Submit" formaction="InterimRev" type="submit" value="Save Budget" style="align-self:center"/>
                                                                                 </td>
                                                                                 }
                                                                                 @if (Model.IsEnabled && Ledgerdetails!=null)
                                                                                 {
                                                                                 <td>
-                                                                                   <input id="@edit" class="Submit" formaction=" " type="submit" value="Edit Budget" style="align-self:center"/>
+                                                                                   <input id="@edit" class="Submit" formaction="InterimRev" type="submit" value="Edit Budget" style="align-self:center"/>
                                                                                 </td>
                                                                                 <td>
-                                                                                   <input id="@delete" class="Submit" formaction=" " type="submit" value="Delete Budget" style="align-self:center"/>
+                                                                                   <input id="@delete" class="Submit" formaction="Delete" type="submit" value="Delete Budget" style="align-self:center"/>
                                                                                 </td>
                                                                                 }
                                                                              </tr>
@@ -1330,7 +1326,6 @@
                                                                       {
                                                                         <tr>
                                                                             <td></td>
-                                                                            <td></td>
                                                                             <td>
                                                                                 @Ledgers.LedgerNo
                                                                             </td>
@@ -1339,9 +1334,9 @@
                                                                       }
                                                                 </table>
                                                                }
-                                                               </div>
+                                                             </div>
                                                                
-                                                            }
+                                                          }
                                                         </td>
                                                         <td class="w-5">
                                                             @{
@@ -1447,16 +1442,16 @@
                                                         @if(!@Subs.RequireInput && Model.IsEnabled && details==null)
                                                         {
                                                         <td>
-                                                        <input id="@save" class="Submit" formaction=" " type="submit" value="Save Budget" style="align-self:center"/>
+                                                        <input id="@save" class="Submit" formaction="InterimRev" type="submit" value="Save Budget" style="align-self:center"/>
                                                         </td>
                                                         }
                                                         @if (!@Subs.RequireInput && Model.IsEnabled && details!=null)
                                                         {
                                                         <td>
-                                                        <input id="@edit" class="Submit" formaction=" " type="submit" value="Edit Budget" style="align-self:center"/>
+                                                        <input id="@edit" class="Submit" formaction="InterimRev" type="submit" value="Edit Budget" style="align-self:center"/>
                                                         </td>
                                                         <td>
-                                                        <input id="@delete" class="Submit" formaction=" " type="submit" value="Delete Budget" style="align-self:center"/>
+                                                        <input id="@delete" class="Submit" formaction="Delete" type="submit" value="Delete Budget" style="align-self:center"/>
                                                         </td>
                                                         }
                                                     </tr>
@@ -1669,20 +1664,10 @@
                              
                              var SubGroupLedger = $(this).attr('id');
                              var SubGroupLedger = SubGroupLedger.split('_')
-                             //alert($(this).val());
-
                              
-                             if($(this).val()=="Delete" || $(this).val()=="Upload")
-                             {
-                                  
-                                     var Ledgerid = $(this).closest('tr').closest('td').closest('tr').children('td').eq(1);
-                                  //alert("SubGroupID"+Ledgerid.text());
-                             }
-                             else
-                             {
-                                  var Ledgerid = $(this).closest('tr').children('td').eq(1);
-                                  //alert("LedgerID"+Ledgerid.text());
-                             }
+                             var Ledgerid = $(this).closest('tr').children('td').eq(1);
+                             alert("LedgerID"+Ledgerid.text());
+                             
                              $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
                              //alert($("#SelectedAcademicYear").val());
                        
