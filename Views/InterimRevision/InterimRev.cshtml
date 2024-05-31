@@ -8,6 +8,8 @@
 @using Microsoft.AspNetCore.Identity;
 @using BudgetPortal.Data;
 
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
@@ -27,7 +29,7 @@
     
     //Model.File = new List<IFormFile>();
 
-    Boolean EditStatus = false ;
+    //Boolean EditStatus = false ;
     
 }
 <br />
@@ -260,7 +262,7 @@
                                                                                             </div>
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (!Model.IsEnabled || Ledgerdetails!=null)
+                                                                                    @if (!Model.IsEnabled || (Model.IsEnabled && Ledgerdetails!=null && Model.EditEnabled!=Ledgers.LedgerNo))
                                                                                     {
                                                                                         <div class="form-group"> 
                                                                                           @{
@@ -291,20 +293,28 @@
                                                                                                @Html.ValidationMessageFor(model => model.ProvisionalRE[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                       </div>  
                                                                                 </td>
-                                                                                @if(Model.IsEnabled && Ledgerdetails == null)
+                                                                                @if(Model.IsEnabled && Ledgerdetails == null || (Model.IsEnabled && Model.EditEnabled==Ledgers.LedgerNo))
                                                                                 {
                                                                                 <td>
-                                                                                   <input id="@save" class="Submit" formaction="InterimRev" type="submit" value="Save Budget" style="align-self:center"/>
+                                                                                   <button id="@save" class="Submit" formaction="InterimRev" type="submit" value="Save Budget" style="align-self:center">
+                                                                                   <i class='bx bx-check'></i></button>
                                                                                 </td>
+                                                                                }
+                                                                                @if(Model.IsEnabled && Ledgerdetails != null && Model.EditEnabled!=Ledgers.LedgerNo)
+                                                                                {
+                                                                                <td>
+                                                                                   <button id="@edit" class="Submit" formaction="Edit" type="submit" value="Edit Budget" style="align-self:center">
+                                                                                   <i class='bx bxs-pencil'></i></button>
+                                                                                   @Html.Hidden("EnabledSubGroupLedger",Model.EditEnabled,  new{@id = "EnabledSubGroupLedger" })
+                                                                               </td>
                                                                                 }
                                                                                 @if(Model.IsEnabled && Ledgerdetails != null)
                                                                                 {
                                                                                 <td>
-                                                                                   <input id="@edit" class="Submit" formaction="InterimRev" type="submit" value="Edit Budget" style="align-self:center"/>
-                                                                                </td>
-                                                                                <td>
-                                                                                   <input id="@delete" class="Submit" formaction="Delete" type="submit" value="Delete Budget" style="align-self:center"/>
-                                                                                </td>
+                                                                                    <button id="@delete" class="Submit" formaction="Delete" type="submit" value="Delete Budget" style="align-self:center">
+                                                                                    <i class='bx bx-x'></i>     
+                                                                                    </button>
+                                                                               </td>
                                                                                 }
                                                                              </tr>
                                                                             
@@ -385,7 +395,7 @@
                                                             </div>
                                                             
                                                         }
-                                                        else if (!Model.IsEnabled || (Model.IsEnabled && details!=null))
+                                                        else if (!Model.IsEnabled || (Model.IsEnabled && details!=null && Model.EditEnabled!=Subs.SubGroupNo))
                                                         {
                                                                <div class="form-group">
                                                                @{
@@ -434,19 +444,26 @@
                                                             }
                                                        
                                                         </td>
-                                                        @if (!@Subs.RequireInput && Model.IsEnabled && details == null)
+                                                        @if ((!@Subs.RequireInput && Model.IsEnabled && details == null) || (Model.IsEnabled && Model.EditEnabled==Subs.SubGroupNo))
                                                         {
                                                             <td>
-                                                                <input id="@save" class="Submit" formaction="InterimRev" type="submit" value="Save Budget" style="align-self:center"/>
+                                                                <button id="@save" class="Submit" formaction="InterimRev" type="submit" value="Save Budget" style="align-self:center">
+                                                                <i class='bx bx-check'></i></button>
                                                             </td>
+                                                        }
+                                                        @if ((!@Subs.RequireInput && Model.IsEnabled && details!=null && Model.EditEnabled!=Subs.SubGroupNo)) 
+                                                        {
+                                                             <td>
+                                                                 <button id="@edit" class="Submit" formaction="Edit" type="submit" value="Edit Budget" style="align-self:center">
+                                                                  <i class='bx bxs-pencil'></i></button>
+                                                                 @Html.Hidden("EnabledSubGroupLedger",Model.EditEnabled,  new{@id = "EnabledSubGroupLedger" })
+                                                             </td>
                                                         }
                                                         @if (!@Subs.RequireInput && Model.IsEnabled && details!=null)
                                                         {
                                                              <td>
-                                                                 <input id="@edit" class="Submit" formaction="InterimRev" type="submit" value="Edit Budget" style="align-self:center"/>
-                                                             </td>
-                                                             <td>
-                                                                  <input id="@delete" class="Submit" formaction="Delete" type="submit" value="Delete Budget" style="align-self:center"/>
+                                                                  <button id="@delete" class="Submit" formaction="Delete" type="submit" value="Delete Budget" style="align-self:center">
+                                                                  <i class='bx bx-x'></i></button>     
                                                              </td>
                                                         }
                                                      }
@@ -619,7 +636,7 @@
                                                                                 @if (Model.IsEnabled && Ledgerdetails!=null)
                                                                                 { 
                                                                                 <td>
-                                                                                   <input id="@edit" class="Submit" formaction="InterimRev" type="submit" value="Edit Budget" style="align-self:center"/>
+                                                                                   <input id="@edit" class="Submit" formaction="Edit" type="submit" value="Edit Budget" style="align-self:center"/>
                                                                                 </td>
                                                                                 <td>
                                                                                    <input id="@delete" class="Submit" formaction="Delete" type="submit" value="Delete Budget" style="align-self:center"/>
@@ -762,7 +779,7 @@
                                                         @if (!@Subs.RequireInput && Model.IsEnabled && details!=null)
                                                         {
                                                         <td>
-                                                        <input id="@edit" class="Submit" formaction="InterimRev" type="submit" value="Edit Budget" style="align-self:center"/>
+                                                        <input id="@edit" class="Submit" formaction="Edit" type="submit" value="Edit Budget" style="align-self:center"/>
                                                         </td>
                                                         <td>
                                                         <input id="@delete" class="Submit" formaction="Delete" type="submit" value="Delete Budget" style="align-self:center"/>
@@ -988,7 +1005,7 @@
                                                                                 @if (Model.IsEnabled && Ledgerdetails!=null)
                                                                                 {
                                                                                 <td>
-                                                                                   <input id="@edit" class="Submit" formaction="InterimRev" type="submit" value="Edit Budget" style="align-self:center"/>
+                                                                                   <input id="@edit" class="Submit" formaction="Edit" type="submit" value="Edit Budget" style="align-self:center"/>
                                                                                 </td>
                                                                                 <td>
                                                                                    <input id="@delete" class="Submit" formaction="Delete" type="submit" value="Delete Budget" style="align-self:center"/>
@@ -1130,7 +1147,7 @@
                                                         @if (!@Subs.RequireInput && Model.IsEnabled && details!=null)
                                                         {
                                                         <td>
-                                                        <input id="@edit" class="Submit" formaction="InterimRev" type="submit" value="Edit Budget" style="align-self:center"/>
+                                                        <input id="@edit" class="Submit" formaction="Edit" type="submit" value="Edit Budget" style="align-self:center"/>
                                                         </td>
                                                         <td>
                                                         <input id="@delete" class="Submit" formaction="Delete" type="submit" value="Delete Budget" style="align-self:center"/>
@@ -1306,7 +1323,7 @@
                                                                                 @if (Model.IsEnabled && Ledgerdetails!=null)
                                                                                 {
                                                                                 <td>
-                                                                                   <input id="@edit" class="Submit" formaction="InterimRev" type="submit" value="Edit Budget" style="align-self:center"/>
+                                                                                   <input id="@edit" class="Submit" formaction="Edit" type="submit" value="Edit Budget" style="align-self:center"/>
                                                                                 </td>
                                                                                 <td>
                                                                                    <input id="@delete" class="Submit" formaction="Delete" type="submit" value="Delete Budget" style="align-self:center"/>
@@ -1448,7 +1465,7 @@
                                                         @if (!@Subs.RequireInput && Model.IsEnabled && details!=null)
                                                         {
                                                         <td>
-                                                        <input id="@edit" class="Submit" formaction="InterimRev" type="submit" value="Edit Budget" style="align-self:center"/>
+                                                        <input id="@edit" class="Submit" formaction="Edit" type="submit" value="Edit Budget" style="align-self:center"/>
                                                         </td>
                                                         <td>
                                                         <input id="@delete" class="Submit" formaction="Delete" type="submit" value="Delete Budget" style="align-self:center"/>
@@ -1683,6 +1700,20 @@
 
                              $('#SubGroupLedgerName').val(Ledgerid.text().trim());
 
+                             alert($(this).val());
+                             if($(this).val() == "Save Budget")
+                             {
+                                 var nextelement = $(this).closest('td').next().children('button').val();
+                                 
+                                 alert(nextelement);
+
+                                 if(nextelement == "Delete Budget")
+                                 {
+                                     alert(Ledgerid.text().trim());
+                                    $('#EnabledSubGroupLedger').val(Ledgerid.text().trim());
+                                 }
+                             }
+                             
                              //alert($('#SubGroupLedgerName').val());
 
                              //validateinput();

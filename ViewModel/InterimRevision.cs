@@ -29,6 +29,7 @@ namespace BudgetPortal.ViewModel
         public String? SelectedAcademicYear { get; set; }
         public List<String> SubGroupNameOrLedgerName { get; set; }
         public Boolean IsEnabled { get; set; }
+        public String EditEnabled { get; set; }
 
         [Column(TypeName = "money")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.####}")]
