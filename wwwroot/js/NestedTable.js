@@ -18,7 +18,8 @@ $(document).ready(
         });
 
         //Calculating Percentage variation for Revised Estimates of Current Financial Year
-        $("body").on("change", "input[id^='RevEstCurrFin']", function () {
+        $("body").on("change", "input[id^='RevEstCurrFin']", 
+            function () {
             //alert($(this).attr("id"));
             var elementid = $(this).closest("tr").find($("input[id^='BudEstCurrFin']"));
             //alert(elementid);
@@ -57,6 +58,21 @@ $(document).ready(
                     $(this).closest("tr").find($("textarea[id^='Justification']")).removeProp('required', true);
                     alert("Removed");
                 }
+            }
+        );
+
+        //Calculating Provisional Estimates on entering Interim Estimates in Textbox
+        $("body").on("change", "input[id^='InterimRev']",
+            function () {
+                //alert($(this).attr("id"));
+                var BudEstCurrFinid = $(this).closest("tr").find($("input[id^='BudEstCurrFin']"));
+                //alert(BudEstCurrFinid.attr("id"));
+                var InterimRevid = $(this).closest("tr").find($("input[id^='InterimRev']"));
+                //alert(InterimRevid.attr("id"));
+                var ProvisionalEstid = $(this).closest("tr").find($("input[id^='ProvisionalRE']"));
+                //alert(ProvisionalEstid.attr("id"));
+                var ProvisionalEst = parseFloat(BudEstCurrFinid.val()) + parseFloat(InterimRevid.val());
+                ProvisionalEstid.val(ProvisionalEst);
             }
         );
 
@@ -142,7 +158,8 @@ $(document).ready(
             });
 
         //Calculating Total for each Section
-        $("body").on("focusout input", "td[id^='-Total']", function () {
+        $("body").on("focusout input", "td[id^='-Total']",
+            function () {
 
             alert("Sum updated");
             var elementid = $(this).attr("id");
@@ -165,6 +182,7 @@ $(document).ready(
 
         });
 
+        
     });
 
     
