@@ -28,10 +28,13 @@
     Model.RevEstCurrFin = new List<Decimal>();
     Model.PerVarRevEstOverBudgEstCurrFin = new List<Decimal>();
     Model.ACAndBWPropRECurrFin = new List<Decimal>();
+    Model.DelegateJustificationRevEst = new List<String>();
+    Model.ACBWJustificationRevEst = new List<String>();
     Model.BudgEstNexFin = new List<Decimal>();
     Model.PerVarRevEstOverBudgEstNxtFin = new List<Decimal>();
     Model.ACAndBWPropRENxtFin = new List<Decimal>();
     Model.Justification = new List<String>();
+    Model.ACBWJustificationBudgEstNxtFin = new List<String>();
     //Model.File = new List<IFormFile>();
 
     Boolean AdminEditStatus = false ;
@@ -410,22 +413,37 @@
                                                  
                                                </th>
                                              }
-                                            <th class="BudgetEstimatesNextYear w-10">
+                                             <th class="DelegateJustificationRevEst w-10">
+                                                       
+                                            </th>
+                                            @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                    {
+                                                        <th class="ACBWJustificationRevEst w-10">
+
+                                                        </th>
+                                                    }
+                                                    <th class="BudgetEstimatesNextYear w-10">
                                                 
                                             </th>
-                                                    <th class="VariationInBudgetEstimates w-10">
+                                            <th class="VariationInBudgetEstimates w-10">
                                                 
                                             </th>
                                             @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                              {
-                                                        <th class="ACBWProposalForBudgetEstimates w-10">
+                                                <th class="ACBWProposalForBudgetEstimates w-10">
                                                    
                                                 </th>
                                              }
                                             <th class="Justification w-10">
                                                        
                                             </th>
-                                            <th class="UploadDocuments w-10">
+                                            @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                    {
+                                                        <th class="ACBWJustificationBudgEstNxtFin w-10">
+
+                                                        </th>
+                                                    }
+                                                    <th class="UploadDocuments w-10">
                                                        
                                             </th>
                                         </tr>
@@ -451,10 +469,17 @@
                                                     var name11 = String.Concat("UploadFile", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name12 = String.Concat("InterimRevEst", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name13 = String.Concat("ProvisionalRevEst", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name14 = String.Concat("DelegateJustificationRevEst", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name15 = String.Concat("ACBWJustificationRevEst", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name16 = String.Concat("ACBWJustificationBudgEstNxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
                                                     var upload = String.Concat("UploadButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var delete = String.Concat("DeleteButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var view = String.Concat("ViewButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+
+                                                    var save = String.Concat("Save", @inner.SectionNo.ToString(),"_",@item.GroupNo, @TableCount);
+                                                    var edit = String.Concat("Edit", @inner.SectionNo.ToString(), "_",@item.GroupNo, @TableCount);
+                                                    var Budgetdelete = String.Concat("Delete", @inner.SectionNo.ToString(), "_",@item.GroupNo, @TableCount);
 
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                     
@@ -663,7 +688,60 @@
                                                                                         Model.ACAndBWPropRECurrFin.Insert(LedgerNo, Convert.ToDecimal(0.00));
                                                                                     }
 
-                                                                                
+                                                                                <td>
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    {
+                                                                                            <div class="form-group">
+                                                                                             @{  
+                                                                                                Model.DelegateJustificationRevEst.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.DelegateJustificationRevEst!=null) ? Ledgerdetails.DelegateJustificationRevEst.ToString(): "");
+                                                                                              }  
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
+                                                                                        
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                           @{ 
+                                                                                              Model.DelegateJustificationRevEst.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.DelegateJustificationRevEst!=null) ? Ledgerdetails.DelegateJustificationRevEst.ToString() : "");
+                                                                                             }   
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14+@Ledgers.LedgerNo})
+                                                                                            @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
+                                                                                            
+                                                                                    }
+                                                                                </td>
+                                                                                @if (User.IsInRole("Admin") && AdminEditStatus)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <div class="form-group"> 
+                                                                                                @{
+                                                                                                  Model.ACBWJustificationRevEst.Insert(LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACBWJustificationRevEst.ToString()  : " ");
+                                                                                               }
+                                                                                                
+                                                                                                @Html.TextBoxFor(model => model.ACBWJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name15+@Ledgers.LedgerNo})
+                                                                                                @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                                                    {
+                                                                                      <td>
+                                                                                          <div class="form-group">
+                                                                                              @{
+                                                                                                 Model.ACBWJustificationRevEst.Insert(LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACBWJustificationRevEst.ToString() : "");
+                                                                                               }
+                                                                                            
+                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name15+@Ledgers.LedgerNo,@readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                          </div>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        Model.ACBWJustificationRevEst.Insert(LedgerNo, " ");
+                                                                                    }
                                                                                 <td>
                                                                                     @if (User.IsInRole("Admin") && DelegateEditStatus )
                                                                                     {
@@ -781,7 +859,36 @@
                                                                                             
                                                                                     }
                                                                                 </td>
-
+                                                                                @if (User.IsInRole("Admin") && AdminEditStatus)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <div class="form-group"> 
+                                                                                                @{
+                                                                                                  Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACBWJustificationBudgEstNxtFin.ToString()  : " ");
+                                                                                               }
+                                                                                                
+                                                                                                @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name16+@Ledgers.LedgerNo})
+                                                                                                @Html.ValidationMessageFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                                                    {
+                                                                                      <td>
+                                                                                          <div class="form-group">
+                                                                                              @{
+                                                                                                 Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACBWJustificationBudgEstNxtFin.ToString() : "");
+                                                                                               }
+                                                                                            
+                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name16+@Ledgers.LedgerNo,@readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                          </div>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, " ");
+                                                                                    }
                                                                                 <td>  
                                                                                    
                                                                                     <table class="table" >
@@ -815,6 +922,23 @@
                                                                                     </tbody>
                                                                                     </table>
                                                                                     </td>
+                                                                                
+                                                                                <td>
+                                                                                   <button style="border:none;background-color:white" id="@save" class="Submit" formaction="InterimRev" type="submit" value="Save Budget" style="align-self:center">
+                                                                                   <i class='bx bx-check' style="color:limegreen"></i></button>
+                                                                                </td>
+                                                                                
+                                                                                <td>
+                                                                                   <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="Edit" type="submit" value="Edit Budget" style="align-self:center">
+                                                                                   <i class='bx bxs-pencil' style="color:blue"></i></button>
+                                                                               </td>
+                                                                                
+                                                                                <td>
+                                                                                    <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="Delete" type="submit" value="Delete Budget" style="align-self:center">
+                                                                                    <i class='bx bx-x' style="color:red"></i>     
+                                                                                    </button>
+                                                                               </td>
+                                                                                
                                                                                 </tr>
                                                                             
                                                                         LedgerNo++;
@@ -1194,6 +1318,60 @@
                                                            Model.ACAndBWPropRECurrFin.Insert(Count, Convert.ToDecimal(0.00));                                                    
                                                             
                                                         }
+                                                        <td>
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    {
+                                                                                            <div class="form-group">
+                                                                                             @{  
+                                                                                                Model.DelegateJustificationRevEst.Insert(Count, (details != null && details.DelegateJustificationRevEst!=null) ? details.DelegateJustificationRevEst.ToString(): "");
+                                                                                              }  
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
+                                                                                        
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                           @{ 
+                                                                                              Model.DelegateJustificationRevEst.Insert(Count, (details != null && details.DelegateJustificationRevEst!=null) ? details.DelegateJustificationRevEst.ToString() : "");
+                                                                                             }   
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[Count], new { @class = "form-control", @id = @name14})
+                                                                                            @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
+                                                                                            
+                                                                                    }
+                                                        </td>
+                                                        @if (User.IsInRole("Admin") && AdminEditStatus)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <div class="form-group"> 
+                                                                                                @{
+                                                                                                  Model.ACBWJustificationRevEst.Insert(Count, details!=null ? details.ACBWJustificationRevEst.ToString()  : " ");
+                                                                                               }
+                                                                                                
+                                                                                                @Html.TextBoxFor(model => model.ACBWJustificationRevEst[Count], new { @class = "form-control", @id = @name15})
+                                                                                                @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                                                    {
+                                                                                      <td>
+                                                                                          <div class="form-group">
+                                                                                              @{
+                                                                                                 Model.ACBWJustificationRevEst.Insert(Count, details!=null ? details.ACBWJustificationRevEst.ToString() : "");
+                                                                                               }
+                                                                                            
+                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationRevEst[Count], new { @class = "form-control", @id = @name15,@readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                          </div>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        Model.ACBWJustificationRevEst.Insert(Count, " ");
+                                                                                    }
                                                         <td class="w-5">
                                                         @if (@Subs.RequireInput && DelegateEditStatus)
                                                         {
@@ -1398,7 +1576,36 @@
                                                             </div>
                                                         }
                                                         </td>
-
+                                                        @if (User.IsInRole("Admin") && AdminEditStatus)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <div class="form-group"> 
+                                                                                                @{
+                                                                                                  Model.ACBWJustificationBudgEstNxtFin.Insert(Count, Ledgerdetails!=null ? Ledgerdetails.ACBWJustificationBudgEstNxtFin.ToString()  : " ");
+                                                                                               }
+                                                                                                
+                                                                                                @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[Count], new { @class = "form-control", @id = @name16})
+                                                                                                @Html.ValidationMessageFor(model => model.ACBWJustificationBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                                                    {
+                                                                                      <td>
+                                                                                          <div class="form-group">
+                                                                                              @{
+                                                                                                 Model.ACBWJustificationBudgEstNxtFin.Insert(Count, Ledgerdetails!=null ? Ledgerdetails.ACBWJustificationBudgEstNxtFin.ToString() : "");
+                                                                                               }
+                                                                                            
+                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[Count], new { @class = "form-control", @id = @name16,@readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.ACBWJustificationBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                          </div>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        Model.ACBWJustificationBudgEstNxtFin.Insert(Count, " ");
+                                                                                    }
                                                         <td class="w-5"> 
                                                                                     
                                                             @if(!@Subs.RequireInput) 
@@ -1435,6 +1642,21 @@
                                                              </table>
                                                          }
                                                         </td>
+                                                        <td>
+                                                                                   <button style="border:none;background-color:white" id="@save" class="Submit" formaction="InterimRev" type="submit" value="Save Budget" style="align-self:center">
+                                                                                   <i class='bx bx-check' style="color:limegreen"></i></button>
+                                                                                </td>
+                                                                                
+                                                                                <td>
+                                                                                   <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="Edit" type="submit" value="Edit Budget" style="align-self:center">
+                                                                                   <i class='bx bxs-pencil' style="color:blue"></i></button>
+                                                                               </td>
+                                                                                
+                                                                                <td>
+                                                                                    <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="Delete" type="submit" value="Delete Budget" style="align-self:center">
+                                                                                    <i class='bx bx-x' style="color:red"></i>     
+                                                                                    </button>
+                                                                               </td>
                                                     </tr>
 
                                                     Count++;
@@ -1558,6 +1780,15 @@
 
                                                         </th>
                                                     }
+                                                    <th class="DelegateJustificationRevEst w-10">
+                                                       
+                                                    </th>
+                                                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                    {
+                                                        <th class="ACBWJustificationRevEst w-10">
+
+                                                        </th>
+                                                    }
                                                     <th class="BudgetEstimatesNextYear w-10">
 
                                                     </th>
@@ -1571,6 +1802,10 @@
                                                         </th>
                                                     }
                                                     <th class="Justification w-10"></th>
+                                                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                    {
+                                                        <th class="ACBWJustificationBudgEstNxtFin w-10"></th>
+                                                    }
                                                     <th class="UploadDocuments w-10"></th>
                                                 </tr>
                                             </thead>
@@ -1593,10 +1828,17 @@
                                                     var name11 = String.Concat("UploadFile", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name12 = String.Concat("InterimRevEst", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name13 = String.Concat("ProvisionalRevEst", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name14 = String.Concat("DelegateJustificationRevEst", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name15 = String.Concat("ACBWJustificationRevEst", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name16 = String.Concat("ACBWJustificationBudgEstNxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
                                                     var upload = String.Concat("UploadButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var delete = String.Concat("DeleteButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var view = String.Concat("ViewButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+
+                                                    var save = String.Concat("Save", @inner.SectionNo.ToString(),"_",@item.GroupNo, @TableCount);
+                                                    var edit = String.Concat("Edit", @inner.SectionNo.ToString(), "_",@item.GroupNo, @TableCount);
+                                                    var Budgetdelete = String.Concat("Delete", @inner.SectionNo.ToString(), "_",@item.GroupNo, @TableCount);
                                                     
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                     
@@ -1822,6 +2064,60 @@
                                                             
                                                                                 }
                                                                                 <td>
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    {
+                                                                                            <div class="form-group">
+                                                                                             @{  
+                                                                                                Model.DelegateJustificationRevEst.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.DelegateJustificationRevEst!=null) ? Ledgerdetails.DelegateJustificationRevEst.ToString(): "");
+                                                                                              }  
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
+                                                                                        
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                           @{ 
+                                                                                              Model.DelegateJustificationRevEst.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.DelegateJustificationRevEst!=null) ? Ledgerdetails.DelegateJustificationRevEst.ToString() : "");
+                                                                                             }   
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14+@Ledgers.LedgerNo})
+                                                                                            @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
+                                                                                            
+                                                                                    }
+                                                                                </td>
+                                                                                @if (User.IsInRole("Admin") && AdminEditStatus)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <div class="form-group"> 
+                                                                                                @{
+                                                                                                  Model.ACBWJustificationRevEst.Insert(LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACBWJustificationRevEst.ToString()  : " ");
+                                                                                               }
+                                                                                                
+                                                                                                @Html.TextBoxFor(model => model.ACBWJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name15+@Ledgers.LedgerNo})
+                                                                                                @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                                                    {
+                                                                                      <td>
+                                                                                          <div class="form-group">
+                                                                                              @{
+                                                                                                 Model.ACBWJustificationRevEst.Insert(LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACBWJustificationRevEst.ToString() : "");
+                                                                                               }
+                                                                                            
+                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name15+@Ledgers.LedgerNo,@readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                          </div>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        Model.ACBWJustificationRevEst.Insert(LedgerNo, " ");
+                                                                                    }
+                                                                                <td>
                                                                                     @if (User.IsInRole("Admin") && DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
@@ -1948,6 +2244,36 @@
                                                                                         </div>
                                                                                     }
                                                                                 </td>
+                                                                                @if (User.IsInRole("Admin") && AdminEditStatus)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <div class="form-group"> 
+                                                                                                @{
+                                                                                                  Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACBWJustificationBudgEstNxtFin.ToString()  : " ");
+                                                                                               }
+                                                                                                
+                                                                                                @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name16+@Ledgers.LedgerNo})
+                                                                                                @Html.ValidationMessageFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                                                    {
+                                                                                      <td>
+                                                                                          <div class="form-group">
+                                                                                              @{
+                                                                                                 Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACBWJustificationBudgEstNxtFin.ToString() : "");
+                                                                                               }
+                                                                                            
+                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name16+@Ledgers.LedgerNo,@readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                          </div>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, " ");
+                                                                                    }
                                                                                 <td>
                                                                                         <table class="table" style="border:none">
                                                                                     <thead> </thead>
@@ -2384,6 +2710,60 @@
                                                              Model.ACAndBWPropRECurrFin.Insert(Count, Convert.ToDecimal(0.00));
                                                         }
                                                         <td>
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    {
+                                                                                            <div class="form-group">
+                                                                                             @{  
+                                                                                                Model.DelegateJustificationRevEst.Insert(Count, (details != null && details.DelegateJustificationRevEst!=null) ? details.DelegateJustificationRevEst.ToString(): "");
+                                                                                              }  
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
+                                                                                        
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                           @{ 
+                                                                                              Model.DelegateJustificationRevEst.Insert(Count, (details != null && details.DelegateJustificationRevEst!=null) ? details.DelegateJustificationRevEst.ToString() : "");
+                                                                                             }   
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14})
+                                                                                            @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
+                                                                                            
+                                                                                    }
+                                                                                </td>
+                                                                                 @if (User.IsInRole("Admin") && AdminEditStatus)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <div class="form-group"> 
+                                                                                                @{
+                                                                                                  Model.ACBWJustificationRevEst.Insert(Count, details!=null ? details.ACBWJustificationRevEst.ToString()  : " ");
+                                                                                               }
+                                                                                                
+                                                                                                @Html.TextBoxFor(model => model.ACBWJustificationRevEst[Count], new { @class = "form-control", @id = @name15})
+                                                                                                @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                                                    {
+                                                                                      <td>
+                                                                                          <div class="form-group">
+                                                                                              @{
+                                                                                                 Model.ACBWJustificationRevEst.Insert(Count, details!=null ? details.ACBWJustificationRevEst.ToString() : "");
+                                                                                               }
+                                                                                            
+                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationRevEst[Count], new { @class = "form-control", @id = @name15,@readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                          </div>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        Model.ACBWJustificationRevEst.Insert(Count, " ");
+                                                                                    }
+                                                        <td>
                                                             @if (@Subs.RequireInput && DelegateEditStatus)
                                                             {
                                                                 var PastYearBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();
@@ -2598,7 +2978,7 @@
                                                             </div>
                                                         }
                                                         </td>
-
+                                                        <td></td>
                                                         <td>  
                                                              @*if (Model.IsResponse)
                                                              {
@@ -2650,6 +3030,21 @@
                                                                   </table>
                                                             }
                                                         </td>
+                                                        <td>
+                                                                                   <button style="border:none;background-color:white" id="@save" class="Submit" formaction="InterimRev" type="submit" value="Save Budget" style="align-self:center">
+                                                                                   <i class='bx bx-check' style="color:limegreen"></i></button>
+                                                                                </td>
+                                                                                
+                                                                                <td>
+                                                                                   <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="Edit" type="submit" value="Edit Budget" style="align-self:center">
+                                                                                   <i class='bx bxs-pencil' style="color:blue"></i></button>
+                                                                               </td>
+                                                                                
+                                                                                <td>
+                                                                                    <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="Delete" type="submit" value="Delete Budget" style="align-self:center">
+                                                                                    <i class='bx bx-x' style="color:red"></i>     
+                                                                                    </button>
+                                                                               </td>
                                                     </tr>
 
                                                     Count++;
@@ -2768,6 +3163,12 @@
 
                                     </th>
                                 }
+                                <th class="DelegateJustificationRevEst w-10">
+                                                       
+                                </th>
+                                <th class="ACBWJustificationRevEst w-10">
+                                                       
+                                </th>
                                 <th class="BudgetEstimatesNextYear w-10">
 
                                 </th>
@@ -2964,6 +3365,15 @@
 
                                                         </th>
                                                     }
+                                                    <th class="DelegateJustificationRevEst w-10">
+                                                       
+                                                    </th>
+                                                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                    {
+                                                        <th class="ACBWJustificationRevEst w-10">
+
+                                                        </th>
+                                                    }
                                                     <th class="BudgetEstimatesNextYear w-10">
 
                                                     </th>
@@ -2979,6 +3389,12 @@
                                                     <th class="Justification w-10">
 
                                                     </th>
+                                                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                    {
+                                                        <th class="ACBWJustificationBudgEstNxtFin w-10">
+
+                                                        </th>
+                                                    }
                                                     <th class="UploadDocuments w-10"></th>   
 
                                                 </tr>
@@ -3002,10 +3418,17 @@
                                                     var name11 = String.Concat("UploadFile", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name12 = String.Concat("InterimRevEst", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name13 = String.Concat("ProvisionalRevEst", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name14 = String.Concat("DelegateJustificationRevEst", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name15 = String.Concat("ACBWJustificationRevEst", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name16 = String.Concat("ACBWJustificationBudgEstNxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
                                                     var upload = String.Concat("UploadButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var delete = String.Concat("DeleteButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var view = String.Concat("ViewButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+
+                                                    var save = String.Concat("Save", @inner.SectionNo.ToString(),"_",@item.GroupNo, @TableCount);
+                                                    var edit = String.Concat("Edit", @inner.SectionNo.ToString(), "_",@item.GroupNo, @TableCount);
+                                                    var Budgetdelete = String.Concat("Delete", @inner.SectionNo.ToString(), "_",@item.GroupNo, @TableCount);
 
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                      
@@ -3229,6 +3652,60 @@
 
                                                                                 }
                                                                                 <td>
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    {
+                                                                                            <div class="form-group">
+                                                                                             @{  
+                                                                                                Model.DelegateJustificationRevEst.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.DelegateJustificationRevEst!=null) ? Ledgerdetails.DelegateJustificationRevEst.ToString(): "");
+                                                                                              }  
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
+                                                                                        
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                           @{ 
+                                                                                              Model.DelegateJustificationRevEst.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.DelegateJustificationRevEst!=null) ? Ledgerdetails.DelegateJustificationRevEst.ToString() : "");
+                                                                                             }   
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14+@Ledgers.LedgerNo})
+                                                                                            @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
+                                                                                            
+                                                                                    }
+                                                                                </td>
+                                                                                @if (User.IsInRole("Admin") && AdminEditStatus)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <div class="form-group"> 
+                                                                                                @{
+                                                                                                  Model.ACBWJustificationRevEst.Insert(LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACBWJustificationRevEst.ToString()  : " ");
+                                                                                               }
+                                                                                                
+                                                                                                @Html.TextBoxFor(model => model.ACBWJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name15+@Ledgers.LedgerNo})
+                                                                                                @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                                                    {
+                                                                                      <td>
+                                                                                          <div class="form-group">
+                                                                                              @{
+                                                                                                 Model.ACBWJustificationRevEst.Insert(LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACBWJustificationRevEst.ToString() : "");
+                                                                                               }
+                                                                                            
+                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name15+@Ledgers.LedgerNo,@readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                          </div>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        Model.ACBWJustificationRevEst.Insert(LedgerNo, " ");
+                                                                                    }
+                                                                                <td>
                                                                                     @if (User.IsInRole("Admin") && DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
@@ -3354,6 +3831,36 @@
                                                                                         </div>
                                                                                     }
                                                                                 </td>
+                                                                                @if (User.IsInRole("Admin") && AdminEditStatus)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <div class="form-group"> 
+                                                                                                @{
+                                                                                                  Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACBWJustificationBudgEstNxtFin.ToString()  : " ");
+                                                                                               }
+                                                                                                
+                                                                                                @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name16+@Ledgers.LedgerNo})
+                                                                                                @Html.ValidationMessageFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                                                    {
+                                                                                      <td>
+                                                                                          <div class="form-group">
+                                                                                              @{
+                                                                                                 Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACBWJustificationBudgEstNxtFin.ToString() : "");
+                                                                                               }
+                                                                                            
+                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name16+@Ledgers.LedgerNo,@readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                          </div>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, " ");
+                                                                                    }
                                                                                 <td>
                                                                                         @*if (Model.IsResponse)
                                                                                         {
@@ -3401,6 +3908,21 @@
                                                                                     </tbody>
                                                                                     </table>
                                                                                 </td>
+                                                                                <td>
+                                                                                   <button style="border:none;background-color:white" id="@save" class="Submit" formaction="InterimRev" type="submit" value="Save Budget" style="align-self:center">
+                                                                                   <i class='bx bx-check' style="color:limegreen"></i></button>
+                                                                                </td>
+                                                                                
+                                                                                <td>
+                                                                                   <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="Edit" type="submit" value="Edit Budget" style="align-self:center">
+                                                                                   <i class='bx bxs-pencil' style="color:blue"></i></button>
+                                                                               </td>
+                                                                                
+                                                                                <td>
+                                                                                    <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="Delete" type="submit" value="Delete Budget" style="align-self:center">
+                                                                                    <i class='bx bx-x' style="color:red"></i>     
+                                                                                    </button>
+                                                                               </td>
                                                                                 </tr>
 
                                                                              LedgerNo++;
@@ -3804,6 +4326,60 @@
 
                                                         }
                                                         <td>
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    {
+                                                                                            <div class="form-group">
+                                                                                             @{  
+                                                                                                Model.DelegateJustificationRevEst.Insert(Count, (details != null && details.DelegateJustificationRevEst!=null) ? details.DelegateJustificationRevEst.ToString(): "");
+                                                                                              }  
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
+                                                                                        
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                           @{ 
+                                                                                              Model.DelegateJustificationRevEst.Insert(Count, (details != null && details.DelegateJustificationRevEst!=null) ? details.DelegateJustificationRevEst.ToString() : "");
+                                                                                             }   
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[Count], new { @class = "form-control", @id = @name14})
+                                                                                            @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
+                                                                                            
+                                                                                    }
+                                                                                </td>
+                                                                                 @if (User.IsInRole("Admin") && AdminEditStatus)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <div class="form-group"> 
+                                                                                                @{
+                                                                                                  Model.ACBWJustificationRevEst.Insert(Count, details!=null ? details.ACBWJustificationRevEst.ToString()  : " ");
+                                                                                               }
+                                                                                                
+                                                                                                @Html.TextBoxFor(model => model.ACBWJustificationRevEst[Count], new { @class = "form-control", @id = @name15})
+                                                                                                @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                                                    {
+                                                                                      <td>
+                                                                                          <div class="form-group">
+                                                                                              @{
+                                                                                                 Model.ACBWJustificationRevEst.Insert(Count, details!=null ? details.ACBWJustificationRevEst.ToString() : "");
+                                                                                               }
+                                                                                            
+                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationRevEst[Count], new { @class = "form-control", @id = @name15,@readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                          </div>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        Model.ACBWJustificationRevEst.Insert(Count, " ");
+                                                                                    }
+                                                        <td>
                                                         @if (@Subs.RequireInput && DelegateEditStatus)
                                                         {
                                                                 var PastYearBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin ).Sum();
@@ -4018,6 +4594,7 @@
                                                                 </div>
                                                             }
                                                         </td>
+                                                        <td></td>
                                                         <td>
                                                            @if(!@Subs.RequireInput) 
                                                            {
@@ -4054,6 +4631,21 @@
                                                              </table>
                                                             }
                                                         </td>
+                                                        <td>
+                                                                                   <button style="border:none;background-color:white" id="@save" class="Submit" formaction="InterimRev" type="submit" value="Save Budget" style="align-self:center">
+                                                                                   <i class='bx bx-check' style="color:limegreen"></i></button>
+                                                                                </td>
+                                                                                
+                                                                                <td>
+                                                                                   <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="Edit" type="submit" value="Edit Budget" style="align-self:center">
+                                                                                   <i class='bx bxs-pencil' style="color:blue"></i></button>
+                                                                               </td>
+                                                                                
+                                                                                <td>
+                                                                                    <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="Delete" type="submit" value="Delete Budget" style="align-self:center">
+                                                                                    <i class='bx bx-x' style="color:red"></i>     
+                                                                                    </button>
+                                                                               </td>
 
                                                     </tr>
                                                     Count++;
@@ -4177,6 +4769,15 @@
 
                                                         </th>
                                                     }
+                                                    <th class="DelegateJustificationRevEst w-10">
+                                                       
+                                                    </th>
+                                                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                    {
+                                                    <th class="ACBWJustificationRevEst w-10">
+                                                       
+                                                    </th>
+                                                    }
                                                     <th class="BudgetEstimatesNextYear w-10">
 
                                                     </th>
@@ -4192,6 +4793,12 @@
                                                     <th class="Justification w-10">
 
                                                     </th>
+                                                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                    {
+                                                        <th class="ACBWJustificationBudgEstNxtFin w-10">
+
+                                                        </th>
+                                                    }
                                                     <th class="UploadDocuments w-10"></th>
                                                 </tr>
                                             </thead>
@@ -4214,10 +4821,17 @@
                                                     var name11 = String.Concat("UploadFile", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name12 = String.Concat("InterimRevEst", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name13 = String.Concat("ProvisionalRevEst", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name14 = String.Concat("DelegateJustificationRevEst", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name15 = String.Concat("ACBWJustificationRevEst", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name16 = String.Concat("ACBWJustificationBudgEstNxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
                                                     var upload = String.Concat("UploadButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var delete = String.Concat("DeleteButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var view = String.Concat("ViewButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+
+                                                    var save = String.Concat("Save", @inner.SectionNo.ToString(),"_",@item.GroupNo, @TableCount);
+                                                    var edit = String.Concat("Edit", @inner.SectionNo.ToString(), "_",@item.GroupNo, @TableCount);
+                                                    var Budgetdelete = String.Concat("Delete", @inner.SectionNo.ToString(), "_",@item.GroupNo, @TableCount);
 
                                                     var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
                                                     
@@ -4455,6 +5069,60 @@
                                                                                 <td>
                                                                                     @if (User.IsInRole("Admin") || !DelegateEditStatus)
                                                                                     {
+                                                                                            <div class="form-group">
+                                                                                             @{  
+                                                                                                Model.DelegateJustificationRevEst.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.DelegateJustificationRevEst!=null) ? Ledgerdetails.DelegateJustificationRevEst.ToString(): "");
+                                                                                              }  
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
+                                                                                        
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                           @{ 
+                                                                                              Model.DelegateJustificationRevEst.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.DelegateJustificationRevEst!=null) ? Ledgerdetails.DelegateJustificationRevEst.ToString() : "");
+                                                                                             }   
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo})
+                                                                                            @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
+                                                                                            
+                                                                                    }
+                                                                                </td>
+                                                                                @if (User.IsInRole("Admin") && AdminEditStatus)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <div class="form-group"> 
+                                                                                                @{
+                                                                                                  Model.ACBWJustificationRevEst.Insert(LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACBWJustificationRevEst.ToString()  : " ");
+                                                                                               }
+                                                                                                
+                                                                                                @Html.TextBoxFor(model => model.ACBWJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name15+@Ledgers.LedgerNo})
+                                                                                                @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                                                    {
+                                                                                      <td>
+                                                                                          <div class="form-group">
+                                                                                              @{
+                                                                                                 Model.ACBWJustificationRevEst.Insert(LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACBWJustificationRevEst.ToString() : "");
+                                                                                               }
+                                                                                            
+                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name15+@Ledgers.LedgerNo,@readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                          </div>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        Model.ACBWJustificationRevEst.Insert(LedgerNo, " ");
+                                                                                    }
+                                                                                <td>
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    {
                                                                                         <div class="form-group">
                                                                                             @{
                                                                                                     Model.BudgEstNexFin.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.BudgEstNexFin.ToString("F")) : Convert.ToDecimal(0.00));
@@ -4577,6 +5245,36 @@
                                                                                         </div>
                                                                                     }
                                                                                 </td>
+                                                                                @if (User.IsInRole("Admin") && AdminEditStatus)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <div class="form-group"> 
+                                                                                                @{
+                                                                                                  Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACBWJustificationBudgEstNxtFin.ToString()  : " ");
+                                                                                               }
+                                                                                                
+                                                                                                @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name16+@Ledgers.LedgerNo})
+                                                                                                @Html.ValidationMessageFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                                                    {
+                                                                                      <td>
+                                                                                          <div class="form-group">
+                                                                                              @{
+                                                                                                 Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, Ledgerdetails!=null ? Ledgerdetails.ACBWJustificationBudgEstNxtFin.ToString() : "");
+                                                                                               }
+                                                                                            
+                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name16+@Ledgers.LedgerNo,@readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                          </div>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, " ");
+                                                                                    }
                                                                                 <td>
                                                                                                    @*if (Model.IsResponse)
                                                                                                    {
@@ -4625,6 +5323,21 @@
                                                                                     </tbody>
                                                                                     </table>
                                                                                 </td>
+                                                                                <td>
+                                                                                   <button style="border:none;background-color:white" id="@save" class="Submit" formaction="InterimRev" type="submit" value="Save Budget" style="align-self:center">
+                                                                                   <i class='bx bx-check' style="color:limegreen"></i></button>
+                                                                                </td>
+                                                                                
+                                                                                <td>
+                                                                                   <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="Edit" type="submit" value="Edit Budget" style="align-self:center">
+                                                                                   <i class='bx bxs-pencil' style="color:blue"></i></button>
+                                                                               </td>
+                                                                                
+                                                                                <td>
+                                                                                    <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="Delete" type="submit" value="Delete Budget" style="align-self:center">
+                                                                                    <i class='bx bx-x' style="color:red"></i>     
+                                                                                    </button>
+                                                                               </td>
                                                                                 </tr>
                                                                          LedgerNo++;
                                                                         }
@@ -5028,6 +5741,60 @@
 
                                                         }
                                                         <td>
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    {
+                                                                                            <div class="form-group">
+                                                                                             @{  
+                                                                                                Model.DelegateJustificationRevEst.Insert(Count, (details != null && details.DelegateJustificationRevEst!=null) ? details.DelegateJustificationRevEst.ToString(): "");
+                                                                                              }  
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
+                                                                                        
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                           @{ 
+                                                                                              Model.DelegateJustificationRevEst.Insert(Count, (details != null && details.DelegateJustificationRevEst!=null) ? details.DelegateJustificationRevEst.ToString() : "");
+                                                                                             }   
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[Count], new { @class = "form-control", @id = @name14})
+                                                                                            @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
+                                                                                            
+                                                                                    }
+                                                        </td>
+                                                        @if (User.IsInRole("Admin") && AdminEditStatus)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <div class="form-group"> 
+                                                                                                @{
+                                                                                                  Model.ACBWJustificationRevEst.Insert(Count, details!=null ? details.ACBWJustificationRevEst.ToString()  : " ");
+                                                                                               }
+                                                                                                
+                                                                                                @Html.TextBoxFor(model => model.ACBWJustificationRevEst[Count], new { @class = "form-control", @id = @name15})
+                                                                                                @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                                                    {
+                                                                                      <td>
+                                                                                          <div class="form-group">
+                                                                                              @{
+                                                                                                 Model.ACBWJustificationRevEst.Insert(Count, details!=null ? details.ACBWJustificationRevEst.ToString() : "");
+                                                                                               }
+                                                                                            
+                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationRevEst[Count], new { @class = "form-control", @id = @name15,@readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                          </div>
+                                                                                        </td>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        Model.ACBWJustificationRevEst.Insert(Count, " ");
+                                                                                    }
+                                                        <td>
                                                             @if (@Subs.RequireInput && DelegateEditStatus)
                                                             {
                                                                 var PastYearBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();
@@ -5240,6 +6007,7 @@
                                                                 </div>
                                                             }
                                                         </td>
+                                                        <td></td>
                                                         <td>
                                                                                @*if (Model.IsResponse)
                                                                                {
@@ -5292,6 +6060,21 @@
                                                                </table>
                                                             }
                                                         </td>
+                                                        <td>
+                                                                                   <button style="border:none;background-color:white" id="@save" class="Submit" formaction="InterimRev" type="submit" value="Save Budget" style="align-self:center">
+                                                                                   <i class='bx bx-check' style="color:limegreen"></i></button>
+                                                                                </td>
+                                                                                
+                                                                                <td>
+                                                                                   <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="Edit" type="submit" value="Edit Budget" style="align-self:center">
+                                                                                   <i class='bx bxs-pencil' style="color:blue"></i></button>
+                                                                               </td>
+                                                                                
+                                                                                <td>
+                                                                                    <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="Delete" type="submit" value="Delete Budget" style="align-self:center">
+                                                                                    <i class='bx bx-x' style="color:red"></i>     
+                                                                                    </button>
+                                                                               </td>
                                                     </tr>
                                                     Count++;
                                                     TableCount++;
@@ -5627,10 +6410,13 @@
                  $(".CurrentYearRevisedEstimates").text('Revised Estimates ' + $("#SelectedAcademicYear").val());
                  $(".VariationInRevisedEstimates").text('% Variation in RE over the BE ' + $("#SelectedAcademicYear").val()  );
                  $(".ACBWProposalForRevisedEstimates").text('AC & BW Proposal for RE ' + $("#SelectedAcademicYear").val());
+                 $(".DelegateJustificationRevEst").text('Justification(by Delegates)');
+                 $(".ACBWJustificationRevEst").text('Justification(by ACBW)');
                  $(".BudgetEstimatesNextYear").text('Budget Estimates ' + Number.parseInt(year[1]) + '-' + (Number.parseInt(year[1]) + Number.parseInt(1)));
                  $(".VariationInBudgetEstimates").text('% Variation in BE ' + Number.parseInt(year[1]) + '-' + (Number.parseInt(year[1]) + Number.parseInt(1)) + 'over the RE ' + $("#SelectedAcademicYear").val());
                  $(".ACBWProposalForBudgetEstimates").text('AC & BW Proposal for BE ' + Number.parseInt(year[1]) + '-' + (Number.parseInt(year[1]) + Number.parseInt(1)));
-                 $(".Justification").text('Justification');
+                 $(".Justification").text('Justification(by Delegates)');
+                 $(".ACBWJustificationBudgEstNxtFin").text('Justification(by ACBW)');
                  $(".UploadDocuments").text('Upload Documents');
 
 

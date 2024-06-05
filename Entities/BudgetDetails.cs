@@ -49,6 +49,9 @@ namespace BudgetPortal.Entities
         [Column(TypeName = "decimal(4,2)")]
         [Required]
         public Decimal PerVarRevEstOverBudgEstCurrFin { get; set; }
+        public string? DelegateJustificationRevEst { get; set; }
+
+        public string? ACBWJustificationRevEst { get; set; }
 
         [Column(TypeName = "money")]
         [Required]
@@ -80,6 +83,8 @@ namespace BudgetPortal.Entities
 
         public DateTime CreatedDateTime { get; set; }
         public string? Justification { get; set; }
+
+        public string? ACBWJustificationBudgEstNxtFin { get; set; }
         public String? SupportingDocumentPath { get; set; }
 
     }

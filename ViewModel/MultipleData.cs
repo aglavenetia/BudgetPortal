@@ -92,6 +92,9 @@ namespace BudgetPortal.ViewModel
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.####}")]
         public List<Decimal> ACAndBWPropRECurrFin { get; set; }
         //public Decimal ACAndBWPropRECurrFin { get; set; }
+        public List<String>? DelegateJustificationRevEst { get; set; }
+        
+        public List<String>? ACBWJustificationRevEst { get; set; }
 
         [Required(ErrorMessage = "Budget Estimates for the Next Financial Year Required")]
         [Column(TypeName = "money")]
@@ -113,6 +116,7 @@ namespace BudgetPortal.ViewModel
         public List<String>? Justification { get; set; }
         //public String Justification { get; set; }
 
+        public List<String>? ACBWJustificationBudgEstNxtFin { get; set; }
 
         public IEnumerable<SelectListItem>? DivisionNames { get; set; }
 
