@@ -48,11 +48,21 @@ namespace BudgetPortal.ViewModel
         public List<String> SubGroupNameOrLedgerName { get; set; }
 
 
-        [Required(ErrorMessage = "BudgetEstimates for the Current Financial Year Required")]
+        [Required]
         [Column(TypeName = "money")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.####}")]
         public List<Decimal> BudEstCurrFin { get; set; }
         //public Decimal BudEstCurrFin { get; set; }
+
+        [Required]
+        [Column(TypeName = "money")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.####}")]
+        public List<Decimal> InterimRevEst { get; set; }
+
+        [Required]
+        [Column(TypeName = "money")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.####}")]
+        public List<Decimal> ProvisionalRevEst { get; set; }
 
         [Required(ErrorMessage = "Actual for the Previous Financial Year Required")]
         [Column(TypeName = "money")]

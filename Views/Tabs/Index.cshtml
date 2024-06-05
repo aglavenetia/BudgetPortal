@@ -1,4 +1,3 @@
-﻿
 @model BudgetPortal.ViewModel.MultipleData
 @using System.Web;
 
@@ -22,6 +21,8 @@
 
     Model.SubGroupNameOrLedgerName = new List<String>();
     Model.BudEstCurrFin = new List<Decimal>();
+    Model.InterimRevEst = new List<Decimal>();
+    Model.ProvisionalRevEst = new List<Decimal>();
     Model.ActPrevFin = new List<Decimal>();
     Model.ActCurrFinTillsecondQuart = new List<Decimal>();
     Model.RevEstCurrFin = new List<Decimal>();
@@ -385,6 +386,12 @@
                                             <th class="CurrentBudgetEstimates w-10" >
                                                         
                                             </th>
+                                            <th class="InterimRevEst w-10" >
+                                                        
+                                            </th>
+                                            <th class="ProvisionalRevEst w-10" >
+                                                        
+                                            </th>
                                             <th class="PreviousActualBudget w-10" >
                                                 
                                             </th>
@@ -442,6 +449,9 @@
                                                     var name9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name11 = String.Concat("UploadFile", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name12 = String.Concat("InterimRevEst", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name13 = String.Concat("ProvisionalRevEst", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+
                                                     var upload = String.Concat("UploadButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var delete = String.Concat("DeleteButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var view = String.Concat("ViewButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -504,6 +514,24 @@
                                                                                                 @Html.ValidationMessageFor(model => model.BudEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                         }
+                                                                                </td>
+                                                                                <td>
+                                                                                        <div class="form-group">
+                                                                                        @{
+                                                                                            Model.InterimRevEst.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.InterimRevEst.ToString("F")) : Convert.ToDecimal(0.00));
+                                                                                        }
+                                                                                            @Html.TextBoxFor(model => model.InterimRevEst[LedgerNo], new { @class = "form-control", @id = @name12+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.InterimRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
+                                                                                </td>
+                                                                                <td>
+                                                                                        <div class="form-group">
+                                                                                        @{
+                                                                                            Model.ProvisionalRevEst.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.ProvisionalRevEst.ToString("F")) : Convert.ToDecimal(0.00));
+                                                                                        }
+                                                                                            @Html.TextBoxFor(model => model.ProvisionalRevEst[LedgerNo], new { @class = "form-control", @id = @name13+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.ProvisionalRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
                                                                                 </td>
                                                                                 <td>
                                                                                     @if (User.IsInRole("Admin") || !DelegateEditStatus)
@@ -881,6 +909,58 @@
                                                                 </div>
                                                                 
                                                         }
+                                                        </td>
+                                                        <td class="w-5">
+                                                        
+                                                        @if (@Subs.RequireInput)
+                                                        {
+                                                            var LedgerSumInterimRevEst = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.InterimRevEst).Sum();                                                                                                                            
+                                                            
+                                                            <div class="form-group">
+                                                                    @{
+                                                                        Model.InterimRevEst.Insert(Count, LedgerSumInterimRevEst != null ? Convert.ToDecimal(LedgerSumInterimRevEst) : Convert.ToDecimal(0.00));
+                                                                     }
+                                                                     @Html.TextBoxFor(model => model.InterimRevEst[Count], new { @class = "form-control", @id = @name12, @readonly = "readonly"} )
+                                                                     @Html.ValidationMessageFor(model => model.InterimRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                </div>
+                                                        }
+                                                        else 
+                                                        {
+                                                                <div class="form-group">
+                                                                   @{
+                                                                        Model.InterimRevEst.Insert(Count, details != null ? Convert.ToDecimal(details.InterimRevEst) : Convert.ToDecimal(0.00));
+                                                                    }
+                                                                    @Html.TextBoxFor(model => model.InterimRevEst[Count], new { @class = "form-control", @id = @name12, @readonly = "readonly"})
+                                                                    @Html.ValidationMessageFor(model => model.InterimRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                </div>
+                                                        }
+                                                           
+                                                        </td>
+                                                        <td class="w-5">
+                                                        
+                                                        @if (@Subs.RequireInput)
+                                                        {
+                                                            var LedgerSumProvisionalRevEst = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ProvisionalRevEst).Sum();                                                                                                                            
+                                                            
+                                                            <div class="form-group">
+                                                                    @{
+                                                                        Model.ProvisionalRevEst.Insert(Count, LedgerSumProvisionalRevEst != null ? Convert.ToDecimal(LedgerSumProvisionalRevEst) : Convert.ToDecimal(0.00));
+                                                                     }
+                                                                     @Html.TextBoxFor(model => model.ProvisionalRevEst[Count], new { @class = "form-control", @id = @name13, @readonly = "readonly"} )
+                                                                     @Html.ValidationMessageFor(model => model.ProvisionalRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                </div>
+                                                        }
+                                                        else 
+                                                        {
+                                                                <div class="form-group">
+                                                                   @{
+                                                                        Model.ProvisionalRevEst.Insert(Count, details != null ? Convert.ToDecimal(details.ProvisionalRevEst) : Convert.ToDecimal(0.00));
+                                                                    }
+                                                                    @Html.TextBoxFor(model => model.ProvisionalRevEst[Count], new { @class = "form-control", @id = @name13, @readonly = "readonly"})
+                                                                    @Html.ValidationMessageFor(model => model.ProvisionalRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                </div>
+                                                        }
+                                                           
                                                         </td>
                                                         <td class="w-5">
                                                         @if (@Subs.RequireInput)
@@ -1454,6 +1534,12 @@
                                                     <th class="CurrentBudgetEstimates w-10">
 
                                                     </th>
+                                                    <th class="InterimRevEst w-10" >
+                                                        
+                                                    </th>
+                                                    <th class="ProvisionalRevEst w-10" >
+                                                        
+                                                    </th>
                                                     <th class="PreviousActualBudget w-10">
 
                                                     </th>
@@ -1505,6 +1591,9 @@
                                                     var name9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name11 = String.Concat("UploadFile", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name12 = String.Concat("InterimRevEst", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name13 = String.Concat("ProvisionalRevEst", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+
                                                     var upload = String.Concat("UploadButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var delete = String.Concat("DeleteButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var view = String.Concat("ViewButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -1564,6 +1653,24 @@
                                                                                             @Html.ValidationMessageFor(model => model.BudEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                     }
+                                                                                </td>
+                                                                                <td>
+                                                                                        <div class="form-group">
+                                                                                        @{
+                                                                                            Model.InterimRevEst.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.InterimRevEst.ToString("F")) : Convert.ToDecimal(0.00));
+                                                                                        }
+                                                                                            @Html.TextBoxFor(model => model.InterimRevEst[LedgerNo], new { @class = "form-control", @id = @name12+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.InterimRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
+                                                                                </td>
+                                                                                <td>
+                                                                                        <div class="form-group">
+                                                                                        @{
+                                                                                            Model.ProvisionalRevEst.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.ProvisionalRevEst.ToString("F")) : Convert.ToDecimal(0.00));
+                                                                                        }
+                                                                                            @Html.TextBoxFor(model => model.ProvisionalRevEst[LedgerNo], new { @class = "form-control", @id = @name13+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.ProvisionalRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
                                                                                 </td>
                                                                                 <td>
                                                                                     @if (User.IsInRole("Admin") || !DelegateEditStatus)
@@ -1964,6 +2071,58 @@
                                                                  @Html.ValidationMessageFor(model => model.BudEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
                                                         }
+                                                        </td>
+                                                        <td class="w-5">
+                                                        
+                                                        @if (@Subs.RequireInput)
+                                                        {
+                                                            var LedgerSumInterimRevEst = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.InterimRevEst).Sum();                                                                                                                            
+                                                            
+                                                            <div class="form-group">
+                                                                    @{
+                                                                        Model.InterimRevEst.Insert(Count, LedgerSumInterimRevEst != null ? Convert.ToDecimal(LedgerSumInterimRevEst) : Convert.ToDecimal(0.00));
+                                                                     }
+                                                                     @Html.TextBoxFor(model => model.InterimRevEst[Count], new { @class = "form-control", @id = @name12, @readonly = "readonly"} )
+                                                                     @Html.ValidationMessageFor(model => model.InterimRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                </div>
+                                                        }
+                                                        else 
+                                                        {
+                                                                <div class="form-group">
+                                                                   @{
+                                                                        Model.InterimRevEst.Insert(Count, details != null ? Convert.ToDecimal(details.InterimRevEst) : Convert.ToDecimal(0.00));
+                                                                    }
+                                                                    @Html.TextBoxFor(model => model.InterimRevEst[Count], new { @class = "form-control", @id = @name12, @readonly = "readonly"})
+                                                                    @Html.ValidationMessageFor(model => model.InterimRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                </div>
+                                                        }
+                                                           
+                                                        </td>
+                                                        <td class="w-5">
+                                                        
+                                                        @if (@Subs.RequireInput)
+                                                        {
+                                                            var LedgerSumProvisionalRevEst = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ProvisionalRevEst).Sum();                                                                                                                            
+                                                            
+                                                            <div class="form-group">
+                                                                    @{
+                                                                        Model.ProvisionalRevEst.Insert(Count, LedgerSumProvisionalRevEst != null ? Convert.ToDecimal(LedgerSumProvisionalRevEst) : Convert.ToDecimal(0.00));
+                                                                     }
+                                                                     @Html.TextBoxFor(model => model.ProvisionalRevEst[Count], new { @class = "form-control", @id = @name13, @readonly = "readonly"} )
+                                                                     @Html.ValidationMessageFor(model => model.ProvisionalRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                </div>
+                                                        }
+                                                        else 
+                                                        {
+                                                                <div class="form-group">
+                                                                   @{
+                                                                        Model.ProvisionalRevEst.Insert(Count, details != null ? Convert.ToDecimal(details.ProvisionalRevEst) : Convert.ToDecimal(0.00));
+                                                                    }
+                                                                    @Html.TextBoxFor(model => model.ProvisionalRevEst[Count], new { @class = "form-control", @id = @name13, @readonly = "readonly"})
+                                                                    @Html.ValidationMessageFor(model => model.ProvisionalRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                </div>
+                                                        }
+                                                           
                                                         </td>
                                                         <td>
                                                         @if (@Subs.RequireInput)
@@ -2585,6 +2744,12 @@
                                 <th class="CurrentBudgetEstimates w-10">
 
                                 </th>
+                                <th class="InterimRevEst w-10" >
+                                                        
+                                </th>
+                                <th class="ProvisionalRevEst w-10" >
+                                                        
+                                </th>
                                 <th class="PreviousActualBudget w-10">
 
                                 </th>
@@ -2775,6 +2940,12 @@
                                                     <th class="CurrentBudgetEstimates w-10">
 
                                                     </th>
+                                                    <th class="InterimRevEst w-10" >
+                                                        
+                                                    </th>
+                                                    <th class="ProvisionalRevEst w-10" >
+                                                        
+                                                    </th>
                                                     <th class="PreviousActualBudget w-10">
 
                                                     </th>
@@ -2829,6 +3000,9 @@
                                                     var name9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name11 = String.Concat("UploadFile", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name12 = String.Concat("InterimRevEst", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name13 = String.Concat("ProvisionalRevEst", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+
                                                     var upload = String.Concat("UploadButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var delete = String.Concat("DeleteButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var view = String.Concat("ViewButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -2886,6 +3060,24 @@
                                                                                             @Html.ValidationMessageFor(model => model.BudEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                     }
+                                                                                </td>
+                                                                                <td>
+                                                                                        <div class="form-group">
+                                                                                        @{
+                                                                                            Model.InterimRevEst.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.InterimRevEst.ToString("F")) : Convert.ToDecimal(0.00));
+                                                                                        }
+                                                                                            @Html.TextBoxFor(model => model.InterimRevEst[LedgerNo], new { @class = "form-control", @id = @name12+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.InterimRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
+                                                                                </td>
+                                                                                <td>
+                                                                                        <div class="form-group">
+                                                                                        @{
+                                                                                            Model.ProvisionalRevEst.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.ProvisionalRevEst.ToString("F")) : Convert.ToDecimal(0.00));
+                                                                                        }
+                                                                                            @Html.TextBoxFor(model => model.ProvisionalRevEst[LedgerNo], new { @class = "form-control", @id = @name13+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.ProvisionalRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
                                                                                 </td>
                                                                                 <td>
                                                                                     @if (User.IsInRole("Admin") || !DelegateEditStatus)
@@ -3296,6 +3488,58 @@
                                                                      @Html.ValidationMessageFor(model => model.BudEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             }
+                                                        </td>
+                                                        <td class="w-5">
+                                                        
+                                                        @if (@Subs.RequireInput)
+                                                        {
+                                                            var LedgerSumInterimRevEst = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.InterimRevEst).Sum();                                                                                                                            
+                                                            
+                                                            <div class="form-group">
+                                                                    @{
+                                                                        Model.InterimRevEst.Insert(Count, LedgerSumInterimRevEst != null ? Convert.ToDecimal(LedgerSumInterimRevEst) : Convert.ToDecimal(0.00));
+                                                                     }
+                                                                     @Html.TextBoxFor(model => model.InterimRevEst[Count], new { @class = "form-control", @id = @name12, @readonly = "readonly"} )
+                                                                     @Html.ValidationMessageFor(model => model.InterimRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                </div>
+                                                        }
+                                                        else 
+                                                        {
+                                                                <div class="form-group">
+                                                                   @{
+                                                                        Model.InterimRevEst.Insert(Count, details != null ? Convert.ToDecimal(details.InterimRevEst) : Convert.ToDecimal(0.00));
+                                                                    }
+                                                                    @Html.TextBoxFor(model => model.InterimRevEst[Count], new { @class = "form-control", @id = @name12, @readonly = "readonly"})
+                                                                    @Html.ValidationMessageFor(model => model.InterimRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                </div>
+                                                        }
+                                                           
+                                                        </td>
+                                                        <td class="w-5">
+                                                        
+                                                        @if (@Subs.RequireInput)
+                                                        {
+                                                            var LedgerSumProvisionalRevEst = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ProvisionalRevEst).Sum();                                                                                                                            
+                                                            
+                                                            <div class="form-group">
+                                                                    @{
+                                                                        Model.ProvisionalRevEst.Insert(Count, LedgerSumProvisionalRevEst != null ? Convert.ToDecimal(LedgerSumProvisionalRevEst) : Convert.ToDecimal(0.00));
+                                                                     }
+                                                                     @Html.TextBoxFor(model => model.ProvisionalRevEst[Count], new { @class = "form-control", @id = @name13, @readonly = "readonly"} )
+                                                                     @Html.ValidationMessageFor(model => model.ProvisionalRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                </div>
+                                                        }
+                                                        else 
+                                                        {
+                                                                <div class="form-group">
+                                                                   @{
+                                                                        Model.ProvisionalRevEst.Insert(Count, details != null ? Convert.ToDecimal(details.ProvisionalRevEst) : Convert.ToDecimal(0.00));
+                                                                    }
+                                                                    @Html.TextBoxFor(model => model.ProvisionalRevEst[Count], new { @class = "form-control", @id = @name13, @readonly = "readonly"})
+                                                                    @Html.ValidationMessageFor(model => model.ProvisionalRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                </div>
+                                                        }
+                                                           
                                                         </td>
                                                         <td>
                                                             @if (@Subs.RequireInput)
@@ -3909,6 +4153,12 @@
                                                     <th class="CurrentBudgetEstimates w-10">
 
                                                     </th>
+                                                    <th class="InterimRevEst w-10" >
+                                                        
+                                                    </th>
+                                                    <th class="ProvisionalRevEst w-10" >
+                                                        
+                                                    </th>
                                                     <th class="PreviousActualBudget w-10">
 
                                                     </th>
@@ -3962,6 +4212,9 @@
                                                     var name9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name11 = String.Concat("UploadFile", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name12 = String.Concat("InterimRevEst", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name13 = String.Concat("ProvisionalRevEst", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+
                                                     var upload = String.Concat("UploadButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var delete = String.Concat("DeleteButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var view = String.Concat("ViewButton", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -4019,6 +4272,24 @@
                                                                                                @Html.ValidationMessageFor(model => model.BudEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                     }
+                                                                                </td>
+                                                                                <td>
+                                                                                        <div class="form-group">
+                                                                                        @{
+                                                                                            Model.InterimRevEst.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.InterimRevEst.ToString("F")) : Convert.ToDecimal(0.00));
+                                                                                        }
+                                                                                            @Html.TextBoxFor(model => model.InterimRevEst[LedgerNo], new { @class = "form-control", @id = @name12+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.InterimRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
+                                                                                </td>
+                                                                                <td>
+                                                                                        <div class="form-group">
+                                                                                        @{
+                                                                                            Model.ProvisionalRevEst.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.ProvisionalRevEst.ToString("F")) : Convert.ToDecimal(0.00));
+                                                                                        }
+                                                                                            @Html.TextBoxFor(model => model.ProvisionalRevEst[LedgerNo], new { @class = "form-control", @id = @name13+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.ProvisionalRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
                                                                                 </td>
                                                                                 <td>
                                                                                     @if (User.IsInRole("Admin") || !DelegateEditStatus)
@@ -4440,6 +4711,58 @@
                                                                     @Html.ValidationMessageFor(model => model.BudEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                         }
+                                                        </td>
+                                                        <td class="w-5">
+                                                        
+                                                        @if (@Subs.RequireInput)
+                                                        {
+                                                            var LedgerSumInterimRevEst = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.InterimRevEst).Sum();                                                                                                                            
+                                                            
+                                                            <div class="form-group">
+                                                                    @{
+                                                                        Model.InterimRevEst.Insert(Count, LedgerSumInterimRevEst != null ? Convert.ToDecimal(LedgerSumInterimRevEst) : Convert.ToDecimal(0.00));
+                                                                     }
+                                                                     @Html.TextBoxFor(model => model.InterimRevEst[Count], new { @class = "form-control", @id = @name12, @readonly = "readonly"} )
+                                                                     @Html.ValidationMessageFor(model => model.InterimRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                </div>
+                                                        }
+                                                        else 
+                                                        {
+                                                                <div class="form-group">
+                                                                   @{
+                                                                        Model.InterimRevEst.Insert(Count, details != null ? Convert.ToDecimal(details.InterimRevEst) : Convert.ToDecimal(0.00));
+                                                                    }
+                                                                    @Html.TextBoxFor(model => model.InterimRevEst[Count], new { @class = "form-control", @id = @name12, @readonly = "readonly"})
+                                                                    @Html.ValidationMessageFor(model => model.InterimRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                </div>
+                                                        }
+                                                           
+                                                        </td>
+                                                        <td class="w-5">
+                                                        
+                                                        @if (@Subs.RequireInput)
+                                                        {
+                                                            var LedgerSumProvisionalRevEst = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ProvisionalRevEst).Sum();                                                                                                                            
+                                                            
+                                                            <div class="form-group">
+                                                                    @{
+                                                                        Model.ProvisionalRevEst.Insert(Count, LedgerSumProvisionalRevEst != null ? Convert.ToDecimal(LedgerSumProvisionalRevEst) : Convert.ToDecimal(0.00));
+                                                                     }
+                                                                     @Html.TextBoxFor(model => model.ProvisionalRevEst[Count], new { @class = "form-control", @id = @name13, @readonly = "readonly"} )
+                                                                     @Html.ValidationMessageFor(model => model.ProvisionalRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                </div>
+                                                        }
+                                                        else 
+                                                        {
+                                                                <div class="form-group">
+                                                                   @{
+                                                                        Model.ProvisionalRevEst.Insert(Count, details != null ? Convert.ToDecimal(details.ProvisionalRevEst) : Convert.ToDecimal(0.00));
+                                                                    }
+                                                                    @Html.TextBoxFor(model => model.ProvisionalRevEst[Count], new { @class = "form-control", @id = @name13, @readonly = "readonly"})
+                                                                    @Html.ValidationMessageFor(model => model.ProvisionalRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                </div>
+                                                        }
+                                                           
                                                         </td>
                                                         <td>
                                                             @if (@Subs.RequireInput)
@@ -5297,6 +5620,8 @@
                  $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
 
                  $(".CurrentBudgetEstimates").text('Budget Estimates ' + $("#SelectedAcademicYear").val());
+                 $(".InterimRevEst").text('Interim Revised Estimates ' + $("#SelectedAcademicYear").val());
+                 $(".ProvisionalRevEst").text('Provisional Revised Estimates ' + $("#SelectedAcademicYear").val());
                  $(".PreviousActualBudget").text('Actual ' + (Number.parseInt(year[0]) - Number.parseInt(1)) + '-' + Number.parseInt(year[0]));
                  $(".PreviousHalfYearActualBudget").text('Actual upto 30.09.'+Number.parseInt(year[0]));
                  $(".CurrentYearRevisedEstimates").text('Revised Estimates ' + $("#SelectedAcademicYear").val());
@@ -5352,4 +5677,3 @@
 
     </script>
 }
-
