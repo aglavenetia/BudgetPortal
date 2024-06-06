@@ -43,6 +43,8 @@ namespace BudgetPortal.ViewModel
         public Boolean? AdminEditStatus { get; set; }
         public Boolean? DelegateEditStatus { get; set; }
 
+        public String EditEnabled { get; set; }
+
         public int PreviousYearAdminCount { get; set; }
 
         public List<String> SubGroupNameOrLedgerName { get; set; }
