@@ -13,7 +13,7 @@ using BudgetPortal.Models;
 
 namespace BudgetPortal.ViewModel
 {
-    public class MultipleData 
+    public class MultipleData
     {
         public IEnumerable<BudgetSections>? Sectionss { get; set; }
         public IEnumerable<BudgetGroups>? Groupss { get; set; }
@@ -43,12 +43,16 @@ namespace BudgetPortal.ViewModel
         public Boolean? AdminEditStatus { get; set; }
         public Boolean? DelegateEditStatus { get; set; }
 
+
         public String EditEnabled { get; set; }
 
         public int PreviousYearAdminCount { get; set; }
 
         public List<String> SubGroupNameOrLedgerName { get; set; }
 
+        public List<Boolean> HasDelegateSaved { get;set;}
+
+        public List<Boolean> HasAdminSaved { get; set; }
 
         [Required]
         [Column(TypeName = "money")]
