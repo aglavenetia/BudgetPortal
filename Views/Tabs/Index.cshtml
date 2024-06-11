@@ -457,6 +457,8 @@
                                                     var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
                                                     var PrevYearApp =  (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
                                                     
+                                                    Boolean IsDelegateSaved = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.HasDelegateSaved).FirstOrDefault();
+                                                    Boolean IsAdminSaved = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.HasAdminSaved).FirstOrDefault();
 
                                                     var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -503,9 +505,11 @@
 
                                                                          var Ledgerdetails = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();
                                                                          var LedPrevYearApp = (from a in Model.Approved where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault(); 
-                                                                          
-                                                                            <tr>
-                                                                                <td></td>
+                                                                         
+                                                                         Boolean LedgerIsDelegateSaved = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo)&& a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.HasDelegateSaved).FirstOrDefault();
+                                                                         Boolean LedgerIsAdminSaved = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo)&& a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.HasAdminSaved).FirstOrDefault();
+                                                                            
+                                                                         <tr>
                                                                                 <td></td>
                                                                                 <td>
                                                                                     @{
@@ -561,7 +565,7 @@
                                                                                         </div>
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus || Ledgerdetails.HasDelegateSaved.Equals(true))
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                     {
                                                                                         <div class="form-group"> 
                                                                                           @{
@@ -584,7 +588,7 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus|| Ledgerdetails.HasDelegateSaved.Equals(true))
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus|| (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                     {
                                                                                        <div class="form-group">
                                                                                            @{
@@ -616,7 +620,7 @@
                                                                                             @Html.ValidationMessageFor(model => model.RevEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                     }
-                                                                                    else if (!DelegateEditStatus || (DelegateEditStatus && Ledgerdetails.HasDelegateSaved))
+                                                                                    else if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                     {
                                                                                         <div class="form-group">
                                                                                             @{
@@ -638,7 +642,7 @@
                                                                                     }
                                                                                 </td>
                                                                                     <td>
-                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                         {
                                                                                           <div class="form-group"> 
                                                                                               @{
@@ -672,7 +676,7 @@
                                                                                             </div>
                                                                                         </td>
                                                                                     }
-                                                                                    else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                                                    else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0) || (User.IsInRole("Admin") && LedgerIsAdminSaved))
                                                                                     {
                                                                                       <td>
                                                                                           <div class="form-group">
@@ -691,7 +695,7 @@
                                                                                     }
 
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                     {
                                                                                             <div class="form-group">
                                                                                              @{  
@@ -727,7 +731,7 @@
                                                                                             </div>
                                                                                         </td>
                                                                                     }
-                                                                                    else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                                                    else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0) || (User.IsInRole("Admin") && LedgerIsAdminSaved))
                                                                                     {
                                                                                       <td>
                                                                                           <div class="form-group">
@@ -757,7 +761,7 @@
                                                                                         </div>
                                                                                       
                                                                                     }
-                                                                                    else if (!DelegateEditStatus )
+                                                                                    else if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved) )
                                                                                     {
                                                                                         <div class="form-group">
                                                                                           @{
@@ -782,7 +786,7 @@
                                                                                     }
                                                                                 </td>
                                                                                     <td>
-                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                         {
                                                                                             <div class="form-group">
                                                                                              
@@ -820,7 +824,7 @@
                                                                                         
                                                                                     </td>
                                                                                 }
-                                                                                else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                                                else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0)|| (User.IsInRole("Admin") && LedgerIsAdminSaved))
                                                                                 {
                                                                                     <td>
                                                                                         <div class="form-group">
@@ -838,7 +842,7 @@
                                                                                         Model.ACAndBWPropRENxtFin.Insert(LedgerNo, Convert.ToDecimal(0.00));
                                                                                     }
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                     {
                                                                                             <div class="form-group">
                                                                                              @{  
@@ -874,7 +878,7 @@
                                                                                             </div>
                                                                                         </td>
                                                                                     }
-                                                                                    else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                                                    else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0)|| (User.IsInRole("Admin") && LedgerIsAdminSaved))
                                                                                     {
                                                                                       <td>
                                                                                           <div class="form-group">
@@ -896,7 +900,7 @@
                                                                                     <table class="table" >
                                                                                     <thead> </thead>
                                                                                     <tbody>
-                                                                                       @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0)
+                                                                                       @if ((!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0 && !LedgerIsDelegateSaved))
                                                                                         {
                                                                                             <tr><td  style="border:none"> @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo})</td> </tr>
                                                                                             <tr><td  style="border:none"> @Html.ValidationMessage("Caution"+LedgerNo,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
@@ -914,7 +918,7 @@
                                                                                                             <td style="border:none">@Html.ActionLink(@LedgerFiles.FileName,null,null,null,new{href =@LedgerFiles.SupportingDocumentPath, target = "_blank"} )</td>
                                                                                                             /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>*/
                                                                                                         }
-                                                                                                        @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
+                                                                                                        @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && !LedgerIsDelegateSaved)
                                                                                                         {
                                                                                                            <td style="border:none"><input id="@delete@Ledgers.LedgerNo" class="Submit btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
                                                                                                         }
@@ -924,23 +928,29 @@
                                                                                     </tbody>
                                                                                     </table>
                                                                                     </td>
-                                                                                
+                                                                                @if((!User.IsInRole("Admin") && !LedgerIsDelegateSaved)||(User.IsInRole("Admin") && !LedgerIsAdminSaved))
+                                                                                {
                                                                                 <td>
                                                                                    <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/Tabs/Save" type="submit" value="Save Budget" style="align-self:center">
                                                                                    <i class='bx bx-check' style="color:limegreen"></i></button>
                                                                                 </td>
-                                                                                
-                                                                                <td>
-                                                                                   <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/Tabs/Edit" type="submit" value="Edit Budget" style="align-self:center">
-                                                                                   <i class='bx bxs-pencil' style="color:blue"></i></button>
-                                                                               </td>
-                                                                                
-                                                                                <td>
-                                                                                    <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/Tabs/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
-                                                                                    <i class='bx bx-x' style="color:red"></i>     
-                                                                                    </button>
-                                                                               </td>
-                                                                                
+                                                                                }
+                                                                                    @if ((!User.IsInRole("Admin") && LedgerIsDelegateSaved) || (User.IsInRole("Admin") && LedgerIsAdminSaved))
+                                                                                    {
+                                                                                        <td>
+                                                                                            <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/Tabs/Edit" type="submit" value="Edit Budget" style="align-self:center">
+                                                                                                <i class='bx bxs-pencil' style="color:blue"></i></button>
+                                                                                        </td>
+
+                                                                                    }
+                                                                                @if((!User.IsInRole("Admin") && LedgerIsDelegateSaved)||(User.IsInRole("Admin") && LedgerIsAdminSaved))
+                                                                                {
+                                                                                        <td>
+                                                                                            <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/Tabs/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
+                                                                                                <i class='bx bx-x' style="color:red"></i>     
+                                                                                            </button>
+                                                                                        </td>
+                                                                                    }
                                                                                 </tr>
                                                                             
                                                                         LedgerNo++;
@@ -954,7 +964,6 @@
                                                                       @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
                                                                       {
                                                                         <tr>
-                                                                            <td></td>
                                                                             <td></td>
                                                                             <td>
                                                                                 @Ledgers.LedgerNo
@@ -982,7 +991,7 @@
                                                         </td class="w-5">
                                                         <td class="w-5">
                                                         
-                                                        @if (@Subs.RequireInput && DelegateEditStatus)
+                                                        @if (@Subs.RequireInput && DelegateEditStatus && !IsDelegateSaved)
                                                         {
                                                             var LedgerPastYearAppBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();
 
@@ -996,7 +1005,7 @@
                                                                 </div>
                                                             
                                                         }
-                                                        else if (@Subs.RequireInput && !DelegateEditStatus)
+                                                        else if ((@Subs.RequireInput && !DelegateEditStatus) || (@Subs.RequireInput && !User.IsInRole("Admin") && IsDelegateSaved))
                                                         {
                                                             var LedgerSumBudEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstCurrFin).Sum();                                                                                                                            
                                                             
@@ -1010,7 +1019,7 @@
                                                                 
                                                             }
 
-                                                            else if (!DelegateEditStatus)
+                                                            else if (!DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
                                                             {
                                                                 <div class="form-group">
                                                                    
@@ -1101,7 +1110,7 @@
                                                             </div>
                                                             
                                                         }
-                                                        else if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                        else if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
                                                         {
                                                                 <div class="form-group">
                                                                   @{ 
@@ -1137,8 +1146,7 @@
                                                                 </div>
                                                                 
                                                             }
-                                                        else if (User.IsInRole("Admin") || !DelegateEditStatus)
-                                                        {                                       
+                                                        else if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))                                                       {                                       
                                                               <div class="form-group">
                                                                 @{
                                                                    Model.ActCurrFinTillsecondQuart.Insert(Count, details != null ? Convert.ToDecimal(details.ActCurrFinTill2ndQuart) : Convert.ToDecimal(0.00));
@@ -1161,7 +1169,7 @@
                                                         }
                                                         </td>
                                                         <td class="w-5">
-                                                        @if (@Subs.RequireInput && DelegateEditStatus)
+                                                        @if (@Subs.RequireInput && DelegateEditStatus && !IsDelegateSaved)
                                                         {
                                                                 var PastYearBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin ).Sum();
                                                             <div class="form-group">
@@ -1173,7 +1181,7 @@
                                                             </div>
                                                                 
                                                             }
-                                                        else if (@Subs.RequireInput && !DelegateEditStatus)
+                                                        else if ((@Subs.RequireInput && !DelegateEditStatus) || (@Subs.RequireInput && !User.IsInRole("Admin") && IsDelegateSaved))
                                                         {
                                                                 var PastYearBudEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.RevEstCurrFin).Sum();
                                                             <div class="form-group">
@@ -1194,7 +1202,7 @@
                                                                 @Html.ValidationMessageFor(model => model.RevEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
                                                         }
-                                                        else if(!DelegateEditStatus)
+                                                        else if(!DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
                                                         {
                                                               <div class="form-group">
                                                                 @{    
@@ -1216,7 +1224,7 @@
                                                         }
                                                         </td>
                                                         <td class="w-5">
-                                                        @if (@Subs.RequireInput && DelegateEditStatus)
+                                                        @if (@Subs.RequireInput && DelegateEditStatus && !IsDelegateSaved)
                                                         {
                                                             
                                                           var PastYearSumBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();                                                                                                                           
@@ -1228,7 +1236,7 @@
                                                                 @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             }
-                                                        else if(@Subs.RequireInput && !DelegateEditStatus)
+                                                        else if((@Subs.RequireInput && !DelegateEditStatus) || (@Subs.RequireInput && !User.IsInRole("Admin") && IsDelegateSaved))
                                                         {
                                                             var LedgerSumRevEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.RevEstCurrFin).Sum();
                                                             var LedgerSumBudEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstCurrFin).Sum();
@@ -1241,7 +1249,7 @@
                                                                 </div>
                                                         }                                                     
                                                         
-                                                        else if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                        else if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
                                                         {
                                                             <div class="form-group">
                                                                @{ 
@@ -1287,7 +1295,7 @@
                                                                 </div>
                                                             </td>
                                                         }
-                                                        else if (((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0) ) && !@Subs.RequireInput )
+                                                        else if (((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0) ) && !@Subs.RequireInput)
                                                         {
                                                             <td class="w-5">
                                                                 <div class="form-group">
@@ -1321,7 +1329,7 @@
                                                             
                                                         }
                                                         <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved) )
                                                                                     {
                                                                                             <div class="form-group">
                                                                                              @{  
@@ -1345,7 +1353,7 @@
                                                                                     }
                                                         </td>
                                                         @if (User.IsInRole("Admin") && AdminEditStatus)
-                                                                                    {
+                                                        {
                                                                                         <td>
                                                                                             <div class="form-group"> 
                                                                                                 @{
@@ -1356,9 +1364,9 @@
                                                                                                 @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                         </td>
-                                                                                    }
-                                                                                    else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
-                                                                                    {
+                                                        }
+                                                        else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0)|| (User.IsInRole("Admin") &&  IsAdminSaved))
+                                                        {
                                                                                       <td>
                                                                                           <div class="form-group">
                                                                                               @{
@@ -1369,13 +1377,13 @@
                                                                                             @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                           </div>
                                                                                         </td>
-                                                                                    }
-                                                                                    else
-                                                                                    {
-                                                                                        Model.ACBWJustificationRevEst.Insert(Count, " ");
-                                                                                    }
+                                                        }
+                                                        else
+                                                        {
+                                                             Model.ACBWJustificationRevEst.Insert(Count, " ");
+                                                        }
                                                         <td class="w-5">
-                                                        @if (@Subs.RequireInput && DelegateEditStatus)
+                                                        @if (@Subs.RequireInput && DelegateEditStatus && !IsDelegateSaved)
                                                         {
                                                                 var PastYearBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin ).Sum();
                                                             <div class="form-group">
@@ -1411,7 +1419,7 @@
                                                             </div>
                                                            
                                                         }
-                                                        else if (!DelegateEditStatus)
+                                                        else if (!DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
                                                         {
                                                               <div class="form-group">
                                                                @{
@@ -1436,7 +1444,7 @@
                                                         }
                                                         </td>
                                                         <td class="w-5">
-                                                            @if (@Subs.RequireInput && DelegateEditStatus)
+                                                            @if (@Subs.RequireInput && DelegateEditStatus && !IsDelegateSaved)
                                                             {
 
                                                                 var PastYearSumBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();
@@ -1463,7 +1471,7 @@
                                                                 </div>
                                                             }
 
-                                                            else if (User.IsInRole("Admin") || !DelegateEditStatus)
+                                                            else if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
                                                             {
                                                                 <div class="form-group">
                                                                     @{
@@ -1547,7 +1555,7 @@
                                                            Model.ACAndBWPropRENxtFin.Insert(Count, Convert.ToDecimal(0.00));                                                   
                                                         }
                                                         <td class="w-5">
-                                                            @if (@Subs.RequireInput || User.IsInRole("Admin") || !DelegateEditStatus)
+                                                            @if (@Subs.RequireInput || User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
                                                         {
                                                             <div class="form-group">
                                                                 @{
@@ -1591,7 +1599,7 @@
                                                                                             </div>
                                                                                         </td>
                                                                                     }
-                                                                                    else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                                                    else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0)|| (User.IsInRole("Admin") && IsAdminSaved))
                                                                                     {
                                                                                       <td>
                                                                                           <div class="form-group">
@@ -1615,7 +1623,7 @@
                                                               <table class="table" style="border:none">
                                                               <thead> </thead>
                                                               <tbody>
-                                                              @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0)
+                                                              @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0 && !IsDelegateSaved)
                                                               {
                                                                    <tr><td  style="border:none"> @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11})</td></tr>
                                                                    <tr><td  style="border:none"> @Html.ValidationMessage("Caution"+Count,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
@@ -1633,7 +1641,7 @@
                                                                                        <td style="border:none">@Html.ActionLink(@Files.FileName,null,null,null,new{href =@Files.SupportingDocumentPath, target = "_blank"} )</td>
                                                                                        /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@Files.FileName" /></td>*/
                                                                                       }
-                                                                                        @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0)
+                                                                                        @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && !IsDelegateSaved)
                                                                                         {
                                                                                            <td style="border:none"><input id="@delete" class="Submit  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete"/></td>
                                                                                         }
@@ -1644,21 +1652,28 @@
                                                              </table>
                                                          }
                                                         </td>
+                                                        @if((!User.IsInRole("Admin") && !IsDelegateSaved)||(User.IsInRole("Admin") && !IsAdminSaved))
+                                                        {
                                                         <td>
                                                                                    <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/Tabs/Save" type="submit" value="Save Budget" style="align-self:center">
                                                                                    <i class='bx bx-check' style="color:limegreen"></i></button>
                                                                                 </td>
-                                                                                
+                                                          }
+                                                          @if((!User.IsInRole("Admin") && IsDelegateSaved)||(User.IsInRole("Admin") && IsAdminSaved))
+                                                          {
                                                                                 <td>
                                                                                    <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/Tabs/Edit" type="submit" value="Edit Budget" style="align-self:center">
                                                                                    <i class='bx bxs-pencil' style="color:blue"></i></button>
                                                                                </td>
-                                                                                
+                                                           }
+                                                           @if((!User.IsInRole("Admin") && IsDelegateSaved)||(User.IsInRole("Admin") && IsAdminSaved))
+                                                           {
                                                                                 <td>
                                                                                     <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/Tabs/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
                                                                                     <i class='bx bx-x' style="color:red"></i>     
                                                                                     </button>
                                                                                </td>
+                                                           }
                                                     </tr>
 
                                                     Count++;
@@ -1830,6 +1845,9 @@
                                                     var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
                                                     var PrevYearApp =  (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
 
+                                                    Boolean IsDelegateSaved = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.HasDelegateSaved).FirstOrDefault();
+                                                    Boolean IsAdminSaved = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.HasAdminSaved).FirstOrDefault();
+
                                                     var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name3 = String.Concat("ActCurrFinTillsecondQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -1872,8 +1890,10 @@
                                                                             var Ledgerdetails = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();
                                                                             var LedPrevYearApp = (from a in Model.Approved where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();                       
                                                                             
+                                                                            Boolean LedgerIsDelegateSaved = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo)&& a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.HasDelegateSaved).FirstOrDefault();
+                                                                            Boolean LedgerIsAdminSaved = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo)&& a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.HasAdminSaved).FirstOrDefault();
+
                                                                             <tr>
-                                                                                <td></td>
                                                                                 <td></td>
                                                                                 <td>
                                                                                     @{
@@ -2338,7 +2358,6 @@
                                                                         {
                                                                             <tr>
                                                                                 <td></td>
-                                                                                <td></td>
                                                                                 <td>@Ledgers.LedgerNo</td>
                                                                                 <td>@Ledgers.LedgerName</td>
                                                                             </tr>
@@ -2361,7 +2380,7 @@
                                                         </td>
                                                          <td>
                                                         
-                                                        @if (@Subs.RequireInput && DelegateEditStatus)
+                                                        @if (@Subs.RequireInput && DelegateEditStatus && !IsDelegateSaved)
                                                         {
                                                             var LedgerPastYearAppBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();                                                                                                                            
                                                             <div class="form-group">
@@ -2544,7 +2563,7 @@
                                                         }
                                                         </td>
                                                         <td>
-                                                        @if (@Subs.RequireInput && DelegateEditStatus)
+                                                        @if (@Subs.RequireInput && DelegateEditStatus && !IsDelegateSaved)
                                                         {
                                                                 var LedgerSumRevEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin ).Sum();
                                                                 <div class="form-group">
@@ -2608,7 +2627,7 @@
                                                         }
                                                         </td>
                                                         <td>
-                                                        @if (@Subs.RequireInput && DelegateEditStatus)
+                                                        @if (@Subs.RequireInput && DelegateEditStatus && !IsDelegateSaved)
                                                         {
                                                             
                                                           var PastYearSumBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();                                                                                                                           
@@ -2779,7 +2798,7 @@
                                                                                         Model.ACBWJustificationRevEst.Insert(Count, " ");
                                                                                     }
                                                         <td>
-                                                            @if (@Subs.RequireInput && DelegateEditStatus)
+                                                            @if (@Subs.RequireInput && DelegateEditStatus && !IsDelegateSaved)
                                                             {
                                                                 var PastYearBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();
                                                                 <div class="form-group">
@@ -2843,7 +2862,7 @@
                                                             }
                                                         </td>
                                                         <td>
-                                                            @if (@Subs.RequireInput && DelegateEditStatus)
+                                                            @if (@Subs.RequireInput && DelegateEditStatus && !IsDelegateSaved)
                                                             {
 
                                                                 var PastYearSumBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();
@@ -3051,7 +3070,9 @@
                                                                       <tr><td  style="border:none">@Html.ValidationMessage("Caution"+Count,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
                                                                       <tr><td  style="border:none">@Html.ValidationMessage("FileMessage_"+Count,null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
                                                                     <br/>
-                                                                   <tr><td style="border:none"> <input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/></td></tr>
+                                                                   <tr>
+                                                                       <td style="border:none"> <input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload"/></td>
+                                                                    </tr>
                                                                 }
                                                                 
                                                                                     @foreach(var Files in Model.Filess.Where (a => a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
@@ -3074,21 +3095,28 @@
                                                                   </table>
                                                             }
                                                         </td>
+                                                        @if((!User.IsInRole("Admin") && !IsDelegateSaved)||(User.IsInRole("Admin") && !IsAdminSaved))
+                                                        {
                                                         <td>
                                                                                    <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/Tabs/Save" type="submit" value="Save Budget" style="align-self:center">
                                                                                    <i class='bx bx-check' style="color:limegreen"></i></button>
                                                                                 </td>
-                                                                                
+                                                         }
+                                                         @if((!User.IsInRole("Admin") && IsDelegateSaved)||(User.IsInRole("Admin") && IsAdminSaved))
+                                                        {
                                                                                 <td>
                                                                                    <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/Tabs/Edit" type="submit" value="Edit Budget" style="align-self:center">
                                                                                    <i class='bx bxs-pencil' style="color:blue"></i></button>
                                                                                </td>
-                                                                                
+                                                          }
+                                                          @if((!User.IsInRole("Admin") && IsDelegateSaved)||(User.IsInRole("Admin") && IsAdminSaved))
+                                                          {
                                                                                 <td>
                                                                                     <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/Tabs/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
                                                                                     <i class='bx bx-x' style="color:red"></i>     
                                                                                     </button>
                                                                                </td>
+                                                          }
                                                     </tr>
 
                                                     Count++;
@@ -3460,6 +3488,9 @@
                                                     var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
                                                     var PrevYearApp =  (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();                                           
 
+                                                    Boolean IsDelegateSaved = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.HasDelegateSaved).FirstOrDefault();
+                                                    Boolean IsAdminSaved = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.HasAdminSaved).FirstOrDefault();
+
                                                     var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name3 = String.Concat("ActCurrFinTillsecondQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -3502,8 +3533,9 @@
                                                                             var Ledgerdetails = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();
                                                                             var LedPrevYearApp = (from a in Model.Approved where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();                       
 
+                                                                             Boolean LedgerIsDelegateSaved = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo)&& a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.HasDelegateSaved).FirstOrDefault();
+                                                                         Boolean LedgerIsAdminSaved = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo)&& a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.HasAdminSaved).FirstOrDefault();
                                                                             <tr>
-                                                                                <td></td>
                                                                                 <td></td>
                                                                                 <td>
                                                                                     @{
@@ -3963,21 +3995,28 @@
                                                                                     </tbody>
                                                                                     </table>
                                                                                 </td>
+                                                                                @if((!User.IsInRole("Admin") && Ledgerdetails.HasDelegateSaved.Equals(false))||(User.IsInRole("Admin") && Ledgerdetails.HasAdminSaved.Equals(false)))
+                                                                                {
                                                                                 <td>
                                                                                    <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/Tabs/Save" type="submit" value="Save Budget" style="align-self:center">
                                                                                    <i class='bx bx-check' style="color:limegreen"></i></button>
                                                                                 </td>
-                                                                                
+                                                                                }
+                                                                                @if((!User.IsInRole("Admin") && Ledgerdetails.HasDelegateSaved.Equals(true))||(User.IsInRole("Admin") && Ledgerdetails.HasAdminSaved.Equals(true)))
+                                                                                {
                                                                                 <td>
                                                                                    <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/Tabs/Edit" type="submit" value="Edit Budget" style="align-self:center">
                                                                                    <i class='bx bxs-pencil' style="color:blue"></i></button>
                                                                                </td>
-                                                                                
+                                                                                }
+                                                                                @if((!User.IsInRole("Admin") && Ledgerdetails.HasDelegateSaved.Equals(true))||(User.IsInRole("Admin") && Ledgerdetails.HasAdminSaved.Equals(true)))
+                                                                                {
                                                                                 <td>
                                                                                     <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/Tabs/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
                                                                                     <i class='bx bx-x' style="color:red"></i>     
                                                                                     </button>
                                                                                </td>
+                                                                               }
                                                                                 </tr>
 
                                                                              LedgerNo++;
@@ -3991,7 +4030,6 @@
                                                                         @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
                                                                         {
                                                                             <tr>
-                                                                                <td></td>
                                                                                 <td></td>
                                                                                 <td>@Ledgers.LedgerNo</td>
                                                                                 <td>@Ledgers.LedgerName</td>
@@ -4016,7 +4054,7 @@
                                                         </td>
                                                         <td>
 
-                                                        @if (@Subs.RequireInput && DelegateEditStatus)
+                                                        @if (@Subs.RequireInput && DelegateEditStatus && !IsDelegateSaved)
                                                         {
                                                                 var LedgerPastYearAppBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();
                                                                 <div class="form-group">
@@ -4197,7 +4235,7 @@
                                                             }
                                                         </td>
                                                         <td>
-                                                        @if (@Subs.RequireInput && DelegateEditStatus)
+                                                        @if (@Subs.RequireInput && DelegateEditStatus && !IsDelegateSaved)
                                                         {
                                                             var LedgerSumRevEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin ).Sum();
                                                             <div class="form-group">
@@ -4262,7 +4300,7 @@
                                                             }
                                                         </td>
                                                         <td>
-                                                        @if (@Subs.RequireInput && DelegateEditStatus)
+                                                        @if (@Subs.RequireInput && DelegateEditStatus && !IsDelegateSaved)
                                                         {
                                                             
                                                           var PastYearSumBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();                                                                                                                           
@@ -4435,7 +4473,7 @@
                                                                                         Model.ACBWJustificationRevEst.Insert(Count, " ");
                                                                                     }
                                                         <td>
-                                                        @if (@Subs.RequireInput && DelegateEditStatus)
+                                                        @if (@Subs.RequireInput && DelegateEditStatus && !IsDelegateSaved)
                                                         {
                                                                 var PastYearBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin ).Sum();
                                                             <div class="form-group">
@@ -4499,7 +4537,7 @@
                                                         }
                                                         </td>
                                                         <td>
-                                                            @if (@Subs.RequireInput && DelegateEditStatus)
+                                                            @if (@Subs.RequireInput && DelegateEditStatus && !IsDelegateSaved)
                                                             {
 
                                                                 var PastYearSumBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();
@@ -4715,22 +4753,28 @@
                                                              </table>
                                                             }
                                                         </td>
+                                                        @if((!User.IsInRole("Admin") && details.HasDelegateSaved.Equals(false))||(User.IsInRole("Admin") && details.HasAdminSaved.Equals(false)))
+                                                          {
                                                         <td>
                                                                                    <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/Tabs/Save" type="submit" value="Save Budget" style="align-self:center">
                                                                                    <i class='bx bx-check' style="color:limegreen"></i></button>
                                                                                 </td>
-                                                                                
+                                                          }
+                                                          @if((!User.IsInRole("Admin") && details.HasDelegateSaved.Equals(true))||(User.IsInRole("Admin") && details.HasAdminSaved.Equals(true)))
+                                                          {
                                                                                 <td>
                                                                                    <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/Tabs/Edit" type="submit" value="Edit Budget" style="align-self:center">
                                                                                    <i class='bx bxs-pencil' style="color:blue"></i></button>
                                                                                </td>
-                                                                                
+                                                           }
+                                                           @if((!User.IsInRole("Admin") && details.HasDelegateSaved.Equals(true))||(User.IsInRole("Admin") && details.HasAdminSaved.Equals(true)))
+                                                          {
                                                                                 <td>
                                                                                     <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/Tabs/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
                                                                                     <i class='bx bx-x' style="color:red"></i>     
                                                                                     </button>
                                                                                </td>
-
+                                                           }
                                                     </tr>
                                                     Count++;
                                                     TableCount++;
@@ -4902,6 +4946,9 @@
                                                     var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
                                                     var PrevYearApp =  (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();                                           
 
+                                                    Boolean IsDelegateSaved = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.HasDelegateSaved).FirstOrDefault();
+                                                    Boolean IsAdminSaved = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.HasAdminSaved).FirstOrDefault();
+
                                                     var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name3 = String.Concat("ActCurrFinTillsecondQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -4944,8 +4991,10 @@
                                                                             var Ledgerdetails = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();
                                                                             var LedPrevYearApp = (from a in Model.Approved where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();
 
-                                                                            <tr>
-                                                                                <td></td>
+                                                                             Boolean LedgerIsDelegateSaved = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo)&& a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.HasDelegateSaved).FirstOrDefault();
+                                                                             Boolean LedgerIsAdminSaved = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo)&& a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.HasAdminSaved).FirstOrDefault();
+                                                                            
+                                                                         <tr>
                                                                                 <td></td>
                                                                                 <td>
                                                                                     @{
@@ -5417,21 +5466,28 @@
                                                                                     </tbody>
                                                                                     </table>
                                                                                 </td>
+                                                                                @if((!User.IsInRole("Admin") && Ledgerdetails.HasDelegateSaved.Equals(false))||(User.IsInRole("Admin") && Ledgerdetails.HasAdminSaved.Equals(false)))
+                                                                                {
                                                                                 <td>
                                                                                    <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/Tabs/Save" type="submit" value="Save Budget" style="align-self:center">
                                                                                    <i class='bx bx-check' style="color:limegreen"></i></button>
                                                                                 </td>
-                                                                                
+                                                                                }
+                                                                                @if((!User.IsInRole("Admin") && Ledgerdetails.HasDelegateSaved.Equals(true))||(User.IsInRole("Admin") && Ledgerdetails.HasAdminSaved.Equals(true)))
+                                                                                {
                                                                                 <td>
                                                                                    <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/Tabs/Edit" type="submit" value="Edit Budget" style="align-self:center">
                                                                                    <i class='bx bxs-pencil' style="color:blue"></i></button>
                                                                                </td>
-                                                                                
-                                                                                <td>
-                                                                                    <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/Tabs/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
-                                                                                    <i class='bx bx-x' style="color:red"></i>     
-                                                                                    </button>
-                                                                               </td>
+                                                                               }
+                                                                                    @if ((!User.IsInRole("Admin") && Ledgerdetails.HasDelegateSaved.Equals(true)) || (User.IsInRole("Admin") && Ledgerdetails.HasAdminSaved.Equals(true)))
+                                                                                    {
+                                                                                        <td>
+                                                                                            <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/Tabs/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
+                                                                                                <i class='bx bx-x' style="color:red"></i>     
+                                                                                            </button>
+                                                                                        </td>
+                                                                                    }
                                                                                 </tr>
                                                                          LedgerNo++;
                                                                         }
@@ -5468,7 +5524,7 @@
                                                         </td>
                                                         <td>
 
-                                                        @if (@Subs.RequireInput && DelegateEditStatus)
+                                                        @if (@Subs.RequireInput && DelegateEditStatus && !IsDelegateSaved)
                                                         {
                                                             var LedgerPastYearAppBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();                                                                                                                            
                                                             <div class="form-group">
@@ -5650,7 +5706,7 @@
                                                             }
                                                         </td>
                                                         <td>
-                                                        @if (@Subs.RequireInput && DelegateEditStatus)
+                                                        @if (@Subs.RequireInput && DelegateEditStatus  && !IsDelegateSaved)
                                                         {
                                                             var LedgerSumRevEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin ).Sum();
                                                             <div class="form-group">
@@ -5714,7 +5770,7 @@
                                                             }
                                                         </td>
                                                         <td>
-                                                        @if (@Subs.RequireInput && DelegateEditStatus)
+                                                        @if (@Subs.RequireInput && DelegateEditStatus  && !IsDelegateSaved)
                                                         {
                                                             
                                                           var PastYearSumBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();                                                                                                                           
@@ -5889,7 +5945,7 @@
                                                                                         Model.ACBWJustificationRevEst.Insert(Count, " ");
                                                                                     }
                                                         <td>
-                                                            @if (@Subs.RequireInput && DelegateEditStatus)
+                                                            @if (@Subs.RequireInput && DelegateEditStatus  && !IsDelegateSaved)
                                                             {
                                                                 var PastYearBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();
                                                                 <div class="form-group">
@@ -5953,7 +6009,7 @@
                                                             }
                                                         </td>
                                                         <td>
-                                                            @if (@Subs.RequireInput && DelegateEditStatus)
+                                                            @if (@Subs.RequireInput && DelegateEditStatus  && !IsDelegateSaved)
                                                             {
 
                                                                 var PastYearSumBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();
@@ -6183,21 +6239,29 @@
                                                                </table>
                                                             }
                                                         </td>
+                                                        @if((!User.IsInRole("Admin") && details.HasDelegateSaved.Equals(false))||(User.IsInRole("Admin") && details.HasAdminSaved.Equals(false)))
+                                                        {
                                                         <td>
+                                                            
                                                                                    <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/Tabs/Save" type="submit" value="Save Budget" style="align-self:center">
                                                                                    <i class='bx bx-check' style="color:limegreen"></i></button>
                                                                                 </td>
-                                                                                
+                                                            }
+                                                            @if((!User.IsInRole("Admin") && details.HasDelegateSaved.Equals(true))||(User.IsInRole("Admin") && details.HasAdminSaved.Equals(true)))
+                                                            {
                                                                                 <td>
                                                                                    <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/Tabs/Edit" type="submit" value="Edit Budget" style="align-self:center">
                                                                                    <i class='bx bxs-pencil' style="color:blue"></i></button>
                                                                                </td>
-                                                                                
+                                                             }
+                                                             @if((!User.IsInRole("Admin") && details.HasDelegateSaved.Equals(true))||(User.IsInRole("Admin") && details.HasAdminSaved.Equals(true)))
+                                                             {
                                                                                 <td>
                                                                                     <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/Tabs/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
                                                                                     <i class='bx bx-x' style="color:red"></i>     
                                                                                     </button>
                                                                                </td>
+                                                                     }
                                                     </tr>
                                                     Count++;
                                                     TableCount++;
@@ -6461,7 +6525,7 @@
                              else
                              {
                                   var Ledgerid = $(this).closest('tr').children('td').eq(1);
-                                  //alert("LedgerID"+Ledgerid.text());
+                                  alert("LedgerID"+Ledgerid.text());
                              }
                              $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
                              //alert($("#SelectedAcademicYear").val());

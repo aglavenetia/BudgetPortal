@@ -1325,6 +1325,8 @@ namespace BudgetPortal.Controllers
 
                 ModelState.Remove("SubGroupLedgerName");
                 ModelState.Remove("EditEnabled");
+            ModelState.Remove("HasAdminSaved");
+            ModelState.Remove("HasDelegateSaved");
 
             //Saves Budget Finalised values of ACBW
             if (User.Identity.Name.Equals("admin@test.com"))
@@ -1377,7 +1379,10 @@ namespace BudgetPortal.Controllers
                 ModelState.Remove("SelectedDivisionID");
                 ModelState.Remove("ACAndBWPropRECurrFin");
                 ModelState.Remove("ACAndBWPropRENxtFin");
-                
+                ModelState.Remove("HasAdminSaved");
+                ModelState.Remove("HasDelegateSaved");
+
+
                 if (ModelState.IsValid)
                 {
                     var result = new BudgetDetails();
@@ -1388,43 +1393,97 @@ namespace BudgetPortal.Controllers
                                                        && (b.GroupNumber == GroupNumber)
                                                        && (b.SubGroupNumber == SubGroupNumber)
                                                        && (b.LedgerNumber == LedgerNumber)).FirstOrDefault();
-                    result.BudEstCurrFin = Convert.ToDecimal(MD.BudEstCurrFin[index]);
-                    result.ActCurrFinTill2ndQuart = Convert.ToDecimal(MD.ActCurrFinTillsecondQuart[index]);
 
-                    result.ActPrevFin = Convert.ToDecimal(MD.ActPrevFin[index]);
+                    if (result is null)
+                    {
+                        var nextresult = new BudgetDetails();
+                        nextresult.DivisionID = Convert.ToInt32(SelectedDivisionID);
+                        nextresult.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
+                        nextresult.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
+                        nextresult.SectionNumber = Convert.ToInt32(SectionNumber);
+                        nextresult.GroupNumber = GroupNumber;
+                        nextresult.SubGroupNumber = SubGroupNumber;
+                        nextresult.LedgerNumber = LedgerNumber;
 
-                    result.RevEstCurrFin = Convert.ToDecimal(MD.RevEstCurrFin[index]);
-                    result.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(MD.PerVarRevEstOverBudgEstCurrFin[index]);
+                        nextresult.BudEstCurrFin = Convert.ToDecimal(MD.BudEstCurrFin[index]);
+                        nextresult.ActCurrFinTill2ndQuart = Convert.ToDecimal(MD.ActCurrFinTillsecondQuart[index]);
 
-                    result.BudgEstNexFin = Convert.ToDecimal(MD.BudgEstNexFin[index]);
+                        nextresult.ActPrevFin = Convert.ToDecimal(MD.ActPrevFin[index]);
 
-                    result.PerVarRevEstOverBudgEstNxtFin = Convert.ToDecimal(MD.PerVarRevEstOverBudgEstNxtFin[index]);
-                    try
-                    {
-                        if (MD.Justification[index] is not null)
-                            result.Justification = MD.Justification[index].ToString();
-                        else
-                            result.Justification = " ";
+                        nextresult.RevEstCurrFin = Convert.ToDecimal(MD.RevEstCurrFin[index]);
+                        nextresult.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(MD.PerVarRevEstOverBudgEstCurrFin[index]);
+
+                        nextresult.BudgEstNexFin = Convert.ToDecimal(MD.BudgEstNexFin[index]);
+
+                        nextresult.PerVarRevEstOverBudgEstNxtFin = Convert.ToDecimal(MD.PerVarRevEstOverBudgEstNxtFin[index]);
+                        try
+                        {
+                            if (MD.Justification[index] is not null)
+                                nextresult.Justification = MD.Justification[index].ToString();
+                            else
+                                nextresult.Justification = " ";
+                        }
+                        catch (Exception ex)
+                        {
+                            ModelState.AddModelError("Justification[" + index + "]", "Please enter Justification");
+                        }
+                        try
+                        {
+                            if (MD.DelegateJustificationRevEst[index] is not null)
+                                nextresult.DelegateJustificationRevEst = MD.DelegateJustificationRevEst[index].ToString();
+                            else
+                                nextresult.DelegateJustificationRevEst = " ";
+                        }
+                        catch (Exception ex)
+                        {
+                            ModelState.AddModelError("DelegateJustificationRevEst[" + index + "]", "Please enter Justification");
+                        }
+                        nextresult.HasDelegateSaved = true;
+                        nextresult.CreatedDateTime = DateTime.Now;
+                        _context.BudgetDetails.Add(nextresult);
+                        _context.SaveChanges();
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        ModelState.AddModelError("Justification[" + index + "]", "Please enter Justification");
+                        
+                        result.BudEstCurrFin = Convert.ToDecimal(MD.BudEstCurrFin[index]);
+                        result.ActCurrFinTill2ndQuart = Convert.ToDecimal(MD.ActCurrFinTillsecondQuart[index]);
+
+                        result.ActPrevFin = Convert.ToDecimal(MD.ActPrevFin[index]);
+
+                        result.RevEstCurrFin = Convert.ToDecimal(MD.RevEstCurrFin[index]);
+                        result.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(MD.PerVarRevEstOverBudgEstCurrFin[index]);
+
+                        result.BudgEstNexFin = Convert.ToDecimal(MD.BudgEstNexFin[index]);
+
+                        result.PerVarRevEstOverBudgEstNxtFin = Convert.ToDecimal(MD.PerVarRevEstOverBudgEstNxtFin[index]);
+                        try
+                        {
+                            if (MD.Justification[index] is not null)
+                                result.Justification = MD.Justification[index].ToString();
+                            else
+                                result.Justification = " ";
+                        }
+                        catch (Exception ex)
+                        {
+                            ModelState.AddModelError("Justification[" + index + "]", "Please enter Justification");
+                        }
+                        try
+                        {
+                            if (MD.DelegateJustificationRevEst[index] is not null)
+                                result.DelegateJustificationRevEst = MD.DelegateJustificationRevEst[index].ToString();
+                            else
+                                result.DelegateJustificationRevEst = " ";
+                        }
+                        catch (Exception ex)
+                        {
+                            ModelState.AddModelError("DelegateJustificationRevEst[" + index + "]", "Please enter Justification");
+                        }
+                        result.HasDelegateSaved = true;
+                        result.CreatedDateTime = DateTime.Now;
+                        _context.BudgetDetails.Update(result);
+                        _context.SaveChanges();
                     }
-                    try
-                    {
-                        if (MD.DelegateJustificationRevEst[index] is not null)
-                            result.DelegateJustificationRevEst = MD.DelegateJustificationRevEst[index].ToString();
-                        else
-                            result.DelegateJustificationRevEst = " ";
-                    }
-                    catch (Exception ex)
-                    {
-                        ModelState.AddModelError("DelegateJustificationRevEst[" + index + "]", "Please enter Justification");
-                    }
-                    result.HasDelegateSaved = true;
-                    result.CreatedDateTime = DateTime.Now;
-                    _context.BudgetDetails.Update(result);
-                    _context.SaveChanges();
                 }
 
                 
@@ -1437,7 +1496,7 @@ namespace BudgetPortal.Controllers
             MD.Groupss = _context.BudgetGroups.ToList();
             MD.SubGroupss = _context.BudgetSubGroups.ToList();
             MD.Ledgerss = _context.BudgetLedgers.ToList();
-            MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == DivisionID)
+            MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == SelectedDivisionID)
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
 
             var Month = DateTime.Now.Month;
@@ -1445,8 +1504,12 @@ namespace BudgetPortal.Controllers
             {
                 //MD.IsEnabled = true;
             }
-            MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == DivisionID)
+            MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == SelectedDivisionID)
                                   .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
+            MD.Filess = _context.BudgetFiles.Where(x => x.DivisionID == SelectedDivisionID)
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+            MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == SelectedDivisionID)
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
             MD.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                     new SelectListItem()
                     {
