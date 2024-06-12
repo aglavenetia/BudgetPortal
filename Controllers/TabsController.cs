@@ -25,7 +25,7 @@ namespace BudgetPortal.Controllers
             var username = User.Identity.Name;
             var DivName = _context.Users
                           .Where(x => x.UserName.Equals(username))
-                          .Select(x => x.BranchName).First();
+                          .Select(x => x.BranchName).FirstOrDefault();
             var LoggedInDivisionID = _context.Division
                                    .Where(d => d.DivisionName == DivName)
                                    .Select(x => x.DivisionID).FirstOrDefault();
@@ -121,10 +121,10 @@ namespace BudgetPortal.Controllers
 
             var SectionNumber = _context.BudgetSections
                                   .Where(x => x.SectionName.Equals(MD.SectionName))
-                                  .Select(x => x.SectionNo).First();
+                                  .Select(x => x.SectionNo).FirstOrDefault();
             var GroupNumber = _context.BudgetGroups
                      .Where(x => x.GroupName.Equals(MD.GroupName))
-                     .Select(x => x.GroupNo).First();
+                     .Select(x => x.GroupNo).FirstOrDefault();
 
             var SubGroupNumber = _context.BudgetSubGroups
                      .Where(x => x.SubGroupNo.Equals(MD.SubGroupLedgerName))
@@ -152,7 +152,7 @@ namespace BudgetPortal.Controllers
             {
                 DivName = _context.Users
                             .Where(x => x.UserName.Equals(username))
-                            .Select(x => x.BranchName).First();
+                            .Select(x => x.BranchName).FirstOrDefault();
                 DivisionID = _context.Division
                                     .Where(d => d.DivisionName == DivName)
                                     .Select(x => x.DivisionID).FirstOrDefault().ToString();
@@ -248,7 +248,7 @@ namespace BudgetPortal.Controllers
             {
                 DivName = _context.Users
                         .Where(x => x.UserName.Equals(username))
-                        .Select(x => x.BranchName).First();
+                        .Select(x => x.BranchName).FirstOrDefault();
                 DivisionID = _context.Division
                         .Where(d => d.DivisionName == DivName)
                         .Select(x => x.DivisionID).FirstOrDefault().ToString();
@@ -258,10 +258,10 @@ namespace BudgetPortal.Controllers
 
             var SectionNumber = _context.BudgetSections
                                   .Where(x => x.SectionName.Equals(MD.SectionName))
-                                  .Select(x => x.SectionNo).First();
+                                  .Select(x => x.SectionNo).FirstOrDefault();
             var GroupNumber = _context.BudgetGroups
                      .Where(x => x.GroupName.Equals(MD.GroupName))
-                     .Select(x => x.GroupNo).First();
+                     .Select(x => x.GroupNo).FirstOrDefault();
 
             var SubGroupNumber = _context.BudgetSubGroups
                     .Where(x => x.SubGroupNo.Equals(MD.SubGroupLedgerName))
@@ -407,10 +407,10 @@ namespace BudgetPortal.Controllers
 
                     var SectionNumber = _context.BudgetSections
                                      .Where(x => x.SectionName.Equals(MD.SectionName))
-                                     .Select(x => x.SectionNo).First();
+                                     .Select(x => x.SectionNo).FirstOrDefault();
                     var GroupNumber = _context.BudgetGroups
                                 .Where(x => x.GroupName.Equals(MD.GroupName))
-                                .Select(x => x.GroupNo).First();
+                                .Select(x => x.GroupNo).FirstOrDefault();
                     var SubGroups = _context.BudgetSubGroups
                                 .Where(x => x.GroupNo.Equals(GroupNumber))
                                 .Select(x => x.SubGroupNo).ToList();
@@ -428,7 +428,7 @@ namespace BudgetPortal.Controllers
 
                         var LedgerStatus = _context.BudgetSubGroups
                                   .Where(x => x.SubGroupNo.Equals(SubGroups[i]))
-                                  .Select(x => x.RequireInput).First();
+                                  .Select(x => x.RequireInput).FirstOrDefault();
 
                         var Ledgers = _context.BudgetLedgers
                               .Where(x => x.SubGroupNo.Equals(SubGroups[i]))
@@ -609,17 +609,17 @@ namespace BudgetPortal.Controllers
                     var username = User.Identity.Name;
                     var DivName = _context.Users
                              .Where(x => x.UserName.Equals(username))
-                             .Select(x => x.BranchName).First();
+                             .Select(x => x.BranchName).FirstOrDefault();
                     var SelectedDivisionID = _context.Division
                                       .Where(d => d.DivisionName == DivName)
                                       .Select(x => x.DivisionID).FirstOrDefault();
                     var splitAcademicYear = MD.SelectedAcademicYear.ToString().Split("-");
                     var SectionNumber = _context.BudgetSections
                                   .Where(x => x.SectionName.Equals(MD.SectionName))
-                                  .Select(x => x.SectionNo).First();
+                                  .Select(x => x.SectionNo).FirstOrDefault();
                     var GroupNumber = _context.BudgetGroups
                              .Where(x => x.GroupName.Equals(MD.GroupName))
-                             .Select(x => x.GroupNo).First();
+                             .Select(x => x.GroupNo).FirstOrDefault();
                     var SubGroups = _context.BudgetSubGroups
                              .Where(x => x.GroupNo.Equals(GroupNumber))
                              .Select(x => x.SubGroupNo).ToList();
@@ -685,7 +685,7 @@ namespace BudgetPortal.Controllers
 
                             var LedgerStatus = _context.BudgetSubGroups
                                   .Where(x => x.SubGroupNo.Equals(SubGroups[i]))
-                                  .Select(x => x.RequireInput).First();
+                                  .Select(x => x.RequireInput).FirstOrDefault();
 
                             var Ledgers = _context.BudgetLedgers
                                   .Where(x => x.SubGroupNo.Equals(SubGroups[i]))
@@ -870,7 +870,7 @@ namespace BudgetPortal.Controllers
             var LoggedInDivisionID = 0;
             var DivName = _context.Users
                           .Where(x => x.UserName.Equals(username))
-                          .Select(x => x.BranchName).First();
+                          .Select(x => x.BranchName).FirstOrDefault();
 
             if(username != "admin@test.com")
             { 
@@ -1014,7 +1014,7 @@ namespace BudgetPortal.Controllers
 
                                 var LedgerStatus = _context.BudgetSubGroups
                                           .Where(x => x.SubGroupNo.Equals(itemsSubGroups.SubGroupNo))
-                                          .Select(x => x.RequireInput).First();
+                                          .Select(x => x.RequireInput).FirstOrDefault();
 
                                 var Ledgers = _context.BudgetLedgers
                                       .Where(x => x.SubGroupNo.Equals(itemsSubGroups.SubGroupNo))
@@ -1280,7 +1280,7 @@ namespace BudgetPortal.Controllers
             var SelectedDivisionID = 0;
             var DivName = _context.Users
                       .Where(x => x.UserName.Equals(username))
-                      .Select(x => x.BranchName).First();
+                      .Select(x => x.BranchName).FirstOrDefault();
 
             if (username != "admin@test.com")
             {
