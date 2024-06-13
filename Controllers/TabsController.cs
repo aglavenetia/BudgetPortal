@@ -159,6 +159,13 @@ namespace BudgetPortal.Controllers
             }
 
             var splitAcademicYear = MD.SelectedAcademicYear.ToString().Split("-");
+
+            if(User.Identity.Name.Equals("admin@test.com"))
+            {
+                //code to be written
+            }
+            else
+            {
             ModelState.Remove("ACAndBWPropRECurrFin");
             ModelState.Remove("ACAndBWPropRENxtFin");
             var result = new BudgetFiles();
@@ -181,8 +188,8 @@ namespace BudgetPortal.Controllers
 
             _context.BudgetFiles.Remove(result);
             _context.SaveChanges();
-
-            
+            MD.DelegateEditStatus = true;
+            }
 
             MD.Sectionss = _context.BudgetSections.ToList();
             MD.Groupss = _context.BudgetGroups.ToList();
@@ -268,13 +275,13 @@ namespace BudgetPortal.Controllers
                     .Select(x => x.SubGroupNo).FirstOrDefault();
 
             var LedgerNumber = _context.BudgetLedgers
-                    .Where(x => x.LedgerName.Equals(MD.SubGroupLedgerName))
+                    .Where(x => x.LedgerNo.Equals(MD.SubGroupLedgerName))
                     .Select(x => x.LedgerNo).FirstOrDefault();
 
             if (LedgerNumber != null)
             {
                 SubGroupNumber = _context.BudgetLedgers
-                           .Where(x => x.LedgerName.Equals(MD.SubGroupLedgerName))
+                           .Where(x => x.LedgerNo.Equals(MD.SubGroupLedgerName))
                            .Select(x => x.SubGroupNo).FirstOrDefault();
                 index = MD.SubGroupNameOrLedgerName.IndexOf(LedgerNumber);
 
@@ -1215,7 +1222,15 @@ namespace BudgetPortal.Controllers
                                      .Where(d => d.DivisionName == DivName)
                                      .Select(x => x.DivisionID).FirstOrDefault().ToString();
             }
-
+            else
+            {
+                DivName = _context.Users
+                            .Where(x => x.UserName.Equals(username))
+                            .Select(x => x.BranchName).FirstOrDefault();
+                DivisionID = _context.Division
+                                    .Where(d => d.DivisionName == DivName)
+                                    .Select(x => x.DivisionID).FirstOrDefault().ToString();
+            }
             var splitAcademicYear = MD.SelectedAcademicYear.ToString().Split("-");
             ModelState.Remove("ACAndBWPropRECurrFin");
             ModelState.Remove("ACAndBWPropRENxtFin");
@@ -1229,23 +1244,32 @@ namespace BudgetPortal.Controllers
                                                && (b.LedgerNumber == LedgerNumber)).FirstOrDefault();
             result.ActPrevFin = Convert.ToDecimal(0.00);
             result.ActCurrFinTill2ndQuart = Convert.ToDecimal(0.00);
+            result.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(0.00);
+            result.PerVarRevEstOverBudgEstNxtFin = Convert.ToDecimal(0.00);
             result.RevEstCurrFin = Convert.ToDecimal(0.00);
             result.BudgEstNexFin = Convert.ToDecimal(0.00);
             result.DelegateJustificationRevEst = " ";
-            result.ACBWJustificationBudgEstNxtFin = " ";
-
+            result.Justification = " ";
+            result.HasDelegateSaved = false;
+            
             _context.BudgetDetails.Update(result);
             _context.SaveChanges();
-            
+
+            MD.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                               .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Select(x => x.AdminEditStatus).Count();
+
             MD.Sectionss = _context.BudgetSections.ToList();
             MD.Groupss = _context.BudgetGroups.ToList();
             MD.SubGroupss = _context.BudgetSubGroups.ToList();
             MD.Ledgerss = _context.BudgetLedgers.ToList();
             MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
-
+            MD.Filess = _context.BudgetFiles.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
             MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
                                          .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
+            MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
             MD.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                     new SelectListItem()
                     {
@@ -1264,7 +1288,7 @@ namespace BudgetPortal.Controllers
 
                 }).ToList();
             MD.AcademicYears.Where(x => x.Text.Equals(MD.SelectedAcademicYear.ToString())).Single().Selected = true;
-            ModelState.Clear();
+            
             return View("Index", MD);
         }
 
@@ -1273,7 +1297,7 @@ namespace BudgetPortal.Controllers
         [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult Save(MultipleData MD)
-        {
+         {
                 //Boolean valid = true;
                 int index = MD.SubGroupNameOrLedgerName.IndexOf(MD.SubGroupLedgerName);
                 var username = User.Identity.Name;
@@ -1442,6 +1466,7 @@ namespace BudgetPortal.Controllers
                         nextresult.CreatedDateTime = DateTime.Now;
                         _context.BudgetDetails.Add(nextresult);
                         _context.SaveChanges();
+                        
                     }
                     else
                     {
@@ -1483,6 +1508,7 @@ namespace BudgetPortal.Controllers
                         result.CreatedDateTime = DateTime.Now;
                         _context.BudgetDetails.Update(result);
                         _context.SaveChanges();
+                        
                     }
                 }
 
@@ -1498,6 +1524,8 @@ namespace BudgetPortal.Controllers
             MD.Ledgerss = _context.BudgetLedgers.ToList();
             MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == SelectedDivisionID)
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+            MD.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(SelectedDivisionID))
+                               .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Select(x => x.AdminEditStatus).Count();
 
             var Month = DateTime.Now.Month;
             if (Month > 3 && Month < 10)
@@ -1528,12 +1556,13 @@ namespace BudgetPortal.Controllers
 
                 }).ToList();
             MD.AcademicYears.Where(x => x.Text.Equals(MD.SelectedAcademicYear.ToString())).Single().Selected = true;
+            
 
             if (User.Identity.Name.Equals("admin@test.com"))
             {
                 MD.DivisionNames.Where(x => x.Text.Equals(MD.SelectedDivisionName.ToString())).Single().Selected = true;
             }
-            ModelState.Clear();
+            
             return View("Index", MD);
 
         }
