@@ -308,7 +308,7 @@
                        var GroupsStatusRowCount = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.DelegateEditStatus).Count();
                        var AdminStatus = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.AdminEditStatus).FirstOrDefault();
                        
-                       var TotalSubGroupsWithoutLedgers = (from b in Model.SubGroupss where b.GroupNo.Equals(@item.GroupNo) && b.RequireInput == false select b.SubGroupNo).Count();
+                       var TotalSubGroups = (from b in Model.SubGroupss where b.GroupNo.Equals(@item.GroupNo) && b.RequireInput == false select b.SubGroupNo).Count();
 
                         if (GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0 )
                         {
@@ -464,7 +464,7 @@
                                                     
                                                     var TotalLedgers = (from c in Model.Ledgerss where c.SubGroupNo.Equals(@Subs.SubGroupNo) select c.LedgerNo).Count();
 
-                                                    TotalSubGroupsWithoutLedgers = TotalSubGroupsWithoutLedgers+TotalLedgers;
+                                                    TotalSubGroups = (TotalSubGroups + TotalLedgers);
 
                                                     Boolean IsDelegateSaved = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.HasDelegateSaved).FirstOrDefault();
                                                     Boolean IsAdminSaved = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.HasAdminSaved).FirstOrDefault();
@@ -575,11 +575,21 @@
                                                                                         </div>
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
+                                                                                    @if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                     {
                                                                                         <div class="form-group"> 
                                                                                           @{
                                                                                             Model.ActPrevFin.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.ActPrevFin.ToString("F4")) : Convert.ToDecimal(0.00));
+                                                                                           } 
+                                                                                            @Html.TextBoxFor(model => model.ActPrevFin[LedgerNo], new { @class = "form-control", @id = @name2 + @Ledgers.LedgerNo, @readonly = "readonly" })
+                                                                                            @Html.ValidationMessageFor(model => model.ActPrevFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>  
+                                                                                    }
+                                                                                    else if(DelegateEditStatus && User.IsInRole("Admin"))
+                                                                                    {
+                                                                                        <div class="form-group"> 
+                                                                                          @{
+                                                                                            Model.ActPrevFin.Insert(LedgerNo, Convert.ToDecimal(0.00));
                                                                                            } 
                                                                                             @Html.TextBoxFor(model => model.ActPrevFin[LedgerNo], new { @class = "form-control", @id = @name2 + @Ledgers.LedgerNo, @readonly = "readonly" })
                                                                                             @Html.ValidationMessageFor(model => model.ActPrevFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
@@ -598,11 +608,21 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus|| (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
+                                                                                    @if (!DelegateEditStatus|| (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                     {
                                                                                        <div class="form-group">
                                                                                            @{
                                                                                                Model.ActCurrFinTillsecondQuart.Insert(LedgerNo, Ledgerdetails != null ? Convert.ToDecimal(Ledgerdetails.ActCurrFinTill2ndQuart.ToString("F4")) : Convert.ToDecimal(0.00));
+                                                                                            }
+                                                                                               @Html.TextBoxFor(model => model.ActCurrFinTillsecondQuart[LedgerNo], new { @class = "form-control", @id = @name3 + @Ledgers.LedgerNo, @readonly = "readonly" })
+                                                                                               @Html.ValidationMessageFor(model => model.ActCurrFinTillsecondQuart[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                      </div>  
+                                                                                    }
+                                                                                    else if(DelegateEditStatus && User.IsInRole("Admin"))
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                           @{
+                                                                                               Model.ActCurrFinTillsecondQuart.Insert(LedgerNo, Convert.ToDecimal(0.00));
                                                                                             }
                                                                                                @Html.TextBoxFor(model => model.ActCurrFinTillsecondQuart[LedgerNo], new { @class = "form-control", @id = @name3 + @Ledgers.LedgerNo, @readonly = "readonly" })
                                                                                                @Html.ValidationMessageFor(model => model.ActCurrFinTillsecondQuart[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
@@ -652,7 +672,7 @@
                                                                                     }
                                                                                 </td>
                                                                                     <td>
-                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
+                                                                                        @if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                         {
                                                                                           <div class="form-group"> 
                                                                                               @{
@@ -705,7 +725,7 @@
                                                                                     }
 
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
+                                                                                    @if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                     {
                                                                                             <div class="form-group">
                                                                                              @{  
@@ -715,6 +735,16 @@
                                                                                             @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                         
+                                                                                    }
+                                                                                    else if(User.IsInRole("Admin") && DelegateEditStatus )
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                             @{  
+                                                                                                Model.DelegateJustificationRevEst.Insert(LedgerNo, "");
+                                                                                              }  
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
                                                                                     }
                                                                                     else
                                                                                     {
@@ -796,7 +826,7 @@
                                                                                     }
                                                                                 </td>
                                                                                     <td>
-                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
+                                                                                        @if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                         {
                                                                                             <div class="form-group">
                                                                                              
@@ -852,7 +882,7 @@
                                                                                         Model.ACAndBWPropRENxtFin.Insert(LedgerNo, Convert.ToDecimal(0.00));
                                                                                     }
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
+                                                                                    @if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                     {
                                                                                             <div class="form-group">
                                                                                              @{  
@@ -862,6 +892,16 @@
                                                                                             @Html.ValidationMessageFor(model => model.Justification[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                         
+                                                                                    }
+                                                                                    else if(User.IsInRole("Admin") && DelegateEditStatus )
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                             @{  
+                                                                                                Model.Justification.Insert(LedgerNo, "");
+                                                                                              }  
+                                                                                            @Html.TextAreaFor(model => model.Justification[LedgerNo], new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.Justification[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
                                                                                     }
                                                                                     else
                                                                                     {
@@ -1108,7 +1148,17 @@
                                                            
                                                         </td>
                                                         <td class="w-5">
-                                                        @if (@Subs.RequireInput)
+                                                        @if(DelegateEditStatus && User.IsInRole("Admin"))
+                                                        {
+                                                            <div>
+                                                               @{
+                                                                  Model.ActPrevFin.Insert(Count, Convert.ToDecimal(0.00));
+                                                                }   
+                                                                @Html.TextBoxFor(model => model.ActPrevFin[Count], new { @class = "form-control", @id = @name2, @readonly = "readonly"})
+                                                                @Html.ValidationMessageFor(model => model.ActPrevFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                            </div>
+                                                        }
+                                                        else if (@Subs.RequireInput)
                                                         {
                                                             var LedgerSumActPrevFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActPrevFin).Sum();
                                                             <div class="form-group">  
@@ -1144,7 +1194,18 @@
                                                         }
                                                         </td>
                                                         <td class="w-5">
-                                                        @if (@Subs.RequireInput)
+                                                        @if(DelegateEditStatus && User.IsInRole("Admin"))
+                                                        {
+                                                            <div class="form-group">
+                                                               @{
+                                                                  Model.ActCurrFinTillsecondQuart.Insert(Count, Convert.ToDecimal(0.00));
+                                                                 }
+                                                                 @Html.TextBoxFor(model => model.ActCurrFinTillsecondQuart[Count], new { @class = "form-control", @id = @name3, @readonly = "readonly"})
+                                                                 @Html.ValidationMessageFor(model => model.ActCurrFinTillsecondQuart[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                            </div>
+                                                        }
+                                                        
+                                                        else if (@Subs.RequireInput)
                                                         {
                                                                 var LedgerSumActCurrFinTill2ndQuart = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActCurrFinTill2ndQuart).Sum();
                                                              <div class="form-group">
@@ -1259,7 +1320,7 @@
                                                                 </div>
                                                         }                                                     
                                                         
-                                                        else if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
+                                                        else if (!DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
                                                         {
                                                             <div class="form-group">
                                                                @{ 
@@ -1339,7 +1400,7 @@
                                                             
                                                         }
                                                         <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved) || @Subs.RequireInput )
+                                                                                    @if (!DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved) || @Subs.RequireInput )
                                                                                     {
                                                                                             <div class="form-group">
                                                                                              @{  
@@ -1349,6 +1410,16 @@
                                                                                             @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                         
+                                                                                    }
+                                                                                    else if(User.IsInRole("Admin") && DelegateEditStatus )
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                             @{  
+                                                                                                Model.DelegateJustificationRevEst.Insert(Count, "");
+                                                                                              }  
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
                                                                                     }
                                                                                     else
                                                                                     {
@@ -1565,7 +1636,7 @@
                                                            Model.ACAndBWPropRENxtFin.Insert(Count, Convert.ToDecimal(0.00));                                                   
                                                         }
                                                         <td class="w-5">
-                                                            @if (@Subs.RequireInput || User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
+                                                            @if (!DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
                                                         {
                                                             <div class="form-group">
                                                                 @{
@@ -1576,13 +1647,17 @@
                                                                 @Html.ValidationMessageFor(model => model.Justification[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
                                                         }
-                                                        @*else if(User.IsInRole("Admin") || !DelegateEditStatus)
+                                                        else if(User.IsInRole("Admin") && DelegateEditStatus)
                                                         {
                                                              <div class="form-group">
-                                                                @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name10,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                @{
+                                                                    Model.Justification.Insert(Count, "");
+                                                                 }
+                                                                
+                                                                @Html.TextAreaFor(model => model.Justification[Count] , new { @class = "form-control", @id = @name10, @readonly = "readonly"})
+                                                                @Html.ValidationMessageFor(model => model.Justification[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>   
-                                                        }*@
+                                                        }
                                                         else
                                                         {                                                                                                             
                                                             <div class="form-group">
@@ -1757,14 +1832,11 @@
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })*@
                                         @{
-                                            
-                                            
-                                            var TotalDelegateSavedLedgers = (from d in Model.Detailss where d.SectionNumber.Equals(@inner.SectionNo)  && d.GroupNumber.Equals(@item.GroupNo) select d.HasDelegateSaved).Count();
-                                            var TotalAdminSavedLedgers = (from e in Model.Detailss where e.SectionNumber.Equals(@inner.SectionNo)  && e.GroupNumber.Equals(@item.GroupNo) select e.HasAdminSaved).Count();
-                                                    
+                                            var TotalDelegateSavedLedgers = (from d in Model.Detailss where d.SectionNumber.Equals(@inner.SectionNo)  && d.GroupNumber.Equals(@item.GroupNo) && d.HasDelegateSaved.Equals(true) select d.SubGroupNumber).Count();
+                                            var TotalAdminSavedLedgers = (from e in Model.Detailss where e.SectionNumber.Equals(@inner.SectionNo)  && e.GroupNumber.Equals(@item.GroupNo) && e.HasAdminSaved.Equals(true) select e.SubGroupNumber).Count();
                                          }
                                         
-                                    @if ((User.IsInRole("Admin") && AdminEditStatus) || (!User.IsInRole("Admin") && DelegateEditStatus))
+                                    @if ((User.IsInRole("Admin") && AdminEditStatus && (TotalAdminSavedLedgers == TotalSubGroups) && Model.PreviousYearAdminCount > 0) || (!User.IsInRole("Admin") && DelegateEditStatus && (TotalDelegateSavedLedgers == TotalSubGroups) && Model.PreviousYearAdminCount > 0))
                                     {
                                             <input id="@Submit" class="Submit" formaction="~/Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
                                     }
@@ -1865,6 +1937,10 @@
 
                                                     Boolean IsDelegateSaved = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.HasDelegateSaved).FirstOrDefault();
                                                     Boolean IsAdminSaved = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.HasAdminSaved).FirstOrDefault();
+
+                                                    var TotalLedgers = (from c in Model.Ledgerss where c.SubGroupNo.Equals(@Subs.SubGroupNo) select c.LedgerNo).Count();
+
+                                                    TotalSubGroups = (TotalSubGroups + TotalLedgers);
 
                                                     var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -1970,11 +2046,21 @@
                                                                                         </div>
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
+                                                                                    @if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                     {
                                                                                         <div class="form-group"> 
                                                                                           @{
                                                                                             Model.ActPrevFin.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.ActPrevFin.ToString("F4")) : Convert.ToDecimal(0.00));
+                                                                                           } 
+                                                                                            @Html.TextBoxFor(model => model.ActPrevFin[LedgerNo], new { @class = "form-control", @id = @name2 + @Ledgers.LedgerNo, @readonly = "readonly" })
+                                                                                            @Html.ValidationMessageFor(model => model.ActPrevFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>  
+                                                                                    }
+                                                                                    else if(DelegateEditStatus && User.IsInRole("Admin"))
+                                                                                    {
+                                                                                        <div class="form-group"> 
+                                                                                          @{
+                                                                                            Model.ActPrevFin.Insert(LedgerNo, Convert.ToDecimal(0.00));
                                                                                            } 
                                                                                             @Html.TextBoxFor(model => model.ActPrevFin[LedgerNo], new { @class = "form-control", @id = @name2 + @Ledgers.LedgerNo, @readonly = "readonly" })
                                                                                             @Html.ValidationMessageFor(model => model.ActPrevFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
@@ -1993,11 +2079,21 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus|| (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
+                                                                                    @if (!DelegateEditStatus|| (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                     {
                                                                                        <div class="form-group">
                                                                                            @{
                                                                                                Model.ActCurrFinTillsecondQuart.Insert(LedgerNo, Ledgerdetails != null ? Convert.ToDecimal(Ledgerdetails.ActCurrFinTill2ndQuart.ToString("F4")) : Convert.ToDecimal(0.00));
+                                                                                            }
+                                                                                               @Html.TextBoxFor(model => model.ActCurrFinTillsecondQuart[LedgerNo], new { @class = "form-control", @id = @name3 + @Ledgers.LedgerNo, @readonly = "readonly" })
+                                                                                               @Html.ValidationMessageFor(model => model.ActCurrFinTillsecondQuart[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                      </div>  
+                                                                                    }
+                                                                                    else if(DelegateEditStatus && User.IsInRole("Admin"))
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                           @{
+                                                                                               Model.ActCurrFinTillsecondQuart.Insert(LedgerNo, Convert.ToDecimal(0.00));
                                                                                             }
                                                                                                @Html.TextBoxFor(model => model.ActCurrFinTillsecondQuart[LedgerNo], new { @class = "form-control", @id = @name3 + @Ledgers.LedgerNo, @readonly = "readonly" })
                                                                                                @Html.ValidationMessageFor(model => model.ActCurrFinTillsecondQuart[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
@@ -2047,7 +2143,7 @@
                                                                                     }
                                                                                 </td>
                                                                                     <td>
-                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
+                                                                                        @if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                         {
                                                                                           <div class="form-group"> 
                                                                                               @{
@@ -2100,7 +2196,7 @@
                                                                                     }
 
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
+                                                                                    @if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                     {
                                                                                             <div class="form-group">
                                                                                              @{  
@@ -2110,6 +2206,16 @@
                                                                                             @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                         
+                                                                                    }
+                                                                                    else if(User.IsInRole("Admin") && DelegateEditStatus )
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                             @{  
+                                                                                                Model.DelegateJustificationRevEst.Insert(LedgerNo, "");
+                                                                                              }  
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
                                                                                     }
                                                                                     else
                                                                                     {
@@ -2128,7 +2234,7 @@
                                                                                         <td>
                                                                                             <div class="form-group"> 
                                                                                                 @{
-                                                                                                  Model.ACBWJustificationRevEst.Insert(LedgerNo, Ledgerdetails!=null&& Ledgerdetails.ACBWJustificationRevEst!=null && Ledgerdetails.ACBWJustificationRevEst!=" " ? Ledgerdetails.ACBWJustificationRevEst.ToString()  : " ");
+                                                                                                  Model.ACBWJustificationRevEst.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationRevEst!=null && Ledgerdetails.ACBWJustificationRevEst!=" " ? Ledgerdetails.ACBWJustificationRevEst.ToString()  : " ");
                                                                                                }
                                                                                                 
                                                                                                 @Html.TextBoxFor(model => model.ACBWJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name15+@Ledgers.LedgerNo})
@@ -2141,7 +2247,7 @@
                                                                                       <td>
                                                                                           <div class="form-group">
                                                                                               @{
-                                                                                                 Model.ACBWJustificationRevEst.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationRevEst!=null && Ledgerdetails.ACBWJustificationRevEst!=" " ? Ledgerdetails.ACBWJustificationRevEst.ToString() : "");
+                                                                                                 Model.ACBWJustificationRevEst.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationRevEst!=null && Ledgerdetails.ACBWJustificationRevEst!=" "? Ledgerdetails.ACBWJustificationRevEst.ToString() : "");
                                                                                                }
                                                                                             
                                                                                             @Html.TextBoxFor(model => model.ACBWJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name15+@Ledgers.LedgerNo,@readonly = "readonly"})
@@ -2191,7 +2297,7 @@
                                                                                     }
                                                                                 </td>
                                                                                     <td>
-                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
+                                                                                        @if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                         {
                                                                                             <div class="form-group">
                                                                                              
@@ -2247,7 +2353,7 @@
                                                                                         Model.ACAndBWPropRENxtFin.Insert(LedgerNo, Convert.ToDecimal(0.00));
                                                                                     }
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
+                                                                                    @if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                     {
                                                                                             <div class="form-group">
                                                                                              @{  
@@ -2257,6 +2363,16 @@
                                                                                             @Html.ValidationMessageFor(model => model.Justification[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                         
+                                                                                    }
+                                                                                    else if(User.IsInRole("Admin") && DelegateEditStatus )
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                             @{  
+                                                                                                Model.Justification.Insert(LedgerNo, "");
+                                                                                              }  
+                                                                                            @Html.TextAreaFor(model => model.Justification[LedgerNo], new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.Justification[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
                                                                                     }
                                                                                     else
                                                                                     {
@@ -2275,7 +2391,7 @@
                                                                                         <td>
                                                                                             <div class="form-group"> 
                                                                                                 @{
-                                                                                                  Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=" " ? Ledgerdetails.ACBWJustificationBudgEstNxtFin.ToString()  : " ");
+                                                                                                  Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=" "? Ledgerdetails.ACBWJustificationBudgEstNxtFin.ToString()  : " ");
                                                                                                }
                                                                                                 
                                                                                                 @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name16+@Ledgers.LedgerNo})
@@ -2288,7 +2404,7 @@
                                                                                       <td>
                                                                                           <div class="form-group">
                                                                                               @{
-                                                                                                 Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!="" ? Ledgerdetails.ACBWJustificationBudgEstNxtFin.ToString() : "");
+                                                                                                 Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=" " ? Ledgerdetails.ACBWJustificationBudgEstNxtFin.ToString() : "");
                                                                                                }
                                                                                             
                                                                                             @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name16+@Ledgers.LedgerNo,@readonly = "readonly"})
@@ -2503,7 +2619,17 @@
                                                            
                                                         </td>
                                                         <td class="w-5">
-                                                        @if (@Subs.RequireInput)
+                                                        @if(DelegateEditStatus && User.IsInRole("Admin"))
+                                                        {
+                                                            <div>
+                                                               @{
+                                                                  Model.ActPrevFin.Insert(Count, Convert.ToDecimal(0.00));
+                                                                }   
+                                                                @Html.TextBoxFor(model => model.ActPrevFin[Count], new { @class = "form-control", @id = @name2, @readonly = "readonly"})
+                                                                @Html.ValidationMessageFor(model => model.ActPrevFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                            </div>
+                                                        }
+                                                        else if (@Subs.RequireInput)
                                                         {
                                                             var LedgerSumActPrevFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActPrevFin).Sum();
                                                             <div class="form-group">  
@@ -2539,7 +2665,18 @@
                                                         }
                                                         </td>
                                                         <td class="w-5">
-                                                        @if (@Subs.RequireInput)
+                                                        @if(DelegateEditStatus && User.IsInRole("Admin"))
+                                                        {
+                                                            <div class="form-group">
+                                                               @{
+                                                                  Model.ActCurrFinTillsecondQuart.Insert(Count, Convert.ToDecimal(0.00));
+                                                                 }
+                                                                 @Html.TextBoxFor(model => model.ActCurrFinTillsecondQuart[Count], new { @class = "form-control", @id = @name3, @readonly = "readonly"})
+                                                                 @Html.ValidationMessageFor(model => model.ActCurrFinTillsecondQuart[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                            </div>
+                                                        }
+                                                        
+                                                        else if (@Subs.RequireInput)
                                                         {
                                                                 var LedgerSumActCurrFinTill2ndQuart = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActCurrFinTill2ndQuart).Sum();
                                                              <div class="form-group">
@@ -2654,7 +2791,7 @@
                                                                 </div>
                                                         }                                                     
                                                         
-                                                        else if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
+                                                        else if (!DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
                                                         {
                                                             <div class="form-group">
                                                                @{ 
@@ -2734,7 +2871,7 @@
                                                             
                                                         }
                                                         <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
+                                                                                    @if (!DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved) || @Subs.RequireInput )
                                                                                     {
                                                                                             <div class="form-group">
                                                                                              @{  
@@ -2744,6 +2881,16 @@
                                                                                             @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                         
+                                                                                    }
+                                                                                    else if(User.IsInRole("Admin") && DelegateEditStatus )
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                             @{  
+                                                                                                Model.DelegateJustificationRevEst.Insert(Count, "");
+                                                                                              }  
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
                                                                                     }
                                                                                     else
                                                                                     {
@@ -2770,8 +2917,8 @@
                                                                                             </div>
                                                                                         </td>
                                                         }
-                                                                               else if ((User.IsInRole("Admin") && (!AdminEditStatus ||IsAdminSaved) ) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
-                                                                               {
+                                                       else if ((User.IsInRole("Admin") && (!AdminEditStatus ||IsAdminSaved) ) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                       {
                                                                                       <td>
                                                                                           <div class="form-group">
                                                                                               @{
@@ -2960,7 +3107,7 @@
                                                            Model.ACAndBWPropRENxtFin.Insert(Count, Convert.ToDecimal(0.00));                                                   
                                                         }
                                                         <td class="w-5">
-                                                            @if (@Subs.RequireInput || User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
+                                                            @if (!DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
                                                         {
                                                             <div class="form-group">
                                                                 @{
@@ -2971,13 +3118,17 @@
                                                                 @Html.ValidationMessageFor(model => model.Justification[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
                                                         }
-                                                        @*else if(User.IsInRole("Admin") || !DelegateEditStatus)
+                                                        else if(User.IsInRole("Admin") && DelegateEditStatus)
                                                         {
                                                              <div class="form-group">
-                                                                @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name10,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                @{
+                                                                    Model.Justification.Insert(Count, "");
+                                                                 }
+                                                                
+                                                                @Html.TextAreaFor(model => model.Justification[Count] , new { @class = "form-control", @id = @name10, @readonly = "readonly"})
+                                                                @Html.ValidationMessageFor(model => model.Justification[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>   
-                                                        }*@
+                                                        }
                                                         else
                                                         {                                                                                                             
                                                             <div class="form-group">
@@ -3009,7 +3160,7 @@
                                                                                       <td>
                                                                                           <div class="form-group">
                                                                                               @{
-                                                                                                 Model.ACBWJustificationBudgEstNxtFin.Insert(Count, details!=null &&details.ACBWJustificationBudgEstNxtFin!=null && details.ACBWJustificationBudgEstNxtFin!=" " ? details.ACBWJustificationBudgEstNxtFin.ToString() : "");
+                                                                                                 Model.ACBWJustificationBudgEstNxtFin.Insert(Count, details!=null && details.ACBWJustificationBudgEstNxtFin!=null && details.ACBWJustificationBudgEstNxtFin!=" "? details.ACBWJustificationBudgEstNxtFin.ToString() : "");
                                                                                                }
                                                                                             
                                                                                             @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[Count], new { @class = "form-control", @id = @name16,@readonly = "readonly"})
@@ -3148,7 +3299,12 @@
                                         @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })*@
-                                        @if ((User.IsInRole("Admin") && AdminEditStatus && Model.PreviousYearAdminCount>0) || (!User.IsInRole("Admin") && DelegateEditStatus) && Model.PreviousYearAdminCount > 0)
+                                        @{
+                                            var TotalDelegateSavedLedgers = (from d in Model.Detailss where d.SectionNumber.Equals(@inner.SectionNo)  && d.GroupNumber.Equals(@item.GroupNo) && d.HasDelegateSaved.Equals(true) select d.SubGroupNumber).Count();
+                                            var TotalAdminSavedLedgers = (from e in Model.Detailss where e.SectionNumber.Equals(@inner.SectionNo)  && e.GroupNumber.Equals(@item.GroupNo) && e.HasAdminSaved.Equals(true) select e.SubGroupNumber).Count();
+                                         }
+                                        
+                                        @if ((User.IsInRole("Admin") && AdminEditStatus && Model.PreviousYearAdminCount>0 && (TotalAdminSavedLedgers == TotalSubGroups)) || (!User.IsInRole("Admin") && DelegateEditStatus) && Model.PreviousYearAdminCount > 0 && (TotalDelegateSavedLedgers == TotalSubGroups))
                                         {
                                             <input id="@Submit" class="Submit" formaction="~/Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
                                         }
@@ -3301,7 +3457,9 @@
                         var GroupsStatusRowCount = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.DelegateEditStatus).Count();
                        var AdminStatus = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.AdminEditStatus).FirstOrDefault();
                        
-                        if (GroupsStatusRowCount == 0 && (Model.PreviousYearAdminCount > 0))
+                       var TotalSubGroups = (from b in Model.SubGroupss where b.GroupNo.Equals(@item.GroupNo) && b.RequireInput == false select b.SubGroupNo).Count();
+                        
+                       if (GroupsStatusRowCount == 0 && (Model.PreviousYearAdminCount > 0))
                         {
                                     DelegateEditStatus = true;
                                     AdminEditStatus = false;
@@ -3453,6 +3611,10 @@
                                                     Boolean IsDelegateSaved = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.HasDelegateSaved).FirstOrDefault();
                                                     Boolean IsAdminSaved = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.HasAdminSaved).FirstOrDefault();
 
+                                                    var TotalLedgers = (from c in Model.Ledgerss where c.SubGroupNo.Equals(@Subs.SubGroupNo) select c.LedgerNo).Count();
+
+                                                    TotalSubGroups = (TotalSubGroups + TotalLedgers);
+
                                                     var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name3 = String.Concat("ActCurrFinTillsecondQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -3557,11 +3719,21 @@
                                                                                         </div>
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
+                                                                                    @if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                     {
                                                                                         <div class="form-group"> 
                                                                                           @{
                                                                                             Model.ActPrevFin.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.ActPrevFin.ToString("F4")) : Convert.ToDecimal(0.00));
+                                                                                           } 
+                                                                                            @Html.TextBoxFor(model => model.ActPrevFin[LedgerNo], new { @class = "form-control", @id = @name2 + @Ledgers.LedgerNo, @readonly = "readonly" })
+                                                                                            @Html.ValidationMessageFor(model => model.ActPrevFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>  
+                                                                                    }
+                                                                                    else if(DelegateEditStatus && User.IsInRole("Admin"))
+                                                                                    {
+                                                                                        <div class="form-group"> 
+                                                                                          @{
+                                                                                            Model.ActPrevFin.Insert(LedgerNo, Convert.ToDecimal(0.00));
                                                                                            } 
                                                                                             @Html.TextBoxFor(model => model.ActPrevFin[LedgerNo], new { @class = "form-control", @id = @name2 + @Ledgers.LedgerNo, @readonly = "readonly" })
                                                                                             @Html.ValidationMessageFor(model => model.ActPrevFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
@@ -3580,11 +3752,21 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus|| (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
+                                                                                    @if (!DelegateEditStatus|| (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                     {
                                                                                        <div class="form-group">
                                                                                            @{
                                                                                                Model.ActCurrFinTillsecondQuart.Insert(LedgerNo, Ledgerdetails != null ? Convert.ToDecimal(Ledgerdetails.ActCurrFinTill2ndQuart.ToString("F4")) : Convert.ToDecimal(0.00));
+                                                                                            }
+                                                                                               @Html.TextBoxFor(model => model.ActCurrFinTillsecondQuart[LedgerNo], new { @class = "form-control", @id = @name3 + @Ledgers.LedgerNo, @readonly = "readonly" })
+                                                                                               @Html.ValidationMessageFor(model => model.ActCurrFinTillsecondQuart[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                      </div>  
+                                                                                    }
+                                                                                    else if(DelegateEditStatus && User.IsInRole("Admin"))
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                           @{
+                                                                                               Model.ActCurrFinTillsecondQuart.Insert(LedgerNo, Convert.ToDecimal(0.00));
                                                                                             }
                                                                                                @Html.TextBoxFor(model => model.ActCurrFinTillsecondQuart[LedgerNo], new { @class = "form-control", @id = @name3 + @Ledgers.LedgerNo, @readonly = "readonly" })
                                                                                                @Html.ValidationMessageFor(model => model.ActCurrFinTillsecondQuart[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
@@ -3634,7 +3816,7 @@
                                                                                     }
                                                                                 </td>
                                                                                     <td>
-                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
+                                                                                        @if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                         {
                                                                                           <div class="form-group"> 
                                                                                               @{
@@ -3687,7 +3869,7 @@
                                                                                     }
 
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
+                                                                                    @if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                     {
                                                                                             <div class="form-group">
                                                                                              @{  
@@ -3697,6 +3879,16 @@
                                                                                             @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                         
+                                                                                    }
+                                                                                    else if(User.IsInRole("Admin") && DelegateEditStatus )
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                             @{  
+                                                                                                Model.DelegateJustificationRevEst.Insert(LedgerNo, "");
+                                                                                              }  
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
                                                                                     }
                                                                                     else
                                                                                     {
@@ -3728,7 +3920,7 @@
                                                                                       <td>
                                                                                           <div class="form-group">
                                                                                               @{
-                                                                                                 Model.ACBWJustificationRevEst.Insert(LedgerNo, Ledgerdetails!=null&& Ledgerdetails.ACBWJustificationRevEst!=null && Ledgerdetails.ACBWJustificationRevEst!=" " ? Ledgerdetails.ACBWJustificationRevEst.ToString() : "");
+                                                                                                 Model.ACBWJustificationRevEst.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationRevEst!=null && Ledgerdetails.ACBWJustificationRevEst!=" "? Ledgerdetails.ACBWJustificationRevEst.ToString() : "");
                                                                                                }
                                                                                             
                                                                                             @Html.TextBoxFor(model => model.ACBWJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name15+@Ledgers.LedgerNo,@readonly = "readonly"})
@@ -3778,7 +3970,7 @@
                                                                                     }
                                                                                 </td>
                                                                                     <td>
-                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
+                                                                                        @if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                         {
                                                                                             <div class="form-group">
                                                                                              
@@ -3834,7 +4026,7 @@
                                                                                         Model.ACAndBWPropRENxtFin.Insert(LedgerNo, Convert.ToDecimal(0.00));
                                                                                     }
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
+                                                                                    @if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                     {
                                                                                             <div class="form-group">
                                                                                              @{  
@@ -3844,6 +4036,16 @@
                                                                                             @Html.ValidationMessageFor(model => model.Justification[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                         
+                                                                                    }
+                                                                                    else if(User.IsInRole("Admin") && DelegateEditStatus )
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                             @{  
+                                                                                                Model.Justification.Insert(LedgerNo, "");
+                                                                                              }  
+                                                                                            @Html.TextAreaFor(model => model.Justification[LedgerNo], new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.Justification[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
                                                                                     }
                                                                                     else
                                                                                     {
@@ -3862,7 +4064,7 @@
                                                                                         <td>
                                                                                             <div class="form-group"> 
                                                                                                 @{
-                                                                                                  Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, Ledgerdetails!=null&&Ledgerdetails.ACBWJustificationBudgEstNxtFin!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=" " ? Ledgerdetails.ACBWJustificationBudgEstNxtFin.ToString()  : " ");
+                                                                                                  Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=" "? Ledgerdetails.ACBWJustificationBudgEstNxtFin.ToString()  : " ");
                                                                                                }
                                                                                                 
                                                                                                 @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name16+@Ledgers.LedgerNo})
@@ -4090,7 +4292,17 @@
                                                            
                                                         </td>
                                                         <td class="w-5">
-                                                        @if (@Subs.RequireInput)
+                                                        @if(DelegateEditStatus && User.IsInRole("Admin"))
+                                                        {
+                                                            <div>
+                                                               @{
+                                                                  Model.ActPrevFin.Insert(Count, Convert.ToDecimal(0.00));
+                                                                }   
+                                                                @Html.TextBoxFor(model => model.ActPrevFin[Count], new { @class = "form-control", @id = @name2, @readonly = "readonly"})
+                                                                @Html.ValidationMessageFor(model => model.ActPrevFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                            </div>
+                                                        }
+                                                        else if (@Subs.RequireInput)
                                                         {
                                                             var LedgerSumActPrevFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActPrevFin).Sum();
                                                             <div class="form-group">  
@@ -4126,7 +4338,18 @@
                                                         }
                                                         </td>
                                                         <td class="w-5">
-                                                        @if (@Subs.RequireInput)
+                                                        @if(DelegateEditStatus && User.IsInRole("Admin"))
+                                                        {
+                                                            <div class="form-group">
+                                                               @{
+                                                                  Model.ActCurrFinTillsecondQuart.Insert(Count, Convert.ToDecimal(0.00));
+                                                                 }
+                                                                 @Html.TextBoxFor(model => model.ActCurrFinTillsecondQuart[Count], new { @class = "form-control", @id = @name3, @readonly = "readonly"})
+                                                                 @Html.ValidationMessageFor(model => model.ActCurrFinTillsecondQuart[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                            </div>
+                                                        }
+                                                        
+                                                        else if (@Subs.RequireInput)
                                                         {
                                                                 var LedgerSumActCurrFinTill2ndQuart = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActCurrFinTill2ndQuart).Sum();
                                                              <div class="form-group">
@@ -4241,7 +4464,7 @@
                                                                 </div>
                                                         }                                                     
                                                         
-                                                        else if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
+                                                        else if (!DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
                                                         {
                                                             <div class="form-group">
                                                                @{ 
@@ -4321,7 +4544,7 @@
                                                             
                                                         }
                                                         <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved) )
+                                                                                    @if (!DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved) || @Subs.RequireInput )
                                                                                     {
                                                                                             <div class="form-group">
                                                                                              @{  
@@ -4331,6 +4554,16 @@
                                                                                             @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                         
+                                                                                    }
+                                                                                    else if(User.IsInRole("Admin") && DelegateEditStatus )
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                             @{  
+                                                                                                Model.DelegateJustificationRevEst.Insert(Count, "");
+                                                                                              }  
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
                                                                                     }
                                                                                     else
                                                                                     {
@@ -4357,8 +4590,8 @@
                                                                                             </div>
                                                                                         </td>
                                                         }
-                                                                               else if ((User.IsInRole("Admin") && (!AdminEditStatus ||IsAdminSaved) ) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
-                                                                               {
+                                                       else if ((User.IsInRole("Admin") && (!AdminEditStatus ||IsAdminSaved) ) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                       {
                                                                                       <td>
                                                                                           <div class="form-group">
                                                                                               @{
@@ -4547,7 +4780,7 @@
                                                            Model.ACAndBWPropRENxtFin.Insert(Count, Convert.ToDecimal(0.00));                                                   
                                                         }
                                                         <td class="w-5">
-                                                            @if (@Subs.RequireInput || User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
+                                                            @if (!DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
                                                         {
                                                             <div class="form-group">
                                                                 @{
@@ -4558,13 +4791,17 @@
                                                                 @Html.ValidationMessageFor(model => model.Justification[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
                                                         }
-                                                        @*else if(User.IsInRole("Admin") || !DelegateEditStatus)
+                                                        else if(User.IsInRole("Admin") && DelegateEditStatus)
                                                         {
                                                              <div class="form-group">
-                                                                @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name10,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                @{
+                                                                    Model.Justification.Insert(Count, "");
+                                                                 }
+                                                                
+                                                                @Html.TextAreaFor(model => model.Justification[Count] , new { @class = "form-control", @id = @name10, @readonly = "readonly"})
+                                                                @Html.ValidationMessageFor(model => model.Justification[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>   
-                                                        }*@
+                                                        }
                                                         else
                                                         {                                                                                                             
                                                             <div class="form-group">
@@ -4583,7 +4820,7 @@
                                                                                         <td>
                                                                                             <div class="form-group"> 
                                                                                                 @{
-                                                                                                  Model.ACBWJustificationBudgEstNxtFin.Insert(Count, details!=null && details.ACBWJustificationBudgEstNxtFin!=null && details.ACBWJustificationBudgEstNxtFin!=" "  ? details.ACBWJustificationBudgEstNxtFin.ToString()  : " ");
+                                                                                                  Model.ACBWJustificationBudgEstNxtFin.Insert(Count, details!=null && details.ACBWJustificationBudgEstNxtFin!=null && details.ACBWJustificationBudgEstNxtFin!=" " ? details.ACBWJustificationBudgEstNxtFin.ToString()  : " ");
                                                                                                }
                                                                                                 
                                                                                                 @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[Count], new { @class = "form-control", @id = @name16})
@@ -4596,7 +4833,7 @@
                                                                                       <td>
                                                                                           <div class="form-group">
                                                                                               @{
-                                                                                                 Model.ACBWJustificationBudgEstNxtFin.Insert(Count, details!=null && details.ACBWJustificationBudgEstNxtFin!=null && details.ACBWJustificationBudgEstNxtFin!=" " ? details.ACBWJustificationBudgEstNxtFin.ToString() : "");
+                                                                                                 Model.ACBWJustificationBudgEstNxtFin.Insert(Count, details!=null && details.ACBWJustificationBudgEstNxtFin!=null && details.ACBWJustificationBudgEstNxtFin!=" "? details.ACBWJustificationBudgEstNxtFin.ToString() : "");
                                                                                                }
                                                                                             
                                                                                             @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[Count], new { @class = "form-control", @id = @name16,@readonly = "readonly"})
@@ -4734,7 +4971,12 @@
                                         @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })*@
-                                        @if ((User.IsInRole("Admin") && AdminEditStatus && Model.PreviousYearAdminCount>0) || (!User.IsInRole("Admin") && DelegateEditStatus) && Model.PreviousYearAdminCount > 0)
+                                        @{
+                                            var TotalDelegateSavedLedgers = (from d in Model.Detailss where d.SectionNumber.Equals(@inner.SectionNo)  && d.GroupNumber.Equals(@item.GroupNo) && d.HasDelegateSaved.Equals(true) select d.SubGroupNumber).Count();
+                                            var TotalAdminSavedLedgers = (from e in Model.Detailss where e.SectionNumber.Equals(@inner.SectionNo)  && e.GroupNumber.Equals(@item.GroupNo) && e.HasAdminSaved.Equals(true) select e.SubGroupNumber).Count();
+                                         }
+                                        
+                                        @if ((User.IsInRole("Admin") && AdminEditStatus && Model.PreviousYearAdminCount>0 && (TotalAdminSavedLedgers == TotalSubGroups)) || (!User.IsInRole("Admin") && DelegateEditStatus) && Model.PreviousYearAdminCount > 0 && (TotalDelegateSavedLedgers == TotalSubGroups))
                                         {
                                             <input id="@Submit" class="Submit" formaction="~/Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
                                         }
@@ -4840,6 +5082,10 @@
                                                     Boolean IsDelegateSaved = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.HasDelegateSaved).FirstOrDefault();
                                                     Boolean IsAdminSaved = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.HasAdminSaved).FirstOrDefault();
 
+                                                    var TotalLedgers = (from c in Model.Ledgerss where c.SubGroupNo.Equals(@Subs.SubGroupNo) select c.LedgerNo).Count();
+
+                                                    TotalSubGroups = (TotalSubGroups + TotalLedgers);
+
                                                     var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name2 = String.Concat("ActPrevFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name3 = String.Concat("ActCurrFinTillsecondQuart", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -4944,11 +5190,21 @@
                                                                                         </div>
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
+                                                                                    @if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                     {
                                                                                         <div class="form-group"> 
                                                                                           @{
                                                                                             Model.ActPrevFin.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.ActPrevFin.ToString("F4")) : Convert.ToDecimal(0.00));
+                                                                                           } 
+                                                                                            @Html.TextBoxFor(model => model.ActPrevFin[LedgerNo], new { @class = "form-control", @id = @name2 + @Ledgers.LedgerNo, @readonly = "readonly" })
+                                                                                            @Html.ValidationMessageFor(model => model.ActPrevFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>  
+                                                                                    }
+                                                                                    else if(DelegateEditStatus && User.IsInRole("Admin"))
+                                                                                    {
+                                                                                        <div class="form-group"> 
+                                                                                          @{
+                                                                                            Model.ActPrevFin.Insert(LedgerNo, Convert.ToDecimal(0.00));
                                                                                            } 
                                                                                             @Html.TextBoxFor(model => model.ActPrevFin[LedgerNo], new { @class = "form-control", @id = @name2 + @Ledgers.LedgerNo, @readonly = "readonly" })
                                                                                             @Html.ValidationMessageFor(model => model.ActPrevFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
@@ -4967,11 +5223,21 @@
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus|| (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
+                                                                                    @if (!DelegateEditStatus|| (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                     {
                                                                                        <div class="form-group">
                                                                                            @{
                                                                                                Model.ActCurrFinTillsecondQuart.Insert(LedgerNo, Ledgerdetails != null ? Convert.ToDecimal(Ledgerdetails.ActCurrFinTill2ndQuart.ToString("F4")) : Convert.ToDecimal(0.00));
+                                                                                            }
+                                                                                               @Html.TextBoxFor(model => model.ActCurrFinTillsecondQuart[LedgerNo], new { @class = "form-control", @id = @name3 + @Ledgers.LedgerNo, @readonly = "readonly" })
+                                                                                               @Html.ValidationMessageFor(model => model.ActCurrFinTillsecondQuart[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                      </div>  
+                                                                                    }
+                                                                                    else if(DelegateEditStatus && User.IsInRole("Admin"))
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                           @{
+                                                                                               Model.ActCurrFinTillsecondQuart.Insert(LedgerNo, Convert.ToDecimal(0.00));
                                                                                             }
                                                                                                @Html.TextBoxFor(model => model.ActCurrFinTillsecondQuart[LedgerNo], new { @class = "form-control", @id = @name3 + @Ledgers.LedgerNo, @readonly = "readonly" })
                                                                                                @Html.ValidationMessageFor(model => model.ActCurrFinTillsecondQuart[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
@@ -5021,7 +5287,7 @@
                                                                                     }
                                                                                 </td>
                                                                                     <td>
-                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
+                                                                                        @if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                         {
                                                                                           <div class="form-group"> 
                                                                                               @{
@@ -5074,7 +5340,7 @@
                                                                                     }
 
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
+                                                                                    @if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                     {
                                                                                             <div class="form-group">
                                                                                              @{  
@@ -5084,6 +5350,16 @@
                                                                                             @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                         
+                                                                                    }
+                                                                                    else if(User.IsInRole("Admin") && DelegateEditStatus )
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                             @{  
+                                                                                                Model.DelegateJustificationRevEst.Insert(LedgerNo, "");
+                                                                                              }  
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
                                                                                     }
                                                                                     else
                                                                                     {
@@ -5165,7 +5441,7 @@
                                                                                     }
                                                                                 </td>
                                                                                     <td>
-                                                                                        @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
+                                                                                        @if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                         {
                                                                                             <div class="form-group">
                                                                                              
@@ -5221,7 +5497,7 @@
                                                                                         Model.ACAndBWPropRENxtFin.Insert(LedgerNo, Convert.ToDecimal(0.00));
                                                                                     }
                                                                                 <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
+                                                                                    @if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                     {
                                                                                             <div class="form-group">
                                                                                              @{  
@@ -5231,6 +5507,16 @@
                                                                                             @Html.ValidationMessageFor(model => model.Justification[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                         
+                                                                                    }
+                                                                                    else if(User.IsInRole("Admin") && DelegateEditStatus )
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                             @{  
+                                                                                                Model.Justification.Insert(LedgerNo, "");
+                                                                                              }  
+                                                                                            @Html.TextAreaFor(model => model.Justification[LedgerNo], new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.Justification[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
                                                                                     }
                                                                                     else
                                                                                     {
@@ -5249,7 +5535,7 @@
                                                                                         <td>
                                                                                             <div class="form-group"> 
                                                                                                 @{
-                                                                                                  Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=" " ? Ledgerdetails.ACBWJustificationBudgEstNxtFin.ToString()  : " ");
+                                                                                                  Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=" "? Ledgerdetails.ACBWJustificationBudgEstNxtFin.ToString()  : " ");
                                                                                                }
                                                                                                 
                                                                                                 @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name16+@Ledgers.LedgerNo})
@@ -5477,7 +5763,17 @@
                                                            
                                                         </td>
                                                         <td class="w-5">
-                                                        @if (@Subs.RequireInput)
+                                                        @if(DelegateEditStatus && User.IsInRole("Admin"))
+                                                        {
+                                                            <div>
+                                                               @{
+                                                                  Model.ActPrevFin.Insert(Count, Convert.ToDecimal(0.00));
+                                                                }   
+                                                                @Html.TextBoxFor(model => model.ActPrevFin[Count], new { @class = "form-control", @id = @name2, @readonly = "readonly"})
+                                                                @Html.ValidationMessageFor(model => model.ActPrevFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                            </div>
+                                                        }
+                                                        else if (@Subs.RequireInput)
                                                         {
                                                             var LedgerSumActPrevFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActPrevFin).Sum();
                                                             <div class="form-group">  
@@ -5513,7 +5809,18 @@
                                                         }
                                                         </td>
                                                         <td class="w-5">
-                                                        @if (@Subs.RequireInput)
+                                                        @if(DelegateEditStatus && User.IsInRole("Admin"))
+                                                        {
+                                                            <div class="form-group">
+                                                               @{
+                                                                  Model.ActCurrFinTillsecondQuart.Insert(Count, Convert.ToDecimal(0.00));
+                                                                 }
+                                                                 @Html.TextBoxFor(model => model.ActCurrFinTillsecondQuart[Count], new { @class = "form-control", @id = @name3, @readonly = "readonly"})
+                                                                 @Html.ValidationMessageFor(model => model.ActCurrFinTillsecondQuart[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                            </div>
+                                                        }
+                                                        
+                                                        else if (@Subs.RequireInput)
                                                         {
                                                                 var LedgerSumActCurrFinTill2ndQuart = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActCurrFinTill2ndQuart).Sum();
                                                              <div class="form-group">
@@ -5628,7 +5935,7 @@
                                                                 </div>
                                                         }                                                     
                                                         
-                                                        else if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
+                                                        else if (!DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
                                                         {
                                                             <div class="form-group">
                                                                @{ 
@@ -5708,7 +6015,7 @@
                                                             
                                                         }
                                                         <td>
-                                                                                    @if (User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved) )
+                                                                                    @if (!DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved) || @Subs.RequireInput )
                                                                                     {
                                                                                             <div class="form-group">
                                                                                              @{  
@@ -5718,6 +6025,16 @@
                                                                                             @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                         
+                                                                                    }
+                                                                                    else if(User.IsInRole("Admin") && DelegateEditStatus )
+                                                                                    {
+                                                                                        <div class="form-group">
+                                                                                             @{  
+                                                                                                Model.DelegateJustificationRevEst.Insert(Count, "");
+                                                                                              }  
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @readonly = "readonly"})
+                                                                                            @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                        </div>
                                                                                     }
                                                                                     else
                                                                                     {
@@ -5744,8 +6061,8 @@
                                                                                             </div>
                                                                                         </td>
                                                         }
-                                                                               else if ((User.IsInRole("Admin") && (!AdminEditStatus ||IsAdminSaved) ) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
-                                                                               {
+                                                       else if ((User.IsInRole("Admin") && (!AdminEditStatus ||IsAdminSaved) ) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                       {
                                                                                       <td>
                                                                                           <div class="form-group">
                                                                                               @{
@@ -5934,7 +6251,7 @@
                                                            Model.ACAndBWPropRENxtFin.Insert(Count, Convert.ToDecimal(0.00));                                                   
                                                         }
                                                         <td class="w-5">
-                                                            @if (@Subs.RequireInput || User.IsInRole("Admin") || !DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
+                                                            @if (!DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
                                                         {
                                                             <div class="form-group">
                                                                 @{
@@ -5945,13 +6262,17 @@
                                                                 @Html.ValidationMessageFor(model => model.Justification[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
                                                         }
-                                                        @*else if(User.IsInRole("Admin") || !DelegateEditStatus)
+                                                        else if(User.IsInRole("Admin") && DelegateEditStatus)
                                                         {
                                                              <div class="form-group">
-                                                                @Html.TextArea(@name10, details!=null ? details.Justification.ToString() : " ", new { @class = "form-control", @id = @name10, @readonly = "readonly"})
-                                                                @Html.ValidationMessage(@name10,  " ",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                @{
+                                                                    Model.Justification.Insert(Count, "");
+                                                                 }
+                                                                
+                                                                @Html.TextAreaFor(model => model.Justification[Count] , new { @class = "form-control", @id = @name10, @readonly = "readonly"})
+                                                                @Html.ValidationMessageFor(model => model.Justification[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>   
-                                                        }*@
+                                                        }
                                                         else
                                                         {                                                                                                             
                                                             <div class="form-group">
@@ -5983,7 +6304,7 @@
                                                                                       <td>
                                                                                           <div class="form-group">
                                                                                               @{
-                                                                                                 Model.ACBWJustificationBudgEstNxtFin.Insert(Count, details!=null && details.ACBWJustificationBudgEstNxtFin!=null && details.ACBWJustificationBudgEstNxtFin!=" " ? details.ACBWJustificationBudgEstNxtFin.ToString() : "");
+                                                                                                 Model.ACBWJustificationBudgEstNxtFin.Insert(Count, details!=null && details.ACBWJustificationBudgEstNxtFin!=null && details.ACBWJustificationBudgEstNxtFin!=" "? details.ACBWJustificationBudgEstNxtFin.ToString() : "");
                                                                                                }
                                                                                             
                                                                                             @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[Count], new { @class = "form-control", @id = @name16,@readonly = "readonly"})
@@ -6122,7 +6443,12 @@
                                         @Html.Hidden("GroupName",Model.GroupName,  new{@id = @identi+"-GroupName" })
                                         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
                                         @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })*@
-                                        @if ((User.IsInRole("Admin") && AdminEditStatus && Model.PreviousYearAdminCount>0) || (!User.IsInRole("Admin") && DelegateEditStatus) && Model.PreviousYearAdminCount > 0)
+                                        @{
+                                            var TotalDelegateSavedLedgers = (from d in Model.Detailss where d.SectionNumber.Equals(@inner.SectionNo)  && d.GroupNumber.Equals(@item.GroupNo) && d.HasDelegateSaved.Equals(true) select d.SubGroupNumber).Count();
+                                            var TotalAdminSavedLedgers = (from e in Model.Detailss where e.SectionNumber.Equals(@inner.SectionNo)  && e.GroupNumber.Equals(@item.GroupNo) && e.HasAdminSaved.Equals(true) select e.SubGroupNumber).Count();
+                                         }
+                                        
+                                        @if ((User.IsInRole("Admin") && AdminEditStatus && Model.PreviousYearAdminCount>0 && (TotalAdminSavedLedgers == TotalSubGroups)) || (!User.IsInRole("Admin") && DelegateEditStatus) && Model.PreviousYearAdminCount > 0 && (TotalDelegateSavedLedgers == TotalSubGroups))
                                         {
                                             <input id="@Submit" class="Submit" formaction="~/Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
                                         }

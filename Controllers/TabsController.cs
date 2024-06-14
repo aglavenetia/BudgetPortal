@@ -401,9 +401,9 @@ namespace BudgetPortal.Controllers
         public IActionResult Index(MultipleData MD)
         {
             Boolean valid = true;
-            //Update Budget Details for Admin User
+            //Update Budget Status for Admin User
             if (User.Identity.Name.Equals("admin@test.com"))
-                {
+            {
                   
                     var username = User.Identity.Name;
                     var DivName = MD.SelectedDivisionName.ToString();
@@ -422,7 +422,7 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.GroupNo.Equals(GroupNumber))
                                 .Select(x => x.SubGroupNo).ToList();
 
-                ModelState.Remove("Message");
+                /*ModelState.Remove("Message");
                 ModelState.Remove("File");
                 ModelState.Remove("FileName");
                 ModelState.Remove("SubGroupLedgerName");
@@ -510,8 +510,8 @@ namespace BudgetPortal.Controllers
                         }
                     }
                     if (valid)
-                    {
-                        var Status = new BudgetdetailsStatus();
+                    {*/
+                var Status = new BudgetdetailsStatus();
                         Status = _context.BudgetdetailsStatus
                                           .Where(b => (b.DivisionID == SelectedDivisionID)
                                                    && (b.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0]))
@@ -522,11 +522,11 @@ namespace BudgetPortal.Controllers
 
                         _context.BudgetdetailsStatus.Update(Status);
                         _context.SaveChanges();
-                    }
+                /*}
 
-                    
-                }
-               
+
+            }*/
+
 
                 var DivisionID = _context.Division
                                              .Where(d => d.DivisionName == DivName)
@@ -607,7 +607,7 @@ namespace BudgetPortal.Controllers
                   
                 }
 
-                //Add Budget Details to Database for a Delegate
+                //Update Budget Status in Database for a Delegate
                 else
                 {
                 
@@ -676,7 +676,7 @@ namespace BudgetPortal.Controllers
 
                     MD.AcademicYears.Where(x => x.Text.Equals(MD.SelectedAcademicYear.ToString())).Single().Selected = true;
 
-                    ModelState.Remove("SelectedDivisionID");
+                   /* ModelState.Remove("SelectedDivisionID");
                     ModelState.Remove("ACAndBWPropRECurrFin");
                     ModelState.Remove("ACAndBWPropRENxtFin");
                     ModelState.Remove("File");
@@ -815,7 +815,7 @@ namespace BudgetPortal.Controllers
                        }
                        
                         if(valid)
-                        { 
+                        { */
                            var Status = new BudgetdetailsStatus();
                            Status.DivisionID = Convert.ToInt32(SelectedDivisionID);
                            Status.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
@@ -827,7 +827,7 @@ namespace BudgetPortal.Controllers
 
                            _context.BudgetdetailsStatus.Add(Status);
                            _context.SaveChanges();
-                        }
+                        /*}*/
 
                         MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
                                  .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
@@ -862,7 +862,7 @@ namespace BudgetPortal.Controllers
                     MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
                                      .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
 
-                    }
+                   /* } */
                 
                 return View("Index", MD);
             }
