@@ -1433,7 +1433,7 @@
                                                                                             
                                                                                     }
                                                         </td>
-                                                        @if (User.IsInRole("Admin") && AdminEditStatus)
+                                                        @if (User.IsInRole("Admin") && AdminEditStatus && !@Subs.RequireInput)
                                                         {
                                                                                         <td>
                                                                                             <div class="form-group"> 
@@ -1446,7 +1446,7 @@
                                                                                             </div>
                                                                                         </td>
                                                         }
-                                                       else if ((User.IsInRole("Admin") && (!AdminEditStatus ||IsAdminSaved) ) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                       else if ((User.IsInRole("Admin") && (!AdminEditStatus ||IsAdminSaved) ) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0) && !@Subs.RequireInput)
                                                        {
                                                                                       <td>
                                                                                           <div class="form-group">
@@ -1636,7 +1636,7 @@
                                                            Model.ACAndBWPropRENxtFin.Insert(Count, Convert.ToDecimal(0.00));                                                   
                                                         }
                                                         <td class="w-5">
-                                                            @if (!DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
+                                                            @if (!DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved)|| @Subs.RequireInput )
                                                         {
                                                             <div class="form-group">
                                                                 @{
@@ -1684,7 +1684,7 @@
                                                                                             </div>
                                                                                         </td>
                                                                                     }
-                                                                                    else if ((User.IsInRole("Admin") && (!AdminEditStatus || IsAdminSaved)) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                                                    else if ((User.IsInRole("Admin") && (!AdminEditStatus || IsAdminSaved)) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0) && !@Subs.RequireInput)
                                                                                     {
                                                                                       <td>
                                                                                           <div class="form-group">
@@ -2917,7 +2917,7 @@
                                                                                             </div>
                                                                                         </td>
                                                         }
-                                                       else if ((User.IsInRole("Admin") && (!AdminEditStatus ||IsAdminSaved) ) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                       else if ((User.IsInRole("Admin") && (!AdminEditStatus ||IsAdminSaved) ) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0) && !@Subs.RequireInput)
                                                        {
                                                                                       <td>
                                                                                           <div class="form-group">
@@ -3107,7 +3107,7 @@
                                                            Model.ACAndBWPropRENxtFin.Insert(Count, Convert.ToDecimal(0.00));                                                   
                                                         }
                                                         <td class="w-5">
-                                                            @if (!DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
+                                                            @if (!DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved) || @Subs.RequireInput)
                                                         {
                                                             <div class="form-group">
                                                                 @{
@@ -3155,7 +3155,7 @@
                                                                                             </div>
                                                                                         </td>
                                                                                     }
-                                                                                    else if ((User.IsInRole("Admin") && (!AdminEditStatus || IsAdminSaved)) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                                                    else if ((User.IsInRole("Admin") && (!AdminEditStatus || IsAdminSaved)) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0) && !@Subs.RequireInput)
                                                                                     {
                                                                                       <td>
                                                                                           <div class="form-group">
@@ -4590,7 +4590,7 @@
                                                                                             </div>
                                                                                         </td>
                                                         }
-                                                       else if ((User.IsInRole("Admin") && (!AdminEditStatus ||IsAdminSaved) ) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                       else if ((User.IsInRole("Admin") && (!AdminEditStatus ||IsAdminSaved) ) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0) && !@Subs.RequireInput)
                                                        {
                                                                                       <td>
                                                                                           <div class="form-group">
@@ -4780,7 +4780,7 @@
                                                            Model.ACAndBWPropRENxtFin.Insert(Count, Convert.ToDecimal(0.00));                                                   
                                                         }
                                                         <td class="w-5">
-                                                            @if (!DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
+                                                            @if (!DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved)|| @Subs.RequireInput )
                                                         {
                                                             <div class="form-group">
                                                                 @{
@@ -4828,7 +4828,7 @@
                                                                                             </div>
                                                                                         </td>
                                                                                     }
-                                                                                    else if ((User.IsInRole("Admin") && (!AdminEditStatus || IsAdminSaved)) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                                                    else if ((User.IsInRole("Admin") && (!AdminEditStatus || IsAdminSaved)) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0) && !@Subs.RequireInput)
                                                                                     {
                                                                                       <td>
                                                                                           <div class="form-group">
@@ -6061,7 +6061,7 @@
                                                                                             </div>
                                                                                         </td>
                                                         }
-                                                       else if ((User.IsInRole("Admin") && (!AdminEditStatus ||IsAdminSaved) ) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                       else if ((User.IsInRole("Admin") && (!AdminEditStatus ||IsAdminSaved) ) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0) && !@Subs.RequireInput)
                                                        {
                                                                                       <td>
                                                                                           <div class="form-group">
@@ -6251,7 +6251,7 @@
                                                            Model.ACAndBWPropRENxtFin.Insert(Count, Convert.ToDecimal(0.00));                                                   
                                                         }
                                                         <td class="w-5">
-                                                            @if (!DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
+                                                            @if (!DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved)|| @Subs.RequireInput )
                                                         {
                                                             <div class="form-group">
                                                                 @{
@@ -6299,7 +6299,7 @@
                                                                                             </div>
                                                                                         </td>
                                                                                     }
-                                                                                    else if ((User.IsInRole("Admin") && (!AdminEditStatus || IsAdminSaved)) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                                                    else if ((User.IsInRole("Admin") && (!AdminEditStatus || IsAdminSaved)) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0) && !@Subs.RequireInput)
                                                                                     {
                                                                                       <td>
                                                                                           <div class="form-group">
