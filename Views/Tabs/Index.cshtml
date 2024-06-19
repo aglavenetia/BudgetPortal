@@ -978,14 +978,14 @@
                                                                                     </tbody>
                                                                                     </table>
                                                                                     </td>
-                                                                                @if((!User.IsInRole("Admin") && !LedgerIsDelegateSaved && (DelegateEditStatus || AdminEditStatus))||(User.IsInRole("Admin") && !LedgerIsAdminSaved && (DelegateEditStatus || AdminEditStatus)))
+                                                                                @if((!User.IsInRole("Admin") && !LedgerIsDelegateSaved && DelegateEditStatus)||(User.IsInRole("Admin") && !LedgerIsAdminSaved && AdminEditStatus))
                                                                                 {
                                                                                 <td>
                                                                                    <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/Tabs/Save" type="submit" value="Save Budget" style="align-self:center">
                                                                                    <i class='bx bx-check' style="color:limegreen"></i></button>
                                                                                 </td>
                                                                                 }
-                                                                                    @if ((!User.IsInRole("Admin") && LedgerIsDelegateSaved && (DelegateEditStatus || AdminEditStatus)) || (User.IsInRole("Admin") && LedgerIsAdminSaved && (DelegateEditStatus || AdminEditStatus)))
+                                                                                    @if ((!User.IsInRole("Admin") && LedgerIsDelegateSaved && DelegateEditStatus ) || (User.IsInRole("Admin") && LedgerIsAdminSaved && AdminEditStatus))
                                                                                     {
                                                                                         <td>
                                                                                             <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/Tabs/Edit" type="submit" value="Edit Budget" style="align-self:center">
@@ -993,7 +993,7 @@
                                                                                         </td>
 
                                                                                     }
-                                                                                @if((!User.IsInRole("Admin") && LedgerIsDelegateSaved && (DelegateEditStatus || AdminEditStatus))||(User.IsInRole("Admin") && LedgerIsAdminSaved && (DelegateEditStatus || AdminEditStatus)))
+                                                                                @if((!User.IsInRole("Admin") && LedgerIsDelegateSaved && DelegateEditStatus)||(User.IsInRole("Admin") && LedgerIsAdminSaved && AdminEditStatus))
                                                                                 {
                                                                                         <td>
                                                                                             <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/Tabs/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
@@ -1446,7 +1446,7 @@
                                                                                             </div>
                                                                                         </td>
                                                         }
-                                                       else if ((User.IsInRole("Admin") && (!AdminEditStatus ||IsAdminSaved) ) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0) && !@Subs.RequireInput)
+                                                       else if ((User.IsInRole("Admin") && (!AdminEditStatus ||IsAdminSaved || @Subs.RequireInput) ) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                        {
                                                                                       <td>
                                                                                           <div class="form-group">
@@ -1671,7 +1671,7 @@
                                                             </div>
                                                         }
                                                         </td>
-                                                        @if (User.IsInRole("Admin") && AdminEditStatus)
+                                                        @if (User.IsInRole("Admin") && AdminEditStatus && !@Subs.RequireInput)
                                                                                     {
                                                                                         <td>
                                                                                             <div class="form-group"> 
@@ -1684,7 +1684,7 @@
                                                                                             </div>
                                                                                         </td>
                                                                                     }
-                                                                                    else if ((User.IsInRole("Admin") && (!AdminEditStatus || IsAdminSaved)) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0) && !@Subs.RequireInput)
+                                                                                    else if ((User.IsInRole("Admin") && (!AdminEditStatus || IsAdminSaved || @Subs.RequireInput)) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                                                     {
                                                                                       <td>
                                                                                           <div class="form-group">
@@ -1737,21 +1737,21 @@
                                                              </table>
                                                          }
                                                         </td>
-                                                        @if((!User.IsInRole("Admin") && !IsDelegateSaved && !@Subs.RequireInput && (DelegateEditStatus || AdminEditStatus))||(User.IsInRole("Admin") && !IsAdminSaved && !@Subs.RequireInput && (DelegateEditStatus || AdminEditStatus)))
+                                                        @if((!User.IsInRole("Admin") && !IsDelegateSaved && !@Subs.RequireInput && DelegateEditStatus)||(User.IsInRole("Admin") && !IsAdminSaved && !@Subs.RequireInput && AdminEditStatus))
                                                         {
                                                         <td>
                                                                                    <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/Tabs/Save" type="submit" value="Save Budget" style="align-self:center">
                                                                                    <i class='bx bx-check' style="color:limegreen"></i></button>
                                                                                 </td>
                                                           }
-                                                          @if((!User.IsInRole("Admin") && IsDelegateSaved && !@Subs.RequireInput && (DelegateEditStatus || AdminEditStatus))||(User.IsInRole("Admin") && IsAdminSaved && !@Subs.RequireInput && (DelegateEditStatus || AdminEditStatus)))
+                                                          @if((!User.IsInRole("Admin") && IsDelegateSaved && !@Subs.RequireInput && DelegateEditStatus )||(User.IsInRole("Admin") && IsAdminSaved && !@Subs.RequireInput && AdminEditStatus))
                                                           {
                                                                                 <td>
                                                                                    <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/Tabs/Edit" type="submit" value="Edit Budget" style="align-self:center">
                                                                                    <i class='bx bxs-pencil' style="color:blue"></i></button>
                                                                                </td>
                                                            }
-                                                           @if((!User.IsInRole("Admin") && IsDelegateSaved && !@Subs.RequireInput && (DelegateEditStatus || AdminEditStatus))||(User.IsInRole("Admin") && IsAdminSaved && !@Subs.RequireInput && (DelegateEditStatus || AdminEditStatus)))
+                                                           @if((!User.IsInRole("Admin") && IsDelegateSaved && !@Subs.RequireInput && DelegateEditStatus )||(User.IsInRole("Admin") && IsAdminSaved && !@Subs.RequireInput && AdminEditStatus))
                                                            {
                                                                                 <td>
                                                                                     <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/Tabs/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
@@ -1836,7 +1836,7 @@
                                             var TotalAdminSavedLedgers = (from e in Model.Detailss where e.SectionNumber.Equals(@inner.SectionNo)  && e.GroupNumber.Equals(@item.GroupNo) && e.HasAdminSaved.Equals(true) select e.SubGroupNumber).Count();
                                          }
                                         
-                                    @if ((User.IsInRole("Admin") && AdminEditStatus && (TotalAdminSavedLedgers == TotalSubGroups) && Model.PreviousYearAdminCount > 0) || (!User.IsInRole("Admin") && DelegateEditStatus && (TotalDelegateSavedLedgers == TotalSubGroups) && Model.PreviousYearAdminCount > 0))
+                                    @if ((User.IsInRole("Admin") && AdminEditStatus && (TotalAdminSavedLedgers == TotalSubGroups)  && Model.PreviousYearAdminCount > 0) || (!User.IsInRole("Admin") && DelegateEditStatus && (TotalDelegateSavedLedgers == TotalSubGroups)  && Model.PreviousYearAdminCount > 0))
                                     {
                                             <input id="@Submit" class="Submit" formaction="~/Tabs/Index" type="submit" value="Save Budget" style="align-self:center"/>
                                     }
@@ -2449,14 +2449,14 @@
                                                                                     </tbody>
                                                                                     </table>
                                                                                     </td>
-                                                                                @if((!User.IsInRole("Admin") && !LedgerIsDelegateSaved && (DelegateEditStatus || AdminEditStatus))||(User.IsInRole("Admin") && !LedgerIsAdminSaved && (DelegateEditStatus || AdminEditStatus)))
+                                                                                @if((!User.IsInRole("Admin") && !LedgerIsDelegateSaved && DelegateEditStatus)||(User.IsInRole("Admin") && !LedgerIsAdminSaved && AdminEditStatus))
                                                                                 {
                                                                                 <td>
                                                                                    <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/Tabs/Save" type="submit" value="Save Budget" style="align-self:center">
                                                                                    <i class='bx bx-check' style="color:limegreen"></i></button>
                                                                                 </td>
                                                                                 }
-                                                                                    @if ((!User.IsInRole("Admin") && LedgerIsDelegateSaved && (DelegateEditStatus || AdminEditStatus)) || (User.IsInRole("Admin") && LedgerIsAdminSaved && (DelegateEditStatus || AdminEditStatus)))
+                                                                                    @if ((!User.IsInRole("Admin") && LedgerIsDelegateSaved && DelegateEditStatus) || (User.IsInRole("Admin") && LedgerIsAdminSaved && AdminEditStatus))
                                                                                     {
                                                                                         <td>
                                                                                             <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/Tabs/Edit" type="submit" value="Edit Budget" style="align-self:center">
@@ -2464,7 +2464,7 @@
                                                                                         </td>
 
                                                                                     }
-                                                                                @if((!User.IsInRole("Admin") && LedgerIsDelegateSaved && (DelegateEditStatus || AdminEditStatus))||(User.IsInRole("Admin") && LedgerIsAdminSaved && (DelegateEditStatus || AdminEditStatus)))
+                                                                                @if((!User.IsInRole("Admin") && LedgerIsDelegateSaved && DelegateEditStatus)||(User.IsInRole("Admin") && LedgerIsAdminSaved && AdminEditStatus))
                                                                                 {
                                                                                         <td>
                                                                                             <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/Tabs/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
@@ -2904,7 +2904,7 @@
                                                                                             
                                                                                     }
                                                         </td>
-                                                        @if (User.IsInRole("Admin") && AdminEditStatus)
+                                                        @if (User.IsInRole("Admin") && AdminEditStatus && !@Subs.RequireInput)
                                                         {
                                                                                         <td>
                                                                                             <div class="form-group"> 
@@ -2917,7 +2917,7 @@
                                                                                             </div>
                                                                                         </td>
                                                         }
-                                                       else if ((User.IsInRole("Admin") && (!AdminEditStatus ||IsAdminSaved) ) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0) && !@Subs.RequireInput)
+                                                       else if ((User.IsInRole("Admin") && (!AdminEditStatus ||IsAdminSaved || @Subs.RequireInput) ) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                        {
                                                                                       <td>
                                                                                           <div class="form-group">
@@ -3142,7 +3142,7 @@
                                                             </div>
                                                         }
                                                         </td>
-                                                        @if (User.IsInRole("Admin") && AdminEditStatus)
+                                                        @if (User.IsInRole("Admin") && AdminEditStatus && !@Subs.RequireInput)
                                                                                     {
                                                                                         <td>
                                                                                             <div class="form-group"> 
@@ -3155,7 +3155,7 @@
                                                                                             </div>
                                                                                         </td>
                                                                                     }
-                                                                                    else if ((User.IsInRole("Admin") && (!AdminEditStatus || IsAdminSaved)) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0) && !@Subs.RequireInput)
+                                                                                    else if ((User.IsInRole("Admin") && (!AdminEditStatus || IsAdminSaved || @Subs.RequireInput)) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                                                     {
                                                                                       <td>
                                                                                           <div class="form-group">
@@ -3208,21 +3208,21 @@
                                                              </table>
                                                          }
                                                         </td>
-                                                        @if((!User.IsInRole("Admin") && !IsDelegateSaved && !@Subs.RequireInput && (DelegateEditStatus || AdminEditStatus))||(User.IsInRole("Admin") && !IsAdminSaved && !@Subs.RequireInput && (DelegateEditStatus || AdminEditStatus)))
+                                                        @if((!User.IsInRole("Admin") && !IsDelegateSaved && !@Subs.RequireInput && DelegateEditStatus )||(User.IsInRole("Admin") && !IsAdminSaved && !@Subs.RequireInput && AdminEditStatus))
                                                         {
                                                         <td>
                                                                                    <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/Tabs/Save" type="submit" value="Save Budget" style="align-self:center">
                                                                                    <i class='bx bx-check' style="color:limegreen"></i></button>
                                                                                 </td>
                                                           }
-                                                          @if((!User.IsInRole("Admin") && IsDelegateSaved && !@Subs.RequireInput && (DelegateEditStatus || AdminEditStatus))||(User.IsInRole("Admin") && IsAdminSaved && !@Subs.RequireInput && (DelegateEditStatus || AdminEditStatus)))
+                                                          @if((!User.IsInRole("Admin") && IsDelegateSaved && !@Subs.RequireInput && DelegateEditStatus )||(User.IsInRole("Admin") && IsAdminSaved && !@Subs.RequireInput && AdminEditStatus))
                                                           {
                                                                                 <td>
                                                                                    <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/Tabs/Edit" type="submit" value="Edit Budget" style="align-self:center">
                                                                                    <i class='bx bxs-pencil' style="color:blue"></i></button>
                                                                                </td>
                                                            }
-                                                           @if((!User.IsInRole("Admin") && IsDelegateSaved && !@Subs.RequireInput && (DelegateEditStatus || AdminEditStatus))||(User.IsInRole("Admin") && IsAdminSaved && !@Subs.RequireInput && (DelegateEditStatus || AdminEditStatus)))
+                                                           @if((!User.IsInRole("Admin") && IsDelegateSaved && !@Subs.RequireInput && DelegateEditStatus)||(User.IsInRole("Admin") && IsAdminSaved && !@Subs.RequireInput && AdminEditStatus))
                                                            {
                                                                                 <td>
                                                                                     <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/Tabs/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
@@ -4122,14 +4122,14 @@
                                                                                     </tbody>
                                                                                     </table>
                                                                                     </td>
-                                                                                @if((!User.IsInRole("Admin") && !LedgerIsDelegateSaved && (DelegateEditStatus || AdminEditStatus))||(User.IsInRole("Admin") && !LedgerIsAdminSaved && (DelegateEditStatus || AdminEditStatus)))
+                                                                                @if((!User.IsInRole("Admin") && !LedgerIsDelegateSaved && DelegateEditStatus )||(User.IsInRole("Admin") && !LedgerIsAdminSaved && AdminEditStatus))
                                                                                 {
                                                                                 <td>
                                                                                    <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/Tabs/Save" type="submit" value="Save Budget" style="align-self:center">
                                                                                    <i class='bx bx-check' style="color:limegreen"></i></button>
                                                                                 </td>
                                                                                 }
-                                                                                    @if ((!User.IsInRole("Admin") && LedgerIsDelegateSaved && (DelegateEditStatus || AdminEditStatus)) || (User.IsInRole("Admin") && LedgerIsAdminSaved && (DelegateEditStatus || AdminEditStatus)))
+                                                                                    @if ((!User.IsInRole("Admin") && LedgerIsDelegateSaved && DelegateEditStatus) || (User.IsInRole("Admin") && LedgerIsAdminSaved && AdminEditStatus))
                                                                                     {
                                                                                         <td>
                                                                                             <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/Tabs/Edit" type="submit" value="Edit Budget" style="align-self:center">
@@ -4137,7 +4137,7 @@
                                                                                         </td>
 
                                                                                     }
-                                                                                @if((!User.IsInRole("Admin") && LedgerIsDelegateSaved && (DelegateEditStatus || AdminEditStatus))||(User.IsInRole("Admin") && LedgerIsAdminSaved && (DelegateEditStatus || AdminEditStatus)))
+                                                                                @if((!User.IsInRole("Admin") && LedgerIsDelegateSaved && DelegateEditStatus )||(User.IsInRole("Admin") && LedgerIsAdminSaved && AdminEditStatus))
                                                                                 {
                                                                                         <td>
                                                                                             <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/Tabs/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
@@ -4577,7 +4577,7 @@
                                                                                             
                                                                                     }
                                                         </td>
-                                                        @if (User.IsInRole("Admin") && AdminEditStatus)
+                                                        @if (User.IsInRole("Admin") && AdminEditStatus && !@Subs.RequireInput)
                                                         {
                                                                                         <td>
                                                                                             <div class="form-group"> 
@@ -4590,7 +4590,7 @@
                                                                                             </div>
                                                                                         </td>
                                                         }
-                                                       else if ((User.IsInRole("Admin") && (!AdminEditStatus ||IsAdminSaved) ) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0) && !@Subs.RequireInput)
+                                                       else if ((User.IsInRole("Admin") && (!AdminEditStatus ||IsAdminSaved || @Subs.RequireInput) ) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                        {
                                                                                       <td>
                                                                                           <div class="form-group">
@@ -4815,7 +4815,7 @@
                                                             </div>
                                                         }
                                                         </td>
-                                                        @if (User.IsInRole("Admin") && AdminEditStatus)
+                                                        @if (User.IsInRole("Admin") && AdminEditStatus && !@Subs.RequireInput)
                                                                                     {
                                                                                         <td>
                                                                                             <div class="form-group"> 
@@ -4828,7 +4828,7 @@
                                                                                             </div>
                                                                                         </td>
                                                                                     }
-                                                                                    else if ((User.IsInRole("Admin") && (!AdminEditStatus || IsAdminSaved)) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0) && !@Subs.RequireInput)
+                                                                                    else if ((User.IsInRole("Admin") && (!AdminEditStatus || IsAdminSaved || @Subs.RequireInput)) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                                                     {
                                                                                       <td>
                                                                                           <div class="form-group">
@@ -4881,21 +4881,21 @@
                                                              </table>
                                                          }
                                                         </td>
-                                                        @if((!User.IsInRole("Admin") && !IsDelegateSaved && !@Subs.RequireInput && (DelegateEditStatus || AdminEditStatus))||(User.IsInRole("Admin") && !IsAdminSaved && !@Subs.RequireInput && (DelegateEditStatus || AdminEditStatus)))
+                                                        @if((!User.IsInRole("Admin") && !IsDelegateSaved && !@Subs.RequireInput && DelegateEditStatus)||(User.IsInRole("Admin") && !IsAdminSaved && !@Subs.RequireInput && AdminEditStatus))
                                                         {
                                                         <td>
                                                                                    <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/Tabs/Save" type="submit" value="Save Budget" style="align-self:center">
                                                                                    <i class='bx bx-check' style="color:limegreen"></i></button>
                                                                                 </td>
                                                           }
-                                                          @if((!User.IsInRole("Admin") && IsDelegateSaved && !@Subs.RequireInput && (DelegateEditStatus || AdminEditStatus))||(User.IsInRole("Admin") && IsAdminSaved && !@Subs.RequireInput && (DelegateEditStatus || AdminEditStatus)))
+                                                          @if((!User.IsInRole("Admin") && IsDelegateSaved && !@Subs.RequireInput && DelegateEditStatus)||(User.IsInRole("Admin") && IsAdminSaved && !@Subs.RequireInput && AdminEditStatus))
                                                           {
                                                                                 <td>
                                                                                    <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/Tabs/Edit" type="submit" value="Edit Budget" style="align-self:center">
                                                                                    <i class='bx bxs-pencil' style="color:blue"></i></button>
                                                                                </td>
                                                            }
-                                                           @if((!User.IsInRole("Admin") && IsDelegateSaved && !@Subs.RequireInput && (DelegateEditStatus || AdminEditStatus))||(User.IsInRole("Admin") && IsAdminSaved && !@Subs.RequireInput && (DelegateEditStatus || AdminEditStatus)))
+                                                           @if((!User.IsInRole("Admin") && IsDelegateSaved && !@Subs.RequireInput && DelegateEditStatus)||(User.IsInRole("Admin") && IsAdminSaved && !@Subs.RequireInput && AdminEditStatus))
                                                            {
                                                                                 <td>
                                                                                     <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/Tabs/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
@@ -5593,14 +5593,14 @@
                                                                                     </tbody>
                                                                                     </table>
                                                                                     </td>
-                                                                                @if((!User.IsInRole("Admin") && !LedgerIsDelegateSaved && (DelegateEditStatus || AdminEditStatus))||(User.IsInRole("Admin") && !LedgerIsAdminSaved && (DelegateEditStatus || AdminEditStatus)))
+                                                                                @if((!User.IsInRole("Admin") && !LedgerIsDelegateSaved && DelegateEditStatus)||(User.IsInRole("Admin") && !LedgerIsAdminSaved && AdminEditStatus))
                                                                                 {
                                                                                 <td>
                                                                                    <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/Tabs/Save" type="submit" value="Save Budget" style="align-self:center">
                                                                                    <i class='bx bx-check' style="color:limegreen"></i></button>
                                                                                 </td>
                                                                                 }
-                                                                                    @if ((!User.IsInRole("Admin") && LedgerIsDelegateSaved && (DelegateEditStatus || AdminEditStatus)) || (User.IsInRole("Admin") && LedgerIsAdminSaved && (DelegateEditStatus || AdminEditStatus)))
+                                                                                    @if ((!User.IsInRole("Admin") && LedgerIsDelegateSaved && DelegateEditStatus) || (User.IsInRole("Admin") && LedgerIsAdminSaved && AdminEditStatus))
                                                                                     {
                                                                                         <td>
                                                                                             <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/Tabs/Edit" type="submit" value="Edit Budget" style="align-self:center">
@@ -5608,7 +5608,7 @@
                                                                                         </td>
 
                                                                                     }
-                                                                                @if((!User.IsInRole("Admin") && LedgerIsDelegateSaved && (DelegateEditStatus || AdminEditStatus))||(User.IsInRole("Admin") && LedgerIsAdminSaved && (DelegateEditStatus || AdminEditStatus)))
+                                                                                @if((!User.IsInRole("Admin") && LedgerIsDelegateSaved && DelegateEditStatus)||(User.IsInRole("Admin") && LedgerIsAdminSaved && AdminEditStatus))
                                                                                 {
                                                                                         <td>
                                                                                             <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/Tabs/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
@@ -6048,7 +6048,7 @@
                                                                                             
                                                                                     }
                                                         </td>
-                                                        @if (User.IsInRole("Admin") && AdminEditStatus)
+                                                        @if (User.IsInRole("Admin") && AdminEditStatus && !@Subs.RequireInput)
                                                         {
                                                                                         <td>
                                                                                             <div class="form-group"> 
@@ -6061,7 +6061,7 @@
                                                                                             </div>
                                                                                         </td>
                                                         }
-                                                       else if ((User.IsInRole("Admin") && (!AdminEditStatus ||IsAdminSaved) ) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0) && !@Subs.RequireInput)
+                                                       else if ((User.IsInRole("Admin") && (!AdminEditStatus ||IsAdminSaved || @Subs.RequireInput) ) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                        {
                                                                                       <td>
                                                                                           <div class="form-group">
@@ -6286,7 +6286,7 @@
                                                             </div>
                                                         }
                                                         </td>
-                                                        @if (User.IsInRole("Admin") && AdminEditStatus)
+                                                        @if (User.IsInRole("Admin") && AdminEditStatus && !@Subs.RequireInput)
                                                                                     {
                                                                                         <td>
                                                                                             <div class="form-group"> 
@@ -6299,7 +6299,7 @@
                                                                                             </div>
                                                                                         </td>
                                                                                     }
-                                                                                    else if ((User.IsInRole("Admin") && (!AdminEditStatus || IsAdminSaved)) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0) && !@Subs.RequireInput)
+                                                                                    else if ((User.IsInRole("Admin") && (!AdminEditStatus || IsAdminSaved || @Subs.RequireInput)) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                                                     {
                                                                                       <td>
                                                                                           <div class="form-group">
@@ -6352,21 +6352,21 @@
                                                              </table>
                                                          }
                                                         </td>
-                                                        @if((!User.IsInRole("Admin") && !IsDelegateSaved && !@Subs.RequireInput && (DelegateEditStatus || AdminEditStatus))||(User.IsInRole("Admin") && !IsAdminSaved && !@Subs.RequireInput && (DelegateEditStatus || AdminEditStatus)))
+                                                        @if((!User.IsInRole("Admin") && !IsDelegateSaved && !@Subs.RequireInput && DelegateEditStatus)||(User.IsInRole("Admin") && !IsAdminSaved && !@Subs.RequireInput && AdminEditStatus))
                                                         {
                                                         <td>
                                                                                    <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/Tabs/Save" type="submit" value="Save Budget" style="align-self:center">
                                                                                    <i class='bx bx-check' style="color:limegreen"></i></button>
                                                                                 </td>
                                                           }
-                                                          @if((!User.IsInRole("Admin") && IsDelegateSaved && !@Subs.RequireInput && (DelegateEditStatus || AdminEditStatus))||(User.IsInRole("Admin") && IsAdminSaved && !@Subs.RequireInput && (DelegateEditStatus || AdminEditStatus)))
+                                                          @if((!User.IsInRole("Admin") && IsDelegateSaved && !@Subs.RequireInput && DelegateEditStatus)||(User.IsInRole("Admin") && IsAdminSaved && !@Subs.RequireInput && AdminEditStatus))
                                                           {
                                                                                 <td>
                                                                                    <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/Tabs/Edit" type="submit" value="Edit Budget" style="align-self:center">
                                                                                    <i class='bx bxs-pencil' style="color:blue"></i></button>
                                                                                </td>
                                                            }
-                                                           @if((!User.IsInRole("Admin") && IsDelegateSaved && !@Subs.RequireInput && (DelegateEditStatus || AdminEditStatus))||(User.IsInRole("Admin") && IsAdminSaved && !@Subs.RequireInput && (DelegateEditStatus || AdminEditStatus)))
+                                                           @if((!User.IsInRole("Admin") && IsDelegateSaved && !@Subs.RequireInput && DelegateEditStatus)||(User.IsInRole("Admin") && IsAdminSaved && !@Subs.RequireInput && AdminEditStatus))
                                                            {
                                                                                 <td>
                                                                                     <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/Tabs/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
