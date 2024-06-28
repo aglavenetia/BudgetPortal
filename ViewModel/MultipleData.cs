@@ -99,7 +99,11 @@ namespace BudgetPortal.ViewModel
         public List<Decimal> ACAndBWPropRECurrFin { get; set; }
         //public Decimal ACAndBWPropRECurrFin { get; set; }
         public List<String>? DelegateJustificationRevEst { get; set; }
-        
+        [Column(TypeName = "decimal(4,2)")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.####}")]
+        public List<Decimal> PerVarACBWRevEstOverBudgEstCurrFin { get; set; }
+        //public Decimal PerVarRevEstOverBudgEstCurrFin { get; set; }
+
         public List<String>? ACBWJustificationRevEst { get; set; }
 
         [Required(ErrorMessage = "Budget Estimates for the Next Financial Year Required")]
@@ -118,7 +122,9 @@ namespace BudgetPortal.ViewModel
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.####}")]
         public List<Decimal> ACAndBWPropRENxtFin { get; set; }
         //public Decimal ACAndBWPropRENxtFin { get; set; }
-
+        [Column(TypeName = "decimal(4,2)")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.####}")]
+        public List<Decimal> PerVarACBWRevEstOverBudgEstNxtFin { get; set; }
         public List<String>? Justification { get; set; }
         //public String Justification { get; set; }
 

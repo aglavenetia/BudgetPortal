@@ -1232,28 +1232,60 @@ namespace BudgetPortal.Controllers
                                     .Select(x => x.DivisionID).FirstOrDefault().ToString();
             }
             var splitAcademicYear = MD.SelectedAcademicYear.ToString().Split("-");
-            ModelState.Remove("ACAndBWPropRECurrFin");
-            ModelState.Remove("ACAndBWPropRENxtFin");
-            var result = new BudgetDetails();
-            result = _context.BudgetDetails
-                                      .Where(b => (b.DivisionID == Convert.ToInt32(DivisionID))
-                                               && (b.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0]))
-                                               && (b.SectionNumber == SectionNumber)
-                                               && (b.GroupNumber == GroupNumber)
-                                               && (b.SubGroupNumber == SubGroupNumber)
-                                               && (b.LedgerNumber == LedgerNumber)).FirstOrDefault();
-            result.ActPrevFin = Convert.ToDecimal(0.00);
-            result.ActCurrFinTill2ndQuart = Convert.ToDecimal(0.00);
-            result.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(0.00);
-            result.PerVarRevEstOverBudgEstNxtFin = Convert.ToDecimal(0.00);
-            result.RevEstCurrFin = Convert.ToDecimal(0.00);
-            result.BudgEstNexFin = Convert.ToDecimal(0.00);
-            result.DelegateJustificationRevEst = " ";
-            result.Justification = " ";
-            result.HasDelegateSaved = false;
-            
-            _context.BudgetDetails.Update(result);
-            _context.SaveChanges();
+
+            if (username != "admin@test.com")
+            {
+                ModelState.Remove("ACAndBWPropRECurrFin");
+                ModelState.Remove("ACAndBWPropRENxtFin");
+                var result = new BudgetDetails();
+                result = _context.BudgetDetails
+                                          .Where(b => (b.DivisionID == Convert.ToInt32(DivisionID))
+                                                   && (b.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0]))
+                                                   && (b.SectionNumber == SectionNumber)
+                                                   && (b.GroupNumber == GroupNumber)
+                                                   && (b.SubGroupNumber == SubGroupNumber)
+                                                   && (b.LedgerNumber == LedgerNumber)).FirstOrDefault();
+                result.ActPrevFin = Convert.ToDecimal(0.00);
+                result.ActCurrFinTill2ndQuart = Convert.ToDecimal(0.00);
+                result.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(0.00);
+                result.PerVarRevEstOverBudgEstNxtFin = Convert.ToDecimal(0.00);
+                result.RevEstCurrFin = Convert.ToDecimal(0.00);
+                result.BudgEstNexFin = Convert.ToDecimal(0.00);
+                result.DelegateJustificationRevEst = " ";
+                result.Justification = " ";
+
+                result.HasDelegateSaved = false;
+                result.CreatedDateTime = DateTime.Now;
+
+                _context.BudgetDetails.Update(result);
+                _context.SaveChanges();
+            }
+            else
+            {
+                ModelState.Remove("SubGroupLedgerName");
+                ModelState.Remove("EditEnabled");
+               
+                var result = new BudgetDetails();
+                result = _context.BudgetDetails
+                                          .Where(b => (b.DivisionID == Convert.ToInt32(DivisionID))
+                                                   && (b.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0]))
+                                                   && (b.SectionNumber == SectionNumber)
+                                                   && (b.GroupNumber == GroupNumber)
+                                                   && (b.SubGroupNumber == SubGroupNumber)
+                                                   && (b.LedgerNumber == LedgerNumber)).FirstOrDefault();
+                result.ACAndBWPropRECurrFin = Convert.ToDecimal(0.00);
+                result.ACBWJustificationRevEst = " ";
+                result.ACAndBWPropRENxtFin = Convert.ToDecimal(0.00);
+                result.ACBWJustificationBudgEstNxtFin = " ";
+                
+                result.HasAdminSaved = false;
+                result.CreatedDateTime = DateTime.Now;
+
+                _context.BudgetDetails.Update(result);
+                _context.SaveChanges();
+
+                ModelState.Clear();
+            }
 
             MD.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
                                .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Select(x => x.AdminEditStatus).Count();
@@ -1419,6 +1451,8 @@ namespace BudgetPortal.Controllers
                     }
 
                     result.HasAdminSaved = true;
+                    result.CreatedDateTime= DateTime.Now;
+
                     _context.BudgetDetails.Update(result);
                     _context.SaveChanges();
                 }
@@ -1604,7 +1638,7 @@ namespace BudgetPortal.Controllers
                 MD.WaitingForApprovalMessage = "Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
                 MD.ApprovedMessage = " ";
             }
-            else if (PendingForFinalSubmission > 0)
+            else if (username!= "admin@test.com" && PendingForFinalSubmission > 0)
             {
                 MD.WaitingForApprovalMessage = "Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with CMD for Approval.";
                 MD.ApprovedMessage = " ";
@@ -1651,10 +1685,14 @@ namespace BudgetPortal.Controllers
             MD.Ledgerss = _context.BudgetLedgers.ToList();
             MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
-           
-
+            MD.Filess = _context.BudgetFiles.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+            MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
             MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
                                          .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
+            MD.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                               .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Select(x => x.AdminEditStatus).Count();
             MD.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                     new SelectListItem()
                     {
@@ -1673,6 +1711,32 @@ namespace BudgetPortal.Controllers
 
                 }).ToList();
             MD.AcademicYears.Where(x => x.Text.Equals(MD.SelectedAcademicYear.ToString())).Single().Selected = true;
+
+            int FinalApproved = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(false) select a.AdminEditStatus).Count();
+            int SubmittedForApproval = (from a in MD.Statuss where a.SectionNumber != 0 && !a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
+            int NumberOfGroups = (from a in MD.Groupss select a.GroupNo).Count();
+            int PendingForFinalSubmission = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
+
+            if (FinalApproved > 0)
+            {
+                MD.ApprovedMessage = "Budget Details Approved for the Financial Year " + MD.SelectedAcademicYear + "!!!";
+                MD.WaitingForApprovalMessage = " ";
+            }
+            else if (User.Identity.Name != "admin@test.com" &&  FinalApproved == 0 && SubmittedForApproval == NumberOfGroups && SubmittedForApproval != 0)
+            {
+                MD.WaitingForApprovalMessage = "Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
+                MD.ApprovedMessage = " ";
+            }
+            else if (PendingForFinalSubmission > 0)
+            {
+                MD.WaitingForApprovalMessage = "Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with CMD for Approval.";
+                MD.ApprovedMessage = " ";
+            }
+            else
+            {
+                MD.ApprovedMessage = " ";
+                MD.WaitingForApprovalMessage = " ";
+            }
 
             return View("Index", MD);
 

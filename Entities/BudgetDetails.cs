@@ -49,6 +49,11 @@ namespace BudgetPortal.Entities
         [Column(TypeName = "decimal(8,2)")]
         [Required]
         public Decimal PerVarRevEstOverBudgEstCurrFin { get; set; }
+
+        [Column(TypeName = "decimal(8,2)")]
+        [Required]
+        public Decimal PerVarACBWRevEstOverBudgEstCurrFin { get; set; }
+
         public string? DelegateJustificationRevEst { get; set; }
 
         public string? ACBWJustificationRevEst { get; set; }
@@ -76,6 +81,10 @@ namespace BudgetPortal.Entities
         [Column(TypeName = "decimal(8,2)")]
         [Required]
         public Decimal PerVarRevEstOverBudgEstNxtFin { get; set; }
+
+        [Column(TypeName = "decimal(8,2)")]
+        [Required]
+        public Decimal PerVarACBWRevEstOverBudgEstNxtFin { get; set; }
 
         [Column(TypeName = "money")]
         [Required]
