@@ -343,16 +343,22 @@
                          var SumACAndBWPropRENxtFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ACAndBWPropRENxtFin).Sum();
                          var SumPerVarRevEstOverBudgEstCurrFin = 0.00;
                          var SumPerVarRevEstOverBudgEstNxtFin = 0.00;
+                         var SumPerVarACBWRevEstOverBudgEstCurrFin = 0.00;
+                         var SumPerVarACBWRevEstOverBudgEstNxtFin = 0.00;
 
                          @if(Model.PreviousYearAdminCount > 0 && GroupsStatusRowCount > 0)
                          {
                              SumPerVarRevEstOverBudgEstCurrFin = Convert.ToInt32(Convert.ToDecimal((SumRevEstCurrFin - SumBudEstCurrFin) / SumBudEstCurrFin)*100);
                              SumPerVarRevEstOverBudgEstNxtFin = Convert.ToInt32(Convert.ToDecimal((SumBudgEstNexFin - SumRevEstCurrFin) / SumRevEstCurrFin)*100);
+                             SumPerVarACBWRevEstOverBudgEstCurrFin = Convert.ToInt32(Convert.ToDecimal((SumACAndBWPropRECurrFin - SumBudEstCurrFin) / SumBudEstCurrFin)*100);
+                             SumPerVarACBWRevEstOverBudgEstNxtFin = Convert.ToInt32(Convert.ToDecimal((SumACAndBWPropRENxtFin - SumACAndBWPropRECurrFin) / SumACAndBWPropRECurrFin)*100);
                          }
                          else
                          {
                                SumPerVarRevEstOverBudgEstCurrFin = Convert.ToDouble(0.00);
                                SumPerVarRevEstOverBudgEstNxtFin = Convert.ToDouble(0.00);
+                               SumPerVarACBWRevEstOverBudgEstCurrFin = Convert.ToDouble(0.00);
+                               SumPerVarACBWRevEstOverBudgEstNxtFin = Convert.ToDouble(0.00);
                          }
 
                             var Sumname1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -365,6 +371,8 @@
                             var Sumname8 = String.Concat("PerVarRevEstOverBudgEstNxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                             var Sumname9 = String.Concat("ACAndBWPropRENxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                             var Sumname10 = String.Concat("Justification", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                            var Sumname11 = String.Concat("PerVarACBWRevEstOverBudgEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                            var Sumname12 = String.Concat("PerVarACBWRevEstOverBudgEstNxtFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
                         if (CounterBody == 0)
                         {
@@ -476,8 +484,18 @@
 
                                                     @if(@Subs.RequireInput)
                                                     {
-                                                        IsDelegateSaved = false;
-                                                        IsAdminSaved = false;
+                                                        int DelegateSavedCount = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.HasDelegateSaved.Equals(true) select a.SubGroupNumber).Count();
+                                                        int AdminSavedCount = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.HasAdminSaved.Equals(true) select a.SubGroupNumber).Count();
+                                                        
+                                                        @if(DelegateSavedCount > 0)
+                                                             IsDelegateSaved = true;
+                                                        else
+                                                            IsDelegateSaved = false;
+
+                                                        @if(AdminSavedCount > 0)
+                                                             IsAdminSaved = true;
+                                                        else
+                                                            IsAdminSaved = false;
                                                     }
                                                     else
                                                     {
@@ -1500,11 +1518,11 @@
                                                            Model.ACAndBWPropRECurrFin.Insert(Count, Convert.ToDecimal(0.00));                                                    
                                                             
                                                         }
-                                                        <td class="w-5">
-                                                        @if (@Subs.RequireInput && AdminEditStatus && !IsAdminSaved)
+                                                        
+                                                        @if (User.IsInRole("Admin") && @Subs.RequireInput && AdminEditStatus && !IsAdminSaved)
                                                         {
-                                                            
-                                                          var PastYearSumBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();                                                                                                                           
+                                                         var PastYearSumBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();                                                                                                                           
+                                                         <td class="w-5">
                                                               <div class="form-group">
                                                               @{
                                                                         Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(Count, PastYearSumBudEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(PastYearSumBudEstCurrFin) - Convert.ToDecimal(PastYearSumBudEstCurrFin)) / Convert.ToDecimal(PastYearSumBudEstCurrFin)) * 100) : Convert.ToDecimal(0.00));
@@ -1512,11 +1530,13 @@
                                                                 @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name17, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
-                                                            }
-                                                        else if((@Subs.RequireInput && IsAdminSaved))
+                                                         </td>
+                                                        }
+                                                        else if((User.IsInRole("Admin") && @Subs.RequireInput && !IsAdminSaved))
                                                         {
                                                             var LedgerSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
                                                             var LedgerSumBudEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstCurrFin).Sum();
+                                                            <td class="w-5">
                                                                 <div class="form-group">
                                                                 @{
                                                                     Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(Count, LedgerSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(LedgerSumACAndBWPropRECurrFin)- Convert.ToDecimal(LedgerSumBudEstCurrFin))/Convert.ToDecimal(LedgerSumBudEstCurrFin))*100): Convert.ToDecimal(0.00));
@@ -1524,10 +1544,12 @@
                                                                     @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name17, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
+                                                            </td>
                                                         }                                                     
                                                         
-                                                        else if (IsAdminSaved)
+                                                        else if (User.IsInRole("Admin") && IsAdminSaved)
                                                         {
+                                                          <td class="w-5">
                                                             <div class="form-group">
                                                                @{ 
                                                                   Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(Count, (details!=null && details.BudEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.ACAndBWPropRECurrFin)- Convert.ToDecimal(details.BudEstCurrFin))/Convert.ToDecimal(details.BudEstCurrFin))*100)  : Convert.ToDecimal(0.00));
@@ -1535,18 +1557,19 @@
                                                                 @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name17, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
+                                                          </td>
                                                         }
                                                        else
                                                         {
-                                                                <div class="form-group">
-                                                                 @{
+                                                               @* <div class="form-group">
+                                                                 @{*@
                                                                     Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin)- Convert.ToDecimal(PrevYearApp.BudEstNextFin))/Convert.ToDecimal(PrevYearApp.BudEstNextFin))*100)   : Convert.ToDecimal(0.00));
-                                                                  }
+                                                                 @* }
                                                                      @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name17, @readonly = "readonly"})
                                                                      @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                                </div>
+                                                                </div>*@
                                                             }
-                                                        </td>
+                                                       
                                                         @if (User.IsInRole("Admin") && AdminEditStatus && !@Subs.RequireInput && (!IsAdminSaved || (Model.EditEnabled == @Subs.SubGroupNo)))
                                                         {
                                                                                         <td>
@@ -1691,10 +1714,10 @@
                                                             }
                                                             else
                                                             {
-                                                                <div class="form-group">
-                                                                    @{
+                                                               <div class="form-group">
+                                                                    @{ 
                                                                         Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
-                                                                    }
+                                                                   }
                                                                     
                                                                     @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
@@ -1737,7 +1760,7 @@
                                                             </div>
                                                         }
                                                         </td>
-                                                        @if (((User.IsInRole("Admin") && (AdminEditStatus || !AdminEditStatus ) && (Model.EditEnabled == @Subs.SubGroupNo)) ||(!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0)) && @Subs.RequireInput )
+                                                        @if (((User.IsInRole("Admin") && (AdminEditStatus || !AdminEditStatus)) ||(!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0)) && @Subs.RequireInput )
                                                         {
                                                             var LedgerSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
                                                             <td class="w-5">
@@ -1797,11 +1820,11 @@
                                                         {
                                                            Model.ACAndBWPropRENxtFin.Insert(Count, Convert.ToDecimal(0.00));                                                   
                                                         }
-                                                        <td class="w-5">
-                                                            @if (@Subs.RequireInput && AdminEditStatus && !IsAdminSaved)
+                                                        
+                                                            @if (User.IsInRole("Admin") && @Subs.RequireInput && AdminEditStatus && !IsAdminSaved)
                                                             {
-
                                                                 var PastYearSumBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();
+                                                                <td class="w-5">
                                                                 <div class="form-group">
                                                                 @{
                                                                     Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(Count, PastYearSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F"))- Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")))/Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
@@ -1810,11 +1833,13 @@
                                                                     @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name18, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
+                                                                </td>
                                                             }
-                                                            else if (@Subs.RequireInput && IsAdminSaved)
+                                                            else if (User.IsInRole("Admin") && @Subs.RequireInput && IsAdminSaved)
                                                             {
                                                                 var LedgerSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
                                                                 var LedgerSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
+                                                              <td class="w-5">
                                                                 <div class="form-group">
                                                                     @{
                                                                         Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(Count, LedgerSumACAndBWPropRENxtFin!=Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(LedgerSumACAndBWPropRENxtFin.ToString("F"))- Convert.ToDecimal(LedgerSumACAndBWPropRECurrFin.ToString("F")))/Convert.ToDecimal(LedgerSumACAndBWPropRECurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
@@ -1823,10 +1848,12 @@
                                                                     @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name18, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
+                                                             </td>
                                                             }
 
-                                                            else if (IsAdminSaved)
+                                                            else if (User.IsInRole("Admin") && IsAdminSaved)
                                                             {
+                                                                <td class="w-5">
                                                                 <div class="form-group">
                                                                     @{
                                                                         Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(Count, (details!=null && details.ACAndBWPropRECurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.ACAndBWPropRENxtFin.ToString("F"))- Convert.ToDecimal(details.ACAndBWPropRECurrFin.ToString("F")))/Convert.ToDecimal(details.ACAndBWPropRECurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
@@ -1835,19 +1862,20 @@
                                                                     @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name18, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
+                                                                </td>
                                                             }
                                                            else
                                                             {
-                                                                <div class="form-group">
-                                                                    @{
+                                                               @* <div class="form-group"> 
+                                                                    @{*@
                                                                         Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
-                                                                    }
+                                                                    @*}
                                                                     
-                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name18, @readonly = "readonly"})
+                                                                    Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name18, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                                </div>
+                                                                </div>*@
                                                             }
-                                                        </td>
+                                                        
                                                         @if (User.IsInRole("Admin") && AdminEditStatus && !@Subs.RequireInput && (!IsAdminSaved || (Model.EditEnabled == @Subs.SubGroupNo)))
                                                                                     {
                                                                                         <td>
@@ -1861,7 +1889,7 @@
                                                                                             </div>
                                                                                         </td>
                                                                                     }
-                                                                                    else if ((User.IsInRole("Admin") && (!AdminEditStatus || IsAdminSaved )) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                                                                    else if ((User.IsInRole("Admin") && (!AdminEditStatus || IsAdminSaved ) && !@Subs.RequireInput) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                                                     {
                                                                                       <td>
                                                                                           <div class="form-group">
@@ -2012,15 +2040,18 @@
                                                     <td class="w-5" id="@Sumname5-Total">
                                                         @SumPerVarRevEstOverBudgEstCurrFin
                                                     </td>
+                                                    <td class="w-5"></td>
                                                     @if (User.IsInRole("Admin") || (!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0))
                                                     {
                                                         <td class="w-5" id="@Sumname6-Total">
                                                             @SumACAndBWPropRECurrFin.ToString("F4")
                                                         </td>
-                                                    }
-                                                    <td class="w-5"></td>
-                                                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
-                                                    {
+                                                    
+                                                    <td class="w-5" id="@Sumname11-Total">
+                                                        @SumPerVarACBWRevEstOverBudgEstCurrFin
+                         
+                                                    </td>
+                                                    
                                                     <td class="w-5"></td>
                                                     }
                                                     <td class="w-5" id="@Sumname7-Total">
@@ -2029,16 +2060,17 @@
                                                     <td class="w-5" id="@Sumname8-Total">
                                                         @SumPerVarRevEstOverBudgEstNxtFin
                                                     </td>
+                                                    <td class="w-5"></td>
                                                     @if (User.IsInRole("Admin") || (!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0))
                                                     {
                                                         <td class="w-5" id="@Sumname9-Total">
                                                             @SumACAndBWPropRENxtFin.ToString("F4")
                                                         </td>
-                                                    }
-
-                                                    <td class="w-5"></td>
-                                                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
-                                                    {
+                                                    
+                                                        <td class="w-5" id="@Sumname12-Total">
+                                                            @SumPerVarACBWRevEstOverBudgEstNxtFin
+                                                        </td>
+                                                    
                                                         <td class="w-5"></td>
                                                     }
                                                     <td class="w-5"></td>
