@@ -105,15 +105,40 @@
       <br />
       <br />
       <br />
-       
+       <div>
+       <table>
+       <tr>
+       <td>
         if (User.IsInRole("Admin") && FinalAdminEditStatus)
         {
-            <input id="Submit" class="FinalSubmit" formaction="~/Tabs/FinalSubmit" value="Publish Budget" type="submit" style="align-self:center"/>
+            <input id="SubmitFinCommitee" class="FinCommitee" formaction="~/Tabs/FinalSubmit" value="Submit to Financial Comittee" type="submit" style="align-self:center"/>
             @*Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = "FinalSubmit-SelectedAcademicYear" })
             @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = "FinalSubmit-SelectedDivisionName" })*@
             <br /><br/>
         }
-
+        </td>
+        <td>
+        if (User.IsInRole("Admin") && FinalAdminEditStatus)
+        {
+            <input id="SubmitGB" class="SubmitGB" formaction="~/Tabs/FinalSubmit" value="Submit to General Body" type="submit" style="align-self:center"/>
+            @*Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = "FinalSubmit-SelectedAcademicYear" })
+            @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = "FinalSubmit-SelectedDivisionName" })*@
+            <br /><br/>
+        }
+        </td>
+        <td>
+        if (User.IsInRole("Admin") && FinalAdminEditStatus)
+        {
+            <input id="FinalSubmit" class="FinalSubmit" formaction="~/Tabs/FinalSubmit" value="Publish Budget" type="submit" style="align-self:center"/>
+            @*Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = "FinalSubmit-SelectedAcademicYear" })
+            @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = "FinalSubmit-SelectedDivisionName" })*@
+            <br /><br/>
+        }
+        </td>
+        
+        </tr>
+        </table>
+        </div>
         
 
     <ul id="outerTab" class="nav nav-pills" role="tablist" >    
@@ -4033,6 +4058,8 @@
                         }
                         int TableCount = 0;
                         var Submit = String.Concat("Submit", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                        var SubmitACBW = String.Concat("SubmitACBW", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                        var SubmitChairPerson = String.Concat("SubmitChairPerson", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
                         
                          var SumBudEstCurrFin = (from a in Model.Approved where a.GroupNumber.Equals(@item.GroupNo) select a.BudEstNextFin).Sum();
