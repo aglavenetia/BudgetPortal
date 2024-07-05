@@ -27,6 +27,13 @@ namespace BudgetPortal.Entities
 
         public Boolean AdminEditStatus { get; set; }
 
+        public Boolean ACBWSubmission { get; set; }
+
+        public Boolean ChairpersonApproval { get; set; }
+
+        public Boolean FinCommitteeApproval { get; set; }
+
+        public Boolean GenBodyApproval { get; set; }
         public DateTime CreatedDateTime { get; set; }
     }
 }

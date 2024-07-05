@@ -51,8 +51,11 @@
     
     int FinalAdminEditCount =  (from a in Model.Statuss where (a.SectionNumber == 0 && a.GroupNumber.Equals("0")) select a.AdminEditStatus).Count();
 
-    @*int TableCount = 0;*@
-    
+    Boolean ACBWSubmissionStatus = (from a in Model.Statuss where (a.SectionNumber == 0 && a.GroupNumber.Equals("0")) select a.ACBWSubmission).FirstOrDefault();
+
+    Boolean ChairpersonApprovalStatus = (from a in Model.Statuss where (a.SectionNumber == 0 && a.GroupNumber.Equals("0")) select a.ChairpersonApproval).FirstOrDefault();
+
+    Boolean FinancialCommiteeApprovalStatus = (from a in Model.Statuss where (a.SectionNumber == 0 && a.GroupNumber.Equals("0")) select a.FinCommitteeApproval).FirstOrDefault();
 }
 <br />
 
@@ -108,33 +111,38 @@
        <div>
        <table>
        <tr>
+        @if (User.IsInRole("Admin") && ACBWSubmissionStatus)
+        {
        <td>
-        if (User.IsInRole("Admin") && FinalAdminEditStatus)
-        {
-            <input id="SubmitFinCommitee" class="FinCommitee" formaction="~/Tabs/FinalSubmit" value="Submit to Financial Comittee" type="submit" style="align-self:center"/>
+        
+            <input id="SubmitFinCommitee" class="FinCommitee" formaction="~/Tabs/FinancialCommiteeSubmission" value="Submit to Financial Comittee" type="submit" style="align-self:center"/>
             @*Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = "FinalSubmit-SelectedAcademicYear" })
             @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = "FinalSubmit-SelectedDivisionName" })*@
             <br /><br/>
-        }
         </td>
-        <td>
-        if (User.IsInRole("Admin") && FinalAdminEditStatus)
+        }
+        
+        else if (User.IsInRole("Admin") && ChairpersonApprovalStatus)
         {
-            <input id="SubmitGB" class="SubmitGB" formaction="~/Tabs/FinalSubmit" value="Submit to General Body" type="submit" style="align-self:center"/>
+            <td>
+            <input id="SubmitGB" class="SubmitGB" formaction="~/Tabs/GeneralBodySubmission" value="Submit to General Body" type="submit" style="align-self:center"/>
             @*Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = "FinalSubmit-SelectedAcademicYear" })
             @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = "FinalSubmit-SelectedDivisionName" })*@
+            </td>
             <br /><br/>
         }
-        </td>
-        <td>
-        if (User.IsInRole("Admin") && FinalAdminEditStatus)
+        
+        
+        else if (User.IsInRole("Admin") && FinancialCommiteeApprovalStatus)
         {
+            <td>
             <input id="FinalSubmit" class="FinalSubmit" formaction="~/Tabs/FinalSubmit" value="Publish Budget" type="submit" style="align-self:center"/>
             @*Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = "FinalSubmit-SelectedAcademicYear" })
             @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = "FinalSubmit-SelectedDivisionName" })*@
             <br /><br/>
+            </td>
         }
-        </td>
+        
         
         </tr>
         </table>

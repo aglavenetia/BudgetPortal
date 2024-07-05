@@ -54,21 +54,39 @@ namespace BudgetPortal.Controllers
             int FinalApproved = (from a in mymodel.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(false) select a.AdminEditStatus).Count();
             int SubmittedForApproval = (from a in mymodel.Statuss where a.SectionNumber != 0 && !a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
             int NumberOfGroups = (from a in mymodel.Groupss select a.GroupNo).Count();
-            int PendingForFinalSubmission = (from a in mymodel.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
+            int PendingForChairmanApproval = (from a in mymodel.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.ACBWSubmission.Equals(true) select a.ACBWSubmission).Count();
+            int PendingForFinCommitteeApproval = (from a in mymodel.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.ChairpersonApproval.Equals(true) select a.ChairpersonApproval).Count();
+            int PendingForGenBodyApproval = (from a in mymodel.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.FinCommitteeApproval.Equals(true) select a.FinCommitteeApproval).Count();
+            int PendingForPublishing = (from a in mymodel.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.GenBodyApproval.Equals(true) select a.GenBodyApproval).Count();
 
             if (FinalApproved > 0)
             {
-                mymodel.ApprovedMessage = "Budget Details Approved for the Financial Year " + AcademicYear + "!!!";
+                mymodel.ApprovedMessage = "* Budget Details Approved for the Financial Year " + mymodel.SelectedAcademicYear + "!!!";
                 mymodel.WaitingForApprovalMessage = " ";
             }
-            else if (FinalApproved == 0 && SubmittedForApproval == NumberOfGroups && SubmittedForApproval != 0)
+            else if (FinalApproved == 0 && SubmittedForApproval <= NumberOfGroups && SubmittedForApproval != 0)
             {
-                mymodel.WaitingForApprovalMessage = "Budget Details for the Financial Year " + AcademicYear + " is pending with AC&BW for Approval.";
+                mymodel.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + mymodel.SelectedAcademicYear + " is pending with AC&BW for Approval.";
                 mymodel.ApprovedMessage = " ";
             }
-            else if (PendingForFinalSubmission > 0)
+            else if (PendingForChairmanApproval > 0)
             {
-                mymodel.WaitingForApprovalMessage = "Budget Details for the Financial Year " + AcademicYear + " is pending with CMD for Approval.";
+                mymodel.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + mymodel.SelectedAcademicYear + " is pending with ChairPerson for Approval.";
+                mymodel.ApprovedMessage = " ";
+            }
+            else if (PendingForFinCommitteeApproval > 0)
+            {
+                mymodel.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + mymodel.SelectedAcademicYear + " is pending with Financial Committee for Approval.";
+                mymodel.ApprovedMessage = " ";
+            }
+            else if (PendingForGenBodyApproval > 0)
+            {
+                mymodel.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + mymodel.SelectedAcademicYear + " is pending with General Body for Approval.";
+                mymodel.ApprovedMessage = " ";
+            }
+            else if (PendingForPublishing > 0)
+            {
+                mymodel.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + mymodel.SelectedAcademicYear + " is pending to be published.";
                 mymodel.ApprovedMessage = " ";
             }
             else
@@ -76,6 +94,7 @@ namespace BudgetPortal.Controllers
                 mymodel.ApprovedMessage = " ";
                 mymodel.WaitingForApprovalMessage = " ";
             }
+
 
 
             mymodel.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
@@ -518,7 +537,7 @@ namespace BudgetPortal.Controllers
                                                    && (b.SectionNumber == SectionNumber)
                                                    && (b.GroupNumber == GroupNumber)).FirstOrDefault();
 
-                        Status.AdminEditStatus = false;
+                        Status.ACBWSubmission = true;
 
                         _context.BudgetdetailsStatus.Update(Status);
                         _context.SaveChanges();
@@ -547,21 +566,39 @@ namespace BudgetPortal.Controllers
                 int FinalApproved = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(false) select a.AdminEditStatus).Count();
                 int SubmittedForApproval = (from a in MD.Statuss where a.SectionNumber != 0 && !a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
                 int NumberOfGroups = (from a in MD.Groupss select a.GroupNo).Count();
-                int PendingForFinalSubmission = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
+                int PendingForChairmanApproval = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.ACBWSubmission.Equals(true) select a.ACBWSubmission).Count();
+                int PendingForFinCommitteeApproval = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.ChairpersonApproval.Equals(true) select a.ChairpersonApproval).Count();
+                int PendingForGenBodyApproval = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.FinCommitteeApproval.Equals(true) select a.FinCommitteeApproval).Count();
+                int PendingForPublishing = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.GenBodyApproval.Equals(true) select a.GenBodyApproval).Count();
 
                 if (FinalApproved > 0)
                 {
-                    MD.ApprovedMessage = "Budget Details Approved for the Financial Year " + MD.SelectedAcademicYear + "!!!";
+                    MD.ApprovedMessage = "* Budget Details Approved for the Financial Year " + MD.SelectedAcademicYear + "!!!";
                     MD.WaitingForApprovalMessage = " ";
                 }
                 else if (FinalApproved == 0 && SubmittedForApproval <= NumberOfGroups && SubmittedForApproval != 0)
                 {
-                    MD.WaitingForApprovalMessage = "Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
+                    MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
                     MD.ApprovedMessage = " ";
                 }
-                else if (PendingForFinalSubmission > 0)
+                else if (PendingForChairmanApproval > 0)
                 {
-                    MD.WaitingForApprovalMessage = "Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with CMD for Approval.";
+                    MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with ChairPerson for Approval.";
+                    MD.ApprovedMessage = " ";
+                }
+                else if (PendingForFinCommitteeApproval > 0)
+                {
+                    MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with Financial Committee for Approval.";
+                    MD.ApprovedMessage = " ";
+                }
+                else if (PendingForGenBodyApproval > 0)
+                {
+                    MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with General Body for Approval.";
+                    MD.ApprovedMessage = " ";
+                }
+                else if (PendingForPublishing > 0)
+                {
+                    MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending to be published.";
                     MD.ApprovedMessage = " ";
                 }
                 else
@@ -832,34 +869,52 @@ namespace BudgetPortal.Controllers
                         MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
                                  .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
 
-                    int FinalApproved = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(false) select a.AdminEditStatus).Count();
-                    int SubmittedForApproval = (from a in MD.Statuss where a.SectionNumber != 0 && !a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
-                    int NumberOfGroups = (from a in MD.Groupss select a.GroupNo).Count();
-                    int PendingForFinalSubmission = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
+                int FinalApproved = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(false) select a.AdminEditStatus).Count();
+                int SubmittedForApproval = (from a in MD.Statuss where a.SectionNumber != 0 && !a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
+                int NumberOfGroups = (from a in MD.Groupss select a.GroupNo).Count();
+                int PendingForChairmanApproval = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.ACBWSubmission.Equals(true) select a.ACBWSubmission).Count();
+                int PendingForFinCommitteeApproval = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.ChairpersonApproval.Equals(true) select a.ChairpersonApproval).Count();
+                int PendingForGenBodyApproval = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.FinCommitteeApproval.Equals(true) select a.FinCommitteeApproval).Count();
+                int PendingForPublishing = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.GenBodyApproval.Equals(true) select a.GenBodyApproval).Count();
 
-                    if (FinalApproved > 0)
-                    {
-                        MD.ApprovedMessage = "Budget Details Approved for the Financial Year " + MD.SelectedAcademicYear + "!!!";
-                        MD.WaitingForApprovalMessage = " ";
-                    }
-                    else if (FinalApproved == 0 && SubmittedForApproval == NumberOfGroups && SubmittedForApproval != 0)
-                    {
-                        MD.WaitingForApprovalMessage = "Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
-                        MD.ApprovedMessage = " ";
-                    }
-                    else if (PendingForFinalSubmission > 0)
-                    {
-                        MD.WaitingForApprovalMessage = "Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with CMD for Approval.";
-                        MD.ApprovedMessage = " ";
-                    }
-                    else
-                    {
-                        MD.ApprovedMessage = " ";
-                        MD.WaitingForApprovalMessage = " ";
-                    }
+                if (FinalApproved > 0)
+                {
+                    MD.ApprovedMessage = "* Budget Details Approved for the Financial Year " + MD.SelectedAcademicYear + "!!!";
+                    MD.WaitingForApprovalMessage = " ";
+                }
+                else if (FinalApproved == 0 && SubmittedForApproval <= NumberOfGroups && SubmittedForApproval != 0)
+                {
+                    MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
+                    MD.ApprovedMessage = " ";
+                }
+                else if (PendingForChairmanApproval > 0)
+                {
+                    MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with ChairPerson for Approval.";
+                    MD.ApprovedMessage = " ";
+                }
+                else if (PendingForFinCommitteeApproval > 0)
+                {
+                    MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with Financial Committee for Approval.";
+                    MD.ApprovedMessage = " ";
+                }
+                else if (PendingForGenBodyApproval > 0)
+                {
+                    MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with General Body for Approval.";
+                    MD.ApprovedMessage = " ";
+                }
+                else if (PendingForPublishing > 0)
+                {
+                    MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending to be published.";
+                    MD.ApprovedMessage = " ";
+                }
+                else
+                {
+                    MD.ApprovedMessage = " ";
+                    MD.WaitingForApprovalMessage = " ";
+                }
 
 
-                    MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
+                MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
                                      .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
 
                    /* } */
@@ -912,21 +967,39 @@ namespace BudgetPortal.Controllers
             int FinalApproved = (from a in mymodel.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(false) select a.AdminEditStatus).Count();
             int SubmittedForApproval = (from a in mymodel.Statuss where a.SectionNumber != 0 && !a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
             int NumberOfGroups = (from a in mymodel.Groupss select a.GroupNo).Count();
-            int PendingForFinalSubmission = (from a in mymodel.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
-            
+            int PendingForChairmanApproval = (from a in mymodel.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.ACBWSubmission.Equals(true) select a.ACBWSubmission).Count();
+            int PendingForFinCommitteeApproval = (from a in mymodel.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.ChairpersonApproval.Equals(true) select a.ChairpersonApproval).Count();
+            int PendingForGenBodyApproval = (from a in mymodel.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.FinCommitteeApproval.Equals(true) select a.FinCommitteeApproval).Count();
+            int PendingForPublishing = (from a in mymodel.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.GenBodyApproval.Equals(true) select a.GenBodyApproval).Count();
+
             if (FinalApproved > 0)
             {
-                mymodel.ApprovedMessage = "* Budget Details Approved for the Financial Year " + AcademicYear + "!!!";
+                mymodel.ApprovedMessage = "* Budget Details Approved for the Financial Year " + mymodel.SelectedAcademicYear + "!!!";
                 mymodel.WaitingForApprovalMessage = " ";
             }
-            else if (FinalApproved == 0 && SubmittedForApproval == NumberOfGroups && SubmittedForApproval!=0)
+            else if (FinalApproved == 0 && SubmittedForApproval <= NumberOfGroups && SubmittedForApproval != 0)
             {
-                mymodel.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + AcademicYear + " is pending with AC&BW for Approval.";
+                mymodel.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + mymodel.SelectedAcademicYear + " is pending with AC&BW for Approval.";
                 mymodel.ApprovedMessage = " ";
             }
-            else if(PendingForFinalSubmission > 0)
+            else if (PendingForChairmanApproval > 0)
             {
-                mymodel.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + AcademicYear + " is pending with CMD for Approval.";
+                mymodel.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + mymodel.SelectedAcademicYear + " is pending with ChairPerson for Approval.";
+                mymodel.ApprovedMessage = " ";
+            }
+            else if (PendingForFinCommitteeApproval > 0)
+            {
+                mymodel.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + mymodel.SelectedAcademicYear + " is pending with Financial Committee for Approval.";
+                mymodel.ApprovedMessage = " ";
+            }
+            else if (PendingForGenBodyApproval > 0)
+            {
+                mymodel.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + mymodel.SelectedAcademicYear + " is pending with General Body for Approval.";
+                mymodel.ApprovedMessage = " ";
+            }
+            else if (PendingForPublishing > 0)
+            {
+                mymodel.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + mymodel.SelectedAcademicYear + " is pending to be published.";
                 mymodel.ApprovedMessage = " ";
             }
             else
@@ -934,6 +1007,7 @@ namespace BudgetPortal.Controllers
                 mymodel.ApprovedMessage = " ";
                 mymodel.WaitingForApprovalMessage = " ";
             }
+
 
             mymodel.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
                      .Where(x => x.FinancialYear1 == Convert.ToInt32(Year - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Select(x => x.AdminEditStatus).Count();
@@ -1120,8 +1194,11 @@ namespace BudgetPortal.Controllers
                 int FinalApproved = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(false) select a.AdminEditStatus).Count();
                 int SubmittedForApproval = (from a in MD.Statuss where a.SectionNumber != 0 && !a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
                 int NumberOfGroups = (from a in MD.Groupss select a.GroupNo).Count();
-                int PendingForFinalSubmission = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
-
+                int PendingForChairmanApproval = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.ACBWSubmission.Equals(true) select a.ACBWSubmission).Count();
+                int PendingForFinCommitteeApproval = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.ChairpersonApproval.Equals(true) select a.ChairpersonApproval).Count();
+                int PendingForGenBodyApproval = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.FinCommitteeApproval.Equals(true) select a.FinCommitteeApproval).Count();
+                int PendingForPublishing = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.GenBodyApproval.Equals(true) select a.GenBodyApproval).Count();
+                
                 if (FinalApproved > 0)
                 {
                     MD.ApprovedMessage = "* Budget Details Approved for the Financial Year " + MD.SelectedAcademicYear + "!!!";
@@ -1132,9 +1209,24 @@ namespace BudgetPortal.Controllers
                     MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
                     MD.ApprovedMessage = " ";
                 }
-                else if (PendingForFinalSubmission > 0)
+                else if (PendingForChairmanApproval > 0)
                 {
-                    MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with CMD for Approval.";
+                    MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with ChairPerson for Approval.";
+                    MD.ApprovedMessage = " ";
+                }
+                else if (PendingForFinCommitteeApproval > 0)
+                {
+                    MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with Financial Committee for Approval.";
+                    MD.ApprovedMessage = " ";
+                }
+                else if (PendingForGenBodyApproval > 0)
+                {
+                    MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with General Body for Approval.";
+                    MD.ApprovedMessage = " ";
+                }
+                else if (PendingForPublishing > 0)
+                {
+                    MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending to be published.";
                     MD.ApprovedMessage = " ";
                 }
                 else
@@ -1324,21 +1416,39 @@ namespace BudgetPortal.Controllers
             int FinalApproved = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(false) select a.AdminEditStatus).Count();
             int SubmittedForApproval = (from a in MD.Statuss where a.SectionNumber != 0 && !a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
             int NumberOfGroups = (from a in MD.Groupss select a.GroupNo).Count();
-            int PendingForFinalSubmission = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
+            int PendingForChairmanApproval = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.ACBWSubmission.Equals(true) select a.ACBWSubmission).Count();
+            int PendingForFinCommitteeApproval = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.ChairpersonApproval.Equals(true) select a.ChairpersonApproval).Count();
+            int PendingForGenBodyApproval = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.FinCommitteeApproval.Equals(true) select a.FinCommitteeApproval).Count();
+            int PendingForPublishing = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.GenBodyApproval.Equals(true) select a.GenBodyApproval).Count();
 
             if (FinalApproved > 0)
             {
-                MD.ApprovedMessage = "Budget Details Approved for the Financial Year " + MD.SelectedAcademicYear + "!!!";
+                MD.ApprovedMessage = "* Budget Details Approved for the Financial Year " + MD.SelectedAcademicYear + "!!!";
                 MD.WaitingForApprovalMessage = " ";
             }
-            else if (FinalApproved == 0 && SubmittedForApproval == NumberOfGroups && SubmittedForApproval != 0)
+            else if (FinalApproved == 0 && SubmittedForApproval <= NumberOfGroups && SubmittedForApproval != 0)
             {
-                MD.WaitingForApprovalMessage = "Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
+                MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
                 MD.ApprovedMessage = " ";
             }
-            else if (PendingForFinalSubmission > 0)
+            else if (PendingForChairmanApproval > 0)
             {
-                MD.WaitingForApprovalMessage = "Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with CMD for Approval.";
+                MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with ChairPerson for Approval.";
+                MD.ApprovedMessage = " ";
+            }
+            else if (PendingForFinCommitteeApproval > 0)
+            {
+                MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with Financial Committee for Approval.";
+                MD.ApprovedMessage = " ";
+            }
+            else if (PendingForGenBodyApproval > 0)
+            {
+                MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with General Body for Approval.";
+                MD.ApprovedMessage = " ";
+            }
+            else if (PendingForPublishing > 0)
+            {
+                MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending to be published.";
                 MD.ApprovedMessage = " ";
             }
             else
@@ -1346,6 +1456,7 @@ namespace BudgetPortal.Controllers
                 MD.ApprovedMessage = " ";
                 MD.WaitingForApprovalMessage = " ";
             }
+
 
             return View("Index", MD);
         }
@@ -1626,21 +1737,39 @@ namespace BudgetPortal.Controllers
             int FinalApproved = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(false) select a.AdminEditStatus).Count();
             int SubmittedForApproval = (from a in MD.Statuss where a.SectionNumber != 0 && !a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
             int NumberOfGroups = (from a in MD.Groupss select a.GroupNo).Count();
-            int PendingForFinalSubmission = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
+            int PendingForChairmanApproval = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.ACBWSubmission.Equals(true) select a.ACBWSubmission).Count();
+            int PendingForFinCommitteeApproval = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.ChairpersonApproval.Equals(true) select a.ChairpersonApproval).Count();
+            int PendingForGenBodyApproval = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.FinCommitteeApproval.Equals(true) select a.FinCommitteeApproval).Count();
+            int PendingForPublishing = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.GenBodyApproval.Equals(true) select a.GenBodyApproval).Count();
 
             if (FinalApproved > 0)
             {
-                MD.ApprovedMessage = "Budget Details Approved for the Financial Year " + MD.SelectedAcademicYear + "!!!";
+                MD.ApprovedMessage = "* Budget Details Approved for the Financial Year " + MD.SelectedAcademicYear + "!!!";
                 MD.WaitingForApprovalMessage = " ";
             }
-            else if (FinalApproved == 0 && SubmittedForApproval == NumberOfGroups && SubmittedForApproval != 0)
+            else if (FinalApproved == 0 && SubmittedForApproval <= NumberOfGroups && SubmittedForApproval != 0)
             {
-                MD.WaitingForApprovalMessage = "Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
+                MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
                 MD.ApprovedMessage = " ";
             }
-            else if (username!= "admin@test.com" && PendingForFinalSubmission > 0)
+            else if (PendingForChairmanApproval > 0)
             {
-                MD.WaitingForApprovalMessage = "Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with CMD for Approval.";
+                MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with ChairPerson for Approval.";
+                MD.ApprovedMessage = " ";
+            }
+            else if (PendingForFinCommitteeApproval > 0)
+            {
+                MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with Financial Committee for Approval.";
+                MD.ApprovedMessage = " ";
+            }
+            else if (PendingForGenBodyApproval > 0)
+            {
+                MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with General Body for Approval.";
+                MD.ApprovedMessage = " ";
+            }
+            else if (PendingForPublishing > 0)
+            {
+                MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending to be published.";
                 MD.ApprovedMessage = " ";
             }
             else
@@ -1648,6 +1777,7 @@ namespace BudgetPortal.Controllers
                 MD.ApprovedMessage = " ";
                 MD.WaitingForApprovalMessage = " ";
             }
+
 
             return View("Index", MD);
 
@@ -1715,21 +1845,39 @@ namespace BudgetPortal.Controllers
             int FinalApproved = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(false) select a.AdminEditStatus).Count();
             int SubmittedForApproval = (from a in MD.Statuss where a.SectionNumber != 0 && !a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
             int NumberOfGroups = (from a in MD.Groupss select a.GroupNo).Count();
-            int PendingForFinalSubmission = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
+            int PendingForChairmanApproval = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.ACBWSubmission.Equals(true) select a.ACBWSubmission).Count();
+            int PendingForFinCommitteeApproval = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.ChairpersonApproval.Equals(true) select a.ChairpersonApproval).Count();
+            int PendingForGenBodyApproval = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.FinCommitteeApproval.Equals(true) select a.FinCommitteeApproval).Count();
+            int PendingForPublishing = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.GenBodyApproval.Equals(true) select a.GenBodyApproval).Count();
 
             if (FinalApproved > 0)
             {
-                MD.ApprovedMessage = "Budget Details Approved for the Financial Year " + MD.SelectedAcademicYear + "!!!";
+                MD.ApprovedMessage = "* Budget Details Approved for the Financial Year " + MD.SelectedAcademicYear + "!!!";
                 MD.WaitingForApprovalMessage = " ";
             }
-            else if (User.Identity.Name != "admin@test.com" &&  FinalApproved == 0 && SubmittedForApproval == NumberOfGroups && SubmittedForApproval != 0)
+            else if (FinalApproved == 0 && SubmittedForApproval <= NumberOfGroups && SubmittedForApproval != 0)
             {
-                MD.WaitingForApprovalMessage = "Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
+                MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
                 MD.ApprovedMessage = " ";
             }
-            else if (PendingForFinalSubmission > 0)
+            else if (PendingForChairmanApproval > 0)
             {
-                MD.WaitingForApprovalMessage = "Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with CMD for Approval.";
+                MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with ChairPerson for Approval.";
+                MD.ApprovedMessage = " ";
+            }
+            else if (PendingForFinCommitteeApproval > 0)
+            {
+                MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with Financial Committee for Approval.";
+                MD.ApprovedMessage = " ";
+            }
+            else if (PendingForGenBodyApproval > 0)
+            {
+                MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with General Body for Approval.";
+                MD.ApprovedMessage = " ";
+            }
+            else if (PendingForPublishing > 0)
+            {
+                MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending to be published.";
                 MD.ApprovedMessage = " ";
             }
             else
@@ -1741,5 +1889,266 @@ namespace BudgetPortal.Controllers
             return View("Index", MD);
 
         }
+
+
+        [HttpPost]
+        [RequestFormLimits(ValueCountLimit = 20000)]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public IActionResult FinancialCommiteeSubmission(MultipleData MD)
+        {
+            var splitAcademicYear = MD.SelectedAcademicYear.ToString().Split("-");
+
+            var username = User.Identity.Name;
+            var DivName = MD.SelectedDivisionName.ToString();
+            var SelectedDivisionID = _context.Division
+                                 .Where(d => d.DivisionName == DivName)
+                                 .Select(x => x.DivisionID).FirstOrDefault();
+
+
+            var SectionNumber = _context.BudgetSections
+                             .Where(x => x.SectionName.Equals(MD.SectionName))
+                             .Select(x => x.SectionNo).FirstOrDefault();
+            var GroupNumber = _context.BudgetGroups
+                        .Where(x => x.GroupName.Equals(MD.GroupName))
+                        .Select(x => x.GroupNo).FirstOrDefault();
+            var SubGroups = _context.BudgetSubGroups
+                        .Where(x => x.GroupNo.Equals(GroupNumber))
+                        .Select(x => x.SubGroupNo).ToList();
+
+            //Update Budget Status for Admin User
+            if (User.Identity.Name.Equals("admin@test.com"))
+            {
+                var Status = new BudgetdetailsStatus();
+                Status = _context.BudgetdetailsStatus
+                                  .Where(b => (b.DivisionID == SelectedDivisionID)
+                                           && (b.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0]))
+                                           && (b.SectionNumber == SectionNumber)
+                                           && (b.GroupNumber == GroupNumber)).FirstOrDefault();
+
+                Status.ChairpersonApproval = true;
+
+                _context.BudgetdetailsStatus.Update(Status);
+                _context.SaveChanges();
+            }
+            var DivisionID = _context.Division
+                                             .Where(d => d.DivisionName == DivName)
+                                             .Select(x => x.DivisionID).FirstOrDefault();
+            MD.Sectionss = _context.BudgetSections.ToList();
+            MD.Groupss = _context.BudgetGroups.ToList();
+            MD.SubGroupss = _context.BudgetSubGroups.ToList();
+            MD.Ledgerss = _context.BudgetLedgers.ToList();
+            MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == DivisionID)
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+            MD.Filess = _context.BudgetFiles.Where(x => x.DivisionID == DivisionID)
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+            MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
+                    .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+
+            int FinalApproved = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(false) select a.AdminEditStatus).Count();
+            int SubmittedForApproval = (from a in MD.Statuss where a.SectionNumber != 0 && !a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
+            int NumberOfGroups = (from a in MD.Groupss select a.GroupNo).Count();
+            int PendingForChairmanApproval = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.ACBWSubmission.Equals(true) select a.ACBWSubmission).Count();
+            int PendingForFinCommitteeApproval = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.ChairpersonApproval.Equals(true) select a.ChairpersonApproval).Count();
+            int PendingForGenBodyApproval = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.FinCommitteeApproval.Equals(true) select a.FinCommitteeApproval).Count();
+            int PendingForPublishing = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.GenBodyApproval.Equals(true) select a.GenBodyApproval).Count();
+
+            if (FinalApproved > 0)
+            {
+                MD.ApprovedMessage = "* Budget Details Approved for the Financial Year " + MD.SelectedAcademicYear + "!!!";
+                MD.WaitingForApprovalMessage = " ";
+            }
+            else if (FinalApproved == 0 && SubmittedForApproval <= NumberOfGroups && SubmittedForApproval != 0)
+            {
+                MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
+                MD.ApprovedMessage = " ";
+            }
+            else if (PendingForChairmanApproval > 0)
+            {
+                MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with ChairPerson for Approval.";
+                MD.ApprovedMessage = " ";
+            }
+            else if (PendingForFinCommitteeApproval > 0)
+            {
+                MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with Financial Committee for Approval.";
+                MD.ApprovedMessage = " ";
+            }
+            else if (PendingForGenBodyApproval > 0)
+            {
+                MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with General Body for Approval.";
+                MD.ApprovedMessage = " ";
+            }
+            else if (PendingForPublishing > 0)
+            {
+                MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending to be published.";
+                MD.ApprovedMessage = " ";
+            }
+            else
+            {
+                MD.ApprovedMessage = " ";
+                MD.WaitingForApprovalMessage = " ";
+            }
+
+
+            MD.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
+                 .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Select(x => x.AdminEditStatus).Count();
+
+            MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == DivisionID)
+                                  .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
+            MD.DivisionNames = _context.Division.AsEnumerable().Select(x =>
+                    new SelectListItem()
+                    {
+                        Selected = false,
+                        Text = x.DivisionName,
+                        Value = x.DivisionID.ToString()
+
+                    }).ToList();
+
+            MD.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
+                new SelectListItem()
+                {
+                    Selected = false,
+                    Text = x.Year1 + "-" + x.Year2,
+                    Value = x.Id.ToString()
+
+                }).ToList();
+            MD.AcademicYears.Where(x => x.Text.Equals(MD.SelectedAcademicYear.ToString())).Single().Selected = true;
+
+            MD.DivisionNames.Where(x => x.Text.Equals(MD.SelectedDivisionName.ToString())).Single().Selected = true;
+
+
+            return View("Index", MD);
+        }
+
+        [HttpPost]
+        [RequestFormLimits(ValueCountLimit = 20000)]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public IActionResult GeneralBodySubmission(MultipleData MD)
+        {
+            var splitAcademicYear = MD.SelectedAcademicYear.ToString().Split("-");
+
+            var username = User.Identity.Name;
+            var DivName = MD.SelectedDivisionName.ToString();
+            var SelectedDivisionID = _context.Division
+                                 .Where(d => d.DivisionName == DivName)
+                                 .Select(x => x.DivisionID).FirstOrDefault();
+
+
+            var SectionNumber = _context.BudgetSections
+                             .Where(x => x.SectionName.Equals(MD.SectionName))
+                             .Select(x => x.SectionNo).FirstOrDefault();
+            var GroupNumber = _context.BudgetGroups
+                        .Where(x => x.GroupName.Equals(MD.GroupName))
+                        .Select(x => x.GroupNo).FirstOrDefault();
+            var SubGroups = _context.BudgetSubGroups
+                        .Where(x => x.GroupNo.Equals(GroupNumber))
+                        .Select(x => x.SubGroupNo).ToList();
+
+            //Update Budget Status for Admin User
+            if (User.Identity.Name.Equals("admin@test.com"))
+            {
+                var Status = new BudgetdetailsStatus();
+                Status = _context.BudgetdetailsStatus
+                                  .Where(b => (b.DivisionID == SelectedDivisionID)
+                                           && (b.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0]))
+                                           && (b.SectionNumber == SectionNumber)
+                                           && (b.GroupNumber == GroupNumber)).FirstOrDefault();
+
+                Status.FinCommitteeApproval = true;
+
+                _context.BudgetdetailsStatus.Update(Status);
+                _context.SaveChanges();
+            }
+            var DivisionID = _context.Division
+                                             .Where(d => d.DivisionName == DivName)
+                                             .Select(x => x.DivisionID).FirstOrDefault();
+            MD.Sectionss = _context.BudgetSections.ToList();
+            MD.Groupss = _context.BudgetGroups.ToList();
+            MD.SubGroupss = _context.BudgetSubGroups.ToList();
+            MD.Ledgerss = _context.BudgetLedgers.ToList();
+            MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == DivisionID)
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+            MD.Filess = _context.BudgetFiles.Where(x => x.DivisionID == DivisionID)
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+            MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
+                    .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+
+            int FinalApproved = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(false) select a.AdminEditStatus).Count();
+            int SubmittedForApproval = (from a in MD.Statuss where a.SectionNumber != 0 && !a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
+            int NumberOfGroups = (from a in MD.Groupss select a.GroupNo).Count();
+            int PendingForChairmanApproval = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.ACBWSubmission.Equals(true) select a.ACBWSubmission).Count();
+            int PendingForFinCommitteeApproval = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.ChairpersonApproval.Equals(true) select a.ChairpersonApproval).Count();
+            int PendingForGenBodyApproval = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.FinCommitteeApproval.Equals(true) select a.FinCommitteeApproval).Count();
+            int PendingForPublishing = (from a in MD.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.GenBodyApproval.Equals(true) select a.GenBodyApproval).Count();
+
+            if (FinalApproved > 0)
+            {
+                MD.ApprovedMessage = "* Budget Details Approved for the Financial Year " + MD.SelectedAcademicYear + "!!!";
+                MD.WaitingForApprovalMessage = " ";
+            }
+            else if (FinalApproved == 0 && SubmittedForApproval <= NumberOfGroups && SubmittedForApproval != 0)
+            {
+                MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
+                MD.ApprovedMessage = " ";
+            }
+            else if (PendingForChairmanApproval > 0)
+            {
+                MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with ChairPerson for Approval.";
+                MD.ApprovedMessage = " ";
+            }
+            else if (PendingForFinCommitteeApproval > 0)
+            {
+                MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with Financial Committee for Approval.";
+                MD.ApprovedMessage = " ";
+            }
+            else if (PendingForGenBodyApproval > 0)
+            {
+                MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with General Body for Approval.";
+                MD.ApprovedMessage = " ";
+            }
+            else if (PendingForPublishing > 0)
+            {
+                MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending to be published.";
+                MD.ApprovedMessage = " ";
+            }
+            else
+            {
+                MD.ApprovedMessage = " ";
+                MD.WaitingForApprovalMessage = " ";
+            }
+
+
+
+            MD.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
+                 .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Select(x => x.AdminEditStatus).Count();
+
+            MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == DivisionID)
+                                  .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
+            MD.DivisionNames = _context.Division.AsEnumerable().Select(x =>
+                    new SelectListItem()
+                    {
+                        Selected = false,
+                        Text = x.DivisionName,
+                        Value = x.DivisionID.ToString()
+
+                    }).ToList();
+
+            MD.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
+                new SelectListItem()
+                {
+                    Selected = false,
+                    Text = x.Year1 + "-" + x.Year2,
+                    Value = x.Id.ToString()
+
+                }).ToList();
+            MD.AcademicYears.Where(x => x.Text.Equals(MD.SelectedAcademicYear.ToString())).Single().Selected = true;
+
+            MD.DivisionNames.Where(x => x.Text.Equals(MD.SelectedDivisionName.ToString())).Single().Selected = true;
+
+
+            return View("Index", MD);
+        }
+
     }
 }
