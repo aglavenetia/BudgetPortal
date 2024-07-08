@@ -56,6 +56,9 @@
     Boolean ChairpersonApprovalStatus = (from a in Model.Statuss where (a.SectionNumber == 0 && a.GroupNumber.Equals("0")) select a.ChairpersonApproval).FirstOrDefault();
 
     Boolean FinancialCommiteeApprovalStatus = (from a in Model.Statuss where (a.SectionNumber == 0 && a.GroupNumber.Equals("0")) select a.FinCommitteeApproval).FirstOrDefault();
+
+    Boolean GenBodyApprovalStatus = (from a in Model.Statuss where (a.SectionNumber == 0 && a.GroupNumber.Equals("0")) select a.GenBodyApproval).FirstOrDefault();
+    
 }
 <br />
 
@@ -111,7 +114,26 @@
        <div>
        <table>
        <tr>
-        @if (User.IsInRole("Admin") && ACBWSubmissionStatus)
+
+        @if (User.IsInRole("Admin") && FinancialCommiteeApprovalStatus && !GenBodyApprovalStatus)
+        {
+            <td>
+            <input id="FinalSubmit" class="FinalSubmit" formaction="~/Tabs/FinalSubmit" value="Publish Budget" type="submit" style="align-self:center"/>
+            @*Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = "FinalSubmit-SelectedAcademicYear" })
+            @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = "FinalSubmit-SelectedDivisionName" })*@
+            <br /><br/>
+            </td>
+        }
+        else if (User.IsInRole("Admin") && ChairpersonApprovalStatus && !FinancialCommiteeApprovalStatus)
+        {
+            <td>
+            <input id="SubmitGB" class="SubmitGB" formaction="~/Tabs/GeneralBodySubmission" value="Submit to General Body" type="submit" style="align-self:center"/>
+            @*Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = "FinalSubmit-SelectedAcademicYear" })
+            @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = "FinalSubmit-SelectedDivisionName" })*@
+            </td>
+            <br /><br/>
+        }
+        else if (User.IsInRole("Admin") && ACBWSubmissionStatus && !ChairpersonApprovalStatus)
         {
        <td>
         
@@ -122,26 +144,10 @@
         </td>
         }
         
-        else if (User.IsInRole("Admin") && ChairpersonApprovalStatus)
-        {
-            <td>
-            <input id="SubmitGB" class="SubmitGB" formaction="~/Tabs/GeneralBodySubmission" value="Submit to General Body" type="submit" style="align-self:center"/>
-            @*Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = "FinalSubmit-SelectedAcademicYear" })
-            @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = "FinalSubmit-SelectedDivisionName" })*@
-            </td>
-            <br /><br/>
-        }
         
         
-        else if (User.IsInRole("Admin") && FinancialCommiteeApprovalStatus)
-        {
-            <td>
-            <input id="FinalSubmit" class="FinalSubmit" formaction="~/Tabs/FinalSubmit" value="Publish Budget" type="submit" style="align-self:center"/>
-            @*Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = "FinalSubmit-SelectedAcademicYear" })
-            @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = "FinalSubmit-SelectedDivisionName" })*@
-            <br /><br/>
-            </td>
-        }
+        
+        
         
         
         </tr>
@@ -469,10 +475,15 @@
                                                <th class="ACBWProposalForRevisedEstimates w-10" >
                                                  
                                                </th>
-                                             
+                                               }
+                                             @if (User.IsInRole("Admin"))
+                                             {
                                              <th class="VariationInRevisedEstimates w-10" >
-                                                       
+                                                      
                                             </th>
+                                            } 
+                                            @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                             {
                                                         <th class="ACBWJustificationRevEst w-10">
 
                                                         </th>
@@ -2141,9 +2152,10 @@
                                         @{
                                             var TotalDelegateSavedLedgers = (from d in Model.Detailss where d.SectionNumber.Equals(@inner.SectionNo)  && d.GroupNumber.Equals(@item.GroupNo) && d.HasDelegateSaved.Equals(true) select d.SubGroupNumber).Count();
                                             var TotalAdminSavedLedgers = (from e in Model.Detailss where e.SectionNumber.Equals(@inner.SectionNo)  && e.GroupNumber.Equals(@item.GroupNo) && e.HasAdminSaved.Equals(true) select e.SubGroupNumber).Count();
+                                            Boolean ACBWSubmission = (from a in Model.Statuss where a.SectionNumber.Equals(@inner.SectionNo)  && a.GroupNumber.Equals(@item.GroupNo) select a.ACBWSubmission).FirstOrDefault();
                                          }
                                         
-                                    @if (User.IsInRole("Admin") && AdminEditStatus && (TotalAdminSavedLedgers == TotalSubGroups)  && Model.PreviousYearAdminCount > 0)
+                                    @if (User.IsInRole("Admin") && AdminEditStatus && (TotalAdminSavedLedgers == TotalSubGroups)  && Model.PreviousYearAdminCount > 0 && !ACBWSubmission)
                                     {
                                             <input id="@SubmitChairPerson" class="Submit" formaction="~/Tabs/Index" type="submit" value="Submit to Chairperson for Approval" style="align-self:center"/>
                                         }
@@ -3887,9 +3899,10 @@
                                         @{
                                             var TotalDelegateSavedLedgers = (from d in Model.Detailss where d.SectionNumber.Equals(@inner.SectionNo)  && d.GroupNumber.Equals(@item.GroupNo) && d.HasDelegateSaved.Equals(true) select d.SubGroupNumber).Count();
                                             var TotalAdminSavedLedgers = (from e in Model.Detailss where e.SectionNumber.Equals(@inner.SectionNo)  && e.GroupNumber.Equals(@item.GroupNo) && e.HasAdminSaved.Equals(true) select e.SubGroupNumber).Count();
+                                            Boolean ACBWSubmission = (from a in Model.Statuss where a.SectionNumber.Equals(@inner.SectionNo)  && a.GroupNumber.Equals(@item.GroupNo) select a.ACBWSubmission).FirstOrDefault();
                                          }
                                         
-                                    @if (User.IsInRole("Admin") && AdminEditStatus && (TotalAdminSavedLedgers == TotalSubGroups)  && Model.PreviousYearAdminCount > 0)
+                                    @if (User.IsInRole("Admin") && AdminEditStatus && (TotalAdminSavedLedgers == TotalSubGroups)  && Model.PreviousYearAdminCount > 0 && !ACBWSubmission)
                                     {
                                             <input id="@SubmitChairPerson" class="Submit" formaction="~/Tabs/Index" type="submit" value="Submit to Chairperson for Approval" style="align-self:center"/>
                                         }
@@ -5843,15 +5856,16 @@
                                         @{
                                             var TotalDelegateSavedLedgers = (from d in Model.Detailss where d.SectionNumber.Equals(@inner.SectionNo)  && d.GroupNumber.Equals(@item.GroupNo) && d.HasDelegateSaved.Equals(true) select d.SubGroupNumber).Count();
                                             var TotalAdminSavedLedgers = (from e in Model.Detailss where e.SectionNumber.Equals(@inner.SectionNo)  && e.GroupNumber.Equals(@item.GroupNo) && e.HasAdminSaved.Equals(true) select e.SubGroupNumber).Count();
+                                            Boolean ACBWSubmission = (from a in Model.Statuss where a.SectionNumber.Equals(@inner.SectionNo)  && a.GroupNumber.Equals(@item.GroupNo) select a.ACBWSubmission).FirstOrDefault();
                                          }
                                         
-                                    @if ((User.IsInRole("Admin") && AdminEditStatus && (TotalAdminSavedLedgers == TotalSubGroups)  && Model.PreviousYearAdminCount > 0))
+                                    @if (User.IsInRole("Admin") && AdminEditStatus && (TotalAdminSavedLedgers == TotalSubGroups)  && Model.PreviousYearAdminCount > 0 && !ACBWSubmission)
                                     {
-                                            <input id="@SubmitACBW" class="Submit" formaction="~/Tabs/Index" type="submit" value="Submit to Chairperson for Approval" style="align-self:center"/>
+                                            <input id="@SubmitChairPerson" class="Submit" formaction="~/Tabs/Index" type="submit" value="Submit to Chairperson for Approval" style="align-self:center"/>
                                         }
-                                        else if((!User.IsInRole("Admin") && DelegateEditStatus && (TotalDelegateSavedLedgers == TotalSubGroups)  && Model.PreviousYearAdminCount > 0))
+                                        else if(!User.IsInRole("Admin") && DelegateEditStatus && (TotalDelegateSavedLedgers == TotalSubGroups)  && Model.PreviousYearAdminCount > 0)
                                         {
-                                            <input id="@SubmitChairPerson" class="Submit" formaction="~/Tabs/Index" type="submit" value="Submit to AC&BW for Approval" style="align-self:center"/>
+                                            <input id="@SubmitACBW" class="Submit" formaction="~/Tabs/Index" type="submit" value="Submit to AC&BW for Approval" style="align-self:center"/>
                                         }
                                         @*}*@
                             </div>
@@ -7589,9 +7603,10 @@
                                         @{
                                             var TotalDelegateSavedLedgers = (from d in Model.Detailss where d.SectionNumber.Equals(@inner.SectionNo)  && d.GroupNumber.Equals(@item.GroupNo) && d.HasDelegateSaved.Equals(true) select d.SubGroupNumber).Count();
                                             var TotalAdminSavedLedgers = (from e in Model.Detailss where e.SectionNumber.Equals(@inner.SectionNo)  && e.GroupNumber.Equals(@item.GroupNo) && e.HasAdminSaved.Equals(true) select e.SubGroupNumber).Count();
+                                            Boolean ACBWSubmission = (from a in Model.Statuss where a.SectionNumber.Equals(@inner.SectionNo)  && a.GroupNumber.Equals(@item.GroupNo) select a.ACBWSubmission).FirstOrDefault();
                                          }
                                         
-                                    @if (User.IsInRole("Admin") && AdminEditStatus && (TotalAdminSavedLedgers == TotalSubGroups)  && Model.PreviousYearAdminCount > 0)
+                                    @if (User.IsInRole("Admin") && AdminEditStatus && (TotalAdminSavedLedgers == TotalSubGroups)  && Model.PreviousYearAdminCount > 0 && !ACBWSubmission)
                                     {
                                             <input id="@SubmitChairPerson" class="Submit" formaction="~/Tabs/Index" type="submit" value="Submit to Chairperson for Approval" style="align-self:center"/>
                                         }
