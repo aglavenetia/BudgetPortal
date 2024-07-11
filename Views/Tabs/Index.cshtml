@@ -425,7 +425,7 @@
                                         
                             <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab" style="width: 1750px;">
 
-                                @if (!User.IsInRole("Admin") && AdminEditStatus && @Model.WaitingForApprovalMessage.Equals(" ") && @Model.ApprovedMessage.Equals(" "))
+                                @if (!User.IsInRole("Admin") && AdminEditStatus && @Model.ApprovedMessage.Equals(" "))
                                 {
                                    <div style="color:green"> * Budget proposal @Model.SelectedAcademicYear for <span style="color:red">'@item.GroupName'</span> has been submitted to AC&BW successfully </div>
                                 }
@@ -785,7 +785,7 @@
                                                                                         }
                                                                                     </td>
                                                                                     <td>
-                                                                                    @if ((!DelegateEditStatus && !@Subs.RequireInput ) || (!User.IsInRole("Admin") && LedgerIsDelegateSaved) && Model.EditEnabled!=@Ledgers.LedgerNo)
+                                                                                    @if (!DelegateEditStatus|| (!User.IsInRole("Admin") && LedgerIsDelegateSaved) && Model.EditEnabled!=@Ledgers.LedgerNo)
                                                                                     {
                                                                                             <div class="form-group">
                                                                                              @{  
@@ -796,7 +796,7 @@
                                                                                         </div>
                                                                                         
                                                                                     }
-                                                                                    else if((User.IsInRole("Admin") && DelegateEditStatus) || @Subs.RequireInput )
+                                                                                    else if(User.IsInRole("Admin") && DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                              @{  
@@ -1102,7 +1102,7 @@
                                                                                     <table class="table" >
                                                                                     <thead> </thead>
                                                                                     <tbody>
-                                                                                       @if ((!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.IsEnabled.Equals(true) && !LedgerIsDelegateSaved && Model.EditEnabled ==@Ledgers.LedgerNo))
+                                                                                       @if ((!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.IsEnabled.Equals(true) && (!LedgerIsDelegateSaved || Model.EditEnabled ==@Ledgers.LedgerNo)))
                                                                                         {
                                                                                             <tr><td  style="border:none"> @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo})</td> </tr>
                                                                                             <tr><td  style="border:none"> @Html.ValidationMessage("Caution"+LedgerNo,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
@@ -2004,7 +2004,7 @@
                                                               <table class="table" style="border:none">
                                                               <thead> </thead>
                                                               <tbody>
-                                                              @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.IsEnabled.Equals(true) && !IsDelegateSaved && Model.EditEnabled ==@Subs.SubGroupNo)
+                                                              @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.IsEnabled.Equals(true) && (!IsDelegateSaved || Model.EditEnabled ==@Subs.SubGroupNo))
                                                               {
                                                                    <tr><td  style="border:none"> @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11})</td></tr>
                                                                    <tr><td  style="border:none"> @Html.ValidationMessage("Caution"+Count,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
@@ -2182,7 +2182,7 @@
                                                     
                             <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab" style="width: 1750px;">
                                 <br />
-                                 @if (!User.IsInRole("Admin") && AdminEditStatus && @Model.WaitingForApprovalMessage.Equals(" ") && @Model.ApprovedMessage.Equals(" "))
+                                 @if (!User.IsInRole("Admin") && AdminEditStatus && @Model.ApprovedMessage.Equals(" "))
                                  {
                                    <div style="color:green"> * Budget proposal @Model.SelectedAcademicYear for <span style="color:red">'@item.GroupName'</span> has been submitted to AC&BW successfully </div>
                                  }
@@ -2542,7 +2542,7 @@
                                                                                         }
                                                                                     </td>
                                                                                     <td>
-                                                                                    @if ((!DelegateEditStatus && !@Subs.RequireInput ) || (!User.IsInRole("Admin") && LedgerIsDelegateSaved) && Model.EditEnabled!=@Ledgers.LedgerNo)
+                                                                                    @if (!DelegateEditStatus|| (!User.IsInRole("Admin") && LedgerIsDelegateSaved) && Model.EditEnabled!=@Ledgers.LedgerNo)
                                                                                     {
                                                                                             <div class="form-group">
                                                                                              @{  
@@ -2553,7 +2553,7 @@
                                                                                         </div>
                                                                                         
                                                                                     }
-                                                                                    else if((User.IsInRole("Admin") && DelegateEditStatus) || @Subs.RequireInput )
+                                                                                    else if(User.IsInRole("Admin") && DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                              @{  
@@ -2859,7 +2859,7 @@
                                                                                     <table class="table" >
                                                                                     <thead> </thead>
                                                                                     <tbody>
-                                                                                       @if ((!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.IsEnabled.Equals(true) && !LedgerIsDelegateSaved && Model.EditEnabled ==@Ledgers.LedgerNo))
+                                                                                       @if ((!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.IsEnabled.Equals(true) && (!LedgerIsDelegateSaved || Model.EditEnabled ==@Ledgers.LedgerNo)))
                                                                                         {
                                                                                             <tr><td  style="border:none"> @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo})</td> </tr>
                                                                                             <tr><td  style="border:none"> @Html.ValidationMessage("Caution"+LedgerNo,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
@@ -3761,7 +3761,7 @@
                                                               <table class="table" style="border:none">
                                                               <thead> </thead>
                                                               <tbody>
-                                                              @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.IsEnabled.Equals(true) && !IsDelegateSaved && Model.EditEnabled ==@Subs.SubGroupNo)
+                                                              @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.IsEnabled.Equals(true) && (!IsDelegateSaved || Model.EditEnabled ==@Subs.SubGroupNo))
                                                               {
                                                                    <tr><td  style="border:none"> @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11})</td></tr>
                                                                    <tr><td  style="border:none"> @Html.ValidationMessage("Caution"+Count,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
@@ -4153,7 +4153,7 @@
                                         
                             <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab" style="width: 1750px;">
 
-                                @if (!User.IsInRole("Admin") && AdminEditStatus && @Model.WaitingForApprovalMessage.Equals(" ") && @Model.ApprovedMessage.Equals(" "))
+                                @if (!User.IsInRole("Admin") && AdminEditStatus  && @Model.ApprovedMessage.Equals(" "))
                                 {
                                    <div style="color:green"> * Budget proposal @Model.SelectedAcademicYear for <span style="color:red">'@item.GroupName'</span> has been submitted to AC&BW successfully </div>
                                 }
@@ -4513,7 +4513,7 @@
                                                                                         }
                                                                                     </td>
                                                                                     <td>
-                                                                                    @if ((!DelegateEditStatus && !@Subs.RequireInput ) || (!User.IsInRole("Admin") && LedgerIsDelegateSaved) && Model.EditEnabled!=@Ledgers.LedgerNo)
+                                                                                    @if (!DelegateEditStatus|| (!User.IsInRole("Admin") && LedgerIsDelegateSaved) && Model.EditEnabled!=@Ledgers.LedgerNo)
                                                                                     {
                                                                                             <div class="form-group">
                                                                                              @{  
@@ -4524,7 +4524,7 @@
                                                                                         </div>
                                                                                         
                                                                                     }
-                                                                                    else if((User.IsInRole("Admin") && DelegateEditStatus) || @Subs.RequireInput )
+                                                                                    else if(User.IsInRole("Admin") && DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                              @{  
@@ -4830,7 +4830,7 @@
                                                                                     <table class="table" >
                                                                                     <thead> </thead>
                                                                                     <tbody>
-                                                                                       @if ((!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.IsEnabled.Equals(true) && !LedgerIsDelegateSaved && Model.EditEnabled ==@Ledgers.LedgerNo))
+                                                                                       @if ((!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.IsEnabled.Equals(true) && (!LedgerIsDelegateSaved || Model.EditEnabled ==@Ledgers.LedgerNo)))
                                                                                         {
                                                                                             <tr><td  style="border:none"> @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo})</td> </tr>
                                                                                             <tr><td  style="border:none"> @Html.ValidationMessage("Caution"+LedgerNo,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
@@ -5732,7 +5732,7 @@
                                                               <table class="table" style="border:none">
                                                               <thead> </thead>
                                                               <tbody>
-                                                              @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.IsEnabled.Equals(true) && !IsDelegateSaved && Model.EditEnabled ==@Subs.SubGroupNo)
+                                                              @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.IsEnabled.Equals(true) && (!IsDelegateSaved || Model.EditEnabled ==@Subs.SubGroupNo))
                                                               {
                                                                    <tr><td  style="border:none"> @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11})</td></tr>
                                                                    <tr><td  style="border:none"> @Html.ValidationMessage("Caution"+Count,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
@@ -5910,7 +5910,7 @@
                                                     
                             <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab" style="width: 1750px;">
                                 <br />
-                                 @if (!User.IsInRole("Admin") && AdminEditStatus && @Model.WaitingForApprovalMessage.Equals(" ") && @Model.ApprovedMessage.Equals(" "))
+                                 @if (!User.IsInRole("Admin") && AdminEditStatus && @Model.ApprovedMessage.Equals(" "))
                                  {
                                    <div style="color:green"> * Budget proposal @Model.SelectedAcademicYear for <span style="color:red">'@item.GroupName'</span> has been submitted to AC&BW successfully </div>
                                  }
@@ -6270,7 +6270,7 @@
                                                                                         }
                                                                                     </td>
                                                                                     <td>
-                                                                                    @if ((!DelegateEditStatus && !@Subs.RequireInput ) || (!User.IsInRole("Admin") && LedgerIsDelegateSaved) && Model.EditEnabled!=@Ledgers.LedgerNo)
+                                                                                    @if (!DelegateEditStatus|| (!User.IsInRole("Admin") && LedgerIsDelegateSaved) && Model.EditEnabled!=@Ledgers.LedgerNo)
                                                                                     {
                                                                                             <div class="form-group">
                                                                                              @{  
@@ -6281,7 +6281,7 @@
                                                                                         </div>
                                                                                         
                                                                                     }
-                                                                                    else if((User.IsInRole("Admin") && DelegateEditStatus) || @Subs.RequireInput )
+                                                                                    else if(User.IsInRole("Admin") && DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
                                                                                              @{  
@@ -6587,7 +6587,7 @@
                                                                                     <table class="table" >
                                                                                     <thead> </thead>
                                                                                     <tbody>
-                                                                                       @if ((!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.IsEnabled.Equals(true) && !LedgerIsDelegateSaved && Model.EditEnabled ==@Ledgers.LedgerNo))
+                                                                                       @if ((!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.IsEnabled.Equals(true) && (!LedgerIsDelegateSaved || Model.EditEnabled ==@Ledgers.LedgerNo)))
                                                                                         {
                                                                                             <tr><td  style="border:none"> @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo})</td> </tr>
                                                                                             <tr><td  style="border:none"> @Html.ValidationMessage("Caution"+LedgerNo,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
@@ -7489,7 +7489,7 @@
                                                               <table class="table" style="border:none">
                                                               <thead> </thead>
                                                               <tbody>
-                                                              @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.IsEnabled.Equals(true) && !IsDelegateSaved && Model.EditEnabled ==@Subs.SubGroupNo)
+                                                              @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.IsEnabled.Equals(true) && (!IsDelegateSaved || Model.EditEnabled ==@Subs.SubGroupNo))
                                                               {
                                                                    <tr><td  style="border:none"> @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11})</td></tr>
                                                                    <tr><td  style="border:none"> @Html.ValidationMessage("Caution"+Count,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>

@@ -87,7 +87,7 @@ namespace BudgetPortal.Controllers
                 mymodel.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + mymodel.SelectedAcademicYear + " is pending with ChairPerson for Approval.";
                 mymodel.ApprovedMessage = " ";
             }
-            else if (FinalApproved == 0 && SubmittedForApproval <= NumberOfGroups && SubmittedForApproval != 0 && PendingForChairmanApproval == 0)
+            else if (FinalApproved == 0 && SubmittedForApproval == NumberOfGroups && PendingForChairmanApproval == 0)
             {
                 mymodel.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + mymodel.SelectedAcademicYear + " is pending with AC&BW for Approval.";
                 mymodel.ApprovedMessage = " ";
@@ -466,95 +466,6 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.GroupNo.Equals(GroupNumber))
                                 .Select(x => x.SubGroupNo).ToList();
 
-                /*ModelState.Remove("Message");
-                ModelState.Remove("File");
-                ModelState.Remove("FileName");
-                ModelState.Remove("SubGroupLedgerName");
-                
-                if (ModelState.IsValid)
-                {
-                    for (int i = 0; i < SubGroups.Count(); i++)
-                    {
-                        var result = new BudgetDetails();
-
-                        var LedgerStatus = _context.BudgetSubGroups
-                                  .Where(x => x.SubGroupNo.Equals(SubGroups[i]))
-                                  .Select(x => x.RequireInput).FirstOrDefault();
-
-                        var Ledgers = _context.BudgetLedgers
-                              .Where(x => x.SubGroupNo.Equals(SubGroups[i]))
-                              .Select(x => x.LedgerNo).ToList();
-
-                        if (LedgerStatus)
-                        {
-
-                            for (int j = 0; j < Ledgers.Count(); j++)
-                            {
-                                int index = MD.SubGroupNameOrLedgerName.IndexOf(Ledgers[j]);
-                                result = _context.BudgetDetails
-                                      .Where(b => (b.DivisionID == SelectedDivisionID)
-                                               && (b.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0]))
-                                               && (b.SectionNumber == SectionNumber)
-                                               && (b.GroupNumber == GroupNumber)
-                                               && (b.SubGroupNumber == SubGroups[i])
-                                               && (b.LedgerNumber == Ledgers[j])).FirstOrDefault();
-
-                                if (Decimal.Compare(Convert.ToDecimal(MD.ACAndBWPropRECurrFin[index]), Convert.ToDecimal(0.00)) == 0)
-                                {
-                                    ModelState.AddModelError("ACAndBWPropRECurrFin[" + index + "]", "Please enter value");
-                                    valid = false;
-                                }
-                                else
-                                    result.ACAndBWPropRECurrFin = Convert.ToDecimal(MD.ACAndBWPropRECurrFin[index]);
-
-                                if (Decimal.Compare(Convert.ToDecimal(MD.ACAndBWPropRENxtFin[index]), Convert.ToDecimal(0.00)) == 0)
-                                {
-                                    ModelState.AddModelError("ACAndBWPropRENxtFin[" + index + "]", "Please enter value");
-                                    valid = false;
-                                }
-                                else
-                                    result.ACAndBWPropRENxtFin = Convert.ToDecimal(MD.ACAndBWPropRENxtFin[index]);
-                               
-                            }
-                        }
-                        else
-                        {
-                            int index = MD.SubGroupNameOrLedgerName.IndexOf(SubGroups[i]);
-                            
-
-                            result = _context.BudgetDetails
-                                      .Where(b => (b.DivisionID == SelectedDivisionID)
-                                               && (b.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0]))
-                                               && (b.SectionNumber == SectionNumber)
-                                               && (b.GroupNumber == GroupNumber)
-                                               && (b.SubGroupNumber == SubGroups[i])).FirstOrDefault();
-
-                            if(Decimal.Compare(Convert.ToDecimal(MD.ACAndBWPropRECurrFin[index]), Convert.ToDecimal(0.00)) == 0)
-                            { 
-                                ModelState.AddModelError("ACAndBWPropRECurrFin[" + index + "]", "Please enter value");
-                                valid = false;
-                            }
-                            else
-                               result.ACAndBWPropRECurrFin = Convert.ToDecimal(MD.ACAndBWPropRECurrFin[index]);
-
-                            if (Decimal.Compare(Convert.ToDecimal(MD.ACAndBWPropRENxtFin[index]), Convert.ToDecimal(0.00)) == 0)
-                            { 
-                                ModelState.AddModelError("ACAndBWPropRENxtFin[" + index + "]", "Please enter value");
-                                valid = false;
-                            }
-
-                            else
-                                result.ACAndBWPropRENxtFin = Convert.ToDecimal(MD.ACAndBWPropRENxtFin[index]);
-                        }
-
-                        if(valid)
-                        { 
-                           _context.BudgetDetails.Update(result);
-                           _context.SaveChanges();
-                        }
-                    }
-                    if (valid)
-                    {*/
                 var Status = new BudgetdetailsStatus();
                         Status = _context.BudgetdetailsStatus
                                           .Where(b => (b.DivisionID == SelectedDivisionID)
@@ -566,11 +477,7 @@ namespace BudgetPortal.Controllers
 
                         _context.BudgetdetailsStatus.Update(Status);
                         _context.SaveChanges();
-                /*}
-
-
-            }*/
-
+                
 
                 var DivisionID = _context.Division
                                              .Where(d => d.DivisionName == DivName)
@@ -621,7 +528,7 @@ namespace BudgetPortal.Controllers
                     MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with ChairPerson for Approval.";
                     MD.ApprovedMessage = " ";
                 }
-                else if (FinalApproved == 0 && SubmittedForApproval <= NumberOfGroups && SubmittedForApproval != 0 && PendingForChairmanApproval == 0)
+                else if (FinalApproved == 0 && SubmittedForApproval == NumberOfGroups && PendingForChairmanApproval == 0)
                 {
                     MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
                     MD.ApprovedMessage = " ";
@@ -669,11 +576,7 @@ namespace BudgetPortal.Controllers
 
                     MD.DivisionNames.Where(x => x.Text.Equals(MD.SelectedDivisionName.ToString())).Single().Selected = true;
 
-               // MD.IsResponse = true;
-                //MD.IsSuccess = true;
-                //MD.Message = "Budget Details Submitted successfully";
-
-
+               
 
                 return View("Index", MD);
                   
@@ -683,8 +586,7 @@ namespace BudgetPortal.Controllers
                 else
                 {
                 
-                //if (ModelState.IsValid)
-                //{
+                
                     var username = User.Identity.Name;
                     var DivName = _context.Users
                              .Where(x => x.UserName.Equals(username))
@@ -756,146 +658,7 @@ namespace BudgetPortal.Controllers
 
                     MD.AcademicYears.Where(x => x.Text.Equals(MD.SelectedAcademicYear.ToString())).Single().Selected = true;
 
-                   /* ModelState.Remove("SelectedDivisionID");
-                    ModelState.Remove("ACAndBWPropRECurrFin");
-                    ModelState.Remove("ACAndBWPropRENxtFin");
-                    ModelState.Remove("File");
-                    ModelState.Remove("FileName");
-                    ModelState.Remove("SubGroupLedgerName");
-
-
-                    if (ModelState.IsValid)
-                    {
-                        for (int i = 0; i < SubGroups.Count(); i++)
-                        {
-                            var dataModel = new BudgetDetails();
-
-                            var LedgerStatus = _context.BudgetSubGroups
-                                  .Where(x => x.SubGroupNo.Equals(SubGroups[i]))
-                                  .Select(x => x.RequireInput).FirstOrDefault();
-
-                            var Ledgers = _context.BudgetLedgers
-                                  .Where(x => x.SubGroupNo.Equals(SubGroups[i]))
-                                  .Select(x => x.LedgerNo).ToList();
-
-                            if (LedgerStatus)
-                            {
-                                for (int j = 0; j < Ledgers.Count(); j++)
-                                {
-                                    int index = MD.SubGroupNameOrLedgerName.IndexOf(Ledgers[j]);
-
-                                    dataModel.DivisionID = Convert.ToInt32(SelectedDivisionID);
-                                    dataModel.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
-                                    dataModel.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
-
-                                    dataModel.BudEstCurrFin = Convert.ToDecimal(MD.BudEstCurrFin[index]);
-
-                                    if (Decimal.Compare(Convert.ToDecimal(MD.ActCurrFinTillsecondQuart[index]), Convert.ToDecimal(0.00)) == 0)
-                                    {
-                                        ModelState.AddModelError("ActCurrFinTillsecondQuart[" + index + "]", "Please enter Actual values till Second Quarter for " + Ledgers[j]);
-                                        valid = false;
-                                    }
-                                    else
-                                        dataModel.ActCurrFinTill2ndQuart = Convert.ToDecimal(MD.ActCurrFinTillsecondQuart[index]);
-
-                                    if (Decimal.Compare(Convert.ToDecimal(MD.ActPrevFin[index]), Convert.ToDecimal(0.00)) == 0)
-                                    {
-                                        ModelState.AddModelError("ActPrevFin[" + index + "]", "Please enter Actual values of Prev. Financial Year for "+ Ledgers[j]);
-                                        valid = false;
-                                    }
-                                    else
-                                        dataModel.ActPrevFin = Convert.ToDecimal(MD.ActPrevFin[index]);
-
-                                    dataModel.RevEstCurrFin = Convert.ToDecimal(MD.RevEstCurrFin[index]);
-                                    dataModel.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(MD.PerVarRevEstOverBudgEstCurrFin[index]);
-
-                                    dataModel.BudgEstNexFin = Convert.ToDecimal(MD.BudgEstNexFin[index]);
-
-                                    dataModel.PerVarRevEstOverBudgEstNxtFin = Convert.ToDecimal(MD.PerVarRevEstOverBudgEstNxtFin[index]);
-                                    try
-                                    {
-                                        if (MD.Justification[index] is not null)
-                                            dataModel.Justification = MD.Justification[index].ToString();
-                                        else
-                                            dataModel.Justification = " ";
-
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        ModelState.AddModelError("Justification[" + index + "]", "Please enter Justification");
-                                    }
-                                    dataModel.SectionNumber = Convert.ToInt32(SectionNumber);
-                                    dataModel.GroupNumber = GroupNumber;
-                                    dataModel.SubGroupNumber = SubGroups[i];
-                                    dataModel.LedgerNumber = Ledgers[j];
-                                
-
-                                if(valid)
-                                { 
-                                    _context.BudgetDetails.Add(dataModel);
-                                    _context.SaveChanges();
-                                }
-
-                            }
-                            }
-
-                            else
-                            {
-                                int index = MD.SubGroupNameOrLedgerName.IndexOf(SubGroups[i]);
-                                
-                                  dataModel.DivisionID = Convert.ToInt32(SelectedDivisionID);
-                                  dataModel.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
-                                  dataModel.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
-
-                                  dataModel.BudEstCurrFin = Convert.ToDecimal(MD.BudEstCurrFin[index]);
-
-                                  if (Decimal.Compare(Convert.ToDecimal(MD.ActPrevFin[index]), Convert.ToDecimal(0.00)) == 0)
-                                  {
-                                     ModelState.AddModelError("ActPrevFin[" + index + "]", "Please enter Actual values of Prev. Financial Year for " + SubGroups[i]);
-                                     valid = false;
-                                  }
-                                 else
-                                  dataModel.ActPrevFin = Convert.ToDecimal(MD.ActPrevFin[index]);
-
-                                 if (Decimal.Compare(Convert.ToDecimal(MD.ActCurrFinTillsecondQuart[index]), Convert.ToDecimal(0.00)) == 0)
-                                 {
-                                     ModelState.AddModelError("ActCurrFinTillsecondQuart[" + index + "]", "Please enter Actual values till Second Quarter for " + SubGroups[i]);
-                                     valid = false;
-                                 }
-                                 else
-                                    dataModel.ActCurrFinTill2ndQuart = Convert.ToDecimal(MD.ActCurrFinTillsecondQuart[index]);
-
-                                  dataModel.RevEstCurrFin = Convert.ToDecimal(MD.RevEstCurrFin[index]);
-                                  dataModel.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(MD.PerVarRevEstOverBudgEstCurrFin[index]);
-                                  dataModel.BudgEstNexFin = Convert.ToDecimal(MD.BudgEstNexFin[index]);
-                                  dataModel.PerVarRevEstOverBudgEstNxtFin = Convert.ToDecimal(MD.PerVarRevEstOverBudgEstNxtFin[index]);
-                                try 
-                                { 
-                                  if (MD.Justification[index] is not null)
-                                    dataModel.Justification = MD.Justification[index].ToString();
-                                  else
-                                    dataModel.Justification = " ";
-                                }
-                                catch (Exception ex)
-                                {
-                                    ModelState.AddModelError("Justification[" + index + "]", "Please enter Justification");
-                                }
-                            
-                                  dataModel.SectionNumber = Convert.ToInt32(SectionNumber);
-                                  dataModel.GroupNumber = GroupNumber;
-                                  dataModel.SubGroupNumber = SubGroups[i];
-                                  dataModel.LedgerNumber = Convert.ToDecimal(0).ToString();
-                                  
-                                 if(valid)
-                                 { 
-                                   _context.BudgetDetails.Add(dataModel);
-                                   _context.SaveChanges();
-                                 }
-                            }
-                       }
-                       
-                        if(valid)
-                        { */
+                   
                            var Status = new BudgetdetailsStatus();
                            Status.DivisionID = Convert.ToInt32(SelectedDivisionID);
                            Status.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
@@ -907,8 +670,7 @@ namespace BudgetPortal.Controllers
 
                            _context.BudgetdetailsStatus.Add(Status);
                            _context.SaveChanges();
-                        /*}*/
-
+                        
                         MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
                                  .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
 
@@ -945,7 +707,7 @@ namespace BudgetPortal.Controllers
                     MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with ChairPerson for Approval.";
                     MD.ApprovedMessage = " ";
                 }
-                else if (FinalApproved == 0 && SubmittedForApproval <= NumberOfGroups && SubmittedForApproval != 0 && PendingForChairmanApproval == 0)
+                else if (FinalApproved == 0 && SubmittedForApproval == NumberOfGroups && PendingForChairmanApproval == 0)
                 {
                     MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
                     MD.ApprovedMessage = " ";
@@ -1041,7 +803,7 @@ namespace BudgetPortal.Controllers
                 mymodel.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + mymodel.SelectedAcademicYear + " is pending with ChairPerson for Approval.";
                 mymodel.ApprovedMessage = " ";
             }
-            else if (FinalApproved == 0 && SubmittedForApproval <= NumberOfGroups && SubmittedForApproval != 0 && PendingForChairmanApproval == 0)
+            else if (FinalApproved == 0 && SubmittedForApproval == NumberOfGroups && PendingForChairmanApproval == 0)
             {
                 mymodel.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + mymodel.SelectedAcademicYear + " is pending with AC&BW for Approval.";
                 mymodel.ApprovedMessage = " ";
@@ -1272,7 +1034,7 @@ namespace BudgetPortal.Controllers
                     MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with Financial Committee for Approval.";
                     MD.ApprovedMessage = " ";
                 }
-                else if (FinalApproved == 0 && SubmittedForApproval <= NumberOfGroups && SubmittedForApproval != 0 && PendingForChairmanApproval == 0)
+                else if (FinalApproved == 0 && SubmittedForApproval == NumberOfGroups && PendingForChairmanApproval == 0)
                 {
                     MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
                     MD.ApprovedMessage = " ";
@@ -1516,7 +1278,7 @@ namespace BudgetPortal.Controllers
                 MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with ChairPerson for Approval.";
                 MD.ApprovedMessage = " ";
             }
-            else if (FinalApproved == 0 && SubmittedForApproval <= NumberOfGroups && SubmittedForApproval != 0 && PendingForChairmanApproval == 0)
+            else if (FinalApproved == 0 && SubmittedForApproval == NumberOfGroups && PendingForChairmanApproval == 0)
             {
                 MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
                 MD.ApprovedMessage = " ";
@@ -1840,7 +1602,7 @@ namespace BudgetPortal.Controllers
                 MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with ChairPerson for Approval.";
                 MD.ApprovedMessage = " ";
             }
-            else if (FinalApproved == 0 && SubmittedForApproval <= NumberOfGroups && SubmittedForApproval != 0 && PendingForChairmanApproval == 0)
+            else if (FinalApproved == 0 && SubmittedForApproval == NumberOfGroups  && PendingForChairmanApproval == 0)
             {
                 MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
                 MD.ApprovedMessage = " ";
@@ -1954,7 +1716,7 @@ namespace BudgetPortal.Controllers
                 MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with ChairPerson for Approval.";
                 MD.ApprovedMessage = " ";
             }
-            else if (FinalApproved == 0 && SubmittedForApproval <= NumberOfGroups && SubmittedForApproval != 0 && PendingForChairmanApproval == 0)
+            else if (FinalApproved == 0 && SubmittedForApproval == NumberOfGroups && PendingForChairmanApproval == 0)
             {
                 MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
                 MD.ApprovedMessage = " ";
@@ -2057,7 +1819,7 @@ namespace BudgetPortal.Controllers
                 MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with ChairPerson for Approval.";
                 MD.ApprovedMessage = " ";
             }
-            else if (FinalApproved == 0 && SubmittedForApproval <= NumberOfGroups && SubmittedForApproval != 0 && PendingForChairmanApproval == 0)
+            else if (FinalApproved == 0 && SubmittedForApproval == NumberOfGroups && PendingForChairmanApproval == 0)
             {
                 MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
                 MD.ApprovedMessage = " ";
@@ -2195,7 +1957,7 @@ namespace BudgetPortal.Controllers
                 MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with ChairPerson for Approval.";
                 MD.ApprovedMessage = " ";
             }
-            else if (FinalApproved == 0 && SubmittedForApproval <= NumberOfGroups && SubmittedForApproval != 0 && PendingForChairmanApproval == 0)
+            else if (FinalApproved == 0 && SubmittedForApproval == NumberOfGroups && PendingForChairmanApproval == 0)
             {
                 MD.WaitingForApprovalMessage = "* Budget Details for the Financial Year " + MD.SelectedAcademicYear + " is pending with AC&BW for Approval.";
                 MD.ApprovedMessage = " ";
