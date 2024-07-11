@@ -74,9 +74,8 @@
           </tr>
         </table>
         
-    </div>
+      </div>
 
-    @*Html.ValidationSummary(false, "", new { @class = "text-danger" })*@
       <br />
       <br />
       <br />
@@ -87,7 +86,7 @@
       {
             var inneridenti = String.Concat("Budget", @item.SectionNo.ToString());
 
-        if (OuterHeaderCount == 0)
+        @if (OuterHeaderCount == 0)
         {
                 <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="@inneridenti-nav" data-bs-toggle="tab" data-bs-target="#@inneridenti" type="button" role="tab" aria-controls="@inneridenti" aria-selected="true">@item.SectionName</button>
@@ -123,7 +122,7 @@
            int Count = 0;
            int LedgerNo = 0;
 
-           if (OuterBodyCount == 0)
+           @if (OuterBodyCount == 0)
            {
             <div id="@inneridenti" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="true" style="width: 1750px;">
                 
@@ -132,7 +131,7 @@
                     {                           
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
                         
-                        if (CountHeader == 0)
+                        @if (CountHeader == 0)
                         {
                             <li class="nav-item" role="presentation">
                                         <button class="nav-link active" id="@identi-nav" data-bs-toggle="tab" data-bs-target="#@identi" type="button" role="tab" aria-controls="@identi" aria-selected="true">@item.GroupName</button>
@@ -166,16 +165,11 @@
                          var Sumname2 = String.Concat("SumInterimRev", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                          var Sumname3 = String.Concat("SumProvisionalRE", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
-                        if (CounterBody == 0)
+                        @if (CounterBody == 0)
                         {
                                                    
                             <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab" style="width: 1750px;">
-
                                
-                                  @* <div style="color:green"> * Budget proposal @Model.SelectedAcademicYear for <span style="color:red">'@item.GroupName'</span> has been submitted to AC&BW successfully </div>
-                                
-                                    <div style="color:green"> * Budget values for @Model.SelectedAcademicYear for <span style="color:red">'@item.GroupName'</span> has been saved successfully </div>*@
-                                
                                 <table id="@identi-outertable" class="table table-responsive table-hover">
                                     <thead>
                                         <tr class="text-center">
@@ -501,12 +495,7 @@
                         {
                                                     
                             <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab" style="width: 1750px;">
-                                <br />
                                 
-                                   @*<div style="color:green"> * Budget proposal @Model.SelectedAcademicYear for <span style="color:red">'@item.GroupName'</span> has been submitted to AC&BW successfully </div>
-                                 
-                                 
-                                    <div style="color:green"> * Budget values for @Model.SelectedAcademicYear for <span style="color:red">'@item.GroupName'</span> has been saved successfully </div>*@
                                 
                                        <table id="@identi-outertable" class="table table-responsive table-hover">
                                     <thead>
@@ -731,7 +720,7 @@
                                                                @{
                                                                   Model.InterimRev.Insert(Count, details != null ? Convert.ToDecimal(details.InterimRevEst) : Convert.ToDecimal(0.0000));
                                                                 }
-                                                                @Html.TextBoxFor(model => model.InterimRev[Count], new { @class = "form-control", @id = @name2, @readonly = "readonly" })
+                                                                @Html.TextBoxFor(model => model.InterimRev[Count], new { @class = "form-control", @id = @name2, @readonly = "readonly"} )
                                                                 @Html.ValidationMessageFor(model => model.InterimRev[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
                                                                 
@@ -845,7 +834,7 @@
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
-                        if (CountHeader == 0)
+                        @if (CountHeader == 0)
                         {
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="@identi-nav" data-bs-toggle="tab" data-bs-target="#@identi" type="button" role="tab" aria-controls="@identi" aria-selected="true">@item.GroupName</button>
@@ -878,15 +867,9 @@
                          var Sumname2 = String.Concat("SumInterimRev", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                          var Sumname3 = String.Concat("SumProvisionalRE", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
-                          if (CounterBody == 0)
+                          @if (CounterBody == 0)
                           {
                               <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab" style="width: 1750px;">
-                                  
-                                
-                                   @* <div style="color:green"> * Budget proposal @Model.SelectedAcademicYear for <span style="color:red">'@item.GroupName'</span> has been submitted to AC&BW successfully </div>
-                                
-                                
-                                    <div style="color:green"> * Budget values for @Model.SelectedAcademicYear for <span style="color:red">'@item.GroupName'</span> has been saved successfully </div>*@
                                
                                        <table id="@identi-outertable" class="table table-responsive table-hover">
                                     <thead>
@@ -1214,12 +1197,7 @@
                         {  
                                                      
                              <div id="@identi" class="tab-pane fade" role="tabpanel" aria-labelledby="@identi-tab" style="width: 1750px;">
-                                <br />
-                                 
-                                  @* <div style="color:green"> * Budget proposal @Model.SelectedAcademicYear for <span style="color:red">'@item.GroupName'</span> has been submitted to AC&BW successfully </div>
-                                 
-                                       
-                                    <div style="color:green"> * Budget values for @Model.SelectedAcademicYear for <span style="color:red">'@item.GroupName'</span> has been saved successfully </div>*@
+                               
                                  
                                 <table id="@identi-outertable" class="table table-responsive table-hover">
                                     <thead>

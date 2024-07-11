@@ -20,8 +20,9 @@ namespace BudgetPortal.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var Year = DateTime.Now.Year;
-            
+            /*var Year = DateTime.Now.Year;*/
+            var Year = 2025;
+
             var username = User.Identity.Name;
             var DivName = _context.Users
                           .Where(x => x.UserName.Equals(username))
@@ -29,11 +30,13 @@ namespace BudgetPortal.Controllers
             var LoggedInDivisionID = _context.Division
                                    .Where(d => d.DivisionName == DivName)
                                    .Select(x => x.DivisionID).FirstOrDefault();
-            var Month = DateTime.Now.Month;
+            //var Month = DateTime.Now.Month;
+            var Month = 10;
 
-            if(Month > 0 && Month < 4)
+            if (Month > 0 && Month < 4)
             {
-                Year = DateTime.Now.Year - 1;
+                /*Year = DateTime.Now.Year - 1;*/
+                Year = 2025 - 1;
             }
             var AcademicYear = String.Concat(Year, "-", (Year + 1));
             var mymodel = new MultipleData();
@@ -99,11 +102,15 @@ namespace BudgetPortal.Controllers
 
 
 
-            mymodel.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
-                                .Where(x => x.FinancialYear1 == Year - 1).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
-
+            mymodel.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
+                                .Where(x => x.FinancialYear1 == Year).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
 
             
+            if (Month > 9 && mymodel.BudgetApprovedStatus != 1)
+            {
+                mymodel.IsEnabled = true;
+            }
+
             mymodel.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                     new SelectListItem()
                     {
@@ -226,8 +233,16 @@ namespace BudgetPortal.Controllers
             MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
                     .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
 
-            MD.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
-                                .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
+            MD.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
+            
+            //var Month = DateTime.Now.Month;
+            var Month = 10;
+
+            if (Month > 9 && MD.BudgetApprovedStatus != 1)
+            {
+                MD.IsEnabled = true;
+            }
 
             MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
                                          .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
@@ -386,8 +401,16 @@ namespace BudgetPortal.Controllers
             MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
                     .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
 
-            MD.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
-                                .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
+            MD.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
+
+            //var Month = DateTime.Now.Month;
+            var Month = 10;
+
+            if (Month > 9 && MD.BudgetApprovedStatus != 1)
+            {
+                MD.IsEnabled = true;
+            }
 
             MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
                                          .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
@@ -612,8 +635,16 @@ namespace BudgetPortal.Controllers
 
 
 
-                MD.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
-                                .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
+                MD.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
+
+                //var Month = DateTime.Now.Month;
+                var Month = 10;
+
+                if (Month > 9 && MD.BudgetApprovedStatus != 1)
+                {
+                    MD.IsEnabled = true;
+                }
 
                 MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == DivisionID)
                                          .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
@@ -690,8 +721,16 @@ namespace BudgetPortal.Controllers
                     MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
 
-                    MD.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
-                                .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
+                MD.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
+                            .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
+
+                //var Month = DateTime.Now.Month;
+                var Month = 10;
+
+                if (Month > 9 && MD.BudgetApprovedStatus != 1)
+                {
+                    MD.IsEnabled = true;
+                }
 
 
                 MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == LoggedInDivisionID)
@@ -1014,8 +1053,16 @@ namespace BudgetPortal.Controllers
             }
 
 
-            mymodel.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
-                                .Where(x => x.FinancialYear1 == Year - 1).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
+            mymodel.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(Year)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
+
+            //var Month = DateTime.Now.Month;
+            var Month = 10;
+
+            if (Month > 9 && mymodel.BudgetApprovedStatus != 1)
+            {
+                mymodel.IsEnabled = true;
+            }
 
             mymodel.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                         new SelectListItem()
@@ -1243,8 +1290,17 @@ namespace BudgetPortal.Controllers
 
 
 
-                MD.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
-                                .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
+                MD.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
+
+                //var Month = DateTime.Now.Month;
+                var Month = 10;
+
+                if (Month > 9 && MD.BudgetApprovedStatus != 1)
+                {
+                    MD.IsEnabled = true;
+                }
+
 
                 MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == DivisionID)
                                              .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
@@ -1385,8 +1441,16 @@ namespace BudgetPortal.Controllers
                 ModelState.Clear();
             }
 
-            MD.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
-                                .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
+            MD.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
+
+            //var Month = DateTime.Now.Month;
+            var Month = 10;
+
+            if (Month > 9 && MD.BudgetApprovedStatus != 1)
+            {
+                MD.IsEnabled = true;
+            }
 
             MD.Sectionss = _context.BudgetSections.ToList();
             MD.Groupss = _context.BudgetGroups.ToList();
@@ -1582,7 +1646,8 @@ namespace BudgetPortal.Controllers
                 ModelState.Remove("ACAndBWPropRENxtFin");
                 ModelState.Remove("HasAdminSaved");
                 ModelState.Remove("HasDelegateSaved");
-
+                ModelState.Remove("PerVarACBWRevEstOverBudgEstCurrFin");
+                ModelState.Remove("PerVarACBWRevEstOverBudgEstNxtFin");
 
                 if (ModelState.IsValid)
                 {
@@ -1701,13 +1766,15 @@ namespace BudgetPortal.Controllers
             MD.Ledgerss = _context.BudgetLedgers.ToList();
             MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == SelectedDivisionID)
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
-            MD.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
-                                .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
+            MD.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
 
-            var Month = DateTime.Now.Month;
-            if (Month > 3 && Month < 10)
+            //var Month = DateTime.Now.Month;
+            var Month = 10;
+
+            if (Month > 9 && MD.BudgetApprovedStatus != 1)
             {
-                //MD.IsEnabled = true;
+                MD.IsEnabled = true;
             }
             MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == SelectedDivisionID)
                                   .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
@@ -1798,7 +1865,7 @@ namespace BudgetPortal.Controllers
         public IActionResult Edit(MultipleData MD)
         {
             MD.EditEnabled = MD.SubGroupLedgerName;
-            var Month = DateTime.Now.Month;
+            
             var DivName = " ";
             var DivisionID = " ";
             if (User.Identity.Name.Equals("admin@test.com"))
@@ -1811,10 +1878,6 @@ namespace BudgetPortal.Controllers
 
             var splitAcademicYear = MD.SelectedAcademicYear.ToString().Split("-");
             int index = MD.SubGroupNameOrLedgerName.IndexOf(MD.SubGroupLedgerName);
-            if (Month > 3 && Month < 10)
-            {
-                //MD.IsEnabled = true;
-            }
 
             MD.Sectionss = _context.BudgetSections.ToList();
             MD.Groupss = _context.BudgetGroups.ToList();
@@ -1828,8 +1891,17 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
             MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
                                          .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
-            MD.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
-                                .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
+            MD.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
+
+            //var Month = DateTime.Now.Month;
+            var Month = 10;
+
+            if (Month > 9 && MD.BudgetApprovedStatus != 1)
+            {
+                MD.IsEnabled = true;
+            }
+
             MD.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                     new SelectListItem()
                     {
@@ -1933,7 +2005,7 @@ namespace BudgetPortal.Controllers
                                            && (b.SectionNumber == 0)
                                            && (b.GroupNumber == "0")).FirstOrDefault();
 
-                Status.FinCommitteeApproval = true;
+                Status.ChairpersonApproval = true;
 
                 _context.BudgetdetailsStatus.Update(Status);
                 _context.SaveChanges();
@@ -1997,8 +2069,17 @@ namespace BudgetPortal.Controllers
             }
 
 
-            MD.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
-                                .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
+            MD.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
+
+            //var Month = DateTime.Now.Month;
+            var Month = 10;
+
+            if (Month > 9 && MD.BudgetApprovedStatus != 1)
+            {
+                MD.IsEnabled = true;
+            }
+
 
             MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == DivisionID)
                                   .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
@@ -2062,7 +2143,7 @@ namespace BudgetPortal.Controllers
                                            && (b.SectionNumber == 0)
                                            && (b.GroupNumber == "0")).FirstOrDefault();
 
-                Status.GenBodyApproval = true;
+                Status.FinCommitteeApproval = true;
 
                 _context.BudgetdetailsStatus.Update(Status);
                 _context.SaveChanges();
@@ -2125,12 +2206,17 @@ namespace BudgetPortal.Controllers
                 MD.WaitingForApprovalMessage = " ";
             }
 
+            MD.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
 
+            //var Month = DateTime.Now.Month;
+            var Month = 10;
 
+            if (Month > 9 && MD.BudgetApprovedStatus != 1)
+            {
+                MD.IsEnabled = true;
+            }
 
-
-            MD.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
-                                .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
 
             MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == DivisionID)
                                   .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();

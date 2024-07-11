@@ -46,7 +46,9 @@ namespace BudgetPortal.ViewModel
 
         public String EditEnabled { get; set; }
 
-        public int PreviousYearAdminCount { get; set; }
+        public int BudgetApprovedStatus { get; set; }
+
+        public Boolean? IsEnabled { get; set; }
 
         public List<String> SubGroupNameOrLedgerName { get; set; }
 

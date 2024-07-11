@@ -193,6 +193,7 @@
            var GroupsStatRowCount = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo) select a.DelegateEditStatus).Count();
 
            var inneridenti = String.Concat("Budget", @inner.SectionNo.ToString());
+
            CountHeader = 0;
            CounterBody = 0;
            int Count = 0;
@@ -208,7 +209,7 @@
             var SectionSumPerVarRevEstOverBudgEstCurrFin = 0.00;
             var SectionSumPerVarRevEstOverBudgEstNxtFin = 0.00;
 
-            @if(Model.PreviousYearAdminCount > 0 && GroupsStatRowCount > 0 )
+            @if(Model.IsEnabled.Equals(true) && GroupsStatRowCount > 0 )
             {
                 SectionSumPerVarRevEstOverBudgEstCurrFin = Convert.ToInt32(Convert.ToDecimal((SectionSumRevEstCurrFin - SectionSumBudEstCurrFin) / SectionSumBudEstCurrFin)*100);
                 SectionSumPerVarRevEstOverBudgEstNxtFin = Convert.ToInt32(Convert.ToDecimal((SectionSumBudgEstNexFin - SectionSumRevEstCurrFin) / SectionSumRevEstCurrFin) * 100);
@@ -351,15 +352,19 @@
                     {
                        var GroupsStatusRowCount = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.DelegateEditStatus).Count();
                        var AdminStatus = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.AdminEditStatus).FirstOrDefault();
+                       Boolean GroupACBWSubmissionStatus = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.ACBWSubmission).FirstOrDefault();
+                       var IsSubmittedToChairman = (from a in Model.Statuss where (a.SectionNumber == 0 && a.GroupNumber.Equals("0")) select a.ACBWSubmission).Count();
                        
+                       Boolean IsSubmittedToACBW = (from a in Model.Statuss where (a.SectionNumber.Equals(0) && a.GroupNumber.Equals("0")) select a.ACBWSubmission).FirstOrDefault();
+
                        var TotalSubGroups = (from b in Model.SubGroupss where b.GroupNo.Equals(@item.GroupNo) && b.RequireInput == false select b.SubGroupNo).Count();
 
-                        if (GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0 )
+                        if (GroupsStatusRowCount == 0 && Model.IsEnabled.Equals(true))
                         {
                                     DelegateEditStatus = true;
                                     AdminEditStatus = false;
                         }
-                        else if (AdminStatus && Model.PreviousYearAdminCount > 0)
+                        else if (AdminStatus && Model.IsEnabled.Equals(true))
                         {
                                      DelegateEditStatus = false;
                                     AdminEditStatus = true;
@@ -386,7 +391,7 @@
                          var SumPerVarACBWRevEstOverBudgEstCurrFin = 0.00;
                          var SumPerVarACBWRevEstOverBudgEstNxtFin = 0.00;
 
-                         @if(Model.PreviousYearAdminCount > 0 && GroupsStatusRowCount > 0)
+                         @if(Model.IsEnabled.Equals(true) && GroupsStatusRowCount > 0)
                          {
                              SumPerVarRevEstOverBudgEstCurrFin = SumBudEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToInt32(Convert.ToDecimal((SumRevEstCurrFin - SumBudEstCurrFin) / SumBudEstCurrFin)*100) : Convert.ToInt32(0);
                              SumPerVarRevEstOverBudgEstNxtFin = SumRevEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToInt32(Convert.ToDecimal((SumBudgEstNexFin - SumRevEstCurrFin) / SumRevEstCurrFin)*100) : Convert.ToInt32(0);
@@ -424,7 +429,7 @@
                                 {
                                    <div style="color:green"> * Budget proposal @Model.SelectedAcademicYear for <span style="color:red">'@item.GroupName'</span> has been submitted to AC&BW successfully </div>
                                 }
-                                else if(User.IsInRole("Admin") && !AdminEditStatus && !@Model.WaitingForApprovalMessage.Equals(" "))
+                                else if(User.IsInRole("Admin") && GroupACBWSubmissionStatus && IsSubmittedToChairman == 0)
                                 {
                                     <div style="color:green"> * Budget values for @Model.SelectedAcademicYear for <span style="color:red">'@item.GroupName'</span> has been saved successfully </div>
                                 }
@@ -498,15 +503,19 @@
                                                        
                                             </th>
                                             @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
-                                             {
-                                                <th class="ACBWProposalForBudgetEstimates w-10">
-                                                   
-                                                </th>
-                                             
+                                                    {
+                                                        <th class="ACBWProposalForBudgetEstimates w-10">
+
+                                                        </th>
+                                                    }
+                                                @if (User.IsInRole("Admin"))
+                                                {
                                                 <th class="VariationInBudgetEstimates w-10">
                                                 
                                                 </th>
-                                            
+                                                }
+                                               @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                               {
                                                         <th class="ACBWJustificationBudgEstNxtFin w-10">
 
                                                         </th>
@@ -599,7 +608,7 @@
                                                                          
                                                                          Boolean LedgerIsDelegateSaved = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo)&& a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.HasDelegateSaved).FirstOrDefault();
                                                                          Boolean LedgerIsAdminSaved = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo)&& a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.HasAdminSaved).FirstOrDefault();
-                                                                            
+
                                                                          <tr>
                                                                                 <td></td>
                                                                                 <td>
@@ -614,7 +623,8 @@
                                                                                  </td>
                                                                                 <td>@Ledgers.LedgerName</td>
                                                                                 <td>
-                                                                                    @if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
+                                                                                   
+                                                                                    @if ((!DelegateEditStatus && IsSubmittedToACBW) || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                     {
                                                                                        <div class="form-group"> 
                                                                                          
@@ -1027,7 +1037,7 @@
                                                                                         Model.ACAndBWPropRENxtFin.Insert(LedgerNo, Convert.ToDecimal(0.00));
                                                                                     }
                                                                                 <td>
-                                                                                        @if (User.IsInRole("Admin") && LedgerIsAdminSaved)
+                                                                                        @if ((User.IsInRole("Admin") && LedgerIsAdminSaved) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                                                         {
                                                                                             <div class="form-group">
                                                                                              
@@ -1070,7 +1080,7 @@
                                                                                             </div>
                                                                                         </td>
                                                                                     }
-                                                                                    else if (User.IsInRole("Admin") && (!AdminEditStatus || LedgerIsAdminSaved))
+                                                                                    else if ((User.IsInRole("Admin") && (!AdminEditStatus || LedgerIsAdminSaved)) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                                                     {
                                                                                       <td>
                                                                                           <div class="form-group">
@@ -1092,7 +1102,7 @@
                                                                                     <table class="table" >
                                                                                     <thead> </thead>
                                                                                     <tbody>
-                                                                                       @if ((!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0 && !LedgerIsDelegateSaved && Model.EditEnabled ==@Ledgers.LedgerNo))
+                                                                                       @if ((!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.IsEnabled.Equals(true) && !LedgerIsDelegateSaved && Model.EditEnabled ==@Ledgers.LedgerNo))
                                                                                         {
                                                                                             <tr><td  style="border:none"> @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo})</td> </tr>
                                                                                             <tr><td  style="border:none"> @Html.ValidationMessage("Caution"+LedgerNo,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
@@ -1197,7 +1207,7 @@
                                                                 </div>
                                                             
                                                         }
-                                                        else if ((@Subs.RequireInput && !DelegateEditStatus) || (@Subs.RequireInput && !User.IsInRole("Admin") && IsDelegateSaved))
+                                                        else if ((@Subs.RequireInput && !DelegateEditStatus && IsSubmittedToACBW) || (@Subs.RequireInput && !User.IsInRole("Admin") && IsDelegateSaved))
                                                         {
                                                             var LedgerSumBudEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstCurrFin).Sum();                                                                                                                            
                                                             
@@ -1211,7 +1221,7 @@
                                                                 
                                                             }
 
-                                                            else if (!DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
+                                                            else if ((!DelegateEditStatus && IsSubmittedToACBW) || (!User.IsInRole("Admin") && IsDelegateSaved))
                                                             {
                                                                 <div class="form-group">
                                                                    
@@ -1405,7 +1415,7 @@
                                                                 @Html.ValidationMessageFor(model => model.RevEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
                                                         }
-                                                        else if(User.IsInRole("Admin") && DelegateEditStatus)
+                                                        else if(User.IsInRole("Admin") && DelegateEditStatus )
                                                         {
                                                             <div class="form-group">
                                                              @{  
@@ -1994,7 +2004,7 @@
                                                               <table class="table" style="border:none">
                                                               <thead> </thead>
                                                               <tbody>
-                                                              @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0 && !IsDelegateSaved && Model.EditEnabled ==@Subs.SubGroupNo)
+                                                              @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.IsEnabled.Equals(true) && !IsDelegateSaved && Model.EditEnabled ==@Subs.SubGroupNo)
                                                               {
                                                                    <tr><td  style="border:none"> @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11})</td></tr>
                                                                    <tr><td  style="border:none"> @Html.ValidationMessage("Caution"+Count,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
@@ -2155,11 +2165,11 @@
                                             Boolean ACBWSubmission = (from a in Model.Statuss where a.SectionNumber.Equals(@inner.SectionNo)  && a.GroupNumber.Equals(@item.GroupNo) select a.ACBWSubmission).FirstOrDefault();
                                          }
                                         
-                                    @if (User.IsInRole("Admin") && AdminEditStatus && (TotalAdminSavedLedgers == TotalSubGroups)  && Model.PreviousYearAdminCount > 0 && !ACBWSubmission)
+                                    @if (User.IsInRole("Admin") && AdminEditStatus && (TotalAdminSavedLedgers == TotalSubGroups)  && Model.IsEnabled.Equals(true) && !ACBWSubmission)
                                     {
                                             <input id="@SubmitChairPerson" class="Submit" formaction="~/Tabs/Index" type="submit" value="Submit to Chairperson for Approval" style="align-self:center"/>
                                         }
-                                        else if(!User.IsInRole("Admin") && DelegateEditStatus && (TotalDelegateSavedLedgers == TotalSubGroups)  && Model.PreviousYearAdminCount > 0)
+                                        else if(!User.IsInRole("Admin") && DelegateEditStatus && (TotalDelegateSavedLedgers == TotalSubGroups)  && Model.IsEnabled.Equals(true))
                                         {
                                             <input id="@SubmitACBW" class="Submit" formaction="~/Tabs/Index" type="submit" value="Submit to AC&BW for Approval" style="align-self:center"/>
                                         }
@@ -2176,12 +2186,12 @@
                                  {
                                    <div style="color:green"> * Budget proposal @Model.SelectedAcademicYear for <span style="color:red">'@item.GroupName'</span> has been submitted to AC&BW successfully </div>
                                  }
-                                 else if(User.IsInRole("Admin") && !AdminEditStatus && !@Model.WaitingForApprovalMessage.Equals(" "))
+                                 else if(User.IsInRole("Admin") && GroupACBWSubmissionStatus && IsSubmittedToChairman == 0)
                                 {
                                     <div style="color:green"> * Budget values for @Model.SelectedAcademicYear for <span style="color:red">'@item.GroupName'</span> has been saved successfully </div>
                                 }
                                         <table id="@identi-outertable" class="table table-responsive table-hover">
-                                            <thead>
+                                           <thead>
                                         <tr class="text-center">
                                            <th colspan="100" style="color:red;border-bottom:hidden;">(*FIGURES IN CRORES)</th>
                                         </tr>
@@ -2227,10 +2237,15 @@
                                                <th class="ACBWProposalForRevisedEstimates w-10" >
                                                  
                                                </th>
-                                             
+                                               }
+                                             @if (User.IsInRole("Admin"))
+                                             {
                                              <th class="VariationInRevisedEstimates w-10" >
-                                                       
+                                                      
                                             </th>
+                                            } 
+                                            @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                             {
                                                         <th class="ACBWJustificationRevEst w-10">
 
                                                         </th>
@@ -2245,15 +2260,19 @@
                                                        
                                             </th>
                                             @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
-                                             {
-                                                <th class="ACBWProposalForBudgetEstimates w-10">
-                                                   
-                                                </th>
-                                             
+                                                    {
+                                                        <th class="ACBWProposalForBudgetEstimates w-10">
+
+                                                        </th>
+                                                    }
+                                                @if (User.IsInRole("Admin"))
+                                                {
                                                 <th class="VariationInBudgetEstimates w-10">
                                                 
                                                 </th>
-                                            
+                                                }
+                                               @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                               {
                                                         <th class="ACBWJustificationBudgEstNxtFin w-10">
 
                                                         </th>
@@ -2346,7 +2365,7 @@
                                                                          
                                                                          Boolean LedgerIsDelegateSaved = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo)&& a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.HasDelegateSaved).FirstOrDefault();
                                                                          Boolean LedgerIsAdminSaved = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo)&& a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.HasAdminSaved).FirstOrDefault();
-                                                                            
+                                                                         
                                                                          <tr>
                                                                                 <td></td>
                                                                                 <td>
@@ -2361,7 +2380,8 @@
                                                                                  </td>
                                                                                 <td>@Ledgers.LedgerName</td>
                                                                                 <td>
-                                                                                    @if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
+                                                                                    
+                                                                                    @if ((!DelegateEditStatus && IsSubmittedToACBW) || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                     {
                                                                                        <div class="form-group"> 
                                                                                          
@@ -2774,7 +2794,7 @@
                                                                                         Model.ACAndBWPropRENxtFin.Insert(LedgerNo, Convert.ToDecimal(0.00));
                                                                                     }
                                                                                 <td>
-                                                                                        @if (User.IsInRole("Admin") && LedgerIsAdminSaved)
+                                                                                        @if ((User.IsInRole("Admin") && LedgerIsAdminSaved) )
                                                                                         {
                                                                                             <div class="form-group">
                                                                                              
@@ -2817,7 +2837,7 @@
                                                                                             </div>
                                                                                         </td>
                                                                                     }
-                                                                                    else if (User.IsInRole("Admin") && (!AdminEditStatus || LedgerIsAdminSaved))
+                                                                                    else if ((User.IsInRole("Admin") && (!AdminEditStatus || LedgerIsAdminSaved)) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                                                     {
                                                                                       <td>
                                                                                           <div class="form-group">
@@ -2839,7 +2859,7 @@
                                                                                     <table class="table" >
                                                                                     <thead> </thead>
                                                                                     <tbody>
-                                                                                       @if ((!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0 && !LedgerIsDelegateSaved && Model.EditEnabled ==@Ledgers.LedgerNo))
+                                                                                       @if ((!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.IsEnabled.Equals(true) && !LedgerIsDelegateSaved && Model.EditEnabled ==@Ledgers.LedgerNo))
                                                                                         {
                                                                                             <tr><td  style="border:none"> @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo})</td> </tr>
                                                                                             <tr><td  style="border:none"> @Html.ValidationMessage("Caution"+LedgerNo,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
@@ -2944,7 +2964,7 @@
                                                                 </div>
                                                             
                                                         }
-                                                        else if ((@Subs.RequireInput && !DelegateEditStatus) || (@Subs.RequireInput && !User.IsInRole("Admin") && IsDelegateSaved))
+                                                        else if ((@Subs.RequireInput && !DelegateEditStatus && IsSubmittedToACBW) || (@Subs.RequireInput && !User.IsInRole("Admin") && IsDelegateSaved))
                                                         {
                                                             var LedgerSumBudEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstCurrFin).Sum();                                                                                                                            
                                                             
@@ -2958,7 +2978,7 @@
                                                                 
                                                             }
 
-                                                            else if (!DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
+                                                            else if ((!DelegateEditStatus && IsSubmittedToACBW) || (!User.IsInRole("Admin") && IsDelegateSaved))
                                                             {
                                                                 <div class="form-group">
                                                                    
@@ -3741,7 +3761,7 @@
                                                               <table class="table" style="border:none">
                                                               <thead> </thead>
                                                               <tbody>
-                                                              @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0 && !IsDelegateSaved && Model.EditEnabled ==@Subs.SubGroupNo)
+                                                              @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.IsEnabled.Equals(true) && !IsDelegateSaved && Model.EditEnabled ==@Subs.SubGroupNo)
                                                               {
                                                                    <tr><td  style="border:none"> @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11})</td></tr>
                                                                    <tr><td  style="border:none"> @Html.ValidationMessage("Caution"+Count,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
@@ -3902,11 +3922,11 @@
                                             Boolean ACBWSubmission = (from a in Model.Statuss where a.SectionNumber.Equals(@inner.SectionNo)  && a.GroupNumber.Equals(@item.GroupNo) select a.ACBWSubmission).FirstOrDefault();
                                          }
                                         
-                                    @if (User.IsInRole("Admin") && AdminEditStatus && (TotalAdminSavedLedgers == TotalSubGroups)  && Model.PreviousYearAdminCount > 0 && !ACBWSubmission)
+                                    @if (User.IsInRole("Admin") && AdminEditStatus && (TotalAdminSavedLedgers == TotalSubGroups)  && Model.IsEnabled.Equals(true) && !ACBWSubmission)
                                     {
                                             <input id="@SubmitChairPerson" class="Submit" formaction="~/Tabs/Index" type="submit" value="Submit to Chairperson for Approval" style="align-self:center"/>
                                         }
-                                        else if(!User.IsInRole("Admin") && DelegateEditStatus && (TotalDelegateSavedLedgers == TotalSubGroups)  && Model.PreviousYearAdminCount > 0)
+                                        else if(!User.IsInRole("Admin") && DelegateEditStatus && (TotalDelegateSavedLedgers == TotalSubGroups)  && Model.IsEnabled.Equals(true))
                                         {
                                             <input id="@SubmitACBW" class="Submit" formaction="~/Tabs/Index" type="submit" value="Submit to AC&BW for Approval" style="align-self:center"/>
                                         }
@@ -4059,15 +4079,19 @@
                     {
                        var GroupsStatusRowCount = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.DelegateEditStatus).Count();
                        var AdminStatus = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.AdminEditStatus).FirstOrDefault();
-                       
+                       Boolean GroupACBWSubmissionStatus = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.ACBWSubmission).FirstOrDefault();
+                       var IsSubmittedToChairman = (from a in Model.Statuss where (a.SectionNumber == 0 && a.GroupNumber.Equals("0")) select a.ACBWSubmission).Count();
+
+                       Boolean IsSubmittedToACBW = (from a in Model.Statuss where (a.SectionNumber.Equals(0) && a.GroupNumber.Equals("0")) select a.ACBWSubmission).FirstOrDefault();
+
                        var TotalSubGroups = (from b in Model.SubGroupss where b.GroupNo.Equals(@item.GroupNo) && b.RequireInput == false select b.SubGroupNo).Count();
 
-                        if (GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0 )
+                        if (GroupsStatusRowCount == 0 && Model.IsEnabled.Equals(true))
                         {
                                     DelegateEditStatus = true;
                                     AdminEditStatus = false;
                         }
-                        else if (AdminStatus && Model.PreviousYearAdminCount > 0)
+                        else if (AdminStatus && Model.IsEnabled.Equals(true))
                         {
                                      DelegateEditStatus = false;
                                     AdminEditStatus = true;
@@ -4095,7 +4119,7 @@
                          var SumPerVarACBWRevEstOverBudgEstCurrFin = 0.00;
                          var SumPerVarACBWRevEstOverBudgEstNxtFin = 0.00;
 
-                         @if(Model.PreviousYearAdminCount > 0 && GroupsStatusRowCount > 0)
+                         @if(Model.IsEnabled.Equals(true) && GroupsStatusRowCount > 0)
                          {
                              SumPerVarRevEstOverBudgEstCurrFin = SumBudEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToInt32(Convert.ToDecimal((SumRevEstCurrFin - SumBudEstCurrFin) / SumBudEstCurrFin)*100) : Convert.ToInt32(0);
                              SumPerVarRevEstOverBudgEstNxtFin = SumRevEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToInt32(Convert.ToDecimal((SumBudgEstNexFin - SumRevEstCurrFin) / SumRevEstCurrFin)*100) : Convert.ToInt32(0);
@@ -4133,7 +4157,7 @@
                                 {
                                    <div style="color:green"> * Budget proposal @Model.SelectedAcademicYear for <span style="color:red">'@item.GroupName'</span> has been submitted to AC&BW successfully </div>
                                 }
-                                else if(User.IsInRole("Admin") && !AdminEditStatus && !@Model.WaitingForApprovalMessage.Equals(" "))
+                                else if(User.IsInRole("Admin") && GroupACBWSubmissionStatus && IsSubmittedToChairman==0)
                                 {
                                     <div style="color:green"> * Budget values for @Model.SelectedAcademicYear for <span style="color:red">'@item.GroupName'</span> has been saved successfully </div>
                                 }
@@ -4184,10 +4208,15 @@
                                                <th class="ACBWProposalForRevisedEstimates w-10" >
                                                  
                                                </th>
-                                             
+                                               }
+                                             @if (User.IsInRole("Admin"))
+                                             {
                                              <th class="VariationInRevisedEstimates w-10" >
-                                                       
+                                                      
                                             </th>
+                                            } 
+                                            @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                             {
                                                         <th class="ACBWJustificationRevEst w-10">
 
                                                         </th>
@@ -4202,15 +4231,19 @@
                                                        
                                             </th>
                                             @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
-                                             {
-                                                <th class="ACBWProposalForBudgetEstimates w-10">
-                                                   
-                                                </th>
-                                             
+                                                    {
+                                                        <th class="ACBWProposalForBudgetEstimates w-10">
+
+                                                        </th>
+                                                    }
+                                                @if (User.IsInRole("Admin"))
+                                                {
                                                 <th class="VariationInBudgetEstimates w-10">
                                                 
                                                 </th>
-                                            
+                                                }
+                                               @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                               {
                                                         <th class="ACBWJustificationBudgEstNxtFin w-10">
 
                                                         </th>
@@ -4303,7 +4336,7 @@
                                                                          
                                                                          Boolean LedgerIsDelegateSaved = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo)&& a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.HasDelegateSaved).FirstOrDefault();
                                                                          Boolean LedgerIsAdminSaved = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo)&& a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.HasAdminSaved).FirstOrDefault();
-                                                                            
+                                                                         
                                                                          <tr>
                                                                                 <td></td>
                                                                                 <td>
@@ -4318,7 +4351,8 @@
                                                                                  </td>
                                                                                 <td>@Ledgers.LedgerName</td>
                                                                                 <td>
-                                                                                    @if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
+                                                                                   
+                                                                                    @if ((!DelegateEditStatus && IsSubmittedToACBW) || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                     {
                                                                                        <div class="form-group"> 
                                                                                          
@@ -4731,7 +4765,7 @@
                                                                                         Model.ACAndBWPropRENxtFin.Insert(LedgerNo, Convert.ToDecimal(0.00));
                                                                                     }
                                                                                 <td>
-                                                                                        @if (User.IsInRole("Admin") && LedgerIsAdminSaved)
+                                                                                        @if ((User.IsInRole("Admin") && LedgerIsAdminSaved) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                                                         {
                                                                                             <div class="form-group">
                                                                                              
@@ -4774,7 +4808,7 @@
                                                                                             </div>
                                                                                         </td>
                                                                                     }
-                                                                                    else if (User.IsInRole("Admin") && (!AdminEditStatus || LedgerIsAdminSaved))
+                                                                                    else if ((User.IsInRole("Admin") && (!AdminEditStatus || LedgerIsAdminSaved)) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                                                     {
                                                                                       <td>
                                                                                           <div class="form-group">
@@ -4796,7 +4830,7 @@
                                                                                     <table class="table" >
                                                                                     <thead> </thead>
                                                                                     <tbody>
-                                                                                       @if ((!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0 && !LedgerIsDelegateSaved && Model.EditEnabled ==@Ledgers.LedgerNo))
+                                                                                       @if ((!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.IsEnabled.Equals(true) && !LedgerIsDelegateSaved && Model.EditEnabled ==@Ledgers.LedgerNo))
                                                                                         {
                                                                                             <tr><td  style="border:none"> @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo})</td> </tr>
                                                                                             <tr><td  style="border:none"> @Html.ValidationMessage("Caution"+LedgerNo,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
@@ -4901,7 +4935,7 @@
                                                                 </div>
                                                             
                                                         }
-                                                        else if ((@Subs.RequireInput && !DelegateEditStatus) || (@Subs.RequireInput && !User.IsInRole("Admin") && IsDelegateSaved))
+                                                        else if ((@Subs.RequireInput && !DelegateEditStatus && IsSubmittedToACBW) || (@Subs.RequireInput && !User.IsInRole("Admin") && IsDelegateSaved))
                                                         {
                                                             var LedgerSumBudEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstCurrFin).Sum();                                                                                                                            
                                                             
@@ -4915,7 +4949,7 @@
                                                                 
                                                             }
 
-                                                            else if (!DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
+                                                            else if ((!DelegateEditStatus && IsSubmittedToACBW) || (!User.IsInRole("Admin") && IsDelegateSaved))
                                                             {
                                                                 <div class="form-group">
                                                                    
@@ -5698,7 +5732,7 @@
                                                               <table class="table" style="border:none">
                                                               <thead> </thead>
                                                               <tbody>
-                                                              @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0 && !IsDelegateSaved && Model.EditEnabled ==@Subs.SubGroupNo)
+                                                              @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.IsEnabled.Equals(true) && !IsDelegateSaved && Model.EditEnabled ==@Subs.SubGroupNo)
                                                               {
                                                                    <tr><td  style="border:none"> @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11})</td></tr>
                                                                    <tr><td  style="border:none"> @Html.ValidationMessage("Caution"+Count,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
@@ -5859,11 +5893,11 @@
                                             Boolean ACBWSubmission = (from a in Model.Statuss where a.SectionNumber.Equals(@inner.SectionNo)  && a.GroupNumber.Equals(@item.GroupNo) select a.ACBWSubmission).FirstOrDefault();
                                          }
                                         
-                                    @if (User.IsInRole("Admin") && AdminEditStatus && (TotalAdminSavedLedgers == TotalSubGroups)  && Model.PreviousYearAdminCount > 0 && !ACBWSubmission)
+                                    @if (User.IsInRole("Admin") && AdminEditStatus && (TotalAdminSavedLedgers == TotalSubGroups)  && Model.IsEnabled.Equals(true) && !ACBWSubmission)
                                     {
                                             <input id="@SubmitChairPerson" class="Submit" formaction="~/Tabs/Index" type="submit" value="Submit to Chairperson for Approval" style="align-self:center"/>
                                         }
-                                        else if(!User.IsInRole("Admin") && DelegateEditStatus && (TotalDelegateSavedLedgers == TotalSubGroups)  && Model.PreviousYearAdminCount > 0)
+                                        else if(!User.IsInRole("Admin") && DelegateEditStatus && (TotalDelegateSavedLedgers == TotalSubGroups)  && Model.IsEnabled.Equals(true))
                                         {
                                             <input id="@SubmitACBW" class="Submit" formaction="~/Tabs/Index" type="submit" value="Submit to AC&BW for Approval" style="align-self:center"/>
                                         }
@@ -5880,7 +5914,7 @@
                                  {
                                    <div style="color:green"> * Budget proposal @Model.SelectedAcademicYear for <span style="color:red">'@item.GroupName'</span> has been submitted to AC&BW successfully </div>
                                  }
-                                 else if(User.IsInRole("Admin") && !AdminEditStatus && !@Model.WaitingForApprovalMessage.Equals(" "))
+                                 else if(User.IsInRole("Admin") && GroupACBWSubmissionStatus && IsSubmittedToChairman==0)
                                 {
                                     <div style="color:green"> * Budget values for @Model.SelectedAcademicYear for <span style="color:red">'@item.GroupName'</span> has been saved successfully </div>
                                 }
@@ -5931,10 +5965,15 @@
                                                <th class="ACBWProposalForRevisedEstimates w-10" >
                                                  
                                                </th>
-                                             
+                                               }
+                                             @if (User.IsInRole("Admin"))
+                                             {
                                              <th class="VariationInRevisedEstimates w-10" >
-                                                       
+                                                      
                                             </th>
+                                            } 
+                                            @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                             {
                                                         <th class="ACBWJustificationRevEst w-10">
 
                                                         </th>
@@ -5949,15 +5988,19 @@
                                                        
                                             </th>
                                             @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
-                                             {
-                                                <th class="ACBWProposalForBudgetEstimates w-10">
-                                                   
-                                                </th>
-                                             
+                                                    {
+                                                        <th class="ACBWProposalForBudgetEstimates w-10">
+
+                                                        </th>
+                                                    }
+                                                @if (User.IsInRole("Admin"))
+                                                {
                                                 <th class="VariationInBudgetEstimates w-10">
                                                 
                                                 </th>
-                                            
+                                                }
+                                               @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                               {
                                                         <th class="ACBWJustificationBudgEstNxtFin w-10">
 
                                                         </th>
@@ -6050,7 +6093,7 @@
                                                                          
                                                                          Boolean LedgerIsDelegateSaved = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo)&& a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.HasDelegateSaved).FirstOrDefault();
                                                                          Boolean LedgerIsAdminSaved = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo)&& a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.HasAdminSaved).FirstOrDefault();
-                                                                            
+                                                                         
                                                                          <tr>
                                                                                 <td></td>
                                                                                 <td>
@@ -6065,7 +6108,8 @@
                                                                                  </td>
                                                                                 <td>@Ledgers.LedgerName</td>
                                                                                 <td>
-                                                                                    @if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
+                                                                                   
+                                                                                    @if ((!DelegateEditStatus && IsSubmittedToACBW) || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                     {
                                                                                        <div class="form-group"> 
                                                                                          
@@ -6478,7 +6522,7 @@
                                                                                         Model.ACAndBWPropRENxtFin.Insert(LedgerNo, Convert.ToDecimal(0.00));
                                                                                     }
                                                                                 <td>
-                                                                                        @if (User.IsInRole("Admin") && LedgerIsAdminSaved)
+                                                                                        @if ((User.IsInRole("Admin") && LedgerIsAdminSaved) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                                                         {
                                                                                             <div class="form-group">
                                                                                              
@@ -6521,7 +6565,7 @@
                                                                                             </div>
                                                                                         </td>
                                                                                     }
-                                                                                    else if (User.IsInRole("Admin") && (!AdminEditStatus || LedgerIsAdminSaved))
+                                                                                    else if ((User.IsInRole("Admin") && (!AdminEditStatus || LedgerIsAdminSaved)) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                                                     {
                                                                                       <td>
                                                                                           <div class="form-group">
@@ -6543,7 +6587,7 @@
                                                                                     <table class="table" >
                                                                                     <thead> </thead>
                                                                                     <tbody>
-                                                                                       @if ((!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0 && !LedgerIsDelegateSaved && Model.EditEnabled ==@Ledgers.LedgerNo))
+                                                                                       @if ((!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.IsEnabled.Equals(true) && !LedgerIsDelegateSaved && Model.EditEnabled ==@Ledgers.LedgerNo))
                                                                                         {
                                                                                             <tr><td  style="border:none"> @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11+@Ledgers.LedgerNo})</td> </tr>
                                                                                             <tr><td  style="border:none"> @Html.ValidationMessage("Caution"+LedgerNo,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
@@ -6648,7 +6692,7 @@
                                                                 </div>
                                                             
                                                         }
-                                                        else if ((@Subs.RequireInput && !DelegateEditStatus) || (@Subs.RequireInput && !User.IsInRole("Admin") && IsDelegateSaved))
+                                                        else if ((@Subs.RequireInput && !DelegateEditStatus && IsSubmittedToACBW) || (@Subs.RequireInput && !User.IsInRole("Admin") && IsDelegateSaved))
                                                         {
                                                             var LedgerSumBudEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstCurrFin).Sum();                                                                                                                            
                                                             
@@ -6662,7 +6706,7 @@
                                                                 
                                                             }
 
-                                                            else if (!DelegateEditStatus || (!User.IsInRole("Admin") && IsDelegateSaved))
+                                                            else if ((!DelegateEditStatus && IsSubmittedToACBW) || (!User.IsInRole("Admin") && IsDelegateSaved))
                                                             {
                                                                 <div class="form-group">
                                                                    
@@ -7445,7 +7489,7 @@
                                                               <table class="table" style="border:none">
                                                               <thead> </thead>
                                                               <tbody>
-                                                              @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.PreviousYearAdminCount > 0 && !IsDelegateSaved && Model.EditEnabled ==@Subs.SubGroupNo)
+                                                              @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && Model.IsEnabled.Equals(true) && !IsDelegateSaved && Model.EditEnabled ==@Subs.SubGroupNo)
                                                               {
                                                                    <tr><td  style="border:none"> @Html.TextBoxFor(m => m.File, new { type = "file", @id = @name11})</td></tr>
                                                                    <tr><td  style="border:none"> @Html.ValidationMessage("Caution"+Count,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
@@ -7606,11 +7650,11 @@
                                             Boolean ACBWSubmission = (from a in Model.Statuss where a.SectionNumber.Equals(@inner.SectionNo)  && a.GroupNumber.Equals(@item.GroupNo) select a.ACBWSubmission).FirstOrDefault();
                                          }
                                         
-                                    @if (User.IsInRole("Admin") && AdminEditStatus && (TotalAdminSavedLedgers == TotalSubGroups)  && Model.PreviousYearAdminCount > 0 && !ACBWSubmission)
+                                    @if (User.IsInRole("Admin") && AdminEditStatus && (TotalAdminSavedLedgers == TotalSubGroups)  && Model.IsEnabled.Equals(true) && !ACBWSubmission)
                                     {
                                             <input id="@SubmitChairPerson" class="Submit" formaction="~/Tabs/Index" type="submit" value="Submit to Chairperson for Approval" style="align-self:center"/>
                                         }
-                                        else if(!User.IsInRole("Admin") && DelegateEditStatus && (TotalDelegateSavedLedgers == TotalSubGroups)  && Model.PreviousYearAdminCount > 0)
+                                        else if(!User.IsInRole("Admin") && DelegateEditStatus && (TotalDelegateSavedLedgers == TotalSubGroups)  && Model.IsEnabled.Equals(true) )
                                         {
                                             <input id="@SubmitACBW" class="Submit" formaction="~/Tabs/Index" type="submit" value="Submit to AC&BW for Approval" style="align-self:center"/>
                                         }

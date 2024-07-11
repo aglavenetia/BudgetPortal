@@ -25,15 +25,24 @@ $(document).ready(
             //alert(elementid);
             var Pervariationid = $(this).closest("tr").find($("input[id^='PerVarRevEstOverBudgEstCurrFin']"));
             //alert(Pervariationid);
-            var PerVariation = parseInt((parseFloat($(this).val()) - parseFloat(elementid.val())) / parseFloat(elementid.val())*100);
-            Pervariationid.val(PerVariation);
+
+                if (elementid.val() == 0)
+                {
+                    Pervariationid.val(0);
+                }
+                else
+                {
+                    var PerVariation = parseInt((parseFloat($(this).val()) - parseFloat(elementid.val())) / parseFloat(elementid.val())*100);
+                    Pervariationid.val(PerVariation);
+                }
 
             if (PerVariation > 10) {
+                
+                $(this).closest("tr").find($("textarea[id^='DelegateJustificationRevEst']")).prop('required', true);
                 alert(PerVariation);
-                $(this).closest("tr").find($("textarea[id^='Justification']")).prop('required', true);
             }
             else {
-                $(this).closest("tr").find($("textarea[id^='Justification']")).removeProp('required', true);
+                $(this).closest("tr").find($("textarea[id^='DelegateJustificationRevEst']")).removeProp('required', true);
                 alert("Removed");
             }
 
@@ -47,8 +56,15 @@ $(document).ready(
                 //alert(elementid);
                 var Pervariationid = $(this).closest("tr").find($("input[id^='PerVarRevEstOverBudgEstNxtFin']"));
                 //alert(Pervariationid);
+
+                if (elementid.val() == 0) {
+                    Pervariationid.val(0);
+                }
+                else
+                { 
                 var PerVariation = parseInt((parseFloat($(this).val()) - parseFloat(elementid.val())) / parseFloat(elementid.val())*100);
-                Pervariationid.val(PerVariation);
+                    Pervariationid.val(PerVariation);
+                }
 
                 if (PerVariation > 10) {
                     alert(PerVariation);
@@ -57,6 +73,44 @@ $(document).ready(
                 else {
                     $(this).closest("tr").find($("textarea[id^='Justification']")).removeProp('required', true);
                     alert("Removed");
+                }
+            }
+        );
+
+        //Calculating Percentage variation for ACBW Proposed Revised Estimates of Current Financial Year
+        $("body").on("change", "input[id^='ACAndBWPropRECurrFin']",
+            function () {
+                //alert($(this).attr("id"));
+                var elementid = $(this).closest("tr").find($("input[id^='RevEstCurrFin']"));
+                //alert(elementid);
+                var Pervariationid = $(this).closest("tr").find($("input[id^='PerVarACBWRevEstOverBudgEstCurrFin']"));
+                //alert(Pervariationid);
+
+                if (elementid.val() == 0) {
+                    Pervariationid.val(0);
+                }
+                else {
+                    var PerVariation = parseInt((parseFloat($(this).val()) - parseFloat(elementid.val())) / parseFloat(elementid.val()) * 100);
+                    Pervariationid.val(PerVariation);
+                }
+
+            });
+
+        //Calculating Percentage variation for ACBW Proposed Budget Estimates of Next Financial Year
+        $("body").on("change", "input[id^= 'ACAndBWPropRENxtFin']",
+            function () {
+                //alert($(this).attr("id"));
+                var elementid = $(this).closest("tr").find($("input[id^='ACAndBWPropRECurrFin']"));
+                //alert(elementid);
+                var Pervariationid = $(this).closest("tr").find($("input[id^='PerVarACBWRevEstOverBudgEstNxtFin']"));
+                //alert(Pervariationid);
+
+                if (elementid.val() == 0) {
+                    Pervariationid.val(0);
+                }
+                else {
+                    var PerVariation = parseInt((parseFloat($(this).val()) - parseFloat(elementid.val())) / parseFloat(elementid.val()) * 100);
+                    Pervariationid.val(PerVariation);
                 }
             }
         );

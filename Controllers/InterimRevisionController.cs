@@ -53,7 +53,7 @@ namespace BudgetPortal.Controllers
                     }).ToList();
             var IsDivNull = mymodel.DivisionNames.Where(x => x.Selected.Equals("true")).FirstOrDefault();
 
-            if (Month >3 && Month < 10 && Year == 2023 && IsDivNull!=null)
+            if ((Month >3 && Month < 10) && IsDivNull!=null)
             {
                 
                 mymodel.IsEnabled= true;
@@ -274,7 +274,7 @@ namespace BudgetPortal.Controllers
                                          .Where(x => x.FinancialYear1 == (Year - 1)).ToList();
 
             var Month = DateTime.Now.Month;
-            if ((Month > 3 && Month < 10) && (Year == 2023))
+            if ((Month > 3 && Month < 10) && (Year == DateTime.Now.Year))
             {
                 mymodel.IsEnabled = true;
             }
@@ -409,7 +409,7 @@ namespace BudgetPortal.Controllers
             _context.SaveChanges();
 
             var Month = DateTime.Now.Month;
-            if (Month > 3 && Month < 10)
+            if ((Month > 3 && Month < 10) && (Convert.ToInt32(splitAcademicYear[0]) == DateTime.Now.Year))
             {
                 IM.IsEnabled = true;
             }
@@ -468,7 +468,7 @@ namespace BudgetPortal.Controllers
 
             var splitAcademicYear = IM.SelectedAcademicYear.ToString().Split("-");
             int index = IM.SubGroupNameOrLedgerName.IndexOf(IM.SubGroupLedgerName);
-            if (Month > 3 && Month < 10)
+            if ((Month > 3 && Month < 10) && (Convert.ToInt32(splitAcademicYear[0]) == DateTime.Now.Year))
             {
                 IM.IsEnabled = true;
             }
