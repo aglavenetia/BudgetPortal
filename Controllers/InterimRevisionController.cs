@@ -21,8 +21,10 @@ namespace BudgetPortal.Controllers
         [HttpGet]
         public IActionResult InterimRev()
         {
-            var Year = DateTime.Now.Year;
-            var Month = DateTime.Now.Month;
+            //var Year = DateTime.Now.Year;
+            var Year = 2025;
+            //var Month = DateTime.Now.Month;
+            var Month = 10;
 
             var username = User.Identity.Name;
             var DivName = _context.Users
@@ -210,7 +212,9 @@ namespace BudgetPortal.Controllers
                 MD.PreviousYearAdminCount = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
                      .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Select(x => x.AdminEditStatus).Count();*/
 
-                var Month = DateTime.Now.Month;
+                //var Month = DateTime.Now.Month;
+                var Month = 10;
+
                 if (Month > 3 && Month < 10)
                 {
                     IM.IsEnabled = true;
@@ -273,9 +277,12 @@ namespace BudgetPortal.Controllers
             mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == LoggedInDivisionID)
                                          .Where(x => x.FinancialYear1 == (Year - 1)).ToList();
 
-            var Month = DateTime.Now.Month;
-            if ((Month > 3 && Month < 10) && (Year == DateTime.Now.Year))
-            {
+            //var Month = DateTime.Now.Month;
+            var Month = 10;
+
+            //if ((Month > 3 && Month < 10) && (Year == DateTime.Now.Year))
+           if ((Month > 3 && Month < 10) && (Year == 2025))
+           {
                 mymodel.IsEnabled = true;
             }
             /*int FinalApproved = (from a in mymodel.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(false) select a.AdminEditStatus).Count();
@@ -408,8 +415,10 @@ namespace BudgetPortal.Controllers
             _context.BudgetDetails.Remove(result);
             _context.SaveChanges();
 
-            var Month = DateTime.Now.Month;
-            if ((Month > 3 && Month < 10) && (Convert.ToInt32(splitAcademicYear[0]) == DateTime.Now.Year))
+            //var Month = DateTime.Now.Month;
+            var Month = 10;
+            //if ((Month > 3 && Month < 10) && (Convert.ToInt32(splitAcademicYear[0]) == DateTime.Now.Year))
+            if ((Month > 3 && Month < 10) && (Convert.ToInt32(splitAcademicYear[0]) == 2025))
             {
                 IM.IsEnabled = true;
             }
@@ -455,7 +464,8 @@ namespace BudgetPortal.Controllers
         public IActionResult Edit(InterimRevision IM)
         {
             IM.EditEnabled = IM.SubGroupLedgerName;
-            var Month = DateTime.Now.Month;
+            //var Month = DateTime.Now.Month;
+            var Month = 10;
             var DivName = " ";
             var DivisionID = " ";
             if (User.Identity.Name.Equals("admin@test.com"))
@@ -468,8 +478,9 @@ namespace BudgetPortal.Controllers
 
             var splitAcademicYear = IM.SelectedAcademicYear.ToString().Split("-");
             int index = IM.SubGroupNameOrLedgerName.IndexOf(IM.SubGroupLedgerName);
-            if ((Month > 3 && Month < 10) && (Convert.ToInt32(splitAcademicYear[0]) == DateTime.Now.Year))
-            {
+            //if ((Month > 3 && Month < 10) && (Convert.ToInt32(splitAcademicYear[0]) == DateTime.Now.Year))
+              if ((Month > 3 && Month < 10) && (Convert.ToInt32(splitAcademicYear[0]) == 2025))
+              {
                 IM.IsEnabled = true;
             }
 

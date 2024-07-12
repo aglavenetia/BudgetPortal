@@ -23,6 +23,7 @@
     var SumRevEstCurrFin = 0.00; 
     var SumBudgEstNexFin= 0.00;
     var ReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
+    var DivisionTypeName = (from a in Model.DivisionTypeNames where a.Selected == true select a.Text).FirstOrDefault();
     var NextAcademicYear = "";
     String[] SplitAcademicYear = new String[1];
 }
@@ -200,12 +201,20 @@
                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                      where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo)) 
                                                      select a.ACAndBWPropRENxtFin).Sum();
-                           }
+                            }
                             if (CounterBody == 0)
                             {
                                 //var ReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
                                 var SelectedAcademicYear = (from a in Model.AcademicYears where a.Selected == true select a.Text).FirstOrDefault();
-                                var Report = (ReportName!=null && @ReportName.Contains("Budget")) ? @ReportName : @ReportName + " "+@SelectedAcademicYear;
+                                var Report = " ";
+                                if(ReportName !="Headwise Consolidation")
+                                {
+                                    Report = (ReportName != null && @ReportName.Contains("Budget")) ? @ReportName : @ReportName + " " + @SelectedAcademicYear + "(" + @SelectedDivisionTypeName + ")";
+                                }
+                                else
+                                {
+                                    Report = (ReportName != null && @ReportName.Contains("Budget")) ? @ReportName : @ReportName + " " + @SelectedAcademicYear;
+                                }
                                 if(SelectedAcademicYear!=null)
                                 {
                                    SplitAcademicYear = SelectedAcademicYear.Split("-");
@@ -786,7 +795,15 @@
                                 
                                     NextAcademicYear = SplitAcademicYear[1]+"-"+(Convert.ToInt32(SplitAcademicYear[1])+Convert.ToInt32(1));
                                 }
-                                var Report = ReportName != null && @ReportName.Contains("Budget") ? @ReportName : @ReportName + " " + @SelectedAcademicYear;
+                                var Report = "";
+                                if (ReportName != "Headwise Consolidation")
+                                {
+                                    Report = (ReportName != null && @ReportName.Contains("Budget")) ? @ReportName : @ReportName + " " + @SelectedAcademicYear + "(" + @SelectedDivisionTypeName + ")";
+                                }
+                                else
+                                {
+                                    Report = (ReportName != null && @ReportName.Contains("Budget")) ? @ReportName : @ReportName + " " + @SelectedAcademicYear;
+                                }
 
                                 var SumGroupReport = 0.00;
 
@@ -1476,7 +1493,15 @@
                                 
                                     NextAcademicYear = SplitAcademicYear[1]+"-"+(Convert.ToInt32(SplitAcademicYear[1])+Convert.ToInt32(1));
                                 }
-                                var Report = ReportName!=null && @ReportName.Contains("Budget") ? @ReportName : @ReportName + " " + @SelectedAcademicYear;
+                                var Report = "";
+                                if (ReportName != "Headwise Consolidation")
+                                {
+                                   Report = (ReportName != null && @ReportName.Contains("Budget")) ? @ReportName : @ReportName + " " + @SelectedAcademicYear + "(" + @SelectedDivisionTypeName + ")";
+                                }
+                                else
+                                {
+                                    Report = (ReportName != null && @ReportName.Contains("Budget")) ? @ReportName : @ReportName + " " + @SelectedAcademicYear;
+                                }
 
                                 var SumGroupReport = 0.00;
 
@@ -2049,8 +2074,15 @@
                                     SplitAcademicYear = SelectedAcademicYear.Split("-");
                                 }
                                     NextAcademicYear = SplitAcademicYear[1]+"-"+(Convert.ToInt32(SplitAcademicYear[1])+Convert.ToInt32(1));
-                                
-                                var Report = ReportName != null && @ReportName.Contains("Budget") ? @ReportName : @ReportName + " " + @SelectedAcademicYear;
+                                var Report = "";
+                                if (ReportName != "Headwise Consolidation")
+                                {
+                                     Report = (ReportName != null && @ReportName.Contains("Budget")) ? @ReportName : @ReportName + " " + @SelectedAcademicYear + "(" + @SelectedDivisionTypeName + ")";
+                                }
+                                else
+                                {
+                                     Report = (ReportName != null && @ReportName.Contains("Budget")) ? @ReportName : @ReportName + " " + @SelectedAcademicYear;
+                                }
 
                                 var SumGroupReport = 0.00;
 
@@ -2629,10 +2661,7 @@
                                             </tbody>
                                         </table>
                                     }
-                                    @*Html.Hidden("SectionName",Model.SectionName, new{@id = @identi+"-SectionName" })
-                                        @Html.Hidden("GroupName",Model.GroupName, new{@id = @identi+"-GroupName" })
-                                        @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = @identi+"-SelectedAcademicYear" })
-                                        @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = @identi+"-SelectedDivisionName" })*@
+                                   
 
                                  
                                 </div>
