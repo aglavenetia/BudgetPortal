@@ -21,7 +21,7 @@ namespace BudgetPortal.Controllers
         public IActionResult Index()
         {
             /*var Year = DateTime.Now.Year;*/
-            var Year = 2025;
+            var Year = 2021;
 
             var username = User.Identity.Name;
             var DivName = _context.Users
@@ -36,7 +36,7 @@ namespace BudgetPortal.Controllers
             if (Month > 0 && Month < 4)
             {
                 /*Year = DateTime.Now.Year - 1;*/
-                Year = 2025 - 1;
+                Year = 2021 - 1;
             }
             var AcademicYear = String.Concat(Year, "-", (Year + 1));
             var mymodel = new MultipleData();
@@ -405,7 +405,7 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
 
             //var Month = DateTime.Now.Month;
-            var Month = 10;
+            var Month = 4;
 
             if (Month > 9 && MD.BudgetApprovedStatus != 1)
             {

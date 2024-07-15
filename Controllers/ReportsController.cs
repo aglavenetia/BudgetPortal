@@ -33,14 +33,16 @@ namespace BudgetPortal.Controllers
         [HttpGet]
         public IActionResult Reports()
         {
-            var Year = DateTime.Now.Year;
+            //var Year = DateTime.Now.Year;
+            var Year = 2021;
             var username = User.Identity.Name;
 
-            var Month = DateTime.Now.Month;
-
+            //var Month = DateTime.Now.Month;
+            var Month = 10;
             if (Month > 0 && Month < 4)
             {
-                Year = DateTime.Now.Year - 1;
+                //Year = DateTime.Now.Year - 1;
+                Year = 2021 - 1;
             }
             var AcademicYear = String.Concat(Year, "-", (Year + 1));
             var NextAcademicYear = String.Concat((Year + 1), "-", (Year + 2));

@@ -22,7 +22,7 @@ namespace BudgetPortal.Controllers
         public IActionResult InterimRev()
         {
             //var Year = DateTime.Now.Year;
-            var Year = 2025;
+            var Year = 2021;
             //var Month = DateTime.Now.Month;
             var Month = 10;
 
@@ -281,7 +281,7 @@ namespace BudgetPortal.Controllers
             var Month = 10;
 
             //if ((Month > 3 && Month < 10) && (Year == DateTime.Now.Year))
-           if ((Month > 3 && Month < 10) && (Year == 2025))
+           if ((Month > 3 && Month < 10) && (Year == 2021))
            {
                 mymodel.IsEnabled = true;
             }
@@ -418,7 +418,7 @@ namespace BudgetPortal.Controllers
             //var Month = DateTime.Now.Month;
             var Month = 10;
             //if ((Month > 3 && Month < 10) && (Convert.ToInt32(splitAcademicYear[0]) == DateTime.Now.Year))
-            if ((Month > 3 && Month < 10) && (Convert.ToInt32(splitAcademicYear[0]) == 2025))
+            if ((Month > 3 && Month < 10) && (Convert.ToInt32(splitAcademicYear[0]) == 2021))
             {
                 IM.IsEnabled = true;
             }
@@ -479,7 +479,7 @@ namespace BudgetPortal.Controllers
             var splitAcademicYear = IM.SelectedAcademicYear.ToString().Split("-");
             int index = IM.SubGroupNameOrLedgerName.IndexOf(IM.SubGroupLedgerName);
             //if ((Month > 3 && Month < 10) && (Convert.ToInt32(splitAcademicYear[0]) == DateTime.Now.Year))
-              if ((Month > 3 && Month < 10) && (Convert.ToInt32(splitAcademicYear[0]) == 2025))
+              if ((Month > 3 && Month < 10) && (Convert.ToInt32(splitAcademicYear[0]) == 2021))
               {
                 IM.IsEnabled = true;
             }
