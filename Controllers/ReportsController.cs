@@ -397,9 +397,9 @@ namespace BudgetPortal.Controllers
                     var SectionSumActPrevFin = (from a in mymodel.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ActPrevFin).Sum();
                     var SectionSumActCurrFinTill2ndQuart = (from a in mymodel.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ActCurrFinTill2ndQuart).Sum();
                     var SectionSumACAndBWPropRECurrFin = (from a in mymodel.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ACAndBWPropRECurrFin).Sum();
-                    var SectionSumPerVarRevEstOverBudgEstCurrFin = (from a in mymodel.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.PerVarRevEstOverBudgEstCurrFin).Sum();
+                    //var SectionSumPerVarRevEstOverBudgEstCurrFin = (from a in mymodel.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.PerVarRevEstOverBudgEstCurrFin).Sum();
                     var SectionSumACAndBWPropRENxtFin = (from a in mymodel.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ACAndBWPropRENxtFin).Sum();
-                    var SectionSumPerVarRevEstOverBudgEstNxtFin = (from a in mymodel.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.PerVarRevEstOverBudgEstNxtFin).Sum();
+                    //var SectionSumPerVarRevEstOverBudgEstNxtFin = (from a in mymodel.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.PerVarRevEstOverBudgEstNxtFin).Sum();
 
                     
 
