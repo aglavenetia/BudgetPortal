@@ -90,8 +90,8 @@ namespace BudgetPortal.ViewModel
         public List<Decimal> RevEstCurrFin { get; set; }
         //public Decimal RevEstCurrFin { get; set; }
 
-        
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.00}%")]
+        [Column(TypeName = "decimal(4,2)")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{#:#.####}")]
         public List<Decimal> PerVarRevEstOverBudgEstCurrFin { get; set; }
         //public Decimal PerVarRevEstOverBudgEstCurrFin { get; set; }
 
@@ -101,8 +101,9 @@ namespace BudgetPortal.ViewModel
         public List<Decimal> ACAndBWPropRECurrFin { get; set; }
         //public Decimal ACAndBWPropRECurrFin { get; set; }
         public List<String>? DelegateJustificationRevEst { get; set; }
-        
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.00}%")]
+
+        [Column(TypeName = "decimal(4,2)")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{#:#.####}")]
         public List<Decimal> PerVarACBWRevEstOverBudgEstCurrFin { get; set; }
         //public Decimal PerVarRevEstOverBudgEstCurrFin { get; set; }
 
@@ -114,8 +115,8 @@ namespace BudgetPortal.ViewModel
         public List<Decimal> BudgEstNexFin { get; set; }
         //public Decimal BudgEstNexFin { get; set; }
 
-        
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.00}%")]
+        [Column(TypeName = "decimal(4,2)")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{#:#.####}")]
         public List<Decimal> PerVarRevEstOverBudgEstNxtFin { get; set; }
         //public Decimal PerVarRevEstOverBudgEstNxtFin { get; set; }
 
@@ -124,8 +125,9 @@ namespace BudgetPortal.ViewModel
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.####}")]
         public List<Decimal> ACAndBWPropRENxtFin { get; set; }
         //public Decimal ACAndBWPropRENxtFin { get; set; }
-        
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.00}%")]
+
+        [Column(TypeName = "decimal(4,2)")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{#:#.####}")]
         public List<Decimal> PerVarACBWRevEstOverBudgEstNxtFin { get; set; }
         public List<String>? Justification { get; set; }
         //public String Justification { get; set; }

@@ -16,11 +16,15 @@ namespace BudgetPortal.ViewModel
 
         public IEnumerable<BudgetDetails>? Detailss { get; set; }
 
+        public IEnumerable<BudgetdetailsStatus>? Statuss { get; set; }
+        
         public IEnumerable<BudgetDetailsApproved>? Approved { get; set; }
 
         public IEnumerable<Division>? Divisionss { get; set; }
 
         public IEnumerable<AcademicYears>? AcademicYearss { get; set; }
+
+        public int BudgetApprovedStatus { get; set; }
 
         public String SectionName { get; set; }
         public String GroupName { get; set; }

@@ -55,7 +55,10 @@ namespace BudgetPortal.Controllers
                     }).ToList();
             var IsDivNull = mymodel.DivisionNames.Where(x => x.Selected.Equals("true")).FirstOrDefault();
 
-            if ((Month >3 && Month < 10) && IsDivNull!=null)
+            mymodel.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
+                                .Where(x => x.FinancialYear1 == Year).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
+
+            if ((Month >3 && mymodel.BudgetApprovedStatus != 1) && IsDivNull!=null)
             {
                 
                 mymodel.IsEnabled= true;
@@ -215,7 +218,10 @@ namespace BudgetPortal.Controllers
                 //var Month = DateTime.Now.Month;
                 var Month = 10;
 
-                if (Month > 3 && Month < 10)
+                IM.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
+
+                if (Month > 3 && IM.BudgetApprovedStatus!=1)
                 {
                     IM.IsEnabled = true;
                 }
@@ -280,8 +286,11 @@ namespace BudgetPortal.Controllers
             //var Month = DateTime.Now.Month;
             var Month = 10;
 
+            mymodel.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
+                                .Where(x => x.FinancialYear1 == Year).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
+
             //if ((Month > 3 && Month < 10) && (Year == DateTime.Now.Year))
-           if ((Month > 3 && Month < 10) && (Year == 2021))
+            if ((Month > 3 && mymodel.BudgetApprovedStatus!=1) && (Year == 2021))
            {
                 mymodel.IsEnabled = true;
             }
@@ -417,11 +426,8 @@ namespace BudgetPortal.Controllers
 
             //var Month = DateTime.Now.Month;
             var Month = 10;
-            //if ((Month > 3 && Month < 10) && (Convert.ToInt32(splitAcademicYear[0]) == DateTime.Now.Year))
-            if ((Month > 3 && Month < 10) && (Convert.ToInt32(splitAcademicYear[0]) == 2021))
-            {
-                IM.IsEnabled = true;
-            }
+
+            
 
             IM.Sectionss = _context.BudgetSections.ToList();
             IM.Groupss = _context.BudgetGroups.ToList();
@@ -434,6 +440,15 @@ namespace BudgetPortal.Controllers
 
             IM.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
                                          .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
+
+            IM.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
+
+            //if ((Month > 3 && Month < 10) && (Convert.ToInt32(splitAcademicYear[0]) == DateTime.Now.Year))
+            if ((Month > 3 && IM.BudgetApprovedStatus!=1) && (Convert.ToInt32(splitAcademicYear[0]) == 2021))
+            {
+                IM.IsEnabled = true;
+            }
             IM.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                     new SelectListItem()
                     {
@@ -478,8 +493,12 @@ namespace BudgetPortal.Controllers
 
             var splitAcademicYear = IM.SelectedAcademicYear.ToString().Split("-");
             int index = IM.SubGroupNameOrLedgerName.IndexOf(IM.SubGroupLedgerName);
+
+            IM.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
+
             //if ((Month > 3 && Month < 10) && (Convert.ToInt32(splitAcademicYear[0]) == DateTime.Now.Year))
-              if ((Month > 3 && Month < 10) && (Convert.ToInt32(splitAcademicYear[0]) == 2021))
+            if ((Month > 3 && IM.BudgetApprovedStatus!=1) && (Convert.ToInt32(splitAcademicYear[0]) == 2021))
               {
                 IM.IsEnabled = true;
             }

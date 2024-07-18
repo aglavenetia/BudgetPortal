@@ -472,7 +472,6 @@
                                             <th class="VariationInRevisedEstimates w-10" >
                                                        
                                             </th>
-                                            <th></th>
                                             <th class="DelegateJustificationRevEst w-10">
                                                        
                                             </th>
@@ -487,7 +486,6 @@
                                              <th class="VariationInRevisedEstimates w-10" >
                                                       
                                             </th>
-                                            <th></th>
                                             } 
                                             @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                              {
@@ -501,7 +499,7 @@
                                             <th class="VariationInBudgetEstimates w-10">
                                                 
                                             </th>
-                                            <th></th>
+                                           
                                             <th class="Justification w-10">
                                                        
                                             </th>
@@ -517,7 +515,7 @@
                                                 <th class="VariationInBudgetEstimates w-10">
                                                 
                                                 </th>
-                                                <th></th>
+                                                
                                                 }
                                                @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                {
@@ -774,7 +772,7 @@
                                                                                               @{
                                                                                                     Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.BudEstCurrFin != Convert.ToDecimal(0.00)) ? (Convert.ToInt32(((Convert.ToDecimal(Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")) - Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))) / Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F")))) * 100)) : Convert.ToDecimal(0.00));
                                                                                               }
-                                                                                              @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                              @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo],"{0:0.00}%",new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                           </div>
                                                                                         }
@@ -784,12 +782,12 @@
                                                                                                @{
                                                                                                  Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                                }
-                                                                                                @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                                @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo,  @readonly = "readonly"})
                                                                                                 @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                            </div>
                                                                                         }
                                                                                     </td>
-                                                                                    <td>%</td>
+                                                                                   
                                                                                     <td>
                                                                                     @if (!DelegateEditStatus|| (!User.IsInRole("Admin") && LedgerIsDelegateSaved) && Model.EditEnabled!=@Ledgers.LedgerNo)
                                                                                     {
@@ -862,11 +860,11 @@
                                                                                               @{
                                                                                               Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.BudEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(Convert.ToDecimal(Ledgerdetails.ACAndBWPropRECurrFin.ToString("F")) - Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))) / Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))))*100) : Convert.ToDecimal(0.00));
                                                                                               }
-                                                                                              @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name17+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                              @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name17+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                           </div>
                                                                                           </td>
-                                                                                          <td>%</td>
+                                                                                          
                                                                                           
                                                                                         }
                                                                                         else if(User.IsInRole("Admin") && !LedgerIsAdminSaved)
@@ -876,11 +874,10 @@
                                                                                                @{
                                                                                                  Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                                }
-                                                                                                @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name17+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                                @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name17+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                                 @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                            </div>
                                                                                            </td>
-                                                                                           <td>%</td>
                                                                                         }
                                                                                         else
                                                                                         {
@@ -964,7 +961,7 @@
                                                                                                  Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.RevEstCurrFin!=Convert.ToDecimal(0.00))  ? Convert.ToInt32(((Convert.ToDecimal(Ledgerdetails.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                              }  
                                                                                              
-                                                                                              @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                              @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                             
@@ -975,13 +972,12 @@
                                                                                             @{
                                                                                               Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                               }   
-                                                                                              @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                              @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                             
                                                                                         }
                                                                                     </td>
-                                                                                    <td>%</td>
                                                                                     <td>
                                                                                     @if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved && Model.EditEnabled!=@Ledgers.LedgerNo))
                                                                                     {
@@ -1055,7 +1051,7 @@
                                                                                                  Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.ACAndBWPropRECurrFin!=Convert.ToDecimal(0.00))  ? Convert.ToInt32(((Convert.ToDecimal(Ledgerdetails.ACAndBWPropRENxtFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.ACAndBWPropRECurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.ACAndBWPropRECurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                              }  
                                                                                              
-                                                                                              @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name18+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                              @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name18+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                             
@@ -1066,7 +1062,7 @@
                                                                                             @{
                                                                                               Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                               }   
-                                                                                              @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name18+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                              @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name18+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                             
@@ -1076,7 +1072,6 @@
                                                                                             Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(LedgerNo,Convert.ToDecimal(0.00));
                                                                                         }
                                                                                     </td>
-                                                                                   <td>%</td>
                                                                                 @if (User.IsInRole("Admin") && AdminEditStatus && (!LedgerIsAdminSaved || (Model.EditEnabled == @Ledgers.LedgerNo)))
                                                                                     {
                                                                                         <td>
@@ -1465,7 +1460,7 @@
                                                               @{
                                                                         Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, PastYearSumBudEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(PastYearSumBudEstCurrFin) - Convert.ToDecimal(PastYearSumBudEstCurrFin)) / Convert.ToDecimal(PastYearSumBudEstCurrFin)) * 100) : Convert.ToDecimal(0.00));
                                                                }
-                                                                @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name5, @dir = "rtl", @readonly = "readonly"})
+                                                                @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             }
@@ -1477,7 +1472,7 @@
                                                                 @{
                                                                     Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, LedgerSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(LedgerSumRevEstCurrFin)- Convert.ToDecimal(LedgerSumBudEstCurrFin))/Convert.ToDecimal(LedgerSumBudEstCurrFin))*100): Convert.ToDecimal(0.00));
                                                                  }
-                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name5, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                         }                                                     
@@ -1488,7 +1483,7 @@
                                                                @{ 
                                                                   Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, (details!=null && details.BudEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.RevEstCurrFin)- Convert.ToDecimal(details.BudEstCurrFin))/Convert.ToDecimal(details.BudEstCurrFin))*100)  : Convert.ToDecimal(0.00));
                                                                 } 
-                                                                @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name5, @dir = "rtl", @readonly = "readonly"})
+                                                                @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
                                                         }
@@ -1498,12 +1493,12 @@
                                                                  @{
                                                                     Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin)- Convert.ToDecimal(PrevYearApp.BudEstNextFin))/Convert.ToDecimal(PrevYearApp.BudEstNextFin))*100)   : Convert.ToDecimal(0.00));
                                                                   }
-                                                                     @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name5, @dir = "rtl", @readonly = "readonly"})
+                                                                     @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                      @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             }
                                                         </td>
-                                                        <td>%</td>
+                                                        
                                                         <td>
                                                                                     @if ((!DelegateEditStatus && !@Subs.RequireInput) || (!User.IsInRole("Admin") && IsDelegateSaved))
                                                                                     {
@@ -1605,11 +1600,11 @@
                                                               @{
                                                                         Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(Count, PastYearSumBudEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(PastYearSumBudEstCurrFin) - Convert.ToDecimal(PastYearSumBudEstCurrFin)) / Convert.ToDecimal(PastYearSumBudEstCurrFin)) * 100) : Convert.ToDecimal(0.00));
                                                                }
-                                                                @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name17, @dir = "rtl", @readonly = "readonly"})
+                                                                @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name17, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                          </td>
-                                                         <td>%</td>
+                                                         
                                                         }
                                                         else if((User.IsInRole("Admin") && @Subs.RequireInput && IsAdminSaved))
                                                         {
@@ -1620,11 +1615,10 @@
                                                                 @{
                                                                     Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(Count, LedgerSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(LedgerSumACAndBWPropRECurrFin)- Convert.ToDecimal(LedgerSumBudEstCurrFin))/Convert.ToDecimal(LedgerSumBudEstCurrFin))*100): Convert.ToDecimal(0.00));
                                                                  }
-                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name17, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name17, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             </td>
-                                                            <td>%</td>
                                                         }                                                     
                                                         
                                                         else if (User.IsInRole("Admin") && IsAdminSaved)
@@ -1634,11 +1628,10 @@
                                                                @{ 
                                                                   Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(Count, (details!=null && details.BudEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.ACAndBWPropRECurrFin)- Convert.ToDecimal(details.BudEstCurrFin))/Convert.ToDecimal(details.BudEstCurrFin))*100)  : Convert.ToDecimal(0.00));
                                                                 } 
-                                                                @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name17, @dir = "rtl", @readonly = "readonly"})
+                                                                @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name17, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
                                                           </td>
-                                                          <td>%</td>
                                                         }
                                                        else if (User.IsInRole("Admin") && !IsAdminSaved)
                                                         {
@@ -1647,11 +1640,10 @@
                                                                  @{
                                                                     Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin)- Convert.ToDecimal(PrevYearApp.BudEstNextFin))/Convert.ToDecimal(PrevYearApp.BudEstNextFin))*100)   : Convert.ToDecimal(0.00));
                                                                   }
-                                                                     @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name17, @dir = "rtl", @readonly = "readonly"})
+                                                                     @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name17, @readonly = "readonly"})
                                                                      @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                              </td>
-                                                             <td>%</td>
                                                             }
                                                             else
                                                             {
@@ -1771,7 +1763,7 @@
                                                                     Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, PastYearSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F"))- Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")))/Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                  }
                                                                     
-                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name8, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             }
@@ -1784,7 +1776,7 @@
                                                                         Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, LedgerSumBudEstNextFin!=Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(LedgerSumBudEstNextFin.ToString("F"))- Convert.ToDecimal(LedgerSumRevEstCurrFin.ToString("F")))/Convert.ToDecimal(LedgerSumRevEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                     }
                                                                     
-                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name8, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             }
@@ -1796,7 +1788,7 @@
                                                                         Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (details!=null && details.RevEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                     }
                                                                    
-                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name8, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             }
@@ -1807,12 +1799,11 @@
                                                                         Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                    }
                                                                     
-                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name8, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name8, @dir = "rtl", @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             }
                                                         </td>
-                                                        <td>%</td>
                                                         <td class="w-5">
                                                             @if ((!DelegateEditStatus && !@Subs.RequireInput) || (!User.IsInRole("Admin") && IsDelegateSaved && Model.EditEnabled!=@Subs.SubGroupNo))
                                                         {
@@ -1919,11 +1910,10 @@
                                                                     Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(Count, PastYearSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F"))- Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")))/Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                  }
                                                                     
-                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name18, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name18, @dir = "rtl", @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                                 </td>
-                                                                <td>%</td>
                                                             }
                                                             else if (User.IsInRole("Admin") && @Subs.RequireInput && IsAdminSaved)
                                                             {
@@ -1935,11 +1925,10 @@
                                                                         Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(Count, LedgerSumACAndBWPropRENxtFin!=Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(LedgerSumACAndBWPropRENxtFin.ToString("F"))- Convert.ToDecimal(LedgerSumACAndBWPropRECurrFin.ToString("F")))/Convert.ToDecimal(LedgerSumACAndBWPropRECurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                     }
                                                                     
-                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name18, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name18, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                              </td>
-                                                             <td>%</td>
                                                             }
 
                                                             else if (User.IsInRole("Admin") && IsAdminSaved)
@@ -1950,11 +1939,10 @@
                                                                         Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(Count, (details!=null && details.ACAndBWPropRECurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.ACAndBWPropRENxtFin.ToString("F"))- Convert.ToDecimal(details.ACAndBWPropRECurrFin.ToString("F")))/Convert.ToDecimal(details.ACAndBWPropRECurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                     }
                                                                    
-                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name18, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name18,  @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                                 </td>
-                                                                <td>%</td>
                                                             }
                                                            else if (User.IsInRole("Admin") && !IsAdminSaved)
                                                             {
@@ -1964,11 +1952,10 @@
                                                                         Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                     }
                                                                     
-                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name18, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name18, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                                 </td>
-                                                                <td>%</td>
                                                             }
                                                         else
                                                         {
@@ -2546,7 +2533,7 @@
                                                                                               @{
                                                                                               Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.BudEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")) - Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))) / Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))))*100) : Convert.ToDecimal(0.00));
                                                                                               }
-                                                                                              @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                              @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                           </div>
                                                                                         }
@@ -2556,7 +2543,7 @@
                                                                                                @{
                                                                                                  Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                                }
-                                                                                                @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                                @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo,  @readonly = "readonly"})
                                                                                                 @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                            </div>
                                                                                         }
@@ -2633,7 +2620,7 @@
                                                                                               @{
                                                                                               Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.BudEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(Convert.ToDecimal(Ledgerdetails.ACAndBWPropRECurrFin.ToString("F")) - Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))) / Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))))*100) : Convert.ToDecimal(0.00));
                                                                                               }
-                                                                                              @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name17+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                              @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name17+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                           </div>
                                                                                           </td>
@@ -2645,7 +2632,7 @@
                                                                                                @{
                                                                                                  Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                                }
-                                                                                                @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name17+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                                @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name17+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                                 @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                            </div>
                                                                                            </td>
@@ -2732,7 +2719,7 @@
                                                                                                  Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.RevEstCurrFin!=Convert.ToDecimal(0.00))  ? Convert.ToInt32(((Convert.ToDecimal(Ledgerdetails.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                              }  
                                                                                              
-                                                                                              @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                              @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                             
@@ -2743,7 +2730,7 @@
                                                                                             @{
                                                                                               Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                               }   
-                                                                                              @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                              @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                             
@@ -2822,7 +2809,7 @@
                                                                                                  Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.ACAndBWPropRECurrFin!=Convert.ToDecimal(0.00))  ? Convert.ToInt32(((Convert.ToDecimal(Ledgerdetails.ACAndBWPropRENxtFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.ACAndBWPropRECurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.ACAndBWPropRECurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                              }  
                                                                                              
-                                                                                              @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name18+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                              @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name18+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                             
@@ -2833,7 +2820,7 @@
                                                                                             @{
                                                                                               Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                               }   
-                                                                                              @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name18+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                              @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name18+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                             
@@ -3232,7 +3219,7 @@
                                                               @{
                                                                         Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, PastYearSumBudEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(PastYearSumBudEstCurrFin) - Convert.ToDecimal(PastYearSumBudEstCurrFin)) / Convert.ToDecimal(PastYearSumBudEstCurrFin)) * 100) : Convert.ToDecimal(0.00));
                                                                }
-                                                                @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name5, @dir = "rtl", @readonly = "readonly"})
+                                                                @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                    
                                                             </div>
@@ -3245,7 +3232,7 @@
                                                                 @{
                                                                     Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, LedgerSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(LedgerSumRevEstCurrFin)- Convert.ToDecimal(LedgerSumBudEstCurrFin))/Convert.ToDecimal(LedgerSumBudEstCurrFin))*100): Convert.ToDecimal(0.00));
                                                                  }
-                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name5, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 
                                                                 </div>
@@ -3257,7 +3244,7 @@
                                                                @{ 
                                                                   Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, (details!=null && details.BudEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.RevEstCurrFin)- Convert.ToDecimal(details.BudEstCurrFin))/Convert.ToDecimal(details.BudEstCurrFin))*100)  : Convert.ToDecimal(0.00));
                                                                 } 
-                                                                @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name5, @dir = "rtl", @readonly = "readonly"})
+                                                                @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
                                                         }
@@ -3267,7 +3254,7 @@
                                                                  @{
                                                                     Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin)- Convert.ToDecimal(PrevYearApp.BudEstNextFin))/Convert.ToDecimal(PrevYearApp.BudEstNextFin))*100)   : Convert.ToDecimal(0.00));
                                                                   }
-                                                                     @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name5, @dir = "rtl", @readonly = "readonly"})
+                                                                     @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                      @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             }
@@ -3373,7 +3360,7 @@
                                                               @{
                                                                         Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(Count, PastYearSumBudEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(PastYearSumBudEstCurrFin) - Convert.ToDecimal(PastYearSumBudEstCurrFin)) / Convert.ToDecimal(PastYearSumBudEstCurrFin)) * 100) : Convert.ToDecimal(0.00));
                                                                }
-                                                                @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name17, @dir = "rtl", @readonly = "readonly"})
+                                                                @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name17, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                          </td>
@@ -3387,7 +3374,7 @@
                                                                 @{
                                                                     Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(Count, LedgerSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(LedgerSumACAndBWPropRECurrFin)- Convert.ToDecimal(LedgerSumBudEstCurrFin))/Convert.ToDecimal(LedgerSumBudEstCurrFin))*100): Convert.ToDecimal(0.00));
                                                                  }
-                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name17, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name17, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             </td>
@@ -3400,7 +3387,7 @@
                                                                @{ 
                                                                   Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(Count, (details!=null && details.BudEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.ACAndBWPropRECurrFin)- Convert.ToDecimal(details.BudEstCurrFin))/Convert.ToDecimal(details.BudEstCurrFin))*100)  : Convert.ToDecimal(0.00));
                                                                 } 
-                                                                @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name17, @dir = "rtl", @readonly = "readonly"})
+                                                                @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name17, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
                                                           </td>
@@ -3412,7 +3399,7 @@
                                                                  @{
                                                                     Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin)- Convert.ToDecimal(PrevYearApp.BudEstNextFin))/Convert.ToDecimal(PrevYearApp.BudEstNextFin))*100)   : Convert.ToDecimal(0.00));
                                                                   }
-                                                                     @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name17, @dir = "rtl", @readonly = "readonly"})
+                                                                     @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name17,  @readonly = "readonly"})
                                                                      @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                              </td>
@@ -3535,7 +3522,7 @@
                                                                     Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, PastYearSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F"))- Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")))/Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                  }
                                                                     
-                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name8, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             }
@@ -3548,7 +3535,7 @@
                                                                         Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, LedgerSumBudEstNextFin!=Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(LedgerSumBudEstNextFin.ToString("F"))- Convert.ToDecimal(LedgerSumRevEstCurrFin.ToString("F")))/Convert.ToDecimal(LedgerSumRevEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                     }
                                                                     
-                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name8, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             }
@@ -3560,7 +3547,7 @@
                                                                         Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (details!=null && details.RevEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                     }
                                                                    
-                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name8, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             }
@@ -3571,7 +3558,7 @@
                                                                         Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                    }
                                                                     
-                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name8, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             }
@@ -3682,7 +3669,7 @@
                                                                     Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(Count, PastYearSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F"))- Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")))/Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                  }
                                                                     
-                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name18, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name18, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                                 </td>
@@ -3697,7 +3684,7 @@
                                                                         Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(Count, LedgerSumACAndBWPropRENxtFin!=Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(LedgerSumACAndBWPropRENxtFin.ToString("F"))- Convert.ToDecimal(LedgerSumACAndBWPropRECurrFin.ToString("F")))/Convert.ToDecimal(LedgerSumACAndBWPropRECurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                     }
                                                                     
-                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name18, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name18, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                              </td>
@@ -3711,7 +3698,7 @@
                                                                         Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(Count, (details!=null && details.ACAndBWPropRECurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.ACAndBWPropRENxtFin.ToString("F"))- Convert.ToDecimal(details.ACAndBWPropRECurrFin.ToString("F")))/Convert.ToDecimal(details.ACAndBWPropRECurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                     }
                                                                    
-                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name18, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name18, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                                 </td>
@@ -3724,7 +3711,7 @@
                                                                         Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                     }
                                                                     
-                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name18, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name18, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                                 </td>
@@ -4519,7 +4506,7 @@
                                                                                               @{
                                                                                               Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.BudEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")) - Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))) / Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))))*100) : Convert.ToDecimal(0.00));
                                                                                               }
-                                                                                              @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                              @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                           </div>
                                                                                         }
@@ -4529,7 +4516,7 @@
                                                                                                @{
                                                                                                  Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                                }
-                                                                                                @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                                @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                                 @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                            </div>
                                                                                         }
@@ -4606,7 +4593,7 @@
                                                                                               @{
                                                                                               Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.BudEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(Convert.ToDecimal(Ledgerdetails.ACAndBWPropRECurrFin.ToString("F")) - Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))) / Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))))*100) : Convert.ToDecimal(0.00));
                                                                                               }
-                                                                                              @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name17+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                              @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name17+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                           </div>
                                                                                           </td>
@@ -4618,7 +4605,7 @@
                                                                                                @{
                                                                                                  Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                                }
-                                                                                                @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name17+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                                @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name17+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                                 @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                            </div>
                                                                                            </td>
@@ -4705,7 +4692,7 @@
                                                                                                  Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.RevEstCurrFin!=Convert.ToDecimal(0.00))  ? Convert.ToInt32(((Convert.ToDecimal(Ledgerdetails.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                              }  
                                                                                              
-                                                                                              @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                              @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                             
@@ -4716,7 +4703,7 @@
                                                                                             @{
                                                                                               Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                               }   
-                                                                                              @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                              @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                             
@@ -4795,7 +4782,7 @@
                                                                                                  Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.ACAndBWPropRECurrFin!=Convert.ToDecimal(0.00))  ? Convert.ToInt32(((Convert.ToDecimal(Ledgerdetails.ACAndBWPropRENxtFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.ACAndBWPropRECurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.ACAndBWPropRECurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                              }  
                                                                                              
-                                                                                              @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name18+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                              @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name18+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                             
@@ -4806,7 +4793,7 @@
                                                                                             @{
                                                                                               Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                               }   
-                                                                                              @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name18+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                              @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name18+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                             
@@ -5205,7 +5192,7 @@
                                                               @{
                                                                         Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, PastYearSumBudEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(PastYearSumBudEstCurrFin) - Convert.ToDecimal(PastYearSumBudEstCurrFin)) / Convert.ToDecimal(PastYearSumBudEstCurrFin)) * 100) : Convert.ToDecimal(0.00));
                                                                }
-                                                                @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name5, @dir = "rtl", @readonly = "readonly"})
+                                                                @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             }
@@ -5217,7 +5204,7 @@
                                                                 @{
                                                                     Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, LedgerSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(LedgerSumRevEstCurrFin)- Convert.ToDecimal(LedgerSumBudEstCurrFin))/Convert.ToDecimal(LedgerSumBudEstCurrFin))*100): Convert.ToDecimal(0.00));
                                                                  }
-                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name5, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                         }                                                     
@@ -5228,7 +5215,7 @@
                                                                @{ 
                                                                   Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, (details!=null && details.BudEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.RevEstCurrFin)- Convert.ToDecimal(details.BudEstCurrFin))/Convert.ToDecimal(details.BudEstCurrFin))*100)  : Convert.ToDecimal(0.00));
                                                                 } 
-                                                                @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name5, @dir = "rtl", @readonly = "readonly"})
+                                                                @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
                                                         }
@@ -5238,7 +5225,7 @@
                                                                  @{
                                                                     Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin)- Convert.ToDecimal(PrevYearApp.BudEstNextFin))/Convert.ToDecimal(PrevYearApp.BudEstNextFin))*100)   : Convert.ToDecimal(0.00));
                                                                   }
-                                                                     @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name5, @dir = "rtl", @readonly = "readonly"})
+                                                                     @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                      @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             }
@@ -5344,7 +5331,7 @@
                                                               @{
                                                                         Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(Count, PastYearSumBudEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(PastYearSumBudEstCurrFin) - Convert.ToDecimal(PastYearSumBudEstCurrFin)) / Convert.ToDecimal(PastYearSumBudEstCurrFin)) * 100) : Convert.ToDecimal(0.00));
                                                                }
-                                                                @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name17, @dir = "rtl", @readonly = "readonly"})
+                                                                @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name17, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                          </td>
@@ -5358,7 +5345,7 @@
                                                                 @{
                                                                     Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(Count, LedgerSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(LedgerSumACAndBWPropRECurrFin)- Convert.ToDecimal(LedgerSumBudEstCurrFin))/Convert.ToDecimal(LedgerSumBudEstCurrFin))*100): Convert.ToDecimal(0.00));
                                                                  }
-                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name17, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name17, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             </td>
@@ -5371,7 +5358,7 @@
                                                                @{ 
                                                                   Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(Count, (details!=null && details.BudEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.ACAndBWPropRECurrFin)- Convert.ToDecimal(details.BudEstCurrFin))/Convert.ToDecimal(details.BudEstCurrFin))*100)  : Convert.ToDecimal(0.00));
                                                                 } 
-                                                                @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name17, @dir = "rtl", @readonly = "readonly"})
+                                                                @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name17, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
                                                           </td>
@@ -5383,7 +5370,7 @@
                                                                  @{
                                                                     Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin)- Convert.ToDecimal(PrevYearApp.BudEstNextFin))/Convert.ToDecimal(PrevYearApp.BudEstNextFin))*100)   : Convert.ToDecimal(0.00));
                                                                   }
-                                                                     @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name17, @dir = "rtl", @readonly = "readonly"})
+                                                                     @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name17, @readonly = "readonly"})
                                                                      @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                              </td>
@@ -5506,7 +5493,7 @@
                                                                     Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, PastYearSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F"))- Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")))/Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                  }
                                                                     
-                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name8, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             }
@@ -5519,7 +5506,7 @@
                                                                         Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, LedgerSumBudEstNextFin!=Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(LedgerSumBudEstNextFin.ToString("F"))- Convert.ToDecimal(LedgerSumRevEstCurrFin.ToString("F")))/Convert.ToDecimal(LedgerSumRevEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                     }
                                                                     
-                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name8, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             }
@@ -5531,7 +5518,7 @@
                                                                         Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (details!=null && details.RevEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                     }
                                                                    
-                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name8, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             }
@@ -5542,7 +5529,7 @@
                                                                         Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                    }
                                                                     
-                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name8, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             }
@@ -5653,7 +5640,7 @@
                                                                     Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(Count, PastYearSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F"))- Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")))/Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                  }
                                                                     
-                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name18, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name18, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                                 </td>
@@ -5668,7 +5655,7 @@
                                                                         Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(Count, LedgerSumACAndBWPropRENxtFin!=Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(LedgerSumACAndBWPropRENxtFin.ToString("F"))- Convert.ToDecimal(LedgerSumACAndBWPropRECurrFin.ToString("F")))/Convert.ToDecimal(LedgerSumACAndBWPropRECurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                     }
                                                                     
-                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name18, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name18, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                              </td>
@@ -5682,7 +5669,7 @@
                                                                         Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(Count, (details!=null && details.ACAndBWPropRECurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.ACAndBWPropRENxtFin.ToString("F"))- Convert.ToDecimal(details.ACAndBWPropRECurrFin.ToString("F")))/Convert.ToDecimal(details.ACAndBWPropRECurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                     }
                                                                    
-                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name18, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name18, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                                 </td>
@@ -5695,7 +5682,7 @@
                                                                         Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                     }
                                                                     
-                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name18, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name18, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                                 </td>
@@ -6276,7 +6263,7 @@
                                                                                               @{
                                                                                               Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.BudEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")) - Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))) / Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))))*100) : Convert.ToDecimal(0.00));
                                                                                               }
-                                                                                              @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                              @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                           </div>
                                                                                         }
@@ -6286,7 +6273,7 @@
                                                                                                @{
                                                                                                  Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                                }
-                                                                                                @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                                @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                                 @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                            </div>
                                                                                         }
@@ -6363,9 +6350,8 @@
                                                                                               @{
                                                                                               Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.BudEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(Convert.ToDecimal(Ledgerdetails.ACAndBWPropRECurrFin.ToString("F")) - Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))) / Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))))*100) : Convert.ToDecimal(0.00));
                                                                                               }
-                                                                                              @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name17+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
-                                                                                              @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                                                          </div>
+                                                                                              @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name17+@Ledgers.LedgerNo, @readonly = "readonly"})
+                                                                                              @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})                                                                                          </div>
                                                                                           </td>
                                                                                         }
                                                                                         else if(User.IsInRole("Admin") && !LedgerIsAdminSaved)
@@ -6375,7 +6361,7 @@
                                                                                                @{
                                                                                                  Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                                }
-                                                                                                @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name17+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                                @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name17+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                                 @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                            </div>
                                                                                            </td>
@@ -6462,7 +6448,7 @@
                                                                                                  Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.RevEstCurrFin!=Convert.ToDecimal(0.00))  ? Convert.ToInt32(((Convert.ToDecimal(Ledgerdetails.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                              }  
                                                                                              
-                                                                                              @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                              @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                             
@@ -6473,7 +6459,7 @@
                                                                                             @{
                                                                                               Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                               }   
-                                                                                              @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                              @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                             
@@ -6552,7 +6538,7 @@
                                                                                                  Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.ACAndBWPropRECurrFin!=Convert.ToDecimal(0.00))  ? Convert.ToInt32(((Convert.ToDecimal(Ledgerdetails.ACAndBWPropRENxtFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.ACAndBWPropRECurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.ACAndBWPropRECurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                              }  
                                                                                              
-                                                                                              @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name18+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                              @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name18+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                             
@@ -6563,7 +6549,7 @@
                                                                                             @{
                                                                                               Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                                               }   
-                                                                                              @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name18+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                              @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name18+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                             
@@ -6962,7 +6948,7 @@
                                                               @{
                                                                         Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, PastYearSumBudEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(PastYearSumBudEstCurrFin) - Convert.ToDecimal(PastYearSumBudEstCurrFin)) / Convert.ToDecimal(PastYearSumBudEstCurrFin)) * 100) : Convert.ToDecimal(0.00));
                                                                }
-                                                                @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name5, @dir = "rtl", @readonly = "readonly"})
+                                                                @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             }
@@ -6974,7 +6960,7 @@
                                                                 @{
                                                                     Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, LedgerSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(LedgerSumRevEstCurrFin)- Convert.ToDecimal(LedgerSumBudEstCurrFin))/Convert.ToDecimal(LedgerSumBudEstCurrFin))*100): Convert.ToDecimal(0.00));
                                                                  }
-                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name5, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                         }                                                     
@@ -6985,7 +6971,7 @@
                                                                @{ 
                                                                   Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, (details!=null && details.BudEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.RevEstCurrFin)- Convert.ToDecimal(details.BudEstCurrFin))/Convert.ToDecimal(details.BudEstCurrFin))*100)  : Convert.ToDecimal(0.00));
                                                                 } 
-                                                                @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name5, @dir = "rtl", @readonly = "readonly"})
+                                                                @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
                                                         }
@@ -6995,7 +6981,7 @@
                                                                  @{
                                                                     Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin)- Convert.ToDecimal(PrevYearApp.BudEstNextFin))/Convert.ToDecimal(PrevYearApp.BudEstNextFin))*100)   : Convert.ToDecimal(0.00));
                                                                   }
-                                                                     @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name5, @dir = "rtl", @readonly = "readonly"})
+                                                                     @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name5, @readonly = "readonly"})
                                                                      @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             }
@@ -7101,7 +7087,7 @@
                                                               @{
                                                                         Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(Count, PastYearSumBudEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(PastYearSumBudEstCurrFin) - Convert.ToDecimal(PastYearSumBudEstCurrFin)) / Convert.ToDecimal(PastYearSumBudEstCurrFin)) * 100) : Convert.ToDecimal(0.00));
                                                                }
-                                                                @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name17, @dir = "rtl", @readonly = "readonly"})
+                                                                @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name17, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                          </td>
@@ -7115,7 +7101,7 @@
                                                                 @{
                                                                     Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(Count, LedgerSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(LedgerSumACAndBWPropRECurrFin)- Convert.ToDecimal(LedgerSumBudEstCurrFin))/Convert.ToDecimal(LedgerSumBudEstCurrFin))*100): Convert.ToDecimal(0.00));
                                                                  }
-                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name17, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name17, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             </td>
@@ -7128,7 +7114,7 @@
                                                                @{ 
                                                                   Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(Count, (details!=null && details.BudEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.ACAndBWPropRECurrFin)- Convert.ToDecimal(details.BudEstCurrFin))/Convert.ToDecimal(details.BudEstCurrFin))*100)  : Convert.ToDecimal(0.00));
                                                                 } 
-                                                                @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name17, @dir = "rtl", @readonly = "readonly"})
+                                                                @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name17, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
                                                           </td>
@@ -7140,7 +7126,7 @@
                                                                  @{
                                                                     Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin)- Convert.ToDecimal(PrevYearApp.BudEstNextFin))/Convert.ToDecimal(PrevYearApp.BudEstNextFin))*100)   : Convert.ToDecimal(0.00));
                                                                   }
-                                                                     @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],new { @class = "form-control", @id = @name17, @dir = "rtl", @readonly = "readonly"})
+                                                                     @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name17, @readonly = "readonly"})
                                                                      @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                              </td>
@@ -7263,7 +7249,7 @@
                                                                     Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, PastYearSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F"))- Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")))/Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                  }
                                                                     
-                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name8, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             }
@@ -7276,7 +7262,7 @@
                                                                         Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, LedgerSumBudEstNextFin!=Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(LedgerSumBudEstNextFin.ToString("F"))- Convert.ToDecimal(LedgerSumRevEstCurrFin.ToString("F")))/Convert.ToDecimal(LedgerSumRevEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                     }
                                                                     
-                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name8, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             }
@@ -7288,7 +7274,7 @@
                                                                         Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (details!=null && details.RevEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                     }
                                                                    
-                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name8, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             }
@@ -7299,7 +7285,7 @@
                                                                         Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                    }
                                                                     
-                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name8, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             }
@@ -7410,7 +7396,7 @@
                                                                     Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(Count, PastYearSumBudEstCurrFin!=Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F"))- Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")))/Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                  }
                                                                     
-                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name18, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name18, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                                 </td>
@@ -7425,7 +7411,7 @@
                                                                         Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(Count, LedgerSumACAndBWPropRENxtFin!=Convert.ToDecimal(0.00) ? Convert.ToInt32(((Convert.ToDecimal(LedgerSumACAndBWPropRENxtFin.ToString("F"))- Convert.ToDecimal(LedgerSumACAndBWPropRECurrFin.ToString("F")))/Convert.ToDecimal(LedgerSumACAndBWPropRECurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                     }
                                                                     
-                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name18, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name18, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                              </td>
@@ -7439,7 +7425,7 @@
                                                                         Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(Count, (details!=null && details.ACAndBWPropRECurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(details.ACAndBWPropRENxtFin.ToString("F"))- Convert.ToDecimal(details.ACAndBWPropRECurrFin.ToString("F")))/Convert.ToDecimal(details.ACAndBWPropRECurrFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                     }
                                                                    
-                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name18, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name18, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                                 </td>
@@ -7452,7 +7438,7 @@
                                                                         Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToInt32(((Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToDecimal(0.00));
                                                                     }
                                                                     
-                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],new { @class = "form-control", @id = @name18, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name18, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                                 </td>
