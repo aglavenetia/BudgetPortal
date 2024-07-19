@@ -28,7 +28,7 @@ $(document).ready(
 
                 if (elementid.val() == 0)
                 {
-                    Pervariationid.val(0+"%");
+                    Pervariationid.val(0);
                 }
                 else
                 {
@@ -58,12 +58,12 @@ $(document).ready(
                 //alert(Pervariationid);
 
                 if (elementid.val() == 0) {
-                    Pervariationid.val(0+"%");
+                    Pervariationid.val(0);
                 }
                 else
                 { 
                 var PerVariation = parseInt((parseFloat($(this).val()) - parseFloat(elementid.val())) / parseFloat(elementid.val())*100);
-                    Pervariationid.val(PerVariation+"%");
+                    Pervariationid.val(PerVariation);
                 }
 
                 if (PerVariation > 10) {
@@ -87,11 +87,11 @@ $(document).ready(
                 //alert(Pervariationid);
 
                 if (elementid.val() == 0) {
-                    Pervariationid.val(0+"%");
+                    Pervariationid.val(0);
                 }
                 else {
                     var PerVariation = parseInt((parseFloat($(this).val()) - parseFloat(elementid.val())) / parseFloat(elementid.val()) * 100);
-                    Pervariationid.val(PerVariation+"%");
+                    Pervariationid.val(PerVariation);
                 }
 
             });
@@ -106,11 +106,11 @@ $(document).ready(
                 //alert(Pervariationid);
 
                 if (elementid.val() == 0) {
-                    Pervariationid.val(0+"%");
+                    Pervariationid.val(0);
                 }
                 else {
                     var PerVariation = parseInt((parseFloat($(this).val()) - parseFloat(elementid.val())) / parseFloat(elementid.val()) * 100);
-                    Pervariationid.val(PerVariation+"%");
+                    Pervariationid.val(PerVariation);
                 }
             }
         );

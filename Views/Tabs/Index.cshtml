@@ -753,13 +753,19 @@
                                                                                             @Html.TextBoxFor(model => model.RevEstCurrFin[LedgerNo],new { @class = "form-control", @id = @name4+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.RevEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
-                                                                                    }          
+                                                                                    } 
+                                                                                    
                                                                                     else
                                                                                     {
                                                                                        <div class="form-group">
-                                                                                           @{
-                                                                                            Model.RevEstCurrFin.Insert(LedgerNo, LedPrevYearApp != null ? Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F4")) : Convert.ToDecimal(0.00));
-                                                                                             }
+                                                                                           @if(Ledgerdetails!=null && !@Ledgerdetails.ProvisionalRevEst.Equals(Convert.ToDecimal(0.00)) && !LedgerIsDelegateSaved)
+                                                                                           {
+                                                                                               Model.RevEstCurrFin.Insert(LedgerNo, Ledgerdetails != null ? Convert.ToDecimal(Ledgerdetails.ProvisionalRevEst.ToString("F4")) : Convert.ToDecimal(0.00));
+                                                                                           }
+                                                                                           else
+                                                                                           {
+                                                                                               Model.RevEstCurrFin.Insert(LedgerNo, LedPrevYearApp != null ? Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F4")) : Convert.ToDecimal(0.00));
+                                                                                           }
                                                                                             @Html.TextBoxFor(model => model.RevEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name4+@Ledgers.LedgerNo, @dir = "rtl"}) 
                                                                                             @Html.ValidationMessageFor(model => model.RevEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                        </div>
@@ -943,9 +949,14 @@
                                                                                     else
                                                                                     {
                                                                                         <div class="form-group">
-                                                                                          @{
+                                                                                          @if(Ledgerdetails!=null && !@Ledgerdetails.ProvisionalRevEst.Equals(Convert.ToDecimal(0.00)) && !LedgerIsDelegateSaved)
+                                                                                          {
+                                                                                             Model.BudgEstNexFin.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.ProvisionalRevEst.ToString("F4")) : Convert.ToDecimal(0.00));
+                                                                                          }
+                                                                                          else
+                                                                                          {
                                                                                             Model.BudgEstNexFin.Insert(LedgerNo, LedPrevYearApp!=null ? Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F4")) : Convert.ToDecimal(0.00));
-                                                                                            }
+                                                                                          }
                                                                                             @Html.TextBoxFor(model => model.BudgEstNexFin[LedgerNo], new { @class = "form-control", @id = @name7+@Ledgers.LedgerNo, @dir = "rtl"})
                                                                                             @Html.ValidationMessageFor(model => model.BudgEstNexFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
@@ -1443,7 +1454,12 @@
                                                         else
                                                         {
                                                             <div class="form-group">
-                                                              @{ 
+                                                              @if(details!=null && !@details.ProvisionalRevEst.Equals(Convert.ToDecimal(0.00)) && !IsDelegateSaved)
+                                                              {
+                                                                Model.RevEstCurrFin.Insert(Count, details != null ? Convert.ToDecimal(@details.ProvisionalRevEst) : Convert.ToDecimal(0.00));
+                                                               }
+                                                               else
+                                                               { 
                                                                 Model.RevEstCurrFin.Insert(Count, PrevYearApp != null ? Convert.ToDecimal(PrevYearApp.BudEstNextFin) : Convert.ToDecimal(0.00));
                                                                 }
                                                                 @Html.TextBoxFor(model => model.RevEstCurrFin[Count], new { @class = "form-control", @id = @name4})
@@ -1743,7 +1759,12 @@
                                                         else
                                                         {
                                                             <div class="form-group">
-                                                                    @{
+                                                                    @if(details!=null && !@details.ProvisionalRevEst.Equals(Convert.ToDecimal(0.00)) && !IsDelegateSaved)
+                                                                    {
+                                                                       Model.BudgEstNexFin.Insert(Count, details != null ? Convert.ToDecimal(details.ProvisionalRevEst) : Convert.ToDecimal(0.00));
+                                                                    }
+                                                                    else
+                                                                    {
                                                                         Model.BudgEstNexFin.Insert(Count, PrevYearApp != null ? Convert.ToDecimal(PrevYearApp.BudEstNextFin) : Convert.ToDecimal(0.00));
                                                                     }
                                                                 
@@ -2518,7 +2539,12 @@
                                                                                     else
                                                                                     {
                                                                                        <div class="form-group">
-                                                                                           @{
+                                                                                           @if(Ledgerdetails!=null && !@Ledgerdetails.ProvisionalRevEst.Equals(Convert.ToDecimal(0.00)) && !LedgerIsDelegateSaved)
+                                                                                           {
+                                                                                                Model.RevEstCurrFin.Insert(LedgerNo, Ledgerdetails != null ? Convert.ToDecimal(Ledgerdetails.ProvisionalRevEst.ToString("F4")) : Convert.ToDecimal(0.00));
+                                                                                           }
+                                                                                           else
+                                                                                           {
                                                                                             Model.RevEstCurrFin.Insert(LedgerNo, LedPrevYearApp != null ? Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F4")) : Convert.ToDecimal(0.00));
                                                                                              }
                                                                                             @Html.TextBoxFor(model => model.RevEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name4+@Ledgers.LedgerNo, @dir = "rtl"}) 
@@ -2677,7 +2703,12 @@
                                                                                     @if (User.IsInRole("Admin") && DelegateEditStatus )
                                                                                     {
                                                                                         <div class="form-group">
-                                                                                          @{
+                                                                                          @if(Ledgerdetails!=null && !@Ledgerdetails.ProvisionalRevEst.Equals(Convert.ToDecimal(0.00)) && !LedgerIsDelegateSaved)
+                                                                                          {
+                                                                                              Model.BudgEstNexFin.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.ProvisionalRevEst.ToString("F4")) : Convert.ToDecimal(0.00));
+                                                                                          }
+                                                                                          else
+                                                                                          {
                                                                                             Model.BudgEstNexFin.Insert(LedgerNo, LedPrevYearApp!=null ? Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F4")) : Convert.ToDecimal(0.00));
                                                                                            }  
                                                                                             
@@ -2701,7 +2732,12 @@
                                                                                     else
                                                                                     {
                                                                                         <div class="form-group">
-                                                                                          @{
+                                                                                          @if(Ledgerdetails!=null && !@Ledgerdetails.ProvisionalRevEst.Equals(Convert.ToDecimal(0.00)) && !IsDelegateSaved)
+                                                                                          {
+                                                                                             Model.BudgEstNexFin.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.ProvisionalRevEst.ToString("F4")) : Convert.ToDecimal(0.00));
+                                                                                          }
+                                                                                          else
+                                                                                          {
                                                                                             Model.BudgEstNexFin.Insert(LedgerNo, LedPrevYearApp!=null ? Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F4")) : Convert.ToDecimal(0.00));
                                                                                             }
                                                                                             @Html.TextBoxFor(model => model.BudgEstNexFin[LedgerNo], new { @class = "form-control", @id = @name7+@Ledgers.LedgerNo, @dir = "rtl"})
@@ -3202,7 +3238,12 @@
                                                         else
                                                         {
                                                             <div class="form-group">
-                                                              @{ 
+                                                              @if(details!=null && !@details.ProvisionalRevEst.Equals(Convert.ToDecimal(0.00)) && !IsDelegateSaved)
+                                                              {
+                                                                  Model.RevEstCurrFin.Insert(Count, details != null ? Convert.ToDecimal(details.ProvisionalRevEst) : Convert.ToDecimal(0.00));
+                                                              }
+                                                              else
+                                                              { 
                                                                 Model.RevEstCurrFin.Insert(Count, PrevYearApp != null ? Convert.ToDecimal(PrevYearApp.BudEstNextFin) : Convert.ToDecimal(0.00));
                                                                 }
                                                                 @Html.TextBoxFor(model => model.RevEstCurrFin[Count], new { @class = "form-control", @id = @name4})
@@ -3502,7 +3543,12 @@
                                                         else
                                                         {
                                                             <div class="form-group">
-                                                                    @{
+                                                                    @if(details!=null && !@details.ProvisionalRevEst.Equals(Convert.ToDecimal(0.00)) && !IsDelegateSaved)
+                                                                    {
+                                                                       Model.BudgEstNexFin.Insert(Count, details != null ? Convert.ToDecimal(@details.ProvisionalRevEst) : Convert.ToDecimal(0.00));
+                                                                    }
+                                                                    else
+                                                                    {
                                                                         Model.BudgEstNexFin.Insert(Count, PrevYearApp != null ? Convert.ToDecimal(PrevYearApp.BudEstNextFin) : Convert.ToDecimal(0.00));
                                                                     }
                                                                 
@@ -4491,7 +4537,12 @@
                                                                                     else
                                                                                     {
                                                                                        <div class="form-group">
-                                                                                           @{
+                                                                                           @if(Ledgerdetails!=null && !@Ledgerdetails.ProvisionalRevEst.Equals(Convert.ToDecimal(0.00)) && !IsDelegateSaved)
+                                                                                           {
+                                                                                              Model.RevEstCurrFin.Insert(LedgerNo, Ledgerdetails != null ? Convert.ToDecimal(Ledgerdetails.ProvisionalRevEst.ToString("F4")) : Convert.ToDecimal(0.00));
+                                                                                           }
+                                                                                           else
+                                                                                           {
                                                                                             Model.RevEstCurrFin.Insert(LedgerNo, LedPrevYearApp != null ? Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F4")) : Convert.ToDecimal(0.00));
                                                                                              }
                                                                                             @Html.TextBoxFor(model => model.RevEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name4+@Ledgers.LedgerNo, @dir = "rtl"}) 
@@ -4674,7 +4725,12 @@
                                                                                     else
                                                                                     {
                                                                                         <div class="form-group">
-                                                                                          @{
+                                                                                         @if(Ledgerdetails!=null && !@Ledgerdetails.ProvisionalRevEst.Equals(Convert.ToDecimal(0.00)) && !IsDelegateSaved)
+                                                                                          {
+                                                                                              Model.BudgEstNexFin.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.ProvisionalRevEst.ToString("F4")) : Convert.ToDecimal(0.00));
+                                                                                           }
+                                                                                          else
+                                                                                          {
                                                                                             Model.BudgEstNexFin.Insert(LedgerNo, LedPrevYearApp!=null ? Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F4")) : Convert.ToDecimal(0.00));
                                                                                             }
                                                                                             @Html.TextBoxFor(model => model.BudgEstNexFin[LedgerNo], new { @class = "form-control", @id = @name7+@Ledgers.LedgerNo, @dir = "rtl"})
@@ -5175,9 +5231,14 @@
                                                         else
                                                         {
                                                             <div class="form-group">
-                                                              @{ 
+                                                              @if(details!=null && !@details.ProvisionalRevEst.Equals(Convert.ToDecimal(0.00)) && !IsDelegateSaved)
+                                                              {
+                                                                  Model.RevEstCurrFin.Insert(Count, details != null ? Convert.ToDecimal(details.ProvisionalRevEst) : Convert.ToDecimal(0.00));
+                                                              }
+                                                              else
+                                                              { 
                                                                 Model.RevEstCurrFin.Insert(Count, PrevYearApp != null ? Convert.ToDecimal(PrevYearApp.BudEstNextFin) : Convert.ToDecimal(0.00));
-                                                                }
+                                                              }
                                                                 @Html.TextBoxFor(model => model.RevEstCurrFin[Count], new { @class = "form-control", @id = @name4})
                                                                 @Html.ValidationMessageFor(model => model.RevEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
@@ -5473,7 +5534,12 @@
                                                         else
                                                         {
                                                             <div class="form-group">
-                                                                    @{
+                                                                    @if(details!=null && !@details.ProvisionalRevEst.Equals(Convert.ToDecimal(0.00)) && !IsDelegateSaved)
+                                                                    {
+                                                                      Model.BudgEstNexFin.Insert(Count, details!=null ? Convert.ToDecimal(details.ProvisionalRevEst) : Convert.ToDecimal(0.00));
+                                                                    }
+                                                                    else
+                                                                    {
                                                                         Model.BudgEstNexFin.Insert(Count, PrevYearApp != null ? Convert.ToDecimal(PrevYearApp.BudEstNextFin) : Convert.ToDecimal(0.00));
                                                                     }
                                                                 
@@ -6248,7 +6314,12 @@
                                                                                     else
                                                                                     {
                                                                                        <div class="form-group">
-                                                                                           @{
+                                                                                           @if(Ledgerdetails!=null && !@Ledgerdetails.ProvisionalRevEst.Equals(Convert.ToDecimal(0.00)) && !LedgerIsDelegateSaved)
+                                                                                           {
+                                                                                             Model.RevEstCurrFin.Insert(LedgerNo, Ledgerdetails != null ? Convert.ToDecimal(Ledgerdetails.ProvisionalRevEst.ToString("F4")) : Convert.ToDecimal(0.00));
+                                                                                           }
+                                                                                           else
+                                                                                            {
                                                                                             Model.RevEstCurrFin.Insert(LedgerNo, LedPrevYearApp != null ? Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F4")) : Convert.ToDecimal(0.00));
                                                                                              }
                                                                                             @Html.TextBoxFor(model => model.RevEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name4+@Ledgers.LedgerNo, @dir = "rtl"}) 
@@ -6430,7 +6501,12 @@
                                                                                     else
                                                                                     {
                                                                                         <div class="form-group">
-                                                                                          @{
+                                                                                          @if(Ledgerdetails!=null && !@Ledgerdetails.ProvisionalRevEst.Equals(Convert.ToDecimal(0.00)) && !LedgerIsDelegateSaved)
+                                                                                          {
+                                                                                            Model.BudgEstNexFin.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.ProvisionalRevEst.ToString("F4")) : Convert.ToDecimal(0.00));
+                                                                                          }
+                                                                                          else
+                                                                                          {
                                                                                             Model.BudgEstNexFin.Insert(LedgerNo, LedPrevYearApp!=null ? Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F4")) : Convert.ToDecimal(0.00));
                                                                                             }
                                                                                             @Html.TextBoxFor(model => model.BudgEstNexFin[LedgerNo], new { @class = "form-control", @id = @name7+@Ledgers.LedgerNo, @dir = "rtl"})
@@ -6931,7 +7007,12 @@
                                                         else
                                                         {
                                                             <div class="form-group">
-                                                              @{ 
+                                                              @if(details!=null && !@details.ProvisionalRevEst.Equals(Convert.ToDecimal(0.00)) && !IsDelegateSaved)
+                                                              {
+                                                                Model.RevEstCurrFin.Insert(Count, details != null ? Convert.ToDecimal(details.ProvisionalRevEst) : Convert.ToDecimal(0.00));
+                                                              }
+                                                              else
+                                                              { 
                                                                 Model.RevEstCurrFin.Insert(Count, PrevYearApp != null ? Convert.ToDecimal(PrevYearApp.BudEstNextFin) : Convert.ToDecimal(0.00));
                                                                 }
                                                                 @Html.TextBoxFor(model => model.RevEstCurrFin[Count], new { @class = "form-control", @id = @name4})
@@ -7229,7 +7310,12 @@
                                                         else
                                                         {
                                                             <div class="form-group">
-                                                                    @{
+                                                                    @if(details!=null && !@details.ProvisionalRevEst.Equals(Convert.ToDecimal(0.00)) && !IsDelegateSaved)
+                                                                    {
+                                                                      Model.BudgEstNexFin.Insert(Count, details != null ? Convert.ToDecimal(details.ProvisionalRevEst) : Convert.ToDecimal(0.00));
+                                                                    }
+                                                                    else
+                                                                    {
                                                                         Model.BudgEstNexFin.Insert(Count, PrevYearApp != null ? Convert.ToDecimal(PrevYearApp.BudEstNextFin) : Convert.ToDecimal(0.00));
                                                                     }
                                                                 

@@ -22,7 +22,7 @@ namespace BudgetPortal.Controllers
         public IActionResult InterimRev()
         {
             //var Year = DateTime.Now.Year;
-            var Year = 2021;
+            var Year = 2022;
             //var Month = DateTime.Now.Month;
             var Month = 10;
 
@@ -290,7 +290,7 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.FinancialYear1 == Year).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
 
             //if ((Month > 3 && Month < 10) && (Year == DateTime.Now.Year))
-            if ((Month > 3 && mymodel.BudgetApprovedStatus!=1) && (Year == 2021))
+            if ((Month > 3 && mymodel.BudgetApprovedStatus!=1) && (Year == 2022))
            {
                 mymodel.IsEnabled = true;
             }
@@ -445,7 +445,7 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
 
             //if ((Month > 3 && Month < 10) && (Convert.ToInt32(splitAcademicYear[0]) == DateTime.Now.Year))
-            if ((Month > 3 && IM.BudgetApprovedStatus!=1) && (Convert.ToInt32(splitAcademicYear[0]) == 2021))
+            if ((Month > 3 && IM.BudgetApprovedStatus!=1) && (Convert.ToInt32(splitAcademicYear[0]) == 2022))
             {
                 IM.IsEnabled = true;
             }
@@ -498,7 +498,7 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
 
             //if ((Month > 3 && Month < 10) && (Convert.ToInt32(splitAcademicYear[0]) == DateTime.Now.Year))
-            if ((Month > 3 && IM.BudgetApprovedStatus!=1) && (Convert.ToInt32(splitAcademicYear[0]) == 2021))
+            if ((Month > 3 && IM.BudgetApprovedStatus!=1) && (Convert.ToInt32(splitAcademicYear[0]) == 2022))
               {
                 IM.IsEnabled = true;
             }

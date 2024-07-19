@@ -405,7 +405,7 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
 
             //var Month = DateTime.Now.Month;
-            var Month = 4;
+            var Month = 10;
 
             if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2022)
             {
@@ -1410,6 +1410,8 @@ namespace BudgetPortal.Controllers
                 ModelState.Remove("HasDelegateSaved");
                 ModelState.Remove("PerVarACBWRevEstOverBudgEstCurrFin");
                 ModelState.Remove("PerVarACBWRevEstOverBudgEstNxtFin");
+                ModelState.Remove("PerVarRevEstOverBudgEstCurrFin");
+                ModelState.Remove("PerVarRevEstOverBudgEstNxtFin");
 
                 if (ModelState.IsValid)
                 {
@@ -1439,10 +1441,13 @@ namespace BudgetPortal.Controllers
                         nextresult.ActPrevFin = Convert.ToDecimal(MD.ActPrevFin[index]);
 
                         nextresult.RevEstCurrFin = Convert.ToDecimal(MD.RevEstCurrFin[index]);
-                        nextresult.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(MD.PerVarRevEstOverBudgEstCurrFin[index]);
+
+                        var SplitPerVarRevEstOverBudgEstCurrFin = MD.PerVarRevEstOverBudgEstCurrFin[index].ToString().Split("%");
+                        nextresult.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(SplitPerVarRevEstOverBudgEstCurrFin[0]);
 
                         nextresult.BudgEstNexFin = Convert.ToDecimal(MD.BudgEstNexFin[index]);
 
+                        var SplitPerVarRevEstOverBudgEstNxtFin = MD.PerVarRevEstOverBudgEstNxtFin[index].ToString().Split("%");
                         nextresult.PerVarRevEstOverBudgEstNxtFin = Convert.ToDecimal(MD.PerVarRevEstOverBudgEstNxtFin[index]);
                         try
                         {
@@ -1481,11 +1486,14 @@ namespace BudgetPortal.Controllers
                         result.ActPrevFin = Convert.ToDecimal(MD.ActPrevFin[index]);
 
                         result.RevEstCurrFin = Convert.ToDecimal(MD.RevEstCurrFin[index]);
-                        result.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(MD.PerVarRevEstOverBudgEstCurrFin[index]);
+
+                        var splitPerVarRevEstOverBudgEstCurrFin = MD.PerVarRevEstOverBudgEstCurrFin[index].ToString().Split("%");
+                        result.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(splitPerVarRevEstOverBudgEstCurrFin[0]);
 
                         result.BudgEstNexFin = Convert.ToDecimal(MD.BudgEstNexFin[index]);
 
-                        result.PerVarRevEstOverBudgEstNxtFin = Convert.ToDecimal(MD.PerVarRevEstOverBudgEstNxtFin[index]);
+                        var splitPerVarRevEstOverBudgEstNxtFin = MD.PerVarRevEstOverBudgEstNxtFin[index].ToString().Split("%");
+                        result.PerVarRevEstOverBudgEstNxtFin = Convert.ToDecimal(splitPerVarRevEstOverBudgEstNxtFin[0]);
                         try
                         {
                             if (MD.Justification[index] is not null)
