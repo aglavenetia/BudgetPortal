@@ -1289,7 +1289,7 @@ namespace BudgetPortal.Controllers
                 MD.WaitingForApprovalMessage = " ";
             }
 
-
+            ModelState.Clear();
             return View("Index", MD);
         }
 
@@ -1367,13 +1367,18 @@ namespace BudgetPortal.Controllers
                                                        && (b.SubGroupNumber == SubGroupNumber)
                                                        && (b.LedgerNumber == LedgerNumber)).FirstOrDefault();
                     result.ACAndBWPropRECurrFin = Convert.ToDecimal(MD.ACAndBWPropRECurrFin[index]);
-                    
 
+                    var SplitPerVarACBWRevEstOverBudgEstCurrFin = MD.PerVarACBWRevEstOverBudgEstCurrFin.ToString().Split("%");
+                    result.PerVarACBWRevEstOverBudgEstCurrFin = Convert.ToDecimal(SplitPerVarACBWRevEstOverBudgEstCurrFin[0]);
+                    
                     result.ACAndBWPropRENxtFin = Convert.ToDecimal(MD.ACAndBWPropRENxtFin[index]);
+                    var SplitPerVarACBWRevEstOverBudgEstNxtFin = MD.PerVarACBWRevEstOverBudgEstNxtFin.ToString().Split("%");
+                    result.PerVarACBWRevEstOverBudgEstNxtFin = Convert.ToDecimal(SplitPerVarACBWRevEstOverBudgEstNxtFin[0]);
                     try
                     {
                         if (MD.ACBWJustificationRevEst[index] is not null)
-                            result.ACBWJustificationRevEst = MD.ACBWJustificationRevEst[index].ToString();
+                           result.ACBWJustificationRevEst = MD.ACBWJustificationRevEst[index].ToString();
+                        
                         else
                             result.ACBWJustificationRevEst = " ";
                     }
@@ -1406,13 +1411,12 @@ namespace BudgetPortal.Controllers
                 ModelState.Remove("SelectedDivisionID");
                 ModelState.Remove("ACAndBWPropRECurrFin");
                 ModelState.Remove("ACAndBWPropRENxtFin");
-                ModelState.Remove("HasAdminSaved");
-                ModelState.Remove("HasDelegateSaved");
                 ModelState.Remove("PerVarACBWRevEstOverBudgEstCurrFin");
                 ModelState.Remove("PerVarACBWRevEstOverBudgEstNxtFin");
                 ModelState.Remove("PerVarRevEstOverBudgEstCurrFin");
                 ModelState.Remove("PerVarRevEstOverBudgEstNxtFin");
 
+               
                 if (ModelState.IsValid)
                 {
                     var result = new BudgetDetails();
@@ -1448,7 +1452,7 @@ namespace BudgetPortal.Controllers
                         nextresult.BudgEstNexFin = Convert.ToDecimal(MD.BudgEstNexFin[index]);
 
                         var SplitPerVarRevEstOverBudgEstNxtFin = MD.PerVarRevEstOverBudgEstNxtFin[index].ToString().Split("%");
-                        nextresult.PerVarRevEstOverBudgEstNxtFin = Convert.ToDecimal(MD.PerVarRevEstOverBudgEstNxtFin[index]);
+                        nextresult.PerVarRevEstOverBudgEstNxtFin = Convert.ToDecimal(SplitPerVarRevEstOverBudgEstNxtFin[index]);
                         try
                         {
                             if (MD.Justification[index] is not null)

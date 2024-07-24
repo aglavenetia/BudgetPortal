@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations.Schema;
 using BudgetPortal.Models;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace BudgetPortal.ViewModel
 {
@@ -90,9 +91,10 @@ namespace BudgetPortal.ViewModel
         public List<Decimal> RevEstCurrFin { get; set; }
         //public Decimal RevEstCurrFin { get; set; }
 
+        
         [Column(TypeName = "decimal(4,2)")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{#:#.####}")]
-        public List<Decimal> PerVarRevEstOverBudgEstCurrFin { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.00}%")]
+        public List<String> PerVarRevEstOverBudgEstCurrFin { get; set; }
         //public Decimal PerVarRevEstOverBudgEstCurrFin { get; set; }
 
         [Required(ErrorMessage = "Please enter the values")]
@@ -103,8 +105,8 @@ namespace BudgetPortal.ViewModel
         public List<String>? DelegateJustificationRevEst { get; set; }
 
         [Column(TypeName = "decimal(4,2)")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{#:#.####}")]
-        public List<Decimal> PerVarACBWRevEstOverBudgEstCurrFin { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.00}%")]
+        public List<String> PerVarACBWRevEstOverBudgEstCurrFin { get; set; }
         //public Decimal PerVarRevEstOverBudgEstCurrFin { get; set; }
 
         public List<String>? ACBWJustificationRevEst { get; set; }
@@ -116,8 +118,8 @@ namespace BudgetPortal.ViewModel
         //public Decimal BudgEstNexFin { get; set; }
 
         [Column(TypeName = "decimal(4,2)")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{#:#.####}")]
-        public List<Decimal> PerVarRevEstOverBudgEstNxtFin { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.00}%")]
+        public List<String> PerVarRevEstOverBudgEstNxtFin { get; set; }
         //public Decimal PerVarRevEstOverBudgEstNxtFin { get; set; }
 
         [Required(ErrorMessage = "Please enter the values")]
@@ -127,8 +129,8 @@ namespace BudgetPortal.ViewModel
         //public Decimal ACAndBWPropRENxtFin { get; set; }
 
         [Column(TypeName = "decimal(4,2)")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{#:#.####}")]
-        public List<Decimal> PerVarACBWRevEstOverBudgEstNxtFin { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.00}%")]
+        public List<String> PerVarACBWRevEstOverBudgEstNxtFin { get; set; }
         public List<String>? Justification { get; set; }
         //public String Justification { get; set; }
 
