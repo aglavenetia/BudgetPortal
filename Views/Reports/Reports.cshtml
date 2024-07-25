@@ -48,7 +48,7 @@
                     @Html.ValidationMessageFor(Model => Model.SelectedAcademicYearID, "", new { @class = "text-danger" })
                 </td>
                 
-                @if(ReportName != "Headwise Consolidation")
+                @if(ReportName != "Headwise Consolidation" && !ReportName.Contains("Consolidated"))
                 {
                 <td class="w-20">
                     @Html.DropDownListFor(m => m.SelectedDivisionTypeID, Model.DivisionTypeNames,"--Please select any DivisionType Name--",new { @class = "form-control", @id="DivisionType" })
@@ -123,7 +123,7 @@
             var SectionSumPerVarRevEstOverBudgEstNxtFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.PerVarRevEstOverBudgEstNxtFin).Sum();
             /*var SectionSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ACAndBWPropRENxtFin).Sum();*/
 
-            if (OuterBodyCount == 0)
+            if (OuterBodyCount == 0) //Section Active Tab
             {
                 var SelectedDivisionTypeName = (from a in Model.DivisionTypeNames where a.Selected == true select a.Text).FirstOrDefault();
 
@@ -202,14 +202,18 @@
                                                      where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo)) 
                                                      select a.ACAndBWPropRENxtFin).Sum();
                             }
-                            if (CounterBody == 0)
+                            if (CounterBody == 0) //Expenditure Head Active Tab
                             {
                                 //var ReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
                                 var SelectedAcademicYear = (from a in Model.AcademicYears where a.Selected == true select a.Text).FirstOrDefault();
                                 var Report = " ";
-                                if(ReportName !="Headwise Consolidation")
+                                if(ReportName !="Headwise Consolidation" && !ReportName.Contains("Consolidated"))
                                 {
                                     Report = (ReportName != null && @ReportName.Contains("Budget")) ? @ReportName : @ReportName + " " + @SelectedAcademicYear + "(" + @SelectedDivisionTypeName + ")";
+                                }
+                                else if(ReportName.Contains("Consolidated"))
+                                {
+                                    Report = (ReportName != null && @ReportName.Contains("Budget")) ? @ReportName : @ReportName + " " + @SelectedAcademicYear;
                                 }
                                 else
                                 {
@@ -223,48 +227,25 @@
                                  }
                                 var SumGroupReport = 0.00;
                              
-                                if (ReportName!=null && ReportName.Equals("Actual"))
+                                if (ReportName!=null && ReportName.Equals("Consolidated Actual"))
                                 {
                                     //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo) ) select a.ActPrevFin).Sum();
-                                    SumGroupReport = (Double)(from a in Model.Detailss
-                                                              join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                              where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
-                                                              select a.ActPrevFin).Sum();
+                                    SumGroupReport = (Double)(from a in Model.Detailss select a.ActPrevFin).Sum();
                                 }
-                                else if(ReportName!=null && ReportName.Equals("Actual Half Year"))
+                                else if(ReportName!=null && ReportName.Equals("Consolidated Actual Half Year"))
                                 {
                                     //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.ActCurrFinTill2ndQuart).Sum();
-                                    SumGroupReport = (Double)(from a in Model.Detailss
-                                                              join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                              where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
-                                                              select a.ActCurrFinTill2ndQuart).Sum();
-                                
+                                    SumGroupReport = (Double)(from a in Model.Detailss select a.ActCurrFinTill2ndQuart).Sum();
                                 }
-                                else if(ReportName!=null && ReportName.Equals("Revised Estimates"))
+                                else if(ReportName!=null && ReportName.Equals("Consolidated Revised Estimates"))
                                 {
                                     //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.ACAndBWPropRECurrFin).Sum();
-                                    SumGroupReport = (Double)(from a in Model.Detailss
-                                                              join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                              where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
-                                                              select a.ACAndBWPropRECurrFin).Sum();
+                                    SumGroupReport = (Double)(from a in Model.Detailss select a.ACAndBWPropRECurrFin).Sum();
                                 }
-                                /*else if (ReportName.Equals("Budget Estimates "+@SelectedAcademicYear))
+                                else if (ReportName!=null && ReportName.Equals("Consolidated Budget Estimates "+@NextAcademicYear))
                                 {
                                     //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.ACAndBWPropRENxtFin).Sum();
-                                    SumGroupReport = (Double)(from a in Model.Detailss
-                                                              join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                              where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
-                                                              select a.BudEstCurrFin).Sum();
-                                
-                                }*/
-                                else if (ReportName!=null && ReportName.Equals("Budget Estimates "+@NextAcademicYear))
-                                {
-                                    //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo)) select a.ACAndBWPropRENxtFin).Sum();
-                                    SumGroupReport = (Double)(from a in Model.Detailss
-                                                              join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                              where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
-                                                              select a.ACAndBWPropRENxtFin).Sum();
-                                
+                                    SumGroupReport = (Double)(from a in Model.Detailss select a.ACAndBWPropRENxtFin).Sum();
                                 }
 
                                 <div id="@identi" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@identi-tab" style="width: 1750px;">
@@ -453,6 +434,381 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
+                                    }
+                                    else if (ReportName!=null && ReportName.Contains("Consolidated"))
+                                    {
+                                        <table id="@identi-outertable" class="table table-responsive table-hover">
+
+                                            <thead>
+                                                <tr class="text-center" style="color:chocolate;border-bottom:hidden;"><th colspan="100">CENTRAL BOARD OF SECONDARY EDUCATION</th></tr>
+                                                <tr class="text-center" style="color:chocolate;border-bottom:hidden;">
+                                                    <th colspan="100">Shiksha Kendra 2, Community Centre, Preet Vihar, Delhi - 110 092</th>
+                                                </tr>
+                                                <tr class="text-center" style="color:green;border-bottom:hidden;">
+                                                    <th colspan="100"> Consolidated @Report</th>
+                                                </tr>
+                                                <tr class="text-center" style="color:red;border-bottom:hidden;">
+                                                    <th colspan="100">*(FIGURES IN CRORES)</th>
+                                                </tr>
+                                                <tr>
+                                                    <th class="w-5">
+                                                        HEAD NO.
+                                                    </th>
+                                                    <th class="w-5">
+                                                        SUB HEAD NO.
+                                                    </th>
+                                                    <th class="w-5">
+                                                        NAME OF THE HEAD
+                                                    </th>
+                                                    <th class="w-5">
+                                                        @Report
+                                                    </th>
+                                                    <th class="w-5">
+                                                        HEADQUARTERS
+                                                    </th>
+                                                    <th class="w-5">
+                                                        ALL REGIONAL OFFICES
+                                                    </th>
+                                                    <th class="w-5">
+                                                        ALL COEs
+                                                    </th>
+                                                    @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals("Unit")))
+                                                    {
+                                                        <th class="w-5"> @Html.Label("UnitNames-"+Regions.DivisionID,Regions.DivisionName)</th>
+                                                    }
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
+                                                {
+                                                    var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
+                                                    //var SelectedAcademicYear = (from a in Model.AcademicYears where a.Selected == true select a.Text).FirstOrDefault();
+                                                    //var SplitAcademicYear = SelectedAcademicYear.Split("-");
+                                                    //var NextAcademicYear = SplitAcademicYear[1]+"-"+(Convert.ToInt32(SplitAcademicYear[1])+Convert.ToInt32(1));
+                                                    var SumSubGroupReport = 0.00;
+                                                    var HQSumSubGroupReport = 0.00;
+                                                    var ROSumSubGroupReport = 0.00;
+                                                    var COESumSubGroupReport = 0.00;
+                                                    var UnitSumSubGroupReport = 0.00;
+                                                    
+                                                    if (ReportName != null && ReportName.Equals("Consolidated Actual"))
+                                                    {
+                                                        //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActPrevFin).Sum();
+                                                        SumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                     where a.SubGroupNumber.Equals(@Subs.SubGroupNo)
+                                                                                     select a.ActPrevFin).Sum();
+                                                        HQSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                       where (b.DivisionType.Equals("HeadQuarters") && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
+                                                                                     select a.ActPrevFin).Sum();
+                                                        ROSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                     where (b.DivisionType.Equals("Regional Office") && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
+                                                                                     select a.ActPrevFin).Sum();
+                                                        COESumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                     where (b.DivisionType.Equals("Centre of Excellence") && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
+                                                                                     select a.ActPrevFin).Sum();
+                                                    }
+                                                    else if (ReportName != null && ReportName.Equals("Consolidated Actual Half Year"))
+                                                    {
+                                                        //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActCurrFinTill2ndQuart).Sum();
+                                                        SumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                     where a.SubGroupNumber.Equals(@Subs.SubGroupNo)
+                                                                                     select a.ActCurrFinTill2ndQuart).Sum();
+                                                        HQSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                       join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                       where (b.DivisionType.Equals("HeadQuarters") && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
+                                                                                       select a.ActCurrFinTill2ndQuart).Sum();
+                                                        ROSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                       join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                       where (b.DivisionType.Equals("Regional Office") && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
+                                                                                       select a.ActCurrFinTill2ndQuart).Sum();
+                                                        COESumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                        join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                        where (b.DivisionType.Equals("Centre of Excellence") && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
+                                                                                        select a.ActCurrFinTill2ndQuart).Sum();
+                                                    }
+                                                    else if (ReportName != null && ReportName.Equals("Consolidated Revised Estimates"))
+                                                    {
+                                                        //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
+                                                        SumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                     where a.SubGroupNumber.Equals(@Subs.SubGroupNo)
+                                                                                     select a.ACAndBWPropRECurrFin).Sum();
+                                                        HQSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                       where (b.DivisionType.Equals("HeadQuarters") && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
+                                                                                     select a.ACAndBWPropRECurrFin).Sum();
+                                                        ROSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                     where (b.DivisionType.Equals("Regional Office") && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
+                                                                                     select a.ACAndBWPropRECurrFin).Sum();
+                                                        COESumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                     where (b.DivisionType.Equals("Centre of Excellence") && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
+                                                                                     select a.ACAndBWPropRECurrFin).Sum();
+                                                    }
+                                                    else if (ReportName != null && ReportName.Equals("Consolidated Budget Estimates " + @NextAcademicYear))
+                                                    {
+                                                        //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
+                                                        SumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                     where a.SubGroupNumber.Equals(@Subs.SubGroupNo)
+                                                                                     select a.ACAndBWPropRENxtFin).Sum();
+                                                        HQSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                       join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                       where (b.DivisionType.Equals("HeadQuarters") && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
+                                                                                       select a.ACAndBWPropRENxtFin).Sum();
+                                                        ROSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                       join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                       where (b.DivisionType.Equals("Regional Office") && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
+                                                                                       select a.ACAndBWPropRENxtFin).Sum();
+                                                        COESumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                        join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                        where (b.DivisionType.Equals("Centre of Excellence") && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
+                                                                                        select a.ACAndBWPropRENxtFin).Sum();
+                                                    }
+                                                   
+                                                    var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
+
+                                                    <tr>
+
+                                                        <td>
+                                                            @Subs.SubGroupNo
+                                                        </td>
+                                                        <td></td>
+                                                        <td>
+                                                            @Subs.subGroupName
+                                                        </td>
+                                                        <td>
+                                                            @Html.Label("SumSubGroupReport"+@Subs.SubGroupNo,@SumSubGroupReport!=0.00 ? @SumSubGroupReport.ToString("F4") : "-")
+                                                        </td>
+                                                        <td> 
+                                                            @Html.Label("HQSumSubGroupReport"+@Subs.SubGroupNo,@HQSumSubGroupReport!=0.00 ? @HQSumSubGroupReport.ToString("F4") : "-")
+                                                        </td>
+                                                        <td> 
+                                                            @Html.Label("ROSumSubGroupReport"+@Subs.SubGroupNo,@ROSumSubGroupReport!=0.00 ? @ROSumSubGroupReport.ToString("F4") : "-")
+                                                        </td>
+                                                        <td> 
+                                                            @Html.Label("COESumSubGroupReport"+@Subs.SubGroupNo,@COESumSubGroupReport!=0.00 ? @COESumSubGroupReport.ToString("F4") : "-")
+                                                        </td>
+
+                                                        @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals("Unit")))
+                                                        {
+                                                            var result = (from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a).FirstOrDefault();
+
+                                                            if (ReportName != null && ReportName.Equals("Consolidated Actual"))
+                                                            {
+
+                                                                if (Subs.RequireInput)
+                                                                {
+                                                                    var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ActPrevFin).Sum();
+                                                                    <td align="center">
+                                                                        @Html.Label("Consolidated Actual" + Regions.DivisionName,@LedgersSum!= 0.00 ? Convert.ToDecimal(LedgersSum).ToString("F4") : "-")
+                                                                    </td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td align="center">
+                                                                        @Html.Label("Consolidated Actual" + Regions.DivisionName,result!=null ? Convert.ToDecimal(result.ActPrevFin).ToString("F4") : "-")
+                                                                    </td>
+                                                                }
+                                                            }
+                                                            else if (ReportName != null && ReportName.Equals("Consolidated Actual Half Year"))
+                                                            {
+                                                                if (Subs.RequireInput)
+                                                                {
+                                                                    var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ActCurrFinTill2ndQuart).Sum();
+
+                                                                    <td align="center">
+                                                                        @Html.Label("Consolidated Actual Half Year" + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F4") : "-")
+                                                                    </td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td align="center">
+                                                                        @Html.Label("Consolidated Actual Half Year" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ActCurrFinTill2ndQuart).ToString("F4") : "-")
+                                                                    </td>
+                                                                }
+                                                            }
+                                                            else if (ReportName != null && ReportName.Equals("Consolidated Revised Estimates"))
+                                                            {
+                                                                if (Subs.RequireInput)
+                                                                {
+                                                                    var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ACAndBWPropRECurrFin).Sum();
+
+                                                                    <td align="center">
+                                                                        @Html.Label("Consolidated Revised Estimates" + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F4") : "-")
+                                                                    </td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td align="center">
+                                                                        @Html.Label("Consolidated Revised Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRECurrFin).ToString("F4") : "-")
+                                                                    </td>
+                                                                }
+                                                            }
+                                                            else if (ReportName != null && ReportName.Equals("Consolidated Budget Estimates " + @NextAcademicYear))
+                                                            {
+                                                                if (Subs.RequireInput)
+                                                                {
+                                                                    var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ACAndBWPropRENxtFin).Sum();
+
+                                                                    <td align="center">
+                                                                        @Html.Label("Consolidated Budget Estimates" +@NextAcademicYear+ Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F4") : "-")
+                                                                    </td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td align="center">
+                                                                        @Html.Label("Consolidated Budget Estimates"+@NextAcademicYear+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRENxtFin).ToString("F4") : "-")
+                                                                    </td>
+                                                                }
+                                                            }
+                                                            
+                                                        }
+                                                    </tr>
+
+                                                    @if (LedgerCount > 0)
+                                                    {
+                                                        @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
+                                                        {
+                                                            var LedgerSumSubGroupReport = 0.00;
+                                                            if (ReportName != null && ReportName.Equals("Actual"))
+                                                            {
+                                                                //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActPrevFin).Sum();
+                                                                LedgerSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                   join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                   where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                   select a.ActPrevFin).Sum();
+                                                            }
+                                                            else if (ReportName != null && ReportName.Equals("Actual Half Year"))
+                                                            {
+                                                                //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActCurrFinTill2ndQuart).Sum();
+                                                                LedgerSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                   join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                   where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                   select a.ActCurrFinTill2ndQuart).Sum();
+                                                            }
+                                                            else if (ReportName != null && ReportName.Equals("Revised Estimates"))
+                                                            {
+                                                                //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
+                                                                LedgerSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                   join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                   where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                   select a.ACAndBWPropRECurrFin).Sum();
+                                                            }
+                                                            else if (ReportName != null && ReportName.Equals("Budget Estimates " + @NextAcademicYear))
+                                                            {
+                                                                //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
+                                                                LedgerSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                   join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                   where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                   select a.ACAndBWPropRENxtFin).Sum();
+                                                            }
+                                                            <tr>
+                                                                <td></td>
+                                                                <td>@Ledgers.LedgerNo</td>
+                                                                <td>@Ledgers.LedgerName</td>
+                                                                <td>
+                                                                    @Html.Label("LedgerSumSubGroupReport"+@Subs.SubGroupNo,@LedgerSumSubGroupReport!=0.00 ? @LedgerSumSubGroupReport.ToString("F4") : "-")
+                                                                </td>
+                                                                <td>HeadQuarters</td>
+                                                                <td>All Regional Offices</td>
+                                                                <td>All COEs</td>
+                                                                @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals("Unit")))
+                                                                {
+                                                                    var result = (from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.LedgerNumber.Equals(@Ledgers.LedgerNo))) select a).FirstOrDefault();
+
+                                                                    if (ReportName != null && ReportName.Equals("Actual"))
+                                                                    {
+                                                                        <td align="center">
+                                                                            @Html.Label("Actual" + Regions.DivisionName,result!=null ? Convert.ToDecimal(result.ActPrevFin).ToString("F4") : "-")
+                                                                        </td>
+                                                                    }
+                                                                    else if (ReportName != null && ReportName.Equals("Actual Half Year"))
+                                                                    {
+                                                                        <td align="center">
+                                                                            @Html.Label("Actual Half Year" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ActCurrFinTill2ndQuart).ToString("F4") : "-")
+                                                                        </td>
+                                                                    }
+                                                                    else if (ReportName != null && ReportName.Equals("Revised Estimates"))
+                                                                    {
+
+                                                                        <td align="center">
+                                                                            @Html.Label("Revised Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRECurrFin).ToString("F4") : "-")
+                                                                        </td>
+                                                                    }
+                                                                    else if (ReportName != null && ReportName.Equals("Budget Estimates " + @NextAcademicYear))
+                                                                    {
+
+                                                                        <td align="center">
+                                                                            @Html.Label("Budget Estimates"+@NextAcademicYear+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRENxtFin).ToString("F4") : "-")
+                                                                        </td>
+                                                                    }
+
+                                                                }
+                                                            </tr>
+                                                        }
+
+                                                    }
+
+                                                    TableCount++;
+                                                }
+                                                <tr>
+                                                    <td>
+                                                    </td>
+                                                    <td>
+                                                        Total
+                                                    </td>
+                                                    <td>
+                                                        Total
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("SumGroupReport"+@item.GroupNo,@SumGroupReport!=0.00 ? @SumGroupReport.ToString("F4") : "-")
+                                                    </td>
+                                                    @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
+                                                    {
+                                                        if (ReportName != null && ReportName.Equals("Actual"))
+                                                        {
+                                                            var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ActPrevFin).Sum();
+                                                            <td align="right">
+                                                                @Html.Label("ActualSum" + Regions.DivisionName,result!=0.00 ? Convert.ToDecimal(result).ToString("F4") : "-")
+                                                            </td>
+                                                        }
+                                                        else if (ReportName != null && ReportName.Equals("Actual Half Year"))
+                                                        {
+                                                            var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ActCurrFinTill2ndQuart).Sum();
+                                                            <td align="right">
+                                                                @Html.Label("Actual Half Year Sum" + Regions.DivisionName, result!=0.00 ? Convert.ToDecimal(result).ToString("F4") : "-")
+                                                            </td>
+                                                        }
+                                                        else if (ReportName != null && ReportName.Equals("Revised Estimates"))
+                                                        {
+                                                            var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ACAndBWPropRECurrFin).Sum();
+                                                            <td align="right">
+                                                                @Html.Label("Revised Estimates Sum" + Regions.DivisionName, result!=0.00 ? Convert.ToDecimal(result).ToString("F4") : "-")
+
+                                                            </td>
+                                                        }
+                                                        else if (ReportName != null && ReportName.Equals("Budget Estimates " + @NextAcademicYear))
+                                                        {
+                                                            var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ACAndBWPropRENxtFin).Sum();
+                                                            <td align="right">
+                                                                @Html.Label("Budget Estimates Sum "+@NextAcademicYear+ Regions.DivisionName, result!=0.00 ? Convert.ToDecimal(result).ToString("F4") : "-")
+                                                            </td>
+                                                        }
+                                                        /*  else if (ReportName.Equals("Budget Estimates "+@SelectedAcademicYear))
+                                                        {
+                                                        var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.BudEstCurrFin).Sum();
+                                                        <td align="right" class="w-20">
+                                                        @Html.Label("Budget Estimates Sum "+@SelectedAcademicYear+ Regions.DivisionName, result!=0.00 ? Convert.ToDecimal(result).ToString("F4") : "-")
+                                                        </td>
+                                                        } */
+                                                    }
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     }
                                     else
                                     {
@@ -784,7 +1140,7 @@
                                 </div>
 
                             }
-                            else
+                            else //Expenditure Head Non - Active Tab
                             {
                                 //var SelectedDivisionTypeName = (from a in Model.DivisionTypeNames where a.Selected == true select a.Text).FirstOrDefault();
                                 //var ReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
@@ -796,9 +1152,13 @@
                                     NextAcademicYear = SplitAcademicYear[1]+"-"+(Convert.ToInt32(SplitAcademicYear[1])+Convert.ToInt32(1));
                                 }
                                 var Report = "";
-                                if (ReportName != "Headwise Consolidation")
+                                if (ReportName != "Headwise Consolidation" && !ReportName.Contains("Consolidated"))
                                 {
                                     Report = (ReportName != null && @ReportName.Contains("Budget")) ? @ReportName : @ReportName + " " + @SelectedAcademicYear + "(" + @SelectedDivisionTypeName + ")";
+                                }
+                                else if(ReportName.Contains("Consolidated"))
+                                {
+                                    Report = (ReportName != null && @ReportName.Contains("Budget")) ? @ReportName : @ReportName + " " + @SelectedAcademicYear;
                                 }
                                 else
                                 {
@@ -1037,6 +1397,437 @@
                                                     </tr>
                                                 </tbody>
                                             </table>  
+                                    }
+                                    else if (ReportName!=null && ReportName.Contains("Consolidated"))
+                                    {
+                                        <table id="@identi-outertable" class="table table-responsive table-hover">
+
+                                            <thead>
+                                                <tr class="text-center" style="color:chocolate;border-bottom:hidden;"><th colspan="100">CENTRAL BOARD OF SECONDARY EDUCATION</th></tr>
+                                                <tr class="text-center" style="color:chocolate;border-bottom:hidden;">
+                                                    <th colspan="100">Shiksha Kendra 2, Community Centre, Preet Vihar, Delhi - 110 092</th>
+                                                </tr>
+                                                <tr class="text-center" style="color:green;border-bottom:hidden;">
+                                                    <th colspan="100"> Consolidated @Report</th>
+                                                </tr>
+                                                <tr class="text-center" style="color:red;border-bottom:hidden;">
+                                                    <th colspan="100">*(FIGURES IN CRORES)</th>
+                                                </tr>
+                                                <tr>
+                                                    <th class="w-5">
+                                                        HEAD NO.
+                                                    </th>
+                                                    <th class="w-5">
+                                                        SUB HEAD NO.
+                                                    </th>
+                                                    <th class="w-5">
+                                                        NAME OF THE HEAD
+                                                    </th>
+                                                    <th class="w-5">
+                                                        @Report
+                                                    </th>
+                                                    <th class="w-5">
+                                                        HEADQUARTERS
+                                                    </th>
+                                                    <th class="w-5">
+                                                        ALL REGIONAL OFFICES
+                                                    </th>
+                                                    <th class="w-5">
+                                                        ALL COEs
+                                                    </th>
+                                                    @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals("Unit")))
+                                                    {
+                                                        <th class="w-5"> @Html.Label("UnitNames-"+Regions.DivisionID,Regions.DivisionName)</th>
+                                                    }
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                @foreach (var Subs in Model.SubGroupss.Where(d => d.GroupNo.Equals(@item.GroupNo)))
+                                                {
+                                                    var details = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
+                                                    //var SelectedAcademicYear = (from a in Model.AcademicYears where a.Selected == true select a.Text).FirstOrDefault();
+                                                    //var SplitAcademicYear = SelectedAcademicYear.Split("-");
+                                                    //var NextAcademicYear = SplitAcademicYear[1]+"-"+(Convert.ToInt32(SplitAcademicYear[1])+Convert.ToInt32(1));
+                                                    var SumSubGroupReport = 0.00;
+                                                    var HQSumSubGroupReport = 0.00;
+                                                    var ROSumSubGroupReport = 0.00;
+                                                    var COESumSubGroupReport = 0.00;
+                                                    var UnitSumSubGroupReport = 0.00;
+                                                    
+                                                    if (ReportName != null && ReportName.Equals("Consolidated Actual"))
+                                                    {
+                                                        //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActPrevFin).Sum();
+                                                        SumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                     where a.SubGroupNumber.Equals(@Subs.SubGroupNo)
+                                                                                     select a.ActPrevFin).Sum();
+                                                        HQSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                       where (b.DivisionType.Equals("HeadQuarters") && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
+                                                                                     select a.ActPrevFin).Sum();
+                                                        ROSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                     where (b.DivisionType.Equals("Regional Office") && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
+                                                                                     select a.ActPrevFin).Sum();
+                                                        COESumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                     where (b.DivisionType.Equals("Centre of Excellence") && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
+                                                                                     select a.ActPrevFin).Sum();
+                                                    }
+                                                    else if (ReportName != null && ReportName.Equals("Consolidated Actual Half Year"))
+                                                    {
+                                                        //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActCurrFinTill2ndQuart).Sum();
+                                                        SumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                     where a.SubGroupNumber.Equals(@Subs.SubGroupNo)
+                                                                                     select a.ActCurrFinTill2ndQuart).Sum();
+                                                        HQSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                       join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                       where (b.DivisionType.Equals("HeadQuarters") && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
+                                                                                       select a.ActCurrFinTill2ndQuart).Sum();
+                                                        ROSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                       join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                       where (b.DivisionType.Equals("Regional Office") && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
+                                                                                       select a.ActCurrFinTill2ndQuart).Sum();
+                                                        COESumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                        join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                        where (b.DivisionType.Equals("Centre of Excellence") && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
+                                                                                        select a.ActCurrFinTill2ndQuart).Sum();
+                                                    }
+                                                    else if (ReportName != null && ReportName.Equals("Consolidated Revised Estimates"))
+                                                    {
+                                                        //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
+                                                        SumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                     where a.SubGroupNumber.Equals(@Subs.SubGroupNo)
+                                                                                     select a.ACAndBWPropRECurrFin).Sum();
+                                                        HQSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                       where (b.DivisionType.Equals("HeadQuarters") && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
+                                                                                     select a.ACAndBWPropRECurrFin).Sum();
+                                                        ROSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                     where (b.DivisionType.Equals("Regional Office") && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
+                                                                                     select a.ACAndBWPropRECurrFin).Sum();
+                                                        COESumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                     where (b.DivisionType.Equals("Centre of Excellence") && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
+                                                                                     select a.ACAndBWPropRECurrFin).Sum();
+                                                    }
+                                                    else if (ReportName != null && ReportName.Equals("Consolidated Budget Estimates " + @NextAcademicYear))
+                                                    {
+                                                        //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
+                                                        SumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                     where a.SubGroupNumber.Equals(@Subs.SubGroupNo)
+                                                                                     select a.ACAndBWPropRENxtFin).Sum();
+                                                        HQSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                       join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                       where (b.DivisionType.Equals("HeadQuarters") && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
+                                                                                       select a.ACAndBWPropRENxtFin).Sum();
+                                                        ROSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                       join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                       where (b.DivisionType.Equals("Regional Office") && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
+                                                                                       select a.ACAndBWPropRENxtFin).Sum();
+                                                        COESumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                        join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                        where (b.DivisionType.Equals("Centre of Excellence") && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
+                                                                                        select a.ACAndBWPropRENxtFin).Sum();
+                                                    }
+                                                   
+                                                    var LedgerCount = (from a in Model.Ledgerss where a.SubGroupNo.Equals(@Subs.SubGroupNo) select a.LedgerNo).Count();
+
+                                                    <tr>
+
+                                                        <td>
+                                                            @Subs.SubGroupNo
+                                                        </td>
+                                                        <td></td>
+                                                        <td>
+                                                            @Subs.subGroupName
+                                                        </td>
+                                                        <td>
+                                                            @Html.Label("SumSubGroupReport"+@Subs.SubGroupNo,@SumSubGroupReport!=0.00 ? @SumSubGroupReport.ToString("F4") : "-")
+                                                        </td>
+                                                        <td> 
+                                                            @Html.Label("HQSumSubGroupReport"+@Subs.SubGroupNo,@HQSumSubGroupReport!=0.00 ? @HQSumSubGroupReport.ToString("F4") : "-")
+                                                        </td>
+                                                        <td> 
+                                                            @Html.Label("ROSumSubGroupReport"+@Subs.SubGroupNo,@ROSumSubGroupReport!=0.00 ? @ROSumSubGroupReport.ToString("F4") : "-")
+                                                        </td>
+                                                        <td> 
+                                                            @Html.Label("COESumSubGroupReport"+@Subs.SubGroupNo,@COESumSubGroupReport!=0.00 ? @COESumSubGroupReport.ToString("F4") : "-")
+                                                        </td>
+
+                                                        @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals("Unit")))
+                                                        {
+                                                            var result = (from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a).FirstOrDefault();
+
+                                                            if (ReportName != null && ReportName.Equals("Consolidated Actual"))
+                                                            {
+
+                                                                if (Subs.RequireInput)
+                                                                {
+                                                                    var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ActPrevFin).Sum();
+                                                                    <td align="center">
+                                                                        @Html.Label("Consolidated Actual" + Regions.DivisionName,@LedgersSum!= 0.00 ? Convert.ToDecimal(LedgersSum).ToString("F4") : "-")
+                                                                    </td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td align="center">
+                                                                        @Html.Label("Consolidated Actual" + Regions.DivisionName,result!=null ? Convert.ToDecimal(result.ActPrevFin).ToString("F4") : "-")
+                                                                    </td>
+                                                                }
+                                                            }
+                                                            else if (ReportName != null && ReportName.Equals("Consolidated Actual Half Year"))
+                                                            {
+                                                                if (Subs.RequireInput)
+                                                                {
+                                                                    var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ActCurrFinTill2ndQuart).Sum();
+
+                                                                    <td align="center">
+                                                                        @Html.Label("Consolidated Actual Half Year" + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F4") : "-")
+                                                                    </td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td align="center">
+                                                                        @Html.Label("Consolidated Actual Half Year" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ActCurrFinTill2ndQuart).ToString("F4") : "-")
+                                                                    </td>
+                                                                }
+                                                            }
+                                                            else if (ReportName != null && ReportName.Equals("Consolidated Revised Estimates"))
+                                                            {
+                                                                if (Subs.RequireInput)
+                                                                {
+                                                                    var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ACAndBWPropRECurrFin).Sum();
+
+                                                                    <td align="center">
+                                                                        @Html.Label("Consolidated Revised Estimates" + Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F4") : "-")
+                                                                    </td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td align="center">
+                                                                        @Html.Label("Consolidated Revised Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRECurrFin).ToString("F4") : "-")
+                                                                    </td>
+                                                                }
+                                                            }
+                                                            else if (ReportName != null && ReportName.Equals("Consolidated Budget Estimates " + @NextAcademicYear))
+                                                            {
+                                                                if (Subs.RequireInput)
+                                                                {
+                                                                    var LedgersSum = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.SubGroupNumber.Equals(@Subs.SubGroupNo))) select a.ACAndBWPropRENxtFin).Sum();
+
+                                                                    <td align="center">
+                                                                        @Html.Label("Consolidated Budget Estimates" +@NextAcademicYear+ Regions.DivisionName, LedgersSum!=0.00 ? Convert.ToDecimal(LedgersSum).ToString("F4") : "-")
+                                                                    </td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td align="center">
+                                                                        @Html.Label("Consolidated Budget Estimates"+@NextAcademicYear+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRENxtFin).ToString("F4") : "-")
+                                                                    </td>
+                                                                }
+                                                            }
+                                                            
+                                                        }
+                                                    </tr>
+
+                                                    @if (LedgerCount > 0)
+                                                    {
+                                                        @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
+                                                        {
+                                                            var LedgerSumSubGroupReport = 0.00;
+                                                            var LedgerHQSumSubGroupReport = 0.00;
+                                                            var LedgerROSumSubGroupReport = 0.00;
+                                                            var LedgerCOESumSubGroupReport = 0.00;
+                                                            var LedgerUnitSumSubGroupReport = 0.00;
+
+                                                            if (ReportName != null && ReportName.Equals("Consolidated Actual"))
+                                                            {
+                                                                //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActPrevFin).Sum();
+                                                                LedgerSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                   where a.LedgerNumber.Equals(@Ledgers.LedgerNo)
+                                                                                                   select a.ActPrevFin).Sum();
+                                                                LedgerHQSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                   join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                   where (b.DivisionType.Equals("HeadQuarters") && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                   select a.ActPrevFin).Sum();
+                                                                LedgerROSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                   join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                   where (b.DivisionType.Equals("Regional Office") && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                   select a.ActPrevFin).Sum();
+                                                                LedgerCOESumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                   join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                      where (b.DivisionType.Equals("Centre of Excellence") && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                   select a.ActPrevFin).Sum();
+                                                            }
+                                                            else if (ReportName != null && ReportName.Equals("Consolidated Actual Half Year"))
+                                                            {
+                                                                //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActCurrFinTill2ndQuart).Sum();
+                                                                LedgerSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                   join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                   where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                   select a.ActCurrFinTill2ndQuart).Sum();
+                                                                LedgerHQSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                     where (b.DivisionType.Equals("HeadQuarters") && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                     select a.ActCurrFinTill2ndQuart).Sum();
+                                                                LedgerROSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                     where (b.DivisionType.Equals("Regional Office") && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                     select a.ActCurrFinTill2ndQuart).Sum();
+                                                                LedgerCOESumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                      join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                      where (b.DivisionType.Equals("Centre of Excellence") && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                      select a.ActCurrFinTill2ndQuart).Sum();
+                                                            }
+                                                            else if (ReportName != null && ReportName.Equals("Consolidated Revised Estimates"))
+                                                            {
+                                                                //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
+                                                                LedgerSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                   where a.LedgerNumber.Equals(@Ledgers.LedgerNo)
+                                                                                                   select a.ACAndBWPropRECurrFin).Sum();
+                                                                LedgerHQSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                     where (b.DivisionType.Equals("HeadQuarters") && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                     select a.ACAndBWPropRECurrFin).Sum();
+                                                                LedgerROSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                     where (b.DivisionType.Equals("Regional Office") && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                     select a.ACAndBWPropRECurrFin).Sum();
+                                                                LedgerCOESumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                      join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                      where (b.DivisionType.Equals("Centre of Excellence") && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                      select a.ACAndBWPropRECurrFin).Sum();
+                                                            }
+                                                            else if (ReportName != null && ReportName.Equals("Consolidated Budget Estimates " + @NextAcademicYear))
+                                                            {
+                                                                //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
+                                                                LedgerSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                   where a.LedgerNumber.Equals(@Ledgers.LedgerNo)
+                                                                                                   select a.ACAndBWPropRENxtFin).Sum();
+                                                                LedgerHQSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                     where (b.DivisionType.Equals("HeadQuarters") && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                     select a.ACAndBWPropRECurrFin).Sum();
+                                                                LedgerROSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                     where (b.DivisionType.Equals("Regional Office") && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                     select a.ACAndBWPropRECurrFin).Sum();
+                                                                LedgerCOESumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                      join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                      where (b.DivisionType.Equals("Centre of Excellence") && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                      select a.ACAndBWPropRECurrFin).Sum();
+                                                            }
+                                                            <tr>
+                                                                <td></td>
+                                                                <td>@Ledgers.LedgerNo</td>
+                                                                <td>@Ledgers.LedgerName</td>
+                                                                <td>
+                                                                    @Html.Label("LedgerSumSubGroupReport"+@Subs.SubGroupNo,@LedgerSumSubGroupReport!=0.00 ? @LedgerSumSubGroupReport.ToString("F4") : "-")
+                                                                </td>
+                                                                <td>
+                                                                  @Html.Label("LedgerHQSumSubGroupReport"+@Subs.SubGroupNo,@LedgerHQSumSubGroupReport!=0.00 ? @LedgerHQSumSubGroupReport.ToString("F4") : "-")
+                                                                </td>
+                                                                <td>
+                                                                  @Html.Label("LedgerROSumSubGroupReport"+@Subs.SubGroupNo,@LedgerROSumSubGroupReport!=0.00 ? @LedgerROSumSubGroupReport.ToString("F4") : "-")
+                                                                </td>
+                                                                <td>
+                                                                  @Html.Label("LedgerCOESumSubGroupReport"+@Subs.SubGroupNo,@LedgerCOESumSubGroupReport!=0.00 ? @LedgerCOESumSubGroupReport.ToString("F4") : "-")
+                                                                </td>
+                                                                @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals("Unit")))
+                                                                {
+                                                                    var result = (from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.LedgerNumber.Equals(@Ledgers.LedgerNo))) select a).FirstOrDefault();
+
+                                                                    if (ReportName != null && ReportName.Equals("Consolidated Actual"))
+                                                                    {
+                                                                        <td align="center">
+                                                                            @Html.Label("Consolidated Actual" + Regions.DivisionName,result!=null ? Convert.ToDecimal(result.ActPrevFin).ToString("F4") : "-")
+                                                                        </td>
+                                                                    }
+                                                                    else if (ReportName != null && ReportName.Equals("Consolidated Actual Half Year"))
+                                                                    {
+                                                                        <td align="center">
+                                                                            @Html.Label("Consolidated Actual Half Year" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ActCurrFinTill2ndQuart).ToString("F4") : "-")
+                                                                        </td>
+                                                                    }
+                                                                    else if (ReportName != null && ReportName.Equals("Consolidated Revised Estimates"))
+                                                                    {
+
+                                                                        <td align="center">
+                                                                            @Html.Label("Consolidated Revised Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRECurrFin).ToString("F4") : "-")
+                                                                        </td>
+                                                                    }
+                                                                    else if (ReportName != null && ReportName.Equals("Consolidated Budget Estimates " + @NextAcademicYear))
+                                                                    {
+
+                                                                        <td align="center">
+                                                                            @Html.Label("Consolidated Budget Estimates"+@NextAcademicYear+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRENxtFin).ToString("F4") : "-")
+                                                                        </td>
+                                                                    }
+
+                                                                }
+                                                            </tr>
+                                                        }
+
+                                                    }
+
+                                                    TableCount++;
+                                                }
+                                                <tr>
+                                                    <td>
+                                                    </td>
+                                                    <td>
+                                                        Total
+                                                    </td>
+                                                    <td>
+                                                        Total
+                                                    </td>
+                                                    <td>
+                                                        @Html.Label("SumGroupReport"+@item.GroupNo,@SumGroupReport!=0.00 ? @SumGroupReport.ToString("F4") : "-")
+                                                    </td>
+                                                    @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
+                                                    {
+                                                        if (ReportName != null && ReportName.Equals("Actual"))
+                                                        {
+                                                            var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ActPrevFin).Sum();
+                                                            <td align="right">
+                                                                @Html.Label("ActualSum" + Regions.DivisionName,result!=0.00 ? Convert.ToDecimal(result).ToString("F4") : "-")
+                                                            </td>
+                                                        }
+                                                        else if (ReportName != null && ReportName.Equals("Actual Half Year"))
+                                                        {
+                                                            var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ActCurrFinTill2ndQuart).Sum();
+                                                            <td align="right">
+                                                                @Html.Label("Actual Half Year Sum" + Regions.DivisionName, result!=0.00 ? Convert.ToDecimal(result).ToString("F4") : "-")
+                                                            </td>
+                                                        }
+                                                        else if (ReportName != null && ReportName.Equals("Revised Estimates"))
+                                                        {
+                                                            var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ACAndBWPropRECurrFin).Sum();
+                                                            <td align="right">
+                                                                @Html.Label("Revised Estimates Sum" + Regions.DivisionName, result!=0.00 ? Convert.ToDecimal(result).ToString("F4") : "-")
+
+                                                            </td>
+                                                        }
+                                                        else if (ReportName != null && ReportName.Equals("Budget Estimates " + @NextAcademicYear))
+                                                        {
+                                                            var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.ACAndBWPropRENxtFin).Sum();
+                                                            <td align="right">
+                                                                @Html.Label("Budget Estimates Sum "+@NextAcademicYear+ Regions.DivisionName, result!=0.00 ? Convert.ToDecimal(result).ToString("F4") : "-")
+                                                            </td>
+                                                        }
+                                                        /*  else if (ReportName.Equals("Budget Estimates "+@SelectedAcademicYear))
+                                                        {
+                                                        var result = (Double)(from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (item.GroupNo.Equals(a.GroupNumber))) select a.BudEstCurrFin).Sum();
+                                                        <td align="right" class="w-20">
+                                                        @Html.Label("Budget Estimates Sum "+@SelectedAcademicYear+ Regions.DivisionName, result!=0.00 ? Convert.ToDecimal(result).ToString("F4") : "-")
+                                                        </td>
+                                                        } */
+                                                    }
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     }
                                     else
                                     {
@@ -1400,7 +2191,7 @@
                 </div>
             }
 
-            else
+            else //Section Non-Active Tab
             {
                 <div id="@inneridenti" class="tab-pane fade" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="false">
 
@@ -1482,7 +2273,7 @@
                                                     select a.ACAndBWPropRENxtFin).Sum();
                             }
 
-                            if (CounterBody == 0)
+                            if (CounterBody == 0) //Expenditure Head Active Tab
                             {
                                 
                                 //var ReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
@@ -1494,9 +2285,13 @@
                                     NextAcademicYear = SplitAcademicYear[1]+"-"+(Convert.ToInt32(SplitAcademicYear[1])+Convert.ToInt32(1));
                                 }
                                 var Report = "";
-                                if (ReportName != "Headwise Consolidation")
+                                if (ReportName != "Headwise Consolidation" && !ReportName.Contains("Consolidated"))
                                 {
                                    Report = (ReportName != null && @ReportName.Contains("Budget")) ? @ReportName : @ReportName + " " + @SelectedAcademicYear + "(" + @SelectedDivisionTypeName + ")";
+                                }
+                                else if(ReportName.Contains("Consolidated"))
+                                {
+                                    Report = (ReportName != null && @ReportName.Contains("Budget")) ? @ReportName : @ReportName + " " + @SelectedAcademicYear;
                                 }
                                 else
                                 {
@@ -1908,100 +2703,140 @@
                                                     {
                                                         @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
                                                         {
-                                                            var BudEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.BudEstCurrFin).Sum();
-                                                            var ActPrevFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActPrevFin).Sum();
-                                                            var ActCurrFinTill2ndQuartLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ActCurrFinTill2ndQuart).Sum();
-                                                            var RevEstCurrFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRECurrFin).Sum();
-                                                            var BudgEstNexFinLedgerSum = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a.ACAndBWPropRENxtFin).Sum();
-                                                             
                                                             var LedgerSumSubGroupReport = 0.00;
+                                                            var LedgerHQSumSubGroupReport = 0.00;
+                                                            var LedgerROSumSubGroupReport = 0.00;
+                                                            var LedgerCOESumSubGroupReport = 0.00;
+                                                            var LedgerUnitSumSubGroupReport = 0.00;
 
-                                                            if (ReportName!=null && ReportName.Equals("Actual"))
+                                                            if (ReportName != null && ReportName.Equals("Consolidated Actual"))
                                                             {
-                                                                    //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActPrevFin).Sum();
-                                                                    LedgerSumSubGroupReport = (Double)(from a in Model.Detailss
-                                                                                              join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                                                              where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
-                                                                                              select a.ActPrevFin).Sum();
-
+                                                                //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActPrevFin).Sum();
+                                                                LedgerSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                   where a.LedgerNumber.Equals(@Ledgers.LedgerNo)
+                                                                                                   select a.ActPrevFin).Sum();
+                                                                LedgerHQSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                   join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                   where (b.DivisionType.Equals("HeadQuarters") && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                   select a.ActPrevFin).Sum();
+                                                                LedgerROSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                   join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                   where (b.DivisionType.Equals("Regional Office") && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                   select a.ActPrevFin).Sum();
+                                                                LedgerCOESumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                   join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                      where (b.DivisionType.Equals("Centre of Excellence") && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                   select a.ActPrevFin).Sum();
                                                             }
-                                                            else if (ReportName!=null && ReportName.Equals("Actual Half Year"))
+                                                            else if (ReportName != null && ReportName.Equals("Consolidated Actual Half Year"))
                                                             {
-                                                                   //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActCurrFinTill2ndQuart).Sum();
-                                                                   LedgerSumSubGroupReport = (Double)(from a in Model.Detailss
-                                                                                             join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                                                             where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
-                                                                                             select a.ActCurrFinTill2ndQuart).Sum();
+                                                                //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActCurrFinTill2ndQuart).Sum();
+                                                                LedgerSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                   join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                   where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                   select a.ActCurrFinTill2ndQuart).Sum();
+                                                                LedgerHQSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                     where (b.DivisionType.Equals("HeadQuarters") && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                     select a.ActCurrFinTill2ndQuart).Sum();
+                                                                LedgerROSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                     where (b.DivisionType.Equals("Regional Office") && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                     select a.ActCurrFinTill2ndQuart).Sum();
+                                                                LedgerCOESumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                      join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                      where (b.DivisionType.Equals("Centre of Excellence") && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                      select a.ActCurrFinTill2ndQuart).Sum();
                                                             }
-                                                            else if (ReportName!=null && ReportName.Equals("Revised Estimates"))
+                                                            else if (ReportName != null && ReportName.Equals("Consolidated Revised Estimates"))
                                                             {
-                                                                   //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
-                                                                   LedgerSumSubGroupReport = (Double)(from a in Model.Detailss
-                                                                                             join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                                                             where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
-                                                                                             select a.ACAndBWPropRECurrFin).Sum();
+                                                                //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
+                                                                LedgerSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                   where a.LedgerNumber.Equals(@Ledgers.LedgerNo)
+                                                                                                   select a.ACAndBWPropRECurrFin).Sum();
+                                                                LedgerHQSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                     where (b.DivisionType.Equals("HeadQuarters") && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                     select a.ACAndBWPropRECurrFin).Sum();
+                                                                LedgerROSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                     where (b.DivisionType.Equals("Regional Office") && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                     select a.ACAndBWPropRECurrFin).Sum();
+                                                                LedgerCOESumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                      join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                      where (b.DivisionType.Equals("Centre of Excellence") && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                      select a.ACAndBWPropRECurrFin).Sum();
                                                             }
-                                                /*else if (ReportName.Equals("Budget Estimates "+@SelectedAcademicYear))
-                                                {
-                                                    //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
-                                                    SumSubGroupReport = (Double)(from a in Model.Detailss
-                                                                                 join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                                                 where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.SubGroupNumber.Equals(@Subs.SubGroupNo))
-                                                                                 select a.BudEstCurrFin).Sum();
-                                                }*/
-                                                            else if (ReportName!=null && ReportName.Equals("Budget Estimates "+@NextAcademicYear))
+                                                            else if (ReportName != null && ReportName.Equals("Consolidated Budget Estimates " + @NextAcademicYear))
                                                             {
-                                                                   //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
-                                                                   LedgerSumSubGroupReport = (Double)(from a in Model.Detailss
-                                                                                             join b in Model.Divisionss on a.DivisionID equals b.DivisionID
-                                                                                             where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
-                                                                                             select a.ACAndBWPropRENxtFin).Sum();
+                                                                //SumSubGroupReport = (Double)(from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
+                                                                LedgerSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                   where a.LedgerNumber.Equals(@Ledgers.LedgerNo)
+                                                                                                   select a.ACAndBWPropRENxtFin).Sum();
+                                                                LedgerHQSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                     where (b.DivisionType.Equals("HeadQuarters") && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                     select a.ACAndBWPropRECurrFin).Sum();
+                                                                LedgerROSumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                     where (b.DivisionType.Equals("Regional Office") && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                     select a.ACAndBWPropRECurrFin).Sum();
+                                                                LedgerCOESumSubGroupReport = (Double)(from a in Model.Detailss
+                                                                                                      join b in Model.Divisionss on a.DivisionID equals b.DivisionID
+                                                                                                      where (b.DivisionType.Equals("Centre of Excellence") && a.LedgerNumber.Equals(@Ledgers.LedgerNo))
+                                                                                                      select a.ACAndBWPropRECurrFin).Sum();
                                                             }
-
                                                             <tr>
                                                                 <td></td>
-                                                                <td>
-                                                                    @Ledgers.LedgerNo
-                                                                </td>
+                                                                <td>@Ledgers.LedgerNo</td>
                                                                 <td>@Ledgers.LedgerName</td>
                                                                 <td>
-                                                                    @Html.Label("LedgerSumSubGroupReport"+@Ledgers.LedgerNo,@LedgerSumSubGroupReport!=0.00 ? @LedgerSumSubGroupReport.ToString("F4") : "-")
+                                                                    @Html.Label("LedgerSumSubGroupReport"+@Subs.SubGroupNo,@LedgerSumSubGroupReport!=0.00 ? @LedgerSumSubGroupReport.ToString("F4") : "-")
                                                                 </td>
-                                                                @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals(SelectedDivisionTypeName)))
+                                                                <td>
+                                                                  @Html.Label("LedgerHQSumSubGroupReport"+@Subs.SubGroupNo,@LedgerHQSumSubGroupReport!=0.00 ? @LedgerHQSumSubGroupReport.ToString("F4") : "-")
+                                                                </td>
+                                                                <td>
+                                                                  @Html.Label("LedgerROSumSubGroupReport"+@Subs.SubGroupNo,@LedgerROSumSubGroupReport!=0.00 ? @LedgerROSumSubGroupReport.ToString("F4") : "-")
+                                                                </td>
+                                                                <td>
+                                                                  @Html.Label("LedgerCOESumSubGroupReport"+@Subs.SubGroupNo,@LedgerCOESumSubGroupReport!=0.00 ? @LedgerCOESumSubGroupReport.ToString("F4") : "-")
+                                                                </td>
+                                                                @foreach (var Regions in Model.Divisionss.Where(d => d.DivisionType.Equals("Unit")))
                                                                 {
                                                                     var result = (from a in Model.Detailss where ((a.DivisionID == Regions.DivisionID) && (a.LedgerNumber.Equals(@Ledgers.LedgerNo))) select a).FirstOrDefault();
 
-                                                                    if (ReportName != null && ReportName.Equals("Actual"))
+                                                                    if (ReportName != null && ReportName.Equals("Consolidated Actual"))
                                                                     {
-                                                                        <td align="right">
-                                                                            @Html.Label("Actual" + Regions.DivisionName,result!=null ? Convert.ToDecimal(result.ActPrevFin).ToString("F4") : "-")
+                                                                        <td align="center">
+                                                                            @Html.Label("Consolidated Actual" + Regions.DivisionName,result!=null ? Convert.ToDecimal(result.ActPrevFin).ToString("F4") : "-")
                                                                         </td>
                                                                     }
-                                                                    else if (ReportName != null && ReportName.Equals("Actual Half Year"))
+                                                                    else if (ReportName != null && ReportName.Equals("Consolidated Actual Half Year"))
                                                                     {
-
-                                                                        <td align="right">
-                                                                            @Html.Label("Actual Half Year" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ActCurrFinTill2ndQuart).ToString("F4") : "-")
+                                                                        <td align="center">
+                                                                            @Html.Label("Consolidated Actual Half Year" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ActCurrFinTill2ndQuart).ToString("F4") : "-")
                                                                         </td>
                                                                     }
-                                                                    else if (ReportName != null && ReportName.Equals("Revised Estimates"))
+                                                                    else if (ReportName != null && ReportName.Equals("Consolidated Revised Estimates"))
                                                                     {
 
-                                                                        <td align="right">
-                                                                            @Html.Label("Revised Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRECurrFin).ToString("F4") : "-")
+                                                                        <td align="center">
+                                                                            @Html.Label("Consolidated Revised Estimates" + Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRECurrFin).ToString("F4") : "-")
                                                                         </td>
                                                                     }
-                                                                    else if (ReportName != null && ReportName.Equals("Budget Estimates " + @NextAcademicYear))
+                                                                    else if (ReportName != null && ReportName.Equals("Consolidated Budget Estimates " + @NextAcademicYear))
                                                                     {
 
-                                                                        <td align="right">
-                                                                            @Html.Label("Budget Estimates"+@NextAcademicYear+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRENxtFin).ToString("F4") : "-")
+                                                                        <td align="center">
+                                                                            @Html.Label("Consolidated Budget Estimates"+@NextAcademicYear+ Regions.DivisionName, result!=null ? Convert.ToDecimal(result.ACAndBWPropRENxtFin).ToString("F4") : "-")
                                                                         </td>
                                                                     }
 
                                                                 }
                                                             </tr>
                                                         }
+
                                                     }
                                                     TableCount++;
                                                 }
@@ -2075,9 +2910,13 @@
                                 }
                                     NextAcademicYear = SplitAcademicYear[1]+"-"+(Convert.ToInt32(SplitAcademicYear[1])+Convert.ToInt32(1));
                                 var Report = "";
-                                if (ReportName != "Headwise Consolidation")
+                                if (ReportName != "Headwise Consolidation" && !ReportName.Contains("Consolidated"))
                                 {
                                      Report = (ReportName != null && @ReportName.Contains("Budget")) ? @ReportName : @ReportName + " " + @SelectedAcademicYear + "(" + @SelectedDivisionTypeName + ")";
+                                }
+                                else if(ReportName.Contains("Consolidated"))
+                                {
+                                    Report = (ReportName != null && @ReportName.Contains("Budget")) ? @ReportName : @ReportName + " " + @SelectedAcademicYear;
                                 }
                                 else
                                 {
