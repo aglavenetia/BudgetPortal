@@ -80,7 +80,7 @@ namespace BudgetPortal.Controllers
                     new SelectListItem()
                     {
                         Selected = false,
-                        Text = x.ReportID.ToString().Equals("4") ? x.ReportName + " " + AcademicYear : x.ReportID.ToString().Equals("6") ? x.ReportName + " " + NextAcademicYear : x.ReportName,
+                        Text = x.ReportID.ToString().Equals("6") ? x.ReportName + " " + NextAcademicYear : x.ReportID.ToString().Equals("10") ? x.ReportName + " " + NextAcademicYear:x.ReportName,
                         Value = x.ReportID.ToString()
 
                     }).ToList();
@@ -165,7 +165,7 @@ namespace BudgetPortal.Controllers
                     new SelectListItem()
                     {
                         Selected = false,
-                        Text = x.ReportID.ToString().Equals("4") ? x.ReportName + " " + AcademicYear : x.ReportID.ToString().Equals("6") ? x.ReportName + " " + NextAcademicYear : x.ReportName,
+                        Text = x.ReportID.ToString().Equals("10") ? x.ReportName + " " + NextAcademicYear : x.ReportID.ToString().Equals("6") ? x.ReportName + " " + NextAcademicYear : x.ReportName,
                         Value = x.ReportID.ToString()
 
                     }).ToList();
@@ -259,10 +259,22 @@ namespace BudgetPortal.Controllers
                                "--footer-spacing \"10\" " +
                                "--footer-font-size \"10\" " +
                                "--header-font-size \"10\" ", header, footer);*/
-            var SelectedFileName = mymodel.ReportNames.Where(x => x.Selected == true).Select(x => x.Text).FirstOrDefault();
+            //var SelectedFileName = mymodel.ReportNames.Where(x => x.Selected == true).Select(x => x.Text).FirstOrDefault();
+            //var ReportName = "";
+            //var SelectedAcademicYear = mymodel.AcademicYears.Where(x => x.Selected == true).Select(x => x.Text).FirstOrDefault();
+            
+            //var SelectedDivisionTypeName = mymodel.DivisionTypeNames.Where(x => x.Selected == true).Select(x => x.Text).FirstOrDefault();
+
+            if (Report != "Headwise Consolidation" && !Report.Contains("Consolidated"))
+            {
+                Report = "Consolidated " + Report ;
+            }
+            
+            
             return new Rotativa.AspNetCore.ViewAsPdf("PrintPDF", mymodel)
             {
-                FileName = "Consolidated " + Report + " in " + AcademicYear + " for " + DivisionType + "_" + DateTime.Now + ".pdf",
+                
+                 FileName = Report+ " in " + AcademicYear + " for " + DivisionType + "_" + DateTime.Now + ".pdf",
                 CustomSwitches = "--page-offset 0 --footer-center [page] --footer-font-size 8",
                 PageOrientation = Rotativa.AspNetCore.Options.Orientation.Landscape,
             };
