@@ -1,4 +1,4 @@
-﻿@model BudgetPortal.ViewModel.ReportView
+﻿@model BudgetPortal.ViewModel.MultipleData
 @using System.Web;
 
 @using BudgetPortal.ViewModel;
@@ -22,9 +22,11 @@
     var SumActCurrFinTill2ndQuart = 0.00;
     var SumRevEstCurrFin = 0.00;
     var SumBudgEstNexFin = 0.00;
-    var DivisionTypeName = (from a in Model.DivisionTypeNames where a.Selected == true select a.Text).FirstOrDefault();
     var NextAcademicYear = "";
     String[] SplitAcademicYear = new String[1];
+    var TotalAdminSavedLedgers = 0;
+    var TotalDelegateSavedLedgers = 0;
+
     var Sumname1 = String.Concat("BudEstCurrFin", "Total");
     var Sumname2 = String.Concat("ActPrevFin", "Total");
     var Sumname3 = String.Concat("ActCurrFinTillsecondQuart", "Total");
@@ -57,10 +59,10 @@
 
                 @if (User.IsInRole("Admin"))
                 {
-                    <td class="w-20">
-                        @Html.DropDownListFor(m => m.SelectedDivisionTypeID, Model.DivisionTypeNames,"--Please select any DivisionType Name--",new { @class = "form-control", @id="DivisionType" })
-                        @Html.HiddenFor(m => m.SelectedDivisionTypeName, new {id="SelectedDivisionTypeName"})
-                        @Html.ValidationMessageFor(Model => Model.SelectedDivisionTypeID, "", new { @class = "text-danger" })
+                    <td>
+                        @Html.DropDownListFor(Model => Model.SelectedDivisionID, Model.DivisionNames,"--Please select any Division--", new { @class = "form-control", @id="Division" })
+                        @Html.ValidationMessageFor(Model => Model.SelectedDivisionID,null, new { @class = "text-danger" })
+
                     </td>
                 }
             </tr>
@@ -68,27 +70,14 @@
         </table>
 
     </div>
-
-    <br />
-    <br />
     <div style="float:right;margin:50px">
         @{
             var SelAcademicYear = (from a in Model.AcademicYears where a.Selected == true select a.Text).FirstOrDefault();
             SplitAcademicYear = SelAcademicYear.Split("-");
             
-            var DivType = (from a in Model.DivisionTypeNames where a.Selected == true select a.Text).FirstOrDefault();
+            //var DivType = (from a in Model.DivisionTypeNames where a.Selected == true select a.Text).FirstOrDefault();
         }
-
-       
-
     </div>
-    <br />
-    <br />
-
-
-
-    
-
         <table class="table table-borderless">
             <tr class="text-center" style="color:chocolate;border-bottom:hidden;"><th colspan="100">CENTRAL BOARD OF SECONDARY EDUCATION</th></tr>
             <tr class="text-center" style="color:chocolate;border-bottom:hidden;">
@@ -110,23 +99,13 @@
                     
                 </tr>
                 <tr>
-                    <th></th>
                     <th class="w-5">
                         HEAD NO.
-                    </th>
-                    <th class="w-5">
-                        SUBHEAD NO.
                     </th>
                     <th class="w-5">
                         HEAD NAME
                     </th>
                     <th class="CurrentBudgetEstimates w-10">
-
-                    </th>
-                    <th class="InterimRevEst w-10">
-
-                    </th>
-                    <th class="ProvisionalRevEst w-10">
 
                     </th>
                     <th class="PreviousActualBudget w-10">
@@ -153,12 +132,6 @@
 
                         </th>
                     }
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <th class="ACBWJustificationRevEst w-10">
-
-                        </th>
-                    }
                     <th class="BudgetEstimatesNextYear w-10">
 
                     </th>
@@ -179,6 +152,9 @@
                         </th>
 
                     }
+                    <th class="Status w-10">
+
+                    </th>
                     @if (User.IsInRole("Admin"))
                     {
                         <th class="Remarks w-10">
@@ -191,41 +167,142 @@
             <tbody>
                 <tr></tr>
         
-               @foreach (var inner in Model.Sectionss)
-               {
-                 var inneridenti = String.Concat("Budget", @inner.SectionNo.ToString());
-                 CountHeader = 0;
-                  CounterBody = 0;
+      @foreach (var inner in Model.Sectionss)
+        {
+            var inneridenti = String.Concat("Budget", @inner.SectionNo.ToString());
 
-            var SectionSumBudEstCurrFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.BudEstCurrFin).Sum();
-            var SectionSumActPrevFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ActPrevFin).Sum();
-            var SectionSumActCurrFinTill2ndQuart = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ActCurrFinTill2ndQuart).Sum();
-            var SectionSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ACAndBWPropRECurrFin).Sum();
-            var SectionSumPerVarRevEstOverBudgEstCurrFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.PerVarRevEstOverBudgEstCurrFin).Sum();
-            //var SectionSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ACAndBWPropRECurrFin).Sum();
-            var SectionSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ACAndBWPropRENxtFin).Sum();
-            var SectionSumPerVarRevEstOverBudgEstNxtFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.PerVarRevEstOverBudgEstNxtFin).Sum();
-            /*var SectionSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ACAndBWPropRENxtFin).Sum();*/
+            
 
+                var SectionSumBudEstCurrFin = (from a in Model.Approved where a.SectionNumber.Equals(@inner.SectionNo) select a.BudEstNextFin).Sum();
+                var SectionSumActPrevFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ActPrevFin).Sum();
+                var SectionSumActCurrFinTill2ndQuart = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ActCurrFinTill2ndQuart).Sum();
+                var SectionSumRevEstCurrFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.RevEstCurrFin).Sum();
+                var SectionSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ACAndBWPropRECurrFin).Sum();
+                var SectionSumBudgEstNexFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.BudgEstNexFin).Sum();
+                var SectionSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ACAndBWPropRENxtFin).Sum();
+                var SectionSumPerVarRevEstOverBudgEstCurrFin = SectionSumBudEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToDecimal(Convert.ToDecimal((SectionSumRevEstCurrFin - SectionSumBudEstCurrFin) / SectionSumBudEstCurrFin) * 100) : Convert.ToDecimal(0);
+                var SectionSumPerVarRevEstOverBudgEstNxtFin = SectionSumRevEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToDecimal(Convert.ToDecimal((SectionSumBudgEstNexFin - SectionSumRevEstCurrFin) / SectionSumRevEstCurrFin) * 100) : Convert.ToDecimal(0);
+                var SectionSumPerVarACBWRevEstOverBudgEstCurrFin = SectionSumBudEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToDecimal(Convert.ToDecimal((SectionSumACAndBWPropRECurrFin - SectionSumBudEstCurrFin) / SectionSumBudEstCurrFin) * 100) : Convert.ToDecimal(0);
+                var SectionSumPerVarACBWRevEstOverBudgEstNxtFin = SectionSumACAndBWPropRECurrFin != Convert.ToDecimal(0.00) ? Convert.ToDecimal(Convert.ToDecimal((SectionSumACAndBWPropRENxtFin - SectionSumACAndBWPropRECurrFin) / SectionSumACAndBWPropRECurrFin) * 100) : Convert.ToDecimal(0);
+                 
+                //var SelectedDivisionTypeName = (from a in Model.DivisionTypeNames where a.Selected == true select a.Text).FirstOrDefault();
 
-                var SelectedDivisionTypeName = (from a in Model.DivisionTypeNames where a.Selected == true select a.Text).FirstOrDefault();
-               
-                        <br />
-                        @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
+                //<tr><td>@inner.SectionNo - @inner.SectionName</td></tr>
+                  
+                  @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
+                  {
+                    var TotalSubGroups = (from b in Model.SubGroupss where b.GroupNo.Equals(@item.GroupNo) && b.RequireInput == false select b.SubGroupNo).Count();
+                    var TotalLedgers = (from c in Model.Ledgerss
+                                        join d in Model.SubGroupss
+                                        on c.SubGroupNo equals d.SubGroupNo
+                                        select c.LedgerNo).Count();
+                    TotalSubGroups = (TotalSubGroups + TotalLedgers);
+                    
+                    @if (User.IsInRole("Admin"))
+                    {
+                         TotalAdminSavedLedgers = (from e in Model.Detailss where e.SectionNumber.Equals(@inner.SectionNo) && e.GroupNumber.Equals(@item.GroupNo) && e.HasAdminSaved.Equals(true) select e.SubGroupNumber).Count();
+                    }
+                    else
+                    {
+                         TotalDelegateSavedLedgers = (from d in Model.Detailss where d.SectionNumber.Equals(@inner.SectionNo) && d.GroupNumber.Equals(@item.GroupNo) && d.HasDelegateSaved.Equals(true) select d.SubGroupNumber).Count();
+                    }
+                    var GroupSumBudEstCurrFin = (from a in Model.Approved where (a.SectionNumber.Equals(@inner.SectionNo) && a.GroupNumber.Equals(@item.GroupNo)) select a.BudEstNextFin).Sum();
+                    var GroupSumActPrevFin = (from a in Model.Detailss where (a.SectionNumber.Equals(@inner.SectionNo) && a.GroupNumber.Equals(@item.GroupNo)) select a.ActPrevFin).Sum();
+                    var GroupSumActCurrFinTill2ndQuart = (from a in Model.Detailss where (a.SectionNumber.Equals(@inner.SectionNo) && a.GroupNumber.Equals(@item.GroupNo)) select a.ActCurrFinTill2ndQuart).Sum();
+                    var GroupSumRevEstCurrFin = (from a in Model.Detailss where (a.SectionNumber.Equals(@inner.SectionNo) && a.GroupNumber.Equals(@item.GroupNo)) select a.RevEstCurrFin).Sum();
+                    var GroupSumACAndBWPropRECurrFin = (from a in Model.Detailss where (a.SectionNumber.Equals(@inner.SectionNo) && a.GroupNumber.Equals(@item.GroupNo)) select a.ACAndBWPropRECurrFin).Sum();
+                    var GroupSumBudgEstNexFin = (from a in Model.Detailss where (a.SectionNumber.Equals(@inner.SectionNo) && a.GroupNumber.Equals(@item.GroupNo)) select a.BudgEstNexFin).Sum();
+                    var GroupSumACAndBWPropRENxtFin = (from a in Model.Detailss where (a.SectionNumber.Equals(@inner.SectionNo) && a.GroupNumber.Equals(@item.GroupNo)) select a.ACAndBWPropRENxtFin).Sum();
+                    var GroupSumPerVarRevEstOverBudgEstCurrFin = GroupSumBudEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToDecimal(Convert.ToDecimal((GroupSumRevEstCurrFin - GroupSumBudEstCurrFin) / GroupSumBudEstCurrFin) * 100) : Convert.ToDecimal(0);
+                    var GroupSumPerVarRevEstOverBudgEstNxtFin = GroupSumRevEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToDecimal(Convert.ToDecimal((GroupSumBudgEstNexFin - GroupSumRevEstCurrFin) / GroupSumRevEstCurrFin) * 100) : Convert.ToDecimal(0);
+                    var GroupSumPerVarACBWRevEstOverBudgEstCurrFin = GroupSumBudEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToDecimal(Convert.ToDecimal((GroupSumACAndBWPropRECurrFin - GroupSumBudEstCurrFin) / GroupSumBudEstCurrFin) * 100) : Convert.ToDecimal(0);
+                    var GroupSumPerVarACBWRevEstOverBudgEstNxtFin = GroupSumACAndBWPropRECurrFin != Convert.ToDecimal(0.00) ? Convert.ToDecimal(Convert.ToDecimal((GroupSumACAndBWPropRENxtFin - GroupSumACAndBWPropRECurrFin) / GroupSumACAndBWPropRECurrFin) * 100) : Convert.ToDecimal(0);
+                    
+                    <tr>
+                        <td>
+                            @item.GroupNo
+                        </td>
+                        <td>
+                            @item.GroupName
+                        </td>
+                        <td>
+                            @GroupSumBudEstCurrFin
+                        </td>
+                        <td>
+                            @GroupSumActPrevFin
+                        </td>
+                        <td>
+                            @GroupSumActCurrFinTill2ndQuart
+                        </td>
+                        <td>
+                            @GroupSumRevEstCurrFin
+                        </td>
+                        <td>
+                            @GroupSumPerVarRevEstOverBudgEstCurrFin.ToString("F2") %
+                        </td>
+                        @if (User.IsInRole("Admin"))
                         {
-                            int TableCount = 0;
-                                
-                                                
-                                
-                            CounterBody++;
+                            <td>
+                                @GroupSumACAndBWPropRECurrFin
+                            </td>
+                        }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <td>
+                                @GroupSumPerVarACBWRevEstOverBudgEstCurrFin.ToString("F2") %
+                            </td>
+                        }
+                        <td>
+                            @GroupSumBudgEstNexFin
+                        </td>
+                        <td>
+                            @GroupSumPerVarRevEstOverBudgEstNxtFin.ToString("F2") %
+                        </td>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <td>
+                                @GroupSumACAndBWPropRENxtFin
+                            </td>
+
+                        }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <td>
+                                @GroupSumPerVarACBWRevEstOverBudgEstNxtFin.ToString("F2") %
+                            </td>
+
+                        }
+                        <td>
+                            @{
+                               TotalAdminSavedLedgers = (from e in Model.Detailss where e.SectionNumber.Equals(@inner.SectionNo) && e.GroupNumber.Equals(@item.GroupNo) && e.HasAdminSaved.Equals(true) select e.SubGroupNumber).Count();
+                                TotalDelegateSavedLedgers = (from d in Model.Detailss where d.SectionNumber.Equals(@inner.SectionNo) && d.GroupNumber.Equals(@item.GroupNo) && d.HasDelegateSaved.Equals(true) select d.SubGroupNumber).Count();
+                            }
+                            @if (User.IsInRole("Admin") && (TotalAdminSavedLedgers == TotalSubGroups))
+                            {
+                               Ready to be submitted to ChairPerson
+                            
+                            }
+                            
+                            else if (!User.IsInRole("Admin") && (TotalDelegateSavedLedgers == TotalSubGroups))
+                            {
+                                Ready to be submitted to AC&BW
+                            }
+                            else
+                            {
+                                Data Incomplete
+                            }
+
+                        </td>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <td class="Remarks w-10">
+
+                            </td>
                         }
 
-               
-            OuterBodyCount++;
-        }
+                    </tr>
+                  }
                 <tr>
-                    <td>
-                    </td>
                     <td>
                         Total
                     </td>
@@ -234,185 +311,178 @@
                     </td>
 
                     <td id="@Sumname1-Total">
-                        @SumBudEstCurrFin.ToString("F4")
+                        @SectionSumBudEstCurrFin.ToString("F4")
                     </td>
                     <td id="@Sumname2-Total">
-                        @SumActPrevFin.ToString("F4")
+                        @SectionSumActPrevFin.ToString("F4")
                     </td>
                     <td id="@Sumname3-Total">
-                        @SumActCurrFinTill2ndQuart.ToString("F4")
+                        @SectionSumActCurrFinTill2ndQuart.ToString("F4")
                     </td>
                     <td id="@Sumname4-Total">
-                        @SumRevEstCurrFin.ToString("F4")
+                        @SectionSumRevEstCurrFin.ToString("F4")
                     </td>
-
+                    <td>
+                        @SectionSumPerVarRevEstOverBudgEstCurrFin.ToString("F2") %
+                    </td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <td>
+                            @SectionSumACAndBWPropRECurrFin
+                        </td>
+                    }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <td>
+                            @SectionSumPerVarACBWRevEstOverBudgEstCurrFin.ToString("F2") %
+                        </td>
+                    }
                     <td id="@Sumname7-Total">
-                        @SumBudgEstNexFin.ToString("F4")
+                        @SectionSumBudgEstNexFin.ToString("F4")
                     </td>
+                    <td>
+                        @SectionSumPerVarRevEstOverBudgEstNxtFin.ToString("F2") %
+                    </td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <td>
+                            @SectionSumACAndBWPropRENxtFin
+                        </td>
+
+                    }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <td>
+                            @SectionSumPerVarACBWRevEstOverBudgEstNxtFin.ToString("F2") %
+                        </td>
+
+                    }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <td class="Remarks w-10">
+                        </td>
+                    }
+
                 </tr>
+        }
+               
             </tbody>
          </table>
+        
+         @*{
+              
+              
+              Boolean ACBWSubmission = (from a in Model.Statuss where a.SectionNumber.Equals(@inner.SectionNo)  && a.GroupNumber.Equals(@item.GroupNo) select a.ACBWSubmission).FirstOrDefault();
+         }
+        @if (User.IsInRole("Admin") && AdminEditStatus && (TotalAdminSavedLedgers == TotalSubGroups) && Model.IsEnabled.Equals(true) && !ACBWSubmission)
+        {
+            <input id="SubmitChairPerson" class="Submit" formaction="~/Tabs/Index" type="submit" value="Submit to Chairperson for Approval" style="align-self:center" />
+        }
+        else if (!User.IsInRole("Admin") && DelegateEditStatus && (TotalDelegateSavedLedgers == TotalSubGroups) && Model.IsEnabled.Equals(true))
+        {
+           <input id="SubmitACBW" class="Submit" formaction="~/Tabs/Index" type="submit" value="Submit to AC&BW for Approval" style="align-self:center" />
+        }*@
    
 </div>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="~/js/nestedtable.js"></script>
 @section Scripts
-    {
+{
     <script type="text/javascript">
 
         $(document).ready(
-            function () {
+            function () 
+            {
                 onceDocReady();
 
-                $('body').on('change', "#DivisionType",
-                    function (evt) {
-                        dropdownchange();
-                    });
-
-                $('body').on('change', "#Reports",
-                    function (evt) {
-
-                        dropdownchange();
-                    });
-
                 $('body').on('change', "#AcademicYear",
-                    function (evt) {
-                        //$("#Reports").val(1);
-                        //alert("Index of Budget Estimates: "+$("#Reports option:selected").text().trim().indexOf("Budget Estimates"));
-
-                        if ($("#Reports option:selected").text().trim().indexOf("Consolidated Budget Estimates") >= 0) {
-                            reportNamesChange();
-                            $("#Reports option:selected").removeAttr("selected");
-                            $("#Reports").find($("option[value ^= '10']")).attr("selected", true);
-                            alert($("#Reports option:selected").text().trim());
+                    function (evt) 
+                    {
+                       
                             dropdownchange();
-                        }
-                        else if ($("#Reports option:selected").text().trim().indexOf("Budget Estimates") >= 0) {
-                            reportNamesChange();
-                            $("#Reports option:selected").removeAttr("selected");
-                            $("#Reports").find($("option[value ^= '6']")).attr("selected", true);
-                            alert($("#Reports option:selected").text().trim());
-                            dropdownchange();
-                        }
-                        else {
-                            reportNamesChange();
-                            dropdownchange();
-                        }
                     }
                 );
 
+                $('body').on('change', "#Division",
+                    function (evt) 
+                    {
+                        $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
+
+                        var divisionname = $("#SelectedDivisionName").val();
+
+                        $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
+
+                        var academicyear = $("#SelectedAcademicYear").val();
+
+                        var year = academicyear.split('-');
+
+                        $.ajax
+                            ({
+                                type: "Get",
+                                url: '@Url.Action("GetDetails","Summary")',
+                                data: { Year: year[0], Division: divisionname },
+                                dataType: "html",
+                                success: function (data) {
+
+                                    $("#outerdiv").html($("#outerdiv", data).html());
+
+                                    onceDocReady();
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) 
+                                {
+                                    alert("errorThrown Tabs");
+                                }
+
+                            });
+                    }
+
+                );
+
             });
-        function reportNamesChange() {
-            $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
-            var academicyear = $("#SelectedAcademicYear").val();
-            var year = academicyear.split('-');
-            // $("#Reports").find($("option[value^='4']")).html("Budget Estimates "+year[0]+"-"+year[1]);
-            $("#Reports").find($("option[value^='6']")).html("Budget Estimates " + year[1] + "-" + (parseInt(year[1]) + parseInt(1)));
-            $("#Reports").find($("option[value^='10']")).html("Consolidated Budget Estimates " + year[1] + "-" + (parseInt(year[1]) + parseInt(1)));
-        }
-        function onceDocReady() {
+        
+        function onceDocReady() 
+        {
             $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
             //alert($("#SelectedAcademicYear").val());
             $("#SelectedDivisionTypeName").val($("#DivisionType option:selected").text().trim());
-            //alert($("#SelectedDivisionTypeName").val());
-            $("#SelectedReportName").val($("#Reports option:selected").text().trim());
-            //alert($("#SelectedReportName").val());
-
+            
             var academicyear = $("#SelectedAcademicYear").val();
             var DivisionTypeName = $("#SelectedDivisionTypeName").val();
-            //alert(DivisionTypeName);
-            var ReportName = $("#SelectedReportName").val();
+            
             var year = academicyear.split('-');
-            //alert(year[1]);
-
+            
             $(".CurrentBudgetEstimates").text('Budget Estimates ' + $("#SelectedAcademicYear").val());
             $(".PreviousActualBudget").text('Actual ' + (Number.parseInt(year[0]) - Number.parseInt(1)) + '-' + Number.parseInt(year[0]));
             $(".PreviousHalfYearActualBudget").text('Actual upto 30.09.' + Number.parseInt(year[0]));
             $(".CurrentYearRevisedEstimates").text('Revised Estimates ' + $("#SelectedAcademicYear").val());
             $(".BudgetEstimatesNextYear").text('Budget Estimates ' + Number.parseInt(year[1]) + '-' + (Number.parseInt(year[1]) + Number.parseInt(1)));
-
+            $(".VariationInRevisedEstimates").text('% Variation in RE over the BE ' + $("#SelectedAcademicYear").val());
+            $(".ACBWProposalForRevisedEstimates").text('AC & BW Proposal for RE ' + $("#SelectedAcademicYear").val());
+            $(".VariationInBudgetEstimates").text('% Variation in BE ' + Number.parseInt(year[1]) + '-' + (Number.parseInt(year[1]) + Number.parseInt(1)) + 'over the RE ' + $("#SelectedAcademicYear").val());
+            $(".ACBWProposalForBudgetEstimates").text('AC & BW Proposal for BE ' + Number.parseInt(year[1]) + '-' + (Number.parseInt(year[1]) + Number.parseInt(1)));
+            $(".Remarks").text('Remarks');
         }
 
-        function dropdownchange() {
-            $("#SelectedReportName").val($("#Reports option:selected").text().trim());
-            var SelectedReport = $("#SelectedReportName").val();
-            //alert("Selected Report : " + SelectedReport);
-
+        function dropdownchange() 
+        {
             $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
             var academicyear = $("#SelectedAcademicYear").val();
-            //alert("Selected Academic Year : " + academicyear);
 
             $("#SelectedDivisionTypeName").val($("#DivisionType option:selected").text().trim());
             var SelectedDiv = $("#SelectedDivisionTypeName").val();
-            //alert("Selected DivisionType Name : " + SelectedDiv);
-
-            // if(!academicyear.Equals("--Please select any Academic Year--"))
-            // {
+            
             var year = academicyear.split('-');
-            //alert(year[0]);
-            // }
-            // else
-            // {
-            //    var year = 0;
-            //  }
-            var sectionnoid = $('#outerTab li button.active').attr('id');
-
-            var section = sectionnoid.split('-');
-
-            var groupnoid = $('#' + section[0] + ' ul li button.active').attr('id');
-            //alert(groupnoid);
-            var group = groupnoid.split('-');
-            //alert(group[0]);
 
             $.ajax
                 ({
                     type: "Get",
-                    url: '@Url.Action("GetDetails","Reports")',
-                    data: { Year: year[0], DivisionType: SelectedDiv, Report: SelectedReport },
+                    url: '@Url.Action("GetDetails","Summary")',
+                    data: { Year: year[0], DivisionType: SelectedDiv},
                     dataType: "html",
                     success: function (data) {
-                        //Whatever result you have got from your controller with html partial view replace with a specific html.
-                        //alert("Inside Ajax");
-                        //alert($("#outerdiv", data).html());
-
-                        //$("#outerdiv").html(data);// HTML DOM replace
-
-                        //$("#outerdiv").html(data);
                         $("#outerdiv").html($("#outerdiv", data).html());
                         onceDocReady();
-                        var activesectionid = $('#outerTab li button.active').attr('id');
-                        //alert("Not active : "+activesectionid);
-
-                        $('#' + activesectionid).removeClass("active");
-                        $('#' + activesectionid).removeClass("show");
-                        //$('#'+sectionnoid).Click();
-                        $('#' + sectionnoid).addClass("active");
-                        $('#' + sectionnoid).addClass("show");
-
-                        //alert("Active : "+sectionnoid);
-
-                        var splitsection = activesectionid.split('-');
-
-                        var activegroupnoid = $('#' + splitsection[0] + ' ul li button.active').attr('id');
-                        $('#' + activegroupnoid).removeClass("active");
-                        $('#' + activegroupnoid).removeClass("show");
-                        //$('#'+groupnoid).Click();
-                        $('#' + groupnoid).addClass("active");
-                        $('#' + groupnoid).addClass("show");
-
-                        var activenavigationid = $('#' + activegroupnoid).attr('data-bs-target');
-                        //alert(activenavigationid);
-                        $(activenavigationid).removeClass("active");
-                        $(activenavigationid).removeClass("show");
-
-                        var navigationid = $('#' + groupnoid).attr('data-bs-target');
-
-                        $(navigationid).addClass("active");
-                        $(navigationid).addClass("show");
-
-                        //var splitnavigationid = navigationid.split('#');
-                        //alert("Active Content : " + splitnavigationid[0]+"Active Content :"+ splitnavigationid[1]);
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         alert("Error Thrown" + errorThrown);
