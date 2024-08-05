@@ -42,10 +42,10 @@ namespace BudgetPortal.Controllers
             mymodel.Sectionss = _context.BudgetSections.ToList();
             mymodel.Groupss = _context.BudgetGroups.ToList();
             mymodel.SubGroupss = _context.BudgetSubGroups.ToList();
-            mymodel.Detailss = _context.BudgetDetails.Where(x => x.FinancialYear1 == Year).ToList();
+            mymodel.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID).Where(x => x.FinancialYear1 == Year).ToList();
             mymodel.Divisionss = _context.Division.ToList();
-            mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.FinancialYear1 == (Year - 1)).ToList();
-            mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.FinancialYear1 == (Year - 1)).ToList();
+            mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == LoggedInDivisionID).Where(x => x.FinancialYear1 == (Year - 1)).ToList();
+            mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID).Where(x => x.FinancialYear1 == (Year - 1)).ToList();
             mymodel.Ledgerss = _context.BudgetLedgers.ToList();
             mymodel.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                         new SelectListItem()
@@ -76,13 +76,32 @@ namespace BudgetPortal.Controllers
 
             var LoggedInDivisionID = 0;
             var username = User.Identity.Name;
+
+            var DivName = _context.Users
+                          .Where(x => x.UserName.Equals(username))
+                          .Select(x => x.BranchName).FirstOrDefault();
+            if (username != "admin@test.com")
+            {
+                LoggedInDivisionID = _context.Division
+                                 .Where(d => d.DivisionName == DivName)
+                                 .Select(x => x.DivisionID).FirstOrDefault();
+            }
+            else
+            {
+                LoggedInDivisionID = _context.Division
+                                    .Where(d => d.DivisionName == Division)
+                                    .Select(x => x.DivisionID).FirstOrDefault();
+            }
             var mymodel = new MultipleData();
 
             mymodel.Sectionss = _context.BudgetSections.ToList();
             mymodel.Groupss = _context.BudgetGroups.ToList();
-            mymodel.Detailss = _context.BudgetDetails.Where(x => x.FinancialYear1 == Year).ToList();
+            mymodel.SubGroupss = _context.BudgetSubGroups.ToList();
+            mymodel.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID).Where(x => x.FinancialYear1 == Year).ToList();
             mymodel.Divisionss = _context.Division.ToList();
-            mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.FinancialYear1 == (Year - 1)).ToList();
+            mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == LoggedInDivisionID).Where(x => x.FinancialYear1 == (Year - 1)).ToList();
+            mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID).Where(x => x.FinancialYear1 == (Year - 1)).ToList();
+            mymodel.Ledgerss = _context.BudgetLedgers.ToList();
 
             mymodel.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                         new SelectListItem()

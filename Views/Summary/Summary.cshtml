@@ -61,6 +61,7 @@
                 {
                     <td>
                         @Html.DropDownListFor(Model => Model.SelectedDivisionID, Model.DivisionNames,"--Please select any Division--", new { @class = "form-control", @id="Division" })
+                        @Html.HiddenFor(m => m.SelectedDivisionName, new {id="SelectedDivisionName"})
                         @Html.ValidationMessageFor(Model => Model.SelectedDivisionID,null, new { @class = "text-danger" })
 
                     </td>
@@ -272,27 +273,33 @@
                             </td>
 
                         }
-                        <td>
+                        
                             @{
                                TotalAdminSavedLedgers = (from e in Model.Detailss where e.SectionNumber.Equals(@inner.SectionNo) && e.GroupNumber.Equals(@item.GroupNo) && e.HasAdminSaved.Equals(true) select e.SubGroupNumber).Count();
                                 TotalDelegateSavedLedgers = (from d in Model.Detailss where d.SectionNumber.Equals(@inner.SectionNo) && d.GroupNumber.Equals(@item.GroupNo) && d.HasDelegateSaved.Equals(true) select d.SubGroupNumber).Count();
                             }
                             @if (User.IsInRole("Admin") && (TotalAdminSavedLedgers == TotalSubGroups))
                             {
+                             <td>
                                Ready to be submitted to ChairPerson
+                             </td>
                             
                             }
                             
                             else if (!User.IsInRole("Admin") && (TotalDelegateSavedLedgers == TotalSubGroups))
                             {
-                                Ready to be submitted to AC&BW
+                                <td>
+                                  Ready to be submitted to AC&BW
+                                </td>
                             }
                             else
                             {
-                                Data Incomplete
+                                <td>
+                                   Data Incomplete
+                                </td>
                             }
 
-                        </td>
+                        
                         @if (User.IsInRole("Admin"))
                         {
                             <td class="Remarks w-10">
@@ -424,7 +431,7 @@
                                 data: { Year: year[0], Division: divisionname },
                                 dataType: "html",
                                 success: function (data) {
-
+                                    alert("Returned after success");
                                     $("#outerdiv").html($("#outerdiv", data).html());
 
                                     onceDocReady();
@@ -445,10 +452,10 @@
         {
             $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
             //alert($("#SelectedAcademicYear").val());
-            $("#SelectedDivisionTypeName").val($("#DivisionType option:selected").text().trim());
+            $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
             
             var academicyear = $("#SelectedAcademicYear").val();
-            var DivisionTypeName = $("#SelectedDivisionTypeName").val();
+            var DivisionTypeName = $("#SelectedDivisionName").val();
             
             var year = academicyear.split('-');
             
@@ -469,8 +476,8 @@
             $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
             var academicyear = $("#SelectedAcademicYear").val();
 
-            $("#SelectedDivisionTypeName").val($("#DivisionType option:selected").text().trim());
-            var SelectedDiv = $("#SelectedDivisionTypeName").val();
+            $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
+            var SelectedDiv = $("#SelectedDivisionName").val();
             
             var year = academicyear.split('-');
 
