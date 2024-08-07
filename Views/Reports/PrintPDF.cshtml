@@ -27,7 +27,6 @@
     var SelectedDivisionTypeName = (from a in Model.DivisionTypeNames where a.Selected == true select a.Text).FirstOrDefault();
     var Report = (ReportName != null && @ReportName.Contains("Budget")) ? ("Consolidated " + @ReportName) : (ReportName != null && (@ReportName.Contains("Consolidated")||@ReportName.Contains("Headwise Consolidation"))) ? @ReportName + " " + @SelectedAcademicYear : "Consolidated " + @ReportName + " " + @SelectedAcademicYear+ "(" + @SelectedDivisionTypeName + ")";
     var NextAcademicYear = "";
-    var PreviousAcademicYear = "";
     String[] SplitAcademicYear = new String[1];
 }
 <br />
@@ -123,19 +122,17 @@
                                                     join b in Model.Divisionss on a.DivisionID equals b.DivisionID
                                                     where (b.DivisionType.Equals(SelectedDivisionTypeName) && a.GroupNumber.Equals(@item.GroupNo))
                                                     select a.ACAndBWPropRENxtFin).Sum();
-        }
+                    }
+                    
+                        //var ReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
+                         SelectedAcademicYear = (from a in Model.AcademicYears where a.Selected == true select a.Text).FirstOrDefault();
+                         
+                        if (SelectedAcademicYear != null)
+                        {
+                            SplitAcademicYear = SelectedAcademicYear.Split("-");
 
-        //var ReportName = (from a in Model.ReportNames where a.Selected == true select a.Text).FirstOrDefault();
-        SelectedAcademicYear = (from a in Model.AcademicYears where a.Selected == true select a.Text).FirstOrDefault();
-
-        if (SelectedAcademicYear != null)
-        {
-            SplitAcademicYear = SelectedAcademicYear.Split("-");
-
-            NextAcademicYear = SplitAcademicYear[1] + "-" + (Convert.ToInt32(SplitAcademicYear[1]) + Convert.ToInt32(1));
-
-            PreviousAcademicYear = (Convert.ToInt32(SplitAcademicYear[0]) - Convert.ToInt32(1)) + "-" + SplitAcademicYear[0];
-        }
+                            NextAcademicYear = SplitAcademicYear[1] + "-" + (Convert.ToInt32(SplitAcademicYear[1]) + Convert.ToInt32(1));
+                        }
                         var SumGroupReport = 0.00;
                         var HQSumGroupReport = 0.00;
                         var ROSumGroupReport = 0.00;
@@ -284,7 +281,7 @@
                                                 Budget Estimates @SelectedAcademicYear
                                             </th>
                                             <th class="PreviousActualBudget w-20">
-                                                Actual @PreviousAcademicYear
+                                                Actual (Convert.ToInt32(@SplitAcademicYear[0])-Convert.ToInt32(1))-@SplitAcademicYear[0]
                                             </th>
                                             <th class="PreviousHalfYearActualBudget w-20">
                                                 Actual upto 30.09.@SplitAcademicYear[0]
@@ -294,7 +291,7 @@
                                             </th>
 
                                             <th class="BudgetEstimatesNextYear w-20">
-                                                 Budget Estimates @NextAcademicYear
+                            Budget Estimates @SplitAcademicYear[1] - (Convert.ToInt32(@SplitAcademicYear[1])+Convert.ToInt32(1))
                                             </th>
                                         </tr>
                                     </thead>
