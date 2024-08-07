@@ -352,6 +352,8 @@
                     {
                        var GroupsStatusRowCount = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.DelegateEditStatus).Count();
                        var AdminStatus = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.AdminEditStatus).FirstOrDefault();
+                       var GenBodyAppStatus = (from a in Model.Statuss where (a.SectionNumber == 0 && a.GroupNumber.Equals("0")) select a.GenBodyApproval).FirstOrDefault();
+                       
                        Boolean GroupACBWSubmissionStatus = (from a in Model.Statuss where (a.SectionNumber == @inner.SectionNo && a.GroupNumber.Equals(@item.GroupNo)) select a.ACBWSubmission).FirstOrDefault();
                        var IsSubmittedToChairman = (from a in Model.Statuss where (a.SectionNumber == 0 && a.GroupNumber.Equals("0")) select a.ACBWSubmission).Count();
                        
@@ -377,7 +379,7 @@
                         int TableCount = 0;
                         var SubmitACBW = String.Concat("SubmitACBW", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                         var SubmitChairPerson = String.Concat("SubmitChairPerson", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                        var identi = String.Concat("Budget", Convert.ToString((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
+                        var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
                         
                          var SumBudEstCurrFin = (from a in Model.Approved where a.GroupNumber.Equals(@item.GroupNo) select a.BudEstNextFin).Sum();
                          var SumActPrevFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ActPrevFin).Sum();
@@ -391,9 +393,9 @@
                          var SumPerVarACBWRevEstOverBudgEstCurrFin = 0.00;
                          var SumPerVarACBWRevEstOverBudgEstNxtFin = 0.00;
 
-                         @if(Model.IsEnabled.Equals(true) && GroupsStatusRowCount > 0)
+                         @if((User.IsInRole("Admin") && IsSubmittedToACBW) || (!User.IsInRole("Admin")))
                          {
-                             SumPerVarRevEstOverBudgEstCurrFin = SumBudEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToInt32(Convert.ToDecimal((SumRevEstCurrFin - SumBudEstCurrFin) / SumBudEstCurrFin)*100) : Convert.ToInt32(0);
+                             SumPerVarRevEstOverBudgEstCurrFin = SumBudEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToInt32(Convert.ToDecimal((SumRevEstCurrFin - SumBudEstCurrFin) / SumBudEstCurrFin)*100) : Convert.ToInt32(0.00);
                              SumPerVarRevEstOverBudgEstNxtFin = SumRevEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToInt32(Convert.ToDecimal((SumBudgEstNexFin - SumRevEstCurrFin) / SumRevEstCurrFin)*100) : Convert.ToInt32(0);
                              SumPerVarACBWRevEstOverBudgEstCurrFin = SumBudEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToInt32(Convert.ToDecimal((SumACAndBWPropRECurrFin - SumBudEstCurrFin) / SumBudEstCurrFin)*100) : Convert.ToInt32(0);
                              SumPerVarACBWRevEstOverBudgEstNxtFin = SumACAndBWPropRECurrFin != Convert.ToDecimal(0.00) ? Convert.ToInt32(Convert.ToDecimal((SumACAndBWPropRENxtFin - SumACAndBWPropRECurrFin) / SumACAndBWPropRECurrFin)*100) : Convert.ToInt32(0);
@@ -2107,7 +2109,7 @@
                                                     
                                                     <td class="w-5"></td>
                                                     
-                                                    @if((User.IsInRole("Admin") && AdminEditStatus) || (!User.IsInRole("Admin") && DelegateEditStatus))
+                                                    @if((User.IsInRole("Admin") && IsSubmittedToACBW) || !User.IsInRole("Admin") )
                                                     {
                                                     <td class="w-5" id="@Sumname2-Total">
                                                        @SumActPrevFin.ToString("F4")
@@ -2119,7 +2121,7 @@
                                                        0.00
                                                     </td>
                                                     }
-                                                    @if((User.IsInRole("Admin") && AdminEditStatus) || (!User.IsInRole("Admin") && DelegateEditStatus))
+                                                    @if((User.IsInRole("Admin") && IsSubmittedToACBW) || !User.IsInRole("Admin"))
                                                     {
                                                     <td class="w-5" id="@Sumname3-Total">
                                                         @SumActCurrFinTill2ndQuart.ToString("F4")
@@ -2131,7 +2133,7 @@
                                                        0.00
                                                     </td>
                                                     }
-                                                    @if ((User.IsInRole("Admin") && AdminEditStatus) || (!User.IsInRole("Admin") && DelegateEditStatus))
+                                                    @if ((User.IsInRole("Admin") && IsSubmittedToACBW) || !User.IsInRole("Admin"))
                                                     {
                                                         <td id="@Sumname4-Total">
                                                             @SumRevEstCurrFin.ToString("F4")
@@ -2144,7 +2146,7 @@
                                                      </td>
                                                     }
                                                     <td class="w-5" id="@Sumname5-Total">
-                                                        @SumPerVarRevEstOverBudgEstCurrFin
+                                                        @SumPerVarRevEstOverBudgEstCurrFin.ToString("F2") %
                                                     </td>
                                                     <td class="w-5"></td>
                                                     @if (User.IsInRole("Admin") || (!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0))
@@ -2152,19 +2154,23 @@
                                                         <td class="w-5" id="@Sumname6-Total">
                                                             @SumACAndBWPropRECurrFin.ToString("F4")
                                                         </td>
-                                                    
+                                                    }
+                                                    @if (User.IsInRole("Admin"))
+                                                    {
                                                     <td class="w-5" id="@Sumname11-Total">
-                                                        @SumPerVarACBWRevEstOverBudgEstCurrFin
+                                                        @SumPerVarACBWRevEstOverBudgEstCurrFin.ToString("F2") %
                          
                                                     </td>
-                                                    
+                                                    }
+                                                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0))
+                                                    {
                                                     <td class="w-5"></td>
                                                     }
                                                     <td class="w-5" id="@Sumname7-Total">
                                                        @SumBudgEstNexFin.ToString("F4")
                                                     </td>
                                                     <td class="w-5" id="@Sumname8-Total">
-                                                        @SumPerVarRevEstOverBudgEstNxtFin
+                                                        @SumPerVarRevEstOverBudgEstNxtFin.ToString("F2") %
                                                     </td>
                                                     <td class="w-5"></td>
                                                     @if (User.IsInRole("Admin") || (!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0))
@@ -2172,11 +2178,15 @@
                                                         <td class="w-5" id="@Sumname9-Total">
                                                             @SumACAndBWPropRENxtFin.ToString("F4")
                                                         </td>
-                                                    
+                                                    }
+                                                    @if (User.IsInRole("Admin"))
+                                                    {
                                                         <td class="w-5" id="@Sumname12-Total">
-                                                            @SumPerVarACBWRevEstOverBudgEstNxtFin
+                                                            @SumPerVarACBWRevEstOverBudgEstNxtFin.ToString("F2") %
                                                         </td>
-                                                    
+                                                    }
+                                                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0))
+                                                    {
                                                         <td class="w-5"></td>
                                                     }
                                                     <td class="w-5"></td>
@@ -3891,7 +3901,7 @@
                                                     
                                                     <td class="w-5"></td>
                                                     
-                                                    @if((User.IsInRole("Admin") && AdminEditStatus) || (!User.IsInRole("Admin") && DelegateEditStatus))
+                                                    @if((User.IsInRole("Admin") && IsSubmittedToACBW) || !User.IsInRole("Admin") )
                                                     {
                                                     <td class="w-5" id="@Sumname2-Total">
                                                        @SumActPrevFin.ToString("F4")
@@ -3903,7 +3913,7 @@
                                                        0.00
                                                     </td>
                                                     }
-                                                    @if((User.IsInRole("Admin") && AdminEditStatus) || (!User.IsInRole("Admin") && DelegateEditStatus))
+                                                    @if((User.IsInRole("Admin") && IsSubmittedToACBW) || !User.IsInRole("Admin"))
                                                     {
                                                     <td class="w-5" id="@Sumname3-Total">
                                                         @SumActCurrFinTill2ndQuart.ToString("F4")
@@ -3915,7 +3925,7 @@
                                                        0.00
                                                     </td>
                                                     }
-                                                    @if ((User.IsInRole("Admin") && AdminEditStatus) || (!User.IsInRole("Admin") && DelegateEditStatus))
+                                                    @if ((User.IsInRole("Admin") && IsSubmittedToACBW) || !User.IsInRole("Admin"))
                                                     {
                                                         <td id="@Sumname4-Total">
                                                             @SumRevEstCurrFin.ToString("F4")
@@ -3928,7 +3938,7 @@
                                                      </td>
                                                     }
                                                     <td class="w-5" id="@Sumname5-Total">
-                                                        @SumPerVarRevEstOverBudgEstCurrFin
+                                                        @SumPerVarRevEstOverBudgEstCurrFin.ToString("F2") %
                                                     </td>
                                                     <td class="w-5"></td>
                                                     @if (User.IsInRole("Admin") || (!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0))
@@ -3936,19 +3946,23 @@
                                                         <td class="w-5" id="@Sumname6-Total">
                                                             @SumACAndBWPropRECurrFin.ToString("F4")
                                                         </td>
-                                                    
+                                                    }
+                                                    @if (User.IsInRole("Admin"))
+                                                    {
                                                     <td class="w-5" id="@Sumname11-Total">
-                                                        @SumPerVarACBWRevEstOverBudgEstCurrFin
+                                                        @SumPerVarACBWRevEstOverBudgEstCurrFin.ToString("F2") %
                          
                                                     </td>
-                                                    
+                                                    }
+                                                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0))
+                                                    {
                                                     <td class="w-5"></td>
                                                     }
                                                     <td class="w-5" id="@Sumname7-Total">
                                                        @SumBudgEstNexFin.ToString("F4")
                                                     </td>
                                                     <td class="w-5" id="@Sumname8-Total">
-                                                        @SumPerVarRevEstOverBudgEstNxtFin
+                                                        @SumPerVarRevEstOverBudgEstNxtFin.ToString("F2") %
                                                     </td>
                                                     <td class="w-5"></td>
                                                     @if (User.IsInRole("Admin") || (!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0))
@@ -3956,11 +3970,15 @@
                                                         <td class="w-5" id="@Sumname9-Total">
                                                             @SumACAndBWPropRENxtFin.ToString("F4")
                                                         </td>
-                                                    
+                                                    }
+                                                    @if (User.IsInRole("Admin"))
+                                                    {
                                                         <td class="w-5" id="@Sumname12-Total">
-                                                            @SumPerVarACBWRevEstOverBudgEstNxtFin
+                                                            @SumPerVarACBWRevEstOverBudgEstNxtFin.ToString("F2") %
                                                         </td>
-                                                    
+                                                    }
+                                                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0))
+                                                    {
                                                         <td class="w-5"></td>
                                                     }
                                                     <td class="w-5"></td>
@@ -4110,7 +4128,7 @@
 
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                     {
-                        var identi = String.Concat("Budget", Convert.ToString((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
+                        var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
                         if (CountHeader == 0)
                         {
                             <li class="nav-item" role="presentation">
@@ -4160,7 +4178,7 @@
                         var Submit = String.Concat("Submit", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                         var SubmitACBW = String.Concat("SubmitACBW", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                         var SubmitChairPerson = String.Concat("SubmitChairPerson", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                        var identi = String.Concat("Budget", Convert.ToString((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
+                        var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
                         
                          var SumBudEstCurrFin = (from a in Model.Approved where a.GroupNumber.Equals(@item.GroupNo) select a.BudEstNextFin).Sum();
                          var SumActPrevFin = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ActPrevFin).Sum();
@@ -5882,7 +5900,7 @@
                                                     
                                                     <td class="w-5"></td>
                                                     
-                                                    @if((User.IsInRole("Admin") && AdminEditStatus) || (!User.IsInRole("Admin") && DelegateEditStatus))
+                                                    @if((User.IsInRole("Admin") && IsSubmittedToACBW) || !User.IsInRole("Admin") )
                                                     {
                                                     <td class="w-5" id="@Sumname2-Total">
                                                        @SumActPrevFin.ToString("F4")
@@ -5894,7 +5912,7 @@
                                                        0.00
                                                     </td>
                                                     }
-                                                    @if((User.IsInRole("Admin") && AdminEditStatus) || (!User.IsInRole("Admin") && DelegateEditStatus))
+                                                    @if((User.IsInRole("Admin") && IsSubmittedToACBW) || !User.IsInRole("Admin"))
                                                     {
                                                     <td class="w-5" id="@Sumname3-Total">
                                                         @SumActCurrFinTill2ndQuart.ToString("F4")
@@ -5906,7 +5924,7 @@
                                                        0.00
                                                     </td>
                                                     }
-                                                    @if ((User.IsInRole("Admin") && AdminEditStatus) || (!User.IsInRole("Admin") && DelegateEditStatus))
+                                                    @if ((User.IsInRole("Admin") && IsSubmittedToACBW) || !User.IsInRole("Admin"))
                                                     {
                                                         <td id="@Sumname4-Total">
                                                             @SumRevEstCurrFin.ToString("F4")
@@ -5919,7 +5937,7 @@
                                                      </td>
                                                     }
                                                     <td class="w-5" id="@Sumname5-Total">
-                                                        @SumPerVarRevEstOverBudgEstCurrFin
+                                                        @SumPerVarRevEstOverBudgEstCurrFin.ToString("F2") %
                                                     </td>
                                                     <td class="w-5"></td>
                                                     @if (User.IsInRole("Admin") || (!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0))
@@ -5927,19 +5945,23 @@
                                                         <td class="w-5" id="@Sumname6-Total">
                                                             @SumACAndBWPropRECurrFin.ToString("F4")
                                                         </td>
-                                                    
+                                                    }
+                                                    @if (User.IsInRole("Admin"))
+                                                    {
                                                     <td class="w-5" id="@Sumname11-Total">
-                                                        @SumPerVarACBWRevEstOverBudgEstCurrFin
+                                                        @SumPerVarACBWRevEstOverBudgEstCurrFin.ToString("F2") %
                          
                                                     </td>
-                                                    
+                                                    }
+                                                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0))
+                                                    {
                                                     <td class="w-5"></td>
                                                     }
                                                     <td class="w-5" id="@Sumname7-Total">
                                                        @SumBudgEstNexFin.ToString("F4")
                                                     </td>
                                                     <td class="w-5" id="@Sumname8-Total">
-                                                        @SumPerVarRevEstOverBudgEstNxtFin
+                                                        @SumPerVarRevEstOverBudgEstNxtFin.ToString("F2") %
                                                     </td>
                                                     <td class="w-5"></td>
                                                     @if (User.IsInRole("Admin") || (!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0))
@@ -5947,11 +5969,15 @@
                                                         <td class="w-5" id="@Sumname9-Total">
                                                             @SumACAndBWPropRENxtFin.ToString("F4")
                                                         </td>
-                                                    
+                                                    }
+                                                    @if (User.IsInRole("Admin"))
+                                                    {
                                                         <td class="w-5" id="@Sumname12-Total">
-                                                            @SumPerVarACBWRevEstOverBudgEstNxtFin
+                                                            @SumPerVarACBWRevEstOverBudgEstNxtFin.ToString("F2") %
                                                         </td>
-                                                    
+                                                    }
+                                                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0))
+                                                    {
                                                         <td class="w-5"></td>
                                                     }
                                                     <td class="w-5"></td>
@@ -7658,7 +7684,7 @@
                                                     
                                                     <td class="w-5"></td>
                                                     
-                                                    @if((User.IsInRole("Admin") && AdminEditStatus) || (!User.IsInRole("Admin") && DelegateEditStatus))
+                                                    @if((User.IsInRole("Admin") && IsSubmittedToACBW) || !User.IsInRole("Admin") )
                                                     {
                                                     <td class="w-5" id="@Sumname2-Total">
                                                        @SumActPrevFin.ToString("F4")
@@ -7670,7 +7696,7 @@
                                                        0.00
                                                     </td>
                                                     }
-                                                    @if((User.IsInRole("Admin") && AdminEditStatus) || (!User.IsInRole("Admin") && DelegateEditStatus))
+                                                    @if((User.IsInRole("Admin") && IsSubmittedToACBW) || !User.IsInRole("Admin"))
                                                     {
                                                     <td class="w-5" id="@Sumname3-Total">
                                                         @SumActCurrFinTill2ndQuart.ToString("F4")
@@ -7682,7 +7708,7 @@
                                                        0.00
                                                     </td>
                                                     }
-                                                    @if ((User.IsInRole("Admin") && AdminEditStatus) || (!User.IsInRole("Admin") && DelegateEditStatus))
+                                                    @if ((User.IsInRole("Admin") && IsSubmittedToACBW) || !User.IsInRole("Admin"))
                                                     {
                                                         <td id="@Sumname4-Total">
                                                             @SumRevEstCurrFin.ToString("F4")
@@ -7695,7 +7721,7 @@
                                                      </td>
                                                     }
                                                     <td class="w-5" id="@Sumname5-Total">
-                                                        @SumPerVarRevEstOverBudgEstCurrFin
+                                                        @SumPerVarRevEstOverBudgEstCurrFin.ToString("F2") %
                                                     </td>
                                                     <td class="w-5"></td>
                                                     @if (User.IsInRole("Admin") || (!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0))
@@ -7703,19 +7729,23 @@
                                                         <td class="w-5" id="@Sumname6-Total">
                                                             @SumACAndBWPropRECurrFin.ToString("F4")
                                                         </td>
-                                                    
+                                                    }
+                                                    @if (User.IsInRole("Admin"))
+                                                    {
                                                     <td class="w-5" id="@Sumname11-Total">
-                                                        @SumPerVarACBWRevEstOverBudgEstCurrFin
+                                                        @SumPerVarACBWRevEstOverBudgEstCurrFin.ToString("F2") %
                          
                                                     </td>
-                                                    
+                                                    }
+                                                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0))
+                                                    {
                                                     <td class="w-5"></td>
                                                     }
                                                     <td class="w-5" id="@Sumname7-Total">
                                                        @SumBudgEstNexFin.ToString("F4")
                                                     </td>
                                                     <td class="w-5" id="@Sumname8-Total">
-                                                        @SumPerVarRevEstOverBudgEstNxtFin
+                                                        @SumPerVarRevEstOverBudgEstNxtFin.ToString("F2") %
                                                     </td>
                                                     <td class="w-5"></td>
                                                     @if (User.IsInRole("Admin") || (!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0))
@@ -7723,11 +7753,15 @@
                                                         <td class="w-5" id="@Sumname9-Total">
                                                             @SumACAndBWPropRENxtFin.ToString("F4")
                                                         </td>
-                                                    
+                                                    }
+                                                    @if (User.IsInRole("Admin"))
+                                                    {
                                                         <td class="w-5" id="@Sumname12-Total">
-                                                            @SumPerVarACBWRevEstOverBudgEstNxtFin
+                                                            @SumPerVarACBWRevEstOverBudgEstNxtFin.ToString("F2") %
                                                         </td>
-                                                    
+                                                    }
+                                                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0))
+                                                    {
                                                         <td class="w-5"></td>
                                                     }
                                                     <td class="w-5"></td>
