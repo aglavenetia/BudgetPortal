@@ -1452,7 +1452,7 @@ namespace BudgetPortal.Controllers
                         nextresult.BudgEstNexFin = Convert.ToDecimal(MD.BudgEstNexFin[index]);
 
                         var SplitPerVarRevEstOverBudgEstNxtFin = MD.PerVarRevEstOverBudgEstNxtFin[index].ToString().Split("%");
-                        nextresult.PerVarRevEstOverBudgEstNxtFin = Convert.ToDecimal(SplitPerVarRevEstOverBudgEstNxtFin[index]);
+                        nextresult.PerVarRevEstOverBudgEstNxtFin = Convert.ToDecimal(SplitPerVarRevEstOverBudgEstNxtFin[0]);
                         try
                         {
                             if (MD.Justification[index] is not null)

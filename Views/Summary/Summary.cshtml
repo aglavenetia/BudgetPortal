@@ -196,6 +196,7 @@
                     var TotalLedgers = (from c in Model.Ledgerss
                                         join d in Model.SubGroupss
                                         on c.SubGroupNo equals d.SubGroupNo
+                                        where d.GroupNo.Equals(@item.GroupNo)
                                         select c.LedgerNo).Count();
                     TotalSubGroups = (TotalSubGroups + TotalLedgers);
                     
@@ -275,31 +276,73 @@
                         }
                         
                             @{
-                               TotalAdminSavedLedgers = (from e in Model.Detailss where e.SectionNumber.Equals(@inner.SectionNo) && e.GroupNumber.Equals(@item.GroupNo) && e.HasAdminSaved.Equals(true) select e.SubGroupNumber).Count();
+                                TotalAdminSavedLedgers = (from e in Model.Detailss where e.SectionNumber.Equals(@inner.SectionNo) && e.GroupNumber.Equals(@item.GroupNo) && e.HasAdminSaved.Equals(true) select e.SubGroupNumber).Count();
                                 TotalDelegateSavedLedgers = (from d in Model.Detailss where d.SectionNumber.Equals(@inner.SectionNo) && d.GroupNumber.Equals(@item.GroupNo) && d.HasDelegateSaved.Equals(true) select d.SubGroupNumber).Count();
-                            }
-                            @if (User.IsInRole("Admin") && (TotalAdminSavedLedgers == TotalSubGroups))
-                            {
-                             <td>
-                               Ready to be submitted to ChairPerson
-                             </td>
+                            int FinalApproved = (from a in Model.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(false) && a.GenBodyApproval.Equals(true) select a.GenBodyApproval).Count();
+                            int SubmittedForApproval = (from a in Model.Statuss where a.SectionNumber != 0 && !a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
+                            int NumberOfGroups = (from a in Model.Groupss select a.GroupNo).Count();
+                            int PendingForChairmanApproval = (from a in Model.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.ACBWSubmission.Equals(true) select a.ACBWSubmission).Count();
+                            int PendingForFinCommitteeApproval = (from a in Model.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.ChairpersonApproval.Equals(true) select a.ChairpersonApproval).Count();
+                            int PendingForGenBodyApproval = (from a in Model.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.FinCommitteeApproval.Equals(true) select a.FinCommitteeApproval).Count();
+                            int PendingForPublishing = (from a in Model.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.GenBodyApproval.Equals(true) select a.GenBodyApproval).Count();
                             
                             }
-                            
-                            else if (!User.IsInRole("Admin") && (TotalDelegateSavedLedgers == TotalSubGroups))
+                            @if (FinalApproved > 0)
                             {
                                 <td>
-                                  Ready to be submitted to AC&BW
+                                   Approved
                                 </td>
                             }
-                            else
+                           else if (PendingForPublishing > 0)
+                           {
+                               <td>
+                                   Pending to be published
+                                </td>
+                           }
+                           else if (PendingForGenBodyApproval > 0)
+                           {
+                               <td>
+                                   Pending with General Body
+                               </td>
+                            }
+                            else if (PendingForFinCommitteeApproval > 0)
                             {
                                 <td>
-                                   Data Incomplete
+                                   Pending with Financial Commitee
                                 </td>
                             }
+                            else if (PendingForChairmanApproval > 0)
+                            {
+                                <td>
+                                   Pending with ChairPerson
+                                </td>
+                            }
+                            else if (FinalApproved == 0 && SubmittedForApproval == NumberOfGroups && PendingForChairmanApproval == 0)
+                            {
+                                <td>
+                                    Pending with AC & BW
+                                </td>
+                            }
+                        else if (User.IsInRole("Admin") && (TotalAdminSavedLedgers == TotalSubGroups))
+                        {
+                            <td>
+                                Ready to be submitted to ChairPerson
+                            </td>
 
-                        
+                        }
+
+                        else if (!User.IsInRole("Admin") && (TotalDelegateSavedLedgers == TotalSubGroups))
+                        {
+                            <td>
+                                Ready to be submitted to AC&BW
+                            </td>
+                        }
+                         else
+                            {
+                                <td>
+                                   Budget To be filled
+                                </td>
+                            }
                         @if (User.IsInRole("Admin"))
                         {
                             <td class="Remarks w-10">
