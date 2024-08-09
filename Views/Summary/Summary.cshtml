@@ -24,8 +24,11 @@
     var SumBudgEstNexFin = 0.00;
     var NextAcademicYear = "";
     String[] SplitAcademicYear = new String[1];
+
     var TotalAdminSavedLedgers = 0;
     var TotalDelegateSavedLedgers = 0;
+
+    var NoOfGroupsReadyToBeSubmitted = 0;
 
     var Sumname1 = String.Concat("BudEstCurrFin", "Total");
     var Sumname2 = String.Concat("ActPrevFin", "Total");
@@ -47,13 +50,14 @@
     <div style="float:right">
 
         @Html.AntiForgeryToken()
-
+        
         <table border="0" cellpadding="5" cellspacing="0">
             <tr>
                 
                 <td class="w-20">
                     @Html.DropDownListFor(m => m.SelectedAcademicYearID, Model.AcademicYears,"--Please select any Academic Year--",new { @class = "form-control", @id="AcademicYear" })
-                    @Html.HiddenFor(m => m.SelectedAcademicYear, new {id="SelectedAcademicYear"})
+                    @*Html.HiddenFor(m => m.SelectedAcademicYear, new {id="SelectedAcademicYear"})
+                    @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear, new { @id = "SelectedAcademicYear" })*@
                     @Html.ValidationMessageFor(Model => Model.SelectedAcademicYearID, "", new { @class = "text-danger" })
                 </td>
 
@@ -61,7 +65,7 @@
                 {
                     <td>
                         @Html.DropDownListFor(Model => Model.SelectedDivisionID, Model.DivisionNames,"--Please select any Division--", new { @class = "form-control", @id="Division" })
-                        @Html.HiddenFor(m => m.SelectedDivisionName, new {id="SelectedDivisionName"})
+                        @*Html.Hidden("SelectedDivisionName", Model.SelectedDivisionName, new { @id = "SelectedDivisionName" })*@
                         @Html.ValidationMessageFor(Model => Model.SelectedDivisionID,null, new { @class = "text-danger" })
 
                     </td>
@@ -92,8 +96,13 @@
             </tr>
         </table>
 
-        
-        <table id="Budget-Summary" class="table table-responsive table-hover table-bordered">
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { @action = "", enctype = "multipart/form-data", id = "AppForm"}))
+    {
+        @Html.AntiForgeryToken()
+        @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear, new { @id = "SelectedAcademicYear" })
+        @Html.Hidden("SelectedDivisionName", Model.SelectedDivisionName, new { @id = "SelectedDivisionName" })        
+
+<table id="Budget-Summary" class="table table-responsive table-hover table-bordered">
 
             <thead>
                 <tr class="text-center">
@@ -168,7 +177,7 @@
             <tbody>
                 <tr></tr>
         
-      @foreach (var inner in Model.Sectionss)
+                @foreach (var inner in Model.Sectionss)
         {
             var inneridenti = String.Concat("Budget", @inner.SectionNo.ToString());
 
@@ -290,7 +299,7 @@
                             @if (FinalApproved > 0)
                             {
                                 <td>
-                                   Approved
+                                <span style="color:forestgreen;font-weight:bold">Approved</span>
                                 </td>
                             }
                            else if (PendingForPublishing > 0)
@@ -317,30 +326,33 @@
                                    Pending with ChairPerson
                                 </td>
                             }
+                            else if (User.IsInRole("Admin") && (TotalAdminSavedLedgers == TotalSubGroups))
+                            {
+                                <td>
+                                    <span style="color:lightseagreen;font-weight:bold">Ready to be submitted to ChairPerson</span>
+                                </td>
+                                NoOfGroupsReadyToBeSubmitted = NoOfGroupsReadyToBeSubmitted + 1;
+
+                            }
                             else if (FinalApproved == 0 && SubmittedForApproval == NumberOfGroups && PendingForChairmanApproval == 0)
                             {
                                 <td>
                                     Pending with AC & BW
                                 </td>
                             }
-                        else if (User.IsInRole("Admin") && (TotalAdminSavedLedgers == TotalSubGroups))
-                        {
-                            <td>
-                                Ready to be submitted to ChairPerson
-                            </td>
-
-                        }
+                        
 
                         else if (!User.IsInRole("Admin") && (TotalDelegateSavedLedgers == TotalSubGroups))
                         {
                             <td>
-                                Ready to be submitted to AC&BW
+                                <span style="color:lightseagreen;font-weight:bold">Ready to be submitted to AC&BW</span>
                             </td>
+                            NoOfGroupsReadyToBeSubmitted = NoOfGroupsReadyToBeSubmitted + 1;
                         }
                          else
                             {
                                 <td>
-                                   Budget To be filled
+                                <span style="color:crimson;font-weight:bold">Budget To be filled</span>
                                 </td>
                             }
                         @if (User.IsInRole("Admin"))
@@ -418,20 +430,20 @@
                
             </tbody>
          </table>
-        
-         @*{
-              
-              
-              Boolean ACBWSubmission = (from a in Model.Statuss where a.SectionNumber.Equals(@inner.SectionNo)  && a.GroupNumber.Equals(@item.GroupNo) select a.ACBWSubmission).FirstOrDefault();
-         }
-        @if (User.IsInRole("Admin") && AdminEditStatus && (TotalAdminSavedLedgers == TotalSubGroups) && Model.IsEnabled.Equals(true) && !ACBWSubmission)
-        {
-            <input id="SubmitChairPerson" class="Submit" formaction="~/Tabs/Index" type="submit" value="Submit to Chairperson for Approval" style="align-self:center" />
-        }
-        else if (!User.IsInRole("Admin") && DelegateEditStatus && (TotalDelegateSavedLedgers == TotalSubGroups) && Model.IsEnabled.Equals(true))
-        {
-           <input id="SubmitACBW" class="Submit" formaction="~/Tabs/Index" type="submit" value="Submit to AC&BW for Approval" style="align-self:center" />
-        }*@
+
+    
+        var TotalGroups = (from b in Model.Groupss select b.GroupNo).Count();
+    
+
+    @if (User.IsInRole("Admin") && (NoOfGroupsReadyToBeSubmitted == TotalGroups))
+    {
+        <input id="SubmitChairPerson" class="Submit" formaction="~/Summary/Index" type="submit" value="Submit to Chairperson for Approval" style="align-self:center" />
+    }
+    else if (!User.IsInRole("Admin") && (NoOfGroupsReadyToBeSubmitted == TotalGroups))
+    {
+        <input id="SubmitACBW" class="Submit" formaction="~/Summary/Index" type="submit" value="Submit to AC&BW for Approval" style="align-self:center" />
+    }
+    }
    
 </div>
 
@@ -494,7 +506,7 @@
         function onceDocReady() 
         {
             $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
-            //alert($("#SelectedAcademicYear").val());
+            alert($("#SelectedAcademicYear").val());
             $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
             
             var academicyear = $("#SelectedAcademicYear").val();
