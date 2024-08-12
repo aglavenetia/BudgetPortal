@@ -30,6 +30,10 @@
 
     var NoOfGroupsReadyToBeSubmitted = 0;
 
+    Boolean FinalAdminEditStatus = (from a in Model.Statuss where (a.SectionNumber == 0 && a.GroupNumber.Equals("0")) select a.AdminEditStatus).FirstOrDefault();
+
+    int FinalAdminEditCount = (from a in Model.Statuss where (a.SectionNumber == 0 && a.GroupNumber.Equals("0")) select a.AdminEditStatus).Count();
+
     var Sumname1 = String.Concat("BudEstCurrFin", "Total");
     var Sumname2 = String.Concat("ActPrevFin", "Total");
     var Sumname3 = String.Concat("ActCurrFinTillsecondQuart", "Total");
@@ -130,13 +134,13 @@
                     <th class="VariationInRevisedEstimates w-10">
 
                     </th>
-                    @if (User.IsInRole("Admin"))
+                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                     {
                         <th class="ACBWProposalForRevisedEstimates w-10">
 
                         </th>
                     }
-                    @if (User.IsInRole("Admin"))
+                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                     {
                         <th class="VariationInRevisedEstimates w-10">
 
@@ -148,14 +152,14 @@
                     <th class="VariationInBudgetEstimates w-10">
 
                     </th>
-                    @if (User.IsInRole("Admin"))
+                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                     {
                         <th class="ACBWProposalForBudgetEstimates w-10">
 
                         </th>
 
                     }
-                    @if (User.IsInRole("Admin"))
+                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                     {
                         <th class="VariationInBudgetEstimates w-10">
 
@@ -177,11 +181,11 @@
             <tbody>
                 <tr></tr>
         
-                @foreach (var inner in Model.Sectionss)
-        {
-            var inneridenti = String.Concat("Budget", @inner.SectionNo.ToString());
+             @foreach (var inner in Model.Sectionss)
+             {
+                    var inneridenti = String.Concat("Budget", @inner.SectionNo.ToString());
 
-            
+                    
 
                 var SectionSumBudEstCurrFin = (from a in Model.Approved where a.SectionNumber.Equals(@inner.SectionNo) select a.BudEstNextFin).Sum();
                 var SectionSumActPrevFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ActPrevFin).Sum();
@@ -209,6 +213,8 @@
                                         select c.LedgerNo).Count();
                     TotalSubGroups = (TotalSubGroups + TotalLedgers);
                     
+                    
+
                     @if (User.IsInRole("Admin"))
                     {
                          TotalAdminSavedLedgers = (from e in Model.Detailss where e.SectionNumber.Equals(@inner.SectionNo) && e.GroupNumber.Equals(@item.GroupNo) && e.HasAdminSaved.Equals(true) select e.SubGroupNumber).Count();
@@ -251,13 +257,13 @@
                         <td>
                             @GroupSumPerVarRevEstOverBudgEstCurrFin.ToString("F2") %
                         </td>
-                        @if (User.IsInRole("Admin"))
+                        @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                         {
                             <td>
                                 @GroupSumACAndBWPropRECurrFin
                             </td>
                         }
-                        @if (User.IsInRole("Admin"))
+                        @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                         {
                             <td>
                                 @GroupSumPerVarACBWRevEstOverBudgEstCurrFin.ToString("F2") %
@@ -269,14 +275,14 @@
                         <td>
                             @GroupSumPerVarRevEstOverBudgEstNxtFin.ToString("F2") %
                         </td>
-                        @if (User.IsInRole("Admin"))
+                        @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                         {
                             <td>
                                 @GroupSumACAndBWPropRENxtFin
                             </td>
 
                         }
-                        @if (User.IsInRole("Admin"))
+                        @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                         {
                             <td>
                                 @GroupSumPerVarACBWRevEstOverBudgEstNxtFin.ToString("F2") %
@@ -387,13 +393,13 @@
                     <td>
                         @SectionSumPerVarRevEstOverBudgEstCurrFin.ToString("F2") %
                     </td>
-                    @if (User.IsInRole("Admin"))
+                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                     {
                         <td>
                             @SectionSumACAndBWPropRECurrFin
                         </td>
                     }
-                    @if (User.IsInRole("Admin"))
+                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                     {
                         <td>
                             @SectionSumPerVarACBWRevEstOverBudgEstCurrFin.ToString("F2") %
@@ -405,20 +411,21 @@
                     <td>
                         @SectionSumPerVarRevEstOverBudgEstNxtFin.ToString("F2") %
                     </td>
-                    @if (User.IsInRole("Admin"))
+                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                     {
                         <td>
                             @SectionSumACAndBWPropRENxtFin
                         </td>
 
                     }
-                    @if (User.IsInRole("Admin"))
+                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                     {
                         <td>
                             @SectionSumPerVarACBWRevEstOverBudgEstNxtFin.ToString("F2") %
                         </td>
 
                     }
+                    <td></td>
                     @if (User.IsInRole("Admin"))
                     {
                         <td class="Remarks w-10">
@@ -486,7 +493,7 @@
                                 data: { Year: year[0], Division: divisionname },
                                 dataType: "html",
                                 success: function (data) {
-                                    alert("Returned after success");
+                                    //alert("Returned after success");
                                     $("#outerdiv").html($("#outerdiv", data).html());
 
                                     onceDocReady();
@@ -506,14 +513,31 @@
         function onceDocReady() 
         {
             $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
-            alert($("#SelectedAcademicYear").val());
+            //alert($("#SelectedAcademicYear").val());
             $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
             
             var academicyear = $("#SelectedAcademicYear").val();
             var DivisionTypeName = $("#SelectedDivisionName").val();
-            
+
             var year = academicyear.split('-');
-            
+
+            $.ajax
+                ({
+                    type: "Get",
+                    url: '@Url.Action("GetDetails", "Summary")',
+                    data: { Year: year[0], Division: divisionname },
+                    dataType: "html",
+                    success: function (data) {
+                        alert("Returned after success");
+                        $("#outerdiv").html($("#outerdiv", data).html());
+
+                       // onceDocReady();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert("errorThrown Tabs");
+                    }
+
+                });
             $(".CurrentBudgetEstimates").text('Budget Estimates ' + $("#SelectedAcademicYear").val());
             $(".PreviousActualBudget").text('Actual ' + (Number.parseInt(year[0]) - Number.parseInt(1)) + '-' + Number.parseInt(year[0]));
             $(".PreviousHalfYearActualBudget").text('Actual upto 30.09.' + Number.parseInt(year[0]));

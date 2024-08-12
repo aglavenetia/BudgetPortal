@@ -4,6 +4,8 @@ using BudgetPortal.Entities;
 using BudgetPortal.ViewModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
+using DocumentFormat.OpenXml.Bibliography;
 
 
 namespace BudgetPortal.Controllers
@@ -39,6 +41,9 @@ namespace BudgetPortal.Controllers
                 Year = 2022 - 1;
             }
             var AcademicYear = String.Concat(Year, "-", (Year + 1));
+
+           
+            
             var mymodel = new MultipleData();
             mymodel.SelectedAcademicYear = AcademicYear;
             mymodel.Sectionss = _context.BudgetSections.ToList();
@@ -132,7 +137,8 @@ namespace BudgetPortal.Controllers
             
 
             mymodel.AcademicYears.Where(x => x.Text.Equals(AcademicYear)).Single().Selected = true;
-           
+            var AcYear = mymodel.AcademicYears.Where(x => x.Selected.Equals(true)).Select(x => x.Text).FirstOrDefault();
+            TempData["SelAcademicYear"] = JsonConvert.SerializeObject(AcYear);
 
             return View(mymodel);
         }
@@ -463,7 +469,7 @@ namespace BudgetPortal.Controllers
                                      .Where(d => d.DivisionName == Division)
                                      .Select(x => x.DivisionID).FirstOrDefault();
             }
-
+            
                 var AcademicYear = String.Concat(Year, "-", (Year + 1));
                 var mymodel = new MultipleData();
                 mymodel.SelectedAcademicYear = AcademicYear;
@@ -557,7 +563,9 @@ namespace BudgetPortal.Controllers
                 try
                 { 
                     mymodel.AcademicYears.Where(x => x.Text.Equals(AcademicYear)).Single().Selected = true;
-                }
+                   var AcYear = mymodel.AcademicYears.Where(x => x.Selected.Equals(true)).Select(x => x.Text).FirstOrDefault();
+                    TempData["SelAcademicYear"] = JsonConvert.SerializeObject(AcYear);
+            }
                 catch(Exception ex)
                 {
                     ModelState.AddModelError("SelectedAcademicYearID", "Please select any Academic Year");
@@ -569,7 +577,9 @@ namespace BudgetPortal.Controllers
                    try
                    {
                       mymodel.DivisionNames.Where(x => x.Text.Equals(Division)).Single().Selected = true;
-                   }
+                    var DiName = mymodel.DivisionNames.Where(x => x.Selected.Equals(true)).Select(x => x.Text).FirstOrDefault();
+                    TempData["SelDivisionName"] = JsonConvert.SerializeObject(DiName);
+                }
                    catch (Exception ex)
                    {
                        ModelState.AddModelError("SelectedDivisionID", "Please select any Division");

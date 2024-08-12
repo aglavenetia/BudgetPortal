@@ -1,9 +1,11 @@
 ﻿using BudgetPortal.Data;
 using BudgetPortal.Entities;
 using BudgetPortal.ViewModel;
+using DocumentFormat.OpenXml.Bibliography;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 
 namespace BudgetPortal.Controllers
 {
@@ -28,7 +30,7 @@ namespace BudgetPortal.Controllers
             var LoggedInDivisionID = _context.Division
                                    .Where(d => d.DivisionName == DivName)
                                    .Select(x => x.DivisionID).FirstOrDefault();
-
+            
             //var Month = DateTime.Now.Month;
             var Month = 10;
             if (Month > 0 && Month < 4)
@@ -36,9 +38,14 @@ namespace BudgetPortal.Controllers
                 //Year = DateTime.Now.Year - 1;
                 Year = 2022 - 1;
             }
-            var AcademicYear = String.Concat(Year, "-", (Year + 1));
+            //var AcademicYear = String.Concat(Year, "-", (Year + 1));
+
+            var AcademicYear = JsonConvert.DeserializeObject(TempData["SelAcademicYear"].ToString());
+            var DName = JsonConvert.DeserializeObject(TempData["SelDivisionName"].ToString());
+
             var NextAcademicYear = String.Concat((Year + 1), "-", (Year + 2));
             var mymodel = new MultipleData();
+            
 
             mymodel.Sectionss = _context.BudgetSections.ToList();
             mymodel.Groupss = _context.BudgetGroups.ToList();
@@ -48,6 +55,7 @@ namespace BudgetPortal.Controllers
             mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == LoggedInDivisionID).Where(x => x.FinancialYear1 == (Year - 1)).ToList();
             mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID).Where(x => x.FinancialYear1 == Year).ToList();
             mymodel.Ledgerss = _context.BudgetLedgers.ToList();
+            
             mymodel.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                         new SelectListItem()
                         {
@@ -57,7 +65,7 @@ namespace BudgetPortal.Controllers
 
                         }).ToList();
             
-            mymodel.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
+                mymodel.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
                     new SelectListItem()
                     {
                         Selected = false,
@@ -66,6 +74,7 @@ namespace BudgetPortal.Controllers
 
                     }).ToList();
             mymodel.AcademicYears.Where(x => x.Text.Equals(AcademicYear)).Single().Selected = true;
+            mymodel.DivisionNames.Where(x => x.Text.Equals(DName)).Single().Selected = true;
 
             return View(mymodel);
         }
