@@ -22,7 +22,7 @@ namespace BudgetPortal.Controllers
         public IActionResult Summary()
         {
             //var Year = DateTime.Now.Year;
-            var Year = 2022;
+            //var Year = 2022;
             var username = User.Identity.Name;
             var DivName = _context.Users
                           .Where(x => x.UserName.Equals(username))
@@ -30,18 +30,21 @@ namespace BudgetPortal.Controllers
             var LoggedInDivisionID = _context.Division
                                    .Where(d => d.DivisionName == DivName)
                                    .Select(x => x.DivisionID).FirstOrDefault();
-            
+
+            var AcademicYear = JsonConvert.DeserializeObject(TempData["SelAcademicYear"].ToString());
+            var SplitAcYear = AcademicYear.ToString().Split("-");
+            var Year = Convert.ToInt32(SplitAcYear[0]);
+
             //var Month = DateTime.Now.Month;
             var Month = 10;
             if (Month > 0 && Month < 4)
             {
                 //Year = DateTime.Now.Year - 1;
-                Year = 2022 - 1;
+                Year = Year - 1;
             }
             //var AcademicYear = String.Concat(Year, "-", (Year + 1));
 
-            var AcademicYear = JsonConvert.DeserializeObject(TempData["SelAcademicYear"].ToString());
-            var DName = JsonConvert.DeserializeObject(TempData["SelDivisionName"].ToString());
+           
 
             var NextAcademicYear = String.Concat((Year + 1), "-", (Year + 2));
             var mymodel = new MultipleData();
@@ -55,8 +58,11 @@ namespace BudgetPortal.Controllers
             mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == LoggedInDivisionID).Where(x => x.FinancialYear1 == (Year - 1)).ToList();
             mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID).Where(x => x.FinancialYear1 == Year).ToList();
             mymodel.Ledgerss = _context.BudgetLedgers.ToList();
-            
-            mymodel.DivisionNames = _context.Division.AsEnumerable().Select(x =>
+
+            if (username.Equals("admin@test.com"))
+            {
+                var Div = JsonConvert.DeserializeObject(TempData["SelDivisionName"].ToString());
+                mymodel.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                         new SelectListItem()
                         {
                             Selected = false,
@@ -64,7 +70,8 @@ namespace BudgetPortal.Controllers
                             Value = x.DivisionID.ToString()
 
                         }).ToList();
-            
+                mymodel.DivisionNames.Where(x => x.Text.Equals(Div)).Single().Selected = true;
+            }
                 mymodel.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
                     new SelectListItem()
                     {
@@ -74,7 +81,6 @@ namespace BudgetPortal.Controllers
 
                     }).ToList();
             mymodel.AcademicYears.Where(x => x.Text.Equals(AcademicYear)).Single().Selected = true;
-            mymodel.DivisionNames.Where(x => x.Text.Equals(DName)).Single().Selected = true;
 
             return View(mymodel);
         }
@@ -113,7 +119,9 @@ namespace BudgetPortal.Controllers
             mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID).Where(x => x.FinancialYear1 == Year).ToList();
             mymodel.Ledgerss = _context.BudgetLedgers.ToList();
 
-            mymodel.DivisionNames = _context.Division.AsEnumerable().Select(x =>
+            if (username.Equals("admin@test.com"))
+            {
+                mymodel.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                         new SelectListItem()
                         {
                             Selected = false,
@@ -121,9 +129,6 @@ namespace BudgetPortal.Controllers
                             Value = x.DivisionID.ToString()
 
                         }).ToList();
-
-            if (username.Equals("admin@test.com"))
-            {
                 try
                 {
                     mymodel.DivisionNames.Where(x => x.Text.Equals(Division)).Single().Selected = true;
@@ -134,6 +139,7 @@ namespace BudgetPortal.Controllers
 
                 }
             }
+        
             try
             {
                 mymodel.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>

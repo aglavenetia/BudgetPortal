@@ -778,7 +778,7 @@
                                                                                         {
                                                                                           <div class="form-group"> 
                                                                                               @{
-                                                                                                    Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.BudEstCurrFin != Convert.ToDecimal(0.00)) ? (Convert.ToString(((Convert.ToDecimal(Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")) - Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))) / Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F")))) * 100)) : (0).ToString("F2"));
+                                                                                                    Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.BudEstCurrFin != Convert.ToDecimal(0.00)) ? (Convert.ToString(((Convert.ToDecimal(Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F4")) - Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F4"))) / Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F4")))) * 100)) : (0).ToString("F4"));
                                                                                               }
                                                                                               @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo],"{0:0.00}%", new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
@@ -788,7 +788,7 @@
                                                                                         {
                                                                                            <div class="form-group"> 
                                                                                                @{
-                                                                                                 Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToString(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : (0).ToString("F2"));
+                                                                                                 Model.PerVarRevEstOverBudgEstCurrFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.0000)) ? Convert.ToString(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F4"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F4")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F4")))*100) : (0).ToString("F4"));
                                                                                                }
                                                                                                 @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo], "{0:0.00}%",new { @class = "form-control", @id = @name5+@Ledgers.LedgerNo,   @readonly = "readonly"})
                                                                                                 @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
@@ -866,7 +866,7 @@
                                                                                             <td>
                                                                                           <div class="form-group"> 
                                                                                               @{
-                                                                                              Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.BudEstCurrFin!=Convert.ToDecimal(0.00)) ? Convert.ToString(((Convert.ToDecimal(Convert.ToDecimal(Ledgerdetails.ACAndBWPropRECurrFin.ToString("F")) - Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))) / Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F"))))*100) : Convert.ToString(0.00));
+                                                                                              Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.BudEstCurrFin!=Convert.ToDecimal(0.0000)) ? Convert.ToString(((Convert.ToDecimal(Convert.ToDecimal(Ledgerdetails.ACAndBWPropRECurrFin.ToString("F4")) - Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F4"))) / Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F4"))))*100) : Convert.ToString(0.0000));
                                                                                               }
                                                                                               @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo], "{0:0.00}%",new { @class = "form-control", @id = @name17+@Ledgers.LedgerNo,  @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
@@ -880,7 +880,7 @@
                                                                                             <td>
                                                                                            <div class="form-group"> 
                                                                                                @{
-                                                                                                 Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToString(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToString(0.00));
+                                                                                                 Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.0000)) ? Convert.ToString(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F4"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F4")))*100) : Convert.ToString(0.0000));
                                                                                                }
                                                                                                 @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo],"{0:0.00}%",new { @class = "form-control", @id = @name17+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                                 @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
@@ -889,7 +889,7 @@
                                                                                         }
                                                                                         else
                                                                                         {
-                                                                                            Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(LedgerNo, Convert.ToString(0.00));
+                                                                                            Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(LedgerNo, Convert.ToString(0.0000));
                                                                                         }
                                                                                     
                                                                                 
@@ -971,7 +971,7 @@
                                                                                             <div class="form-group">
                                                                                              
                                                                                              @{
-                                                                                                 Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.RevEstCurrFin!=Convert.ToDecimal(0.00))  ? Convert.ToString(((Convert.ToDecimal(Ledgerdetails.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F")))*100) : Convert.ToString(0.00));
+                                                                                                 Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.RevEstCurrFin!=Convert.ToDecimal(0.0000))  ? Convert.ToString(((Convert.ToDecimal(Ledgerdetails.BudgEstNexFin.ToString("F4"))- Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F4")))/Convert.ToDecimal(Ledgerdetails.RevEstCurrFin.ToString("F4")))*100) : Convert.ToString(0.0000));
                                                                                              }  
                                                                                              
                                                                                               @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo], "{0:0.00}%",new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo, @readonly = "readonly"})
@@ -983,7 +983,7 @@
                                                                                         {
                                                                                             <div class="form-group">
                                                                                             @{
-                                                                                              Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToString(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToString(0.00));
+                                                                                              Model.PerVarRevEstOverBudgEstNxtFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.0000)) ? Convert.ToString(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F4"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F4")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F4")))*100) : Convert.ToString(0.0000));
                                                                                               }   
                                                                                               @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo],"{0:0.00}%",new { @class = "form-control", @id = @name8+@Ledgers.LedgerNo,  @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
@@ -1061,7 +1061,7 @@
                                                                                             <div class="form-group">
                                                                                              
                                                                                              @{
-                                                                                                 Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.ACAndBWPropRECurrFin!=Convert.ToDecimal(0.00))  ? Convert.ToString(((Convert.ToDecimal(Ledgerdetails.ACAndBWPropRENxtFin.ToString("F"))- Convert.ToDecimal(Ledgerdetails.ACAndBWPropRECurrFin.ToString("F")))/Convert.ToDecimal(Ledgerdetails.ACAndBWPropRECurrFin.ToString("F")))*100) : Convert.ToString(0.00));
+                                                                                                 Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.ACAndBWPropRECurrFin!=Convert.ToDecimal(0.0000))  ? Convert.ToString(((Convert.ToDecimal(Ledgerdetails.ACAndBWPropRENxtFin.ToString("F4"))- Convert.ToDecimal(Ledgerdetails.ACAndBWPropRECurrFin.ToString("F4")))/Convert.ToDecimal(Ledgerdetails.ACAndBWPropRECurrFin.ToString("F4")))*100) : Convert.ToString(0.0000));
                                                                                              }  
                                                                                              
                                                                                               @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[LedgerNo], "{0:0.00}%",new { @class = "form-control", @id = @name18+@Ledgers.LedgerNo, @readonly = "readonly"})
@@ -1073,7 +1073,7 @@
                                                                                         {
                                                                                             <div class="form-group">
                                                                                             @{
-                                                                                              Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.00)) ? Convert.ToString(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")))*100) : Convert.ToString(0.00));
+                                                                                              Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.0000)) ? Convert.ToString(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F4"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F4")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F4")))*100) : Convert.ToString(0.0000));
                                                                                               }   
                                                                                               @Html.TextBoxFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[LedgerNo],"{0:0.00}%",new { @class = "form-control", @id = @name18+@Ledgers.LedgerNo,  @readonly = "readonly"})
                                                                                               @Html.ValidationMessageFor(model => model.PerVarACBWRevEstOverBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
@@ -1082,7 +1082,7 @@
                                                                                         }
                                                                                         else
                                                                                         {
-                                                                                            Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(LedgerNo,Convert.ToString(0.00));
+                                                                                            Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(LedgerNo,Convert.ToString(0.0000));
                                                                                         }
                                                                                     </td>
                                                                                 @if (User.IsInRole("Admin") && AdminEditStatus && (!LedgerIsAdminSaved || (Model.EditEnabled == @Ledgers.LedgerNo)))
@@ -1476,7 +1476,7 @@
                                                           var PastYearSumBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();                                                                                                                           
                                                               <div class="form-group">
                                                               @{
-                                                                        Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, PastYearSumBudEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToString(((Convert.ToDecimal(PastYearSumBudEstCurrFin) - Convert.ToDecimal(PastYearSumBudEstCurrFin)) / Convert.ToDecimal(PastYearSumBudEstCurrFin)) * 100) : (0).ToString("F2"));
+                                                                        Model.PerVarRevEstOverBudgEstCurrFin.Insert(Count, PastYearSumBudEstCurrFin != Convert.ToDecimal(0.0000) ? Convert.ToString(((Convert.ToDecimal(PastYearSumBudEstCurrFin).ToString("F4") - Convert.ToDecimal(PastYearSumBudEstCurrFin).ToString("F4")) / Convert.ToDecimal(PastYearSumBudEstCurrFin).ToString("F4")) * 100) : (0).ToString("F4"));
                                                                }
                                                                 @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name5,  @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
@@ -7901,7 +7901,7 @@
                         var divisionname = $("#SelectedDivisionName").val();
 
                         var year = academicyear.split('-');
-                        //alert(year[0]);
+                        alert(year[0]);
 
                         var sectionnoid = $('#outerTab li button.active').attr('id');
 
@@ -7922,13 +7922,13 @@
                                 {
                                     //Whatever result you have got from your controller with html partial view replace with a specific html.
                                     //alert("Inside Ajax");
-                                    //alert("Inside Function");
+                                    alert("Inside Function");
  
                                     //$("#outerdiv").html(data);// HTML DOM replace
                                     
                                     //$("#outerdiv").html(data);
                                     $("#outerdiv").html($("#outerdiv", data).html());
-                                    //alert("Function Completed");
+                                    alert("Function Completed");
                                     
                                     onceDocReady();
                                    

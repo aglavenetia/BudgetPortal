@@ -24,7 +24,7 @@ namespace BudgetPortal.Controllers
         {
             /*var Year = DateTime.Now.Year;*/
             var Year = 2022;
-
+            
             var username = User.Identity.Name;
             var DivName = _context.Users
                           .Where(x => x.UserName.Equals(username))
@@ -41,8 +41,6 @@ namespace BudgetPortal.Controllers
                 Year = 2022 - 1;
             }
             var AcademicYear = String.Concat(Year, "-", (Year + 1));
-
-           
             
             var mymodel = new MultipleData();
             mymodel.SelectedAcademicYear = AcademicYear;
@@ -124,7 +122,6 @@ namespace BudgetPortal.Controllers
                         Value = x.DivisionID.ToString()
 
                     }).ToList();
-            
 
             mymodel.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
                     new SelectListItem()

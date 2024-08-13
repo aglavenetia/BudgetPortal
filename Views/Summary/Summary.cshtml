@@ -463,8 +463,9 @@
         $(document).ready(
             function () 
             {
-                onceDocReady();
-
+                //onceDocReady();
+                dropdownchange();
+                //onceDocReady();
                 $('body').on('change', "#AcademicYear",
                     function (evt) 
                     {
@@ -476,34 +477,7 @@
                 $('body').on('change', "#Division",
                     function (evt) 
                     {
-                        $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
-
-                        var divisionname = $("#SelectedDivisionName").val();
-
-                        $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
-
-                        var academicyear = $("#SelectedAcademicYear").val();
-
-                        var year = academicyear.split('-');
-
-                        $.ajax
-                            ({
-                                type: "Get",
-                                url: '@Url.Action("GetDetails","Summary")',
-                                data: { Year: year[0], Division: divisionname },
-                                dataType: "html",
-                                success: function (data) {
-                                    //alert("Returned after success");
-                                    $("#outerdiv").html($("#outerdiv", data).html());
-
-                                    onceDocReady();
-                                },
-                                error: function (jqXHR, textStatus, errorThrown) 
-                                {
-                                    alert("errorThrown Tabs");
-                                }
-
-                            });
+                        dropdownchange();
                     }
 
                 );
@@ -515,29 +489,10 @@
             $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
             //alert($("#SelectedAcademicYear").val());
             $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
-            
+            //alert($("#Division option:selected").text().trim());
+
             var academicyear = $("#SelectedAcademicYear").val();
-            var DivisionTypeName = $("#SelectedDivisionName").val();
-
             var year = academicyear.split('-');
-
-            $.ajax
-                ({
-                    type: "Get",
-                    url: '@Url.Action("GetDetails", "Summary")',
-                    data: { Year: year[0], Division: divisionname },
-                    dataType: "html",
-                    success: function (data) {
-                        alert("Returned after success");
-                        $("#outerdiv").html($("#outerdiv", data).html());
-
-                       // onceDocReady();
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        alert("errorThrown Tabs");
-                    }
-
-                });
             $(".CurrentBudgetEstimates").text('Budget Estimates ' + $("#SelectedAcademicYear").val());
             $(".PreviousActualBudget").text('Actual ' + (Number.parseInt(year[0]) - Number.parseInt(1)) + '-' + Number.parseInt(year[0]));
             $(".PreviousHalfYearActualBudget").text('Actual upto 30.09.' + Number.parseInt(year[0]));
@@ -557,17 +512,19 @@
 
             $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
             var SelectedDiv = $("#SelectedDivisionName").val();
-            
+            //alert(SelectedDiv);
+
             var year = academicyear.split('-');
 
             $.ajax
                 ({
                     type: "Get",
                     url: '@Url.Action("GetDetails","Summary")',
-                    data: { Year: year[0], DivisionType: SelectedDiv},
+                    data: { Year: year[0], Division: SelectedDiv},
                     dataType: "html",
                     success: function (data) {
                         $("#outerdiv").html($("#outerdiv", data).html());
+                        //alert("returned after success");
                         onceDocReady();
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
