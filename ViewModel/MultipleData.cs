@@ -153,6 +153,7 @@ namespace BudgetPortal.ViewModel
         public string? WaitingForFinalSubmission { get; set; }
         public string? WaitingForApprovalMessage { get; set; }
         public string? ApprovedMessage { get; set; }
+        public List<String>? Remarks { get; set; }
 
     }
 }

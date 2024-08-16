@@ -35,5 +35,6 @@ namespace BudgetPortal.Entities
 
         public Boolean GenBodyApproval { get; set; }
         public DateTime CreatedDateTime { get; set; }
+        public String? Remarks { get; set; }
     }
 }

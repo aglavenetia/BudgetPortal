@@ -13,10 +13,14 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Reports";
-    int OuterHeaderCount = 0;
-    int OuterBodyCount = 0;
-    int CountHeader = 0;
-    int CounterBody = 0;
+    //int OuterHeaderCount = 0;
+    //int OuterBodyCount = 0;
+    //int CountHeader = 0;
+    //int CounterBody = 0;
+    int counter = 0;
+
+    Model.Remarks = new List<String>();
+
     var SumBudEstCurrFin = 0.00;
     var SumActPrevFin = 0.00;
     var SumActCurrFinTill2ndQuart = 0.00;
@@ -46,11 +50,13 @@
     var Sumname10 = String.Concat("Justification", "Total");
     var Sumname11 = String.Concat("PerVarACBWRevEstOverBudgEstCurrFin", "Total");
     var Sumname12 = String.Concat("PerVarACBWRevEstOverBudgEstNxtFin", "Total");
+    
 }
 <br />
 
 <div id="outerdiv">
 
+    
     <div style="float:right">
 
         @Html.AntiForgeryToken()
@@ -205,6 +211,8 @@
                   
                   @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                   {
+
+                    var name1 = String.Concat("Remarks", @inner.SectionNo.ToString(), @item.GroupNo);
                     var TotalSubGroups = (from b in Model.SubGroupss where b.GroupNo.Equals(@item.GroupNo) && b.RequireInput == false select b.SubGroupNo).Count();
                     var TotalLedgers = (from c in Model.Ledgerss
                                         join d in Model.SubGroupss
@@ -363,8 +371,14 @@
                             }
                         @if (User.IsInRole("Admin"))
                         {
+                          var outcome = (from a in Model.Statuss where a.GroupNumber.Equals(@item.GroupNo) select a.Remarks);
                             <td class="Remarks w-10">
-
+                                    <div class="form-group">
+                                            @{
+                                            Model.Remarks.Insert(counter, Convert.ToString(outcome));
+                                            }
+                                            @Html.TextBoxFor(model => model.Remarks[counter], new { @class = "form-control", @id = @name1})
+                                    </div>
                             </td>
                         }
 
