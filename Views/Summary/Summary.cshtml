@@ -18,8 +18,10 @@
     //int CountHeader = 0;
     //int CounterBody = 0;
     int counter = 0;
+    int sec = 0;
 
     Model.Remarks = new List<String>();
+    Model.SubGroupNameOrLedgerName = new List<String>();
 
     var SumBudEstCurrFin = 0.00;
     var SumActPrevFin = 0.00;
@@ -50,6 +52,13 @@
     var Sumname10 = String.Concat("Justification", "Total");
     var Sumname11 = String.Concat("PerVarACBWRevEstOverBudgEstCurrFin", "Total");
     var Sumname12 = String.Concat("PerVarACBWRevEstOverBudgEstNxtFin", "Total");
+    int FinalApproved = (from a in Model.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(false) && a.GenBodyApproval.Equals(true) select a.GenBodyApproval).Count();
+    int SubmittedForApproval = (from a in Model.Statuss where a.SectionNumber != 0 && !a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
+    int NumberOfGroups = (from a in Model.Groupss select a.GroupNo).Count();
+    int PendingForChairmanApproval = (from a in Model.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.ACBWSubmission.Equals(true) && a.ChairpersonApproval.Equals(false) select a.ACBWSubmission).Count();
+    int PendingForFinCommitteeApproval = (from a in Model.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.ChairpersonApproval.Equals(true) && a.FinCommitteeApproval.Equals(false) select a.ChairpersonApproval).Count();
+    int PendingForGenBodyApproval = (from a in Model.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.FinCommitteeApproval.Equals(true) && a.GenBodyApproval.Equals(false) select a.FinCommitteeApproval).Count();
+    int PendingForPublishing = (from a in Model.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.GenBodyApproval.Equals(true) && a.AdminEditStatus.Equals(true) select a.GenBodyApproval).Count();
     
 }
 <br />
@@ -110,7 +119,9 @@
     {
         @Html.AntiForgeryToken()
         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear, new { @id = "SelectedAcademicYear" })
-        @Html.Hidden("SelectedDivisionName", Model.SelectedDivisionName, new { @id = "SelectedDivisionName" })        
+        @Html.Hidden("SelectedDivisionName", Model.SelectedDivisionName, new { @id = "SelectedDivisionName" })
+        @Html.Hidden("SubGroupLedgerName", Model.SubGroupLedgerName, new { @id = "SubGroupLedgerName" })
+        @Html.Hidden("EditEnabled", Model.EditEnabled, new { @id = "EditEnabled" })
 
 <table id="Budget-Summary" class="table table-responsive table-hover table-bordered">
 
@@ -181,7 +192,10 @@
 
                         </th>
                     }
-
+                    @if ((User.IsInRole("Admin")) && ((PendingForChairmanApproval > 0) || (PendingForFinCommitteeApproval > 0) || (PendingForGenBodyApproval > 0) || (PendingForPublishing > 0)))
+                    {
+                        <th></th>
+                    }
                 </tr>
             </thead>
             <tbody>
@@ -191,19 +205,19 @@
              {
                     var inneridenti = String.Concat("Budget", @inner.SectionNo.ToString());
 
-                    
+                    var SectionSumBudEstCurrFin = (from a in Model.Approved where a.SectionNumber.Equals(@inner.SectionNo) select a.BudEstNextFin).Sum();
+                    var SectionSumActPrevFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ActPrevFin).Sum();
+                    var SectionSumActCurrFinTill2ndQuart = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ActCurrFinTill2ndQuart).Sum();
+                    var SectionSumRevEstCurrFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.RevEstCurrFin).Sum();
+                    var SectionSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ACAndBWPropRECurrFin).Sum();
+                    var SectionSumBudgEstNexFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.BudgEstNexFin).Sum();
+                    var SectionSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ACAndBWPropRENxtFin).Sum();
+                    var SectionSumPerVarRevEstOverBudgEstCurrFin = SectionSumBudEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToDecimal(Convert.ToDecimal((SectionSumRevEstCurrFin - SectionSumBudEstCurrFin) / SectionSumBudEstCurrFin) * 100) : Convert.ToDecimal(0);
+                    var SectionSumPerVarRevEstOverBudgEstNxtFin = SectionSumRevEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToDecimal(Convert.ToDecimal((SectionSumBudgEstNexFin - SectionSumRevEstCurrFin) / SectionSumRevEstCurrFin) * 100) : Convert.ToDecimal(0);
+                    var SectionSumPerVarACBWRevEstOverBudgEstCurrFin = SectionSumBudEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToDecimal(Convert.ToDecimal((SectionSumACAndBWPropRECurrFin - SectionSumBudEstCurrFin) / SectionSumBudEstCurrFin) * 100) : Convert.ToDecimal(0);
+                    var SectionSumPerVarACBWRevEstOverBudgEstNxtFin = SectionSumACAndBWPropRECurrFin != Convert.ToDecimal(0.00) ? Convert.ToDecimal(Convert.ToDecimal((SectionSumACAndBWPropRENxtFin - SectionSumACAndBWPropRECurrFin) / SectionSumACAndBWPropRECurrFin) * 100) : Convert.ToDecimal(0);
 
-                var SectionSumBudEstCurrFin = (from a in Model.Approved where a.SectionNumber.Equals(@inner.SectionNo) select a.BudEstNextFin).Sum();
-                var SectionSumActPrevFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ActPrevFin).Sum();
-                var SectionSumActCurrFinTill2ndQuart = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ActCurrFinTill2ndQuart).Sum();
-                var SectionSumRevEstCurrFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.RevEstCurrFin).Sum();
-                var SectionSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ACAndBWPropRECurrFin).Sum();
-                var SectionSumBudgEstNexFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.BudgEstNexFin).Sum();
-                var SectionSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ACAndBWPropRENxtFin).Sum();
-                var SectionSumPerVarRevEstOverBudgEstCurrFin = SectionSumBudEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToDecimal(Convert.ToDecimal((SectionSumRevEstCurrFin - SectionSumBudEstCurrFin) / SectionSumBudEstCurrFin) * 100) : Convert.ToDecimal(0);
-                var SectionSumPerVarRevEstOverBudgEstNxtFin = SectionSumRevEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToDecimal(Convert.ToDecimal((SectionSumBudgEstNexFin - SectionSumRevEstCurrFin) / SectionSumRevEstCurrFin) * 100) : Convert.ToDecimal(0);
-                var SectionSumPerVarACBWRevEstOverBudgEstCurrFin = SectionSumBudEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToDecimal(Convert.ToDecimal((SectionSumACAndBWPropRECurrFin - SectionSumBudEstCurrFin) / SectionSumBudEstCurrFin) * 100) : Convert.ToDecimal(0);
-                var SectionSumPerVarACBWRevEstOverBudgEstNxtFin = SectionSumACAndBWPropRECurrFin != Convert.ToDecimal(0.00) ? Convert.ToDecimal(Convert.ToDecimal((SectionSumACAndBWPropRENxtFin - SectionSumACAndBWPropRECurrFin) / SectionSumACAndBWPropRECurrFin) * 100) : Convert.ToDecimal(0);
+                
                  
                 //var SelectedDivisionTypeName = (from a in Model.DivisionTypeNames where a.Selected == true select a.Text).FirstOrDefault();
 
@@ -212,7 +226,10 @@
                   @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
                   {
 
-                    var name1 = String.Concat("Remarks", @inner.SectionNo.ToString(), @item.GroupNo);
+                    var name1 = String.Concat("Remarks", @inner.SectionNo.ToString(), "_", @item.GroupNo);
+                    var save = String.Concat("Save", @inner.SectionNo.ToString(), "_", @item.GroupNo);
+                    var edit = String.Concat("Edit", @inner.SectionNo.ToString(), "_", @item.GroupNo);
+                    var Budgetdelete = String.Concat("Delete", @inner.SectionNo.ToString(), "_", @item.GroupNo);
                     var TotalSubGroups = (from b in Model.SubGroupss where b.GroupNo.Equals(@item.GroupNo) && b.RequireInput == false select b.SubGroupNo).Count();
                     var TotalLedgers = (from c in Model.Ledgerss
                                         join d in Model.SubGroupss
@@ -245,7 +262,10 @@
                     
                     <tr>
                         <td>
-                            @item.GroupNo
+                           @{
+                              Model.SubGroupNameOrLedgerName.Insert(counter, item.GroupNo);
+                           }
+                           @Html.DisplayFor(model => model.SubGroupNameOrLedgerName[counter])
                         </td>
                         <td>
                             @item.GroupName
@@ -301,13 +321,7 @@
                             @{
                                 TotalAdminSavedLedgers = (from e in Model.Detailss where e.SectionNumber.Equals(@inner.SectionNo) && e.GroupNumber.Equals(@item.GroupNo) && e.HasAdminSaved.Equals(true) select e.SubGroupNumber).Count();
                                 TotalDelegateSavedLedgers = (from d in Model.Detailss where d.SectionNumber.Equals(@inner.SectionNo) && d.GroupNumber.Equals(@item.GroupNo) && d.HasDelegateSaved.Equals(true) select d.SubGroupNumber).Count();
-                            int FinalApproved = (from a in Model.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(false) && a.GenBodyApproval.Equals(true) select a.GenBodyApproval).Count();
-                            int SubmittedForApproval = (from a in Model.Statuss where a.SectionNumber != 0 && !a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(true) select a.AdminEditStatus).Count();
-                            int NumberOfGroups = (from a in Model.Groupss select a.GroupNo).Count();
-                            int PendingForChairmanApproval = (from a in Model.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.ACBWSubmission.Equals(true) select a.ACBWSubmission).Count();
-                            int PendingForFinCommitteeApproval = (from a in Model.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.ChairpersonApproval.Equals(true) select a.ChairpersonApproval).Count();
-                            int PendingForGenBodyApproval = (from a in Model.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.FinCommitteeApproval.Equals(true) select a.FinCommitteeApproval).Count();
-                            int PendingForPublishing = (from a in Model.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.GenBodyApproval.Equals(true) select a.GenBodyApproval).Count();
+                            
                             
                             }
                             @if (FinalApproved > 0)
@@ -369,85 +383,126 @@
                                 <span style="color:crimson;font-weight:bold">Budget To be filled</span>
                                 </td>
                             }
-                        @if (User.IsInRole("Admin"))
+                            @{
+                                var outcome = (from a in Model.Statuss where a.GroupNumber.Equals(@item.GroupNo) select a.Remarks).FirstOrDefault();
+                            }
+                        @if (User.IsInRole("Admin") && ((PendingForChairmanApproval > 0) || (PendingForFinCommitteeApproval > 0) || (PendingForGenBodyApproval > 0) || (PendingForPublishing > 0)))
                         {
-                          var outcome = (from a in Model.Statuss where a.GroupNumber.Equals(@item.GroupNo) select a.Remarks);
-                            <td class="Remarks w-10">
+                                <td>
+                                    <div class="form-group">
+                                        @{
+                                            Model.Remarks.Insert(counter, Convert.ToString(outcome));
+                                        }
+                                        @Html.TextBoxFor(model => model.Remarks[counter], new { @class = "form-control", @id = @name1 })
+                                    </div>
+                                </td>
+                        }
+                        else if (User.IsInRole("Admin"))
+                        {
+                            <td>
                                     <div class="form-group">
                                             @{
                                             Model.Remarks.Insert(counter, Convert.ToString(outcome));
                                             }
-                                            @Html.TextBoxFor(model => model.Remarks[counter], new { @class = "form-control", @id = @name1})
+                                            @Html.DisplayFor(model => model.Remarks[counter])
                                     </div>
                             </td>
                         }
 
+                            @if (User.IsInRole("Admin") && ((PendingForChairmanApproval > 0) || (PendingForFinCommitteeApproval > 0) || (PendingForGenBodyApproval > 0) || (PendingForPublishing > 0)) && outcome is null)
+                            {
+                                <td>
+                                    <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/Summary/Save" type="submit" value="Save Budget" style="align-self:center">
+                                        <i class='bx bx-check' style="color:limegreen"></i>
+                                    </button>
+                                </td>
+                            }
+                            else if (User.IsInRole("Admin") && ((PendingForChairmanApproval > 0) || (PendingForFinCommitteeApproval > 0) || (PendingForGenBodyApproval > 0) || (PendingForPublishing > 0)) )
+                            {
+                                 <td>
+                                    <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/Summary/Edit" type="submit" value="Edit Budget" style="align-self:center">
+                                        <i class='bx bxs-pencil' style="color:blue"></i>
+                                    </button>
+                                    <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/Summary/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
+                                        <i class='bx bx-x' style="color:red"></i>
+                                    </button>
+                                 </td>
+                            }
+                        
                     </tr>
-                  }
-                <tr>
-                    <td>
-                        Total
-                    </td>
-                    <td>
-                        Total
-                    </td>
 
-                    <td id="@Sumname1-Total">
-                        @SectionSumBudEstCurrFin.ToString("F4")
-                    </td>
-                    <td id="@Sumname2-Total">
-                        @SectionSumActPrevFin.ToString("F4")
-                    </td>
-                    <td id="@Sumname3-Total">
-                        @SectionSumActCurrFinTill2ndQuart.ToString("F4")
-                    </td>
-                    <td id="@Sumname4-Total">
-                        @SectionSumRevEstCurrFin.ToString("F4")
-                    </td>
-                    <td>
-                        @SectionSumPerVarRevEstOverBudgEstCurrFin.ToString("F2") %
-                    </td>
-                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
-                    {
+                    counter++;
+                }
+
+                    <tr>
                         <td>
-                            @SectionSumACAndBWPropRECurrFin
+                            Total
                         </td>
-                    }
-                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
-                    {
                         <td>
-                            @SectionSumPerVarACBWRevEstOverBudgEstCurrFin.ToString("F2") %
-                        </td>
-                    }
-                    <td id="@Sumname7-Total">
-                        @SectionSumBudgEstNexFin.ToString("F4")
-                    </td>
-                    <td>
-                        @SectionSumPerVarRevEstOverBudgEstNxtFin.ToString("F2") %
-                    </td>
-                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
-                    {
-                        <td>
-                            @SectionSumACAndBWPropRENxtFin
+                            Total
                         </td>
 
-                    }
-                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
-                    {
+                        <td id="@Sumname1-Total">
+                            @SectionSumBudEstCurrFin.ToString("F4")
+                        </td>
+                        <td id="@Sumname2-Total">
+                            @SectionSumActPrevFin.ToString("F4")
+                        </td>
+                        <td id="@Sumname3-Total">
+                            @SectionSumActCurrFinTill2ndQuart.ToString("F4")
+                        </td>
+                        <td id="@Sumname4-Total">
+                            @SectionSumRevEstCurrFin.ToString("F4")
+                        </td>
                         <td>
-                            @SectionSumPerVarACBWRevEstOverBudgEstNxtFin.ToString("F2") %
+                            @SectionSumPerVarRevEstOverBudgEstCurrFin.ToString("F2") %
                         </td>
-
-                    }
-                    <td></td>
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <td class="Remarks w-10">
+                        @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                        {
+                            <td>
+                                @SectionSumACAndBWPropRECurrFin
+                            </td>
+                        }
+                        @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                        {
+                            <td>
+                                @SectionSumPerVarACBWRevEstOverBudgEstCurrFin.ToString("F2") %
+                            </td>
+                        }
+                        <td id="@Sumname7-Total">
+                            @SectionSumBudgEstNexFin.ToString("F4")
                         </td>
-                    }
+                        <td>
+                            @SectionSumPerVarRevEstOverBudgEstNxtFin.ToString("F2") %
+                        </td>
+                        @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                        {
+                            <td>
+                                @SectionSumACAndBWPropRENxtFin
+                            </td>
 
-                </tr>
-        }
+                        }
+                        @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                        {
+                            <td>
+                                @SectionSumPerVarACBWRevEstOverBudgEstNxtFin.ToString("F2") %
+                            </td>
+
+                        }
+                        <td></td>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <td>
+                            </td>
+                        }
+                        @if ((User.IsInRole("Admin")) && ((PendingForChairmanApproval > 0) || (PendingForFinCommitteeApproval > 0) || (PendingForGenBodyApproval > 0) || (PendingForPublishing > 0)))
+                        {
+                            <td></td>
+                        }
+                    </tr>
+                  sec++;
+                }
+                
                
             </tbody>
          </table>
@@ -495,6 +550,27 @@
                     }
 
                 );
+
+                $('body').on('click', ".Submit",
+                    function () {
+                       
+                        var Ledgerid = $(this).closest('tr').children('td').eq(0);
+                        alert("GroupID"+Ledgerid.text());
+                        
+                        $('#SubGroupLedgerName').val(Ledgerid.text().trim());
+                        alert($('#SubGroupLedgerName').val());
+                                                
+                        if ($(this).val() == "Save Budget") {
+                            var nextelement = $(this).closest('td').next().children('button').val();
+
+                            //alert(nextelement);
+
+                            if (nextelement == "Delete Budget") {
+                                //alert(Ledgerid.text().trim());
+                                $('#EditEnabled').val(Ledgerid.text().trim());
+                            }
+                        }
+                    });
 
             });
         

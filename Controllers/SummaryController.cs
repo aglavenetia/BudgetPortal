@@ -462,5 +462,264 @@ namespace BudgetPortal.Controllers
                 return View("Summary", MD);
             }
         }
+
+
+        [HttpPost]
+        [RequestFormLimits(ValueCountLimit = 20000)]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public ActionResult BudgetDelete(MultipleData MD)
+        {
+            var username = User.Identity.Name;
+            var DivName = " ";
+            var DivisionID = " ";
+            int index = MD.SubGroupNameOrLedgerName.IndexOf(MD.SubGroupLedgerName);
+            var SectionNumber = _context.BudgetSections
+                                  .Where(x => x.SectionName.Equals(MD.SectionName))
+                                  .Select(x => x.SectionNo).FirstOrDefault();
+            var GroupNumber = _context.BudgetGroups
+                     .Where(x => x.GroupName.Equals(MD.GroupName))
+                     .Select(x => x.GroupNo).FirstOrDefault();
+
+            if (User.Identity.Name.Equals("admin@test.com"))
+            {
+                DivName = MD.SelectedDivisionName.ToString();
+                DivisionID = _context.Division
+                                     .Where(d => d.DivisionName == DivName)
+                                     .Select(x => x.DivisionID).FirstOrDefault().ToString();
+            }
+            var splitAcademicYear = MD.SelectedAcademicYear.ToString().Split("-");
+
+            if (username == "admin@test.com")
+            {
+                ModelState.Remove("SubGroupLedgerName");
+                ModelState.Remove("EditEnabled");
+
+                var result = new BudgetdetailsStatus();
+                result = _context.BudgetdetailsStatus
+                                          .Where(b => (b.DivisionID == Convert.ToInt32(DivisionID))
+                                                   && (b.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0]))
+                                                   && (b.SectionNumber == SectionNumber)
+                                                   && (b.GroupNumber == GroupNumber)).FirstOrDefault();
+                result.Remarks = MD.Remarks[index];
+                result.CreatedDateTime = DateTime.Now;
+
+                _context.BudgetdetailsStatus.Update(result);
+                _context.SaveChanges();
+
+                ModelState.Clear();
+            }
+
+            MD.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
+
+            //var Month = DateTime.Now.Month;
+            var Month = 10;
+
+            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2023)
+            {
+                MD.IsEnabled = true;
+            }
+
+            MD.Sectionss = _context.BudgetSections.ToList();
+            MD.Groupss = _context.BudgetGroups.ToList();
+            MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+            MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                         .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
+            MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+            MD.DivisionNames = _context.Division.AsEnumerable().Select(x =>
+                    new SelectListItem()
+                    {
+                        Selected = false,
+                        Text = x.DivisionName,
+                        Value = x.DivisionID.ToString()
+
+                    }).ToList();
+
+            MD.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
+                new SelectListItem()
+                {
+                    Selected = false,
+                    Text = x.Year1 + "-" + x.Year2,
+                    Value = x.Id.ToString()
+
+                }).ToList();
+            MD.AcademicYears.Where(x => x.Text.Equals(MD.SelectedAcademicYear.ToString())).Single().Selected = true;
+
+            ModelState.Clear();
+            return View("Summary", MD);
+        }
+
+        [HttpPost]
+        [RequestFormLimits(ValueCountLimit = 20000)]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public ActionResult Save(MultipleData MD)
+        {
+            //Boolean valid = true;
+            int index = MD.SubGroupNameOrLedgerName.IndexOf(MD.SubGroupLedgerName);
+            var username = User.Identity.Name;
+            var SelectedDivisionID = 0;
+            var DivName = _context.Users
+                      .Where(x => x.UserName.Equals(username))
+                      .Select(x => x.BranchName).FirstOrDefault();
+
+            if (username != "admin@test.com")
+            {
+                SelectedDivisionID = _context.Division
+                                .Where(d => d.DivisionName == DivName)
+                                .Select(x => x.DivisionID).FirstOrDefault();
+            }
+            
+            var splitAcademicYear = MD.SelectedAcademicYear.ToString().Split("-");
+            var SectionNumber = _context.BudgetSections
+                              .Where(x => x.SectionName.Equals(MD.SectionName))
+                              .Select(x => x.SectionNo).FirstOrDefault();
+            var GroupNumber = _context.BudgetGroups
+                     .Where(x => x.GroupName.Equals(MD.GroupName))
+                     .Select(x => x.GroupNo).FirstOrDefault();
+            
+            ModelState.Remove("SubGroupLedgerName");
+            ModelState.Remove("EditEnabled");
+            ModelState.Remove("HasAdminSaved");
+            ModelState.Remove("HasDelegateSaved");
+
+            //Saves Budget Finalised values of ACBW
+            if (User.Identity.Name.Equals("admin@test.com"))
+            {
+                if (ModelState.IsValid)
+                {
+                    var result = new BudgetdetailsStatus();
+                    result = _context.BudgetdetailsStatus
+                                              .Where(b => (b.DivisionID == Convert.ToInt32(SelectedDivisionID))
+                                                       && (b.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0]))
+                                                       && (b.SectionNumber == SectionNumber)
+                                                       && (b.GroupNumber == GroupNumber)).FirstOrDefault();
+                    result.Remarks = MD.Remarks[index].ToString();
+
+                    
+                    result.CreatedDateTime = DateTime.Now;
+
+                    _context.BudgetdetailsStatus.Update(result);
+                    _context.SaveChanges();
+                }
+            }
+         
+            var DivisionID = _context.Division
+                                             .Where(d => d.DivisionName == DivName)
+                                             .Select(x => x.DivisionID).FirstOrDefault();
+            MD.EditEnabled = null;
+            MD.Sectionss = _context.BudgetSections.ToList();
+            MD.Groupss = _context.BudgetGroups.ToList();
+            MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == SelectedDivisionID)
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+            MD.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
+
+            //var Month = DateTime.Now.Month;
+            var Month = 10;
+
+            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2023)
+            {
+                MD.IsEnabled = true;
+            }
+            MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == SelectedDivisionID)
+                                  .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
+            MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == SelectedDivisionID)
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+            MD.DivisionNames = _context.Division.AsEnumerable().Select(x =>
+                    new SelectListItem()
+                    {
+                        Selected = false,
+                        Text = x.DivisionName,
+                        Value = x.DivisionID.ToString()
+
+                    }).ToList();
+
+            MD.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
+                new SelectListItem()
+                {
+                    Selected = false,
+                    Text = x.Year1 + "-" + x.Year2,
+                    Value = x.Id.ToString()
+
+                }).ToList();
+            MD.AcademicYears.Where(x => x.Text.Equals(MD.SelectedAcademicYear.ToString())).Single().Selected = true;
+
+
+            if (User.Identity.Name.Equals("admin@test.com"))
+            {
+                MD.DivisionNames.Where(x => x.Text.Equals(MD.SelectedDivisionName.ToString())).Single().Selected = true;
+            }
+
+            return View("Summary", MD);
+
+        }
+
+
+        [HttpPost]
+        [RequestFormLimits(ValueCountLimit = 20000)]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(MultipleData MD)
+        {
+            MD.EditEnabled = MD.SubGroupLedgerName;
+
+            var DivName = " ";
+            var DivisionID = " ";
+            if (User.Identity.Name.Equals("admin@test.com"))
+            {
+                DivName = MD.SelectedDivisionName.ToString();
+                DivisionID = _context.Division
+                                     .Where(d => d.DivisionName == DivName)
+                                     .Select(x => x.DivisionID).FirstOrDefault().ToString();
+            }
+
+            var splitAcademicYear = MD.SelectedAcademicYear.ToString().Split("-");
+            int index = MD.SubGroupNameOrLedgerName.IndexOf(MD.SubGroupLedgerName);
+
+            MD.Sectionss = _context.BudgetSections.ToList();
+            MD.Groupss = _context.BudgetGroups.ToList();
+            MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+            MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+            MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                         .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
+            MD.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
+
+            //var Month = DateTime.Now.Month;
+            var Month = 10;
+
+            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2023)
+            {
+                MD.IsEnabled = true;
+            }
+
+            MD.DivisionNames = _context.Division.AsEnumerable().Select(x =>
+                    new SelectListItem()
+                    {
+                        Selected = false,
+                        Text = x.DivisionName,
+                        Value = x.DivisionID.ToString()
+
+                    }).ToList();
+
+            MD.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
+                new SelectListItem()
+                {
+                    Selected = false,
+                    Text = x.Year1 + "-" + x.Year2,
+                    Value = x.Id.ToString()
+
+                }).ToList();
+            MD.AcademicYears.Where(x => x.Text.Equals(MD.SelectedAcademicYear.ToString())).Single().Selected = true;
+
+            return View("Summary", MD);
+
+        }
     }
 }
