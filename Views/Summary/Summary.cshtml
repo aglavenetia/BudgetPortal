@@ -60,16 +60,27 @@
     int PendingForGenBodyApproval = (from a in Model.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.FinCommitteeApproval.Equals(true) && a.GenBodyApproval.Equals(false) select a.FinCommitteeApproval).Count();
     int PendingForPublishing = (from a in Model.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.GenBodyApproval.Equals(true) && a.AdminEditStatus.Equals(true) select a.GenBodyApproval).Count();
     
+
+    var SectionSumBudEstCurrFin = (from a in Model.Approved select a.BudEstNextFin).Sum();
+    var SectionSumActPrevFin = (from a in Model.Detailss select a.ActPrevFin).Sum();
+    var SectionSumActCurrFinTill2ndQuart = (from a in Model.Detailss select a.ActCurrFinTill2ndQuart).Sum();
+    var SectionSumRevEstCurrFin = (from a in Model.Detailss select a.RevEstCurrFin).Sum();
+    var SectionSumACAndBWPropRECurrFin = (from a in Model.Detailss select a.ACAndBWPropRECurrFin).Sum();
+    var SectionSumBudgEstNexFin = (from a in Model.Detailss select a.BudgEstNexFin).Sum();
+    var SectionSumACAndBWPropRENxtFin = (from a in Model.Detailss select a.ACAndBWPropRENxtFin).Sum();
+    var SectionSumPerVarRevEstOverBudgEstCurrFin = SectionSumBudEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToDecimal(Convert.ToDecimal((SectionSumRevEstCurrFin - SectionSumBudEstCurrFin) / SectionSumBudEstCurrFin) * 100) : Convert.ToDecimal(0);
+    var SectionSumPerVarRevEstOverBudgEstNxtFin = SectionSumRevEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToDecimal(Convert.ToDecimal((SectionSumBudgEstNexFin - SectionSumRevEstCurrFin) / SectionSumRevEstCurrFin) * 100) : Convert.ToDecimal(0);
+    var SectionSumPerVarACBWRevEstOverBudgEstCurrFin = SectionSumBudEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToDecimal(Convert.ToDecimal((SectionSumACAndBWPropRECurrFin - SectionSumBudEstCurrFin) / SectionSumBudEstCurrFin) * 100) : Convert.ToDecimal(0);
+    var SectionSumPerVarACBWRevEstOverBudgEstNxtFin = SectionSumACAndBWPropRECurrFin != Convert.ToDecimal(0.00) ? Convert.ToDecimal(Convert.ToDecimal((SectionSumACAndBWPropRENxtFin - SectionSumACAndBWPropRECurrFin) / SectionSumACAndBWPropRECurrFin) * 100) : Convert.ToDecimal(0);
 }
 <br />
 
 <div id="outerdiv">
 
-    
-    <div style="float:right">
-
-        @Html.AntiForgeryToken()
-        
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { @action = "", enctype = "multipart/form-data", id = "AppForm" }))
+    {
+       @Html.AntiForgeryToken()
+       <div style="float:right">
         <table border="0" cellpadding="5" cellspacing="0">
             <tr>
                 
@@ -115,8 +126,7 @@
             </tr>
         </table>
 
-    @using (Html.BeginForm(null, null, FormMethod.Post, new { @action = "", enctype = "multipart/form-data", id = "AppForm"}))
-    {
+    
         @Html.AntiForgeryToken()
         @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear, new { @id = "SelectedAcademicYear" })
         @Html.Hidden("SelectedDivisionName", Model.SelectedDivisionName, new { @id = "SelectedDivisionName" })
@@ -205,20 +215,10 @@
              {
                     var inneridenti = String.Concat("Budget", @inner.SectionNo.ToString());
 
-                    var SectionSumBudEstCurrFin = (from a in Model.Approved where a.SectionNumber.Equals(@inner.SectionNo) select a.BudEstNextFin).Sum();
-                    var SectionSumActPrevFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ActPrevFin).Sum();
-                    var SectionSumActCurrFinTill2ndQuart = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ActCurrFinTill2ndQuart).Sum();
-                    var SectionSumRevEstCurrFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.RevEstCurrFin).Sum();
-                    var SectionSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ACAndBWPropRECurrFin).Sum();
-                    var SectionSumBudgEstNexFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.BudgEstNexFin).Sum();
-                    var SectionSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SectionNumber.Equals(@inner.SectionNo) select a.ACAndBWPropRENxtFin).Sum();
-                    var SectionSumPerVarRevEstOverBudgEstCurrFin = SectionSumBudEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToDecimal(Convert.ToDecimal((SectionSumRevEstCurrFin - SectionSumBudEstCurrFin) / SectionSumBudEstCurrFin) * 100) : Convert.ToDecimal(0);
-                    var SectionSumPerVarRevEstOverBudgEstNxtFin = SectionSumRevEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToDecimal(Convert.ToDecimal((SectionSumBudgEstNexFin - SectionSumRevEstCurrFin) / SectionSumRevEstCurrFin) * 100) : Convert.ToDecimal(0);
-                    var SectionSumPerVarACBWRevEstOverBudgEstCurrFin = SectionSumBudEstCurrFin != Convert.ToDecimal(0.00) ? Convert.ToDecimal(Convert.ToDecimal((SectionSumACAndBWPropRECurrFin - SectionSumBudEstCurrFin) / SectionSumBudEstCurrFin) * 100) : Convert.ToDecimal(0);
-                    var SectionSumPerVarACBWRevEstOverBudgEstNxtFin = SectionSumACAndBWPropRECurrFin != Convert.ToDecimal(0.00) ? Convert.ToDecimal(Convert.ToDecimal((SectionSumACAndBWPropRENxtFin - SectionSumACAndBWPropRECurrFin) / SectionSumACAndBWPropRECurrFin) * 100) : Convert.ToDecimal(0);
 
-                
-                 
+
+                    counter = sec;
+
                 //var SelectedDivisionTypeName = (from a in Model.DivisionTypeNames where a.Selected == true select a.Text).FirstOrDefault();
 
                 //<tr><td>@inner.SectionNo - @inner.SectionName</td></tr>
@@ -266,6 +266,7 @@
                               Model.SubGroupNameOrLedgerName.Insert(counter, item.GroupNo);
                            }
                            @Html.DisplayFor(model => model.SubGroupNameOrLedgerName[counter])
+                           @Html.HiddenFor(model => model.SubGroupNameOrLedgerName[counter])
                         </td>
                         <td>
                             @item.GroupName
@@ -433,76 +434,75 @@
 
                     counter++;
                 }
-
-                    <tr>
-                        <td>
-                            Total
-                        </td>
-                        <td>
-                            Total
-                        </td>
-
-                        <td id="@Sumname1-Total">
-                            @SectionSumBudEstCurrFin.ToString("F4")
-                        </td>
-                        <td id="@Sumname2-Total">
-                            @SectionSumActPrevFin.ToString("F4")
-                        </td>
-                        <td id="@Sumname3-Total">
-                            @SectionSumActCurrFinTill2ndQuart.ToString("F4")
-                        </td>
-                        <td id="@Sumname4-Total">
-                            @SectionSumRevEstCurrFin.ToString("F4")
-                        </td>
-                        <td>
-                            @SectionSumPerVarRevEstOverBudgEstCurrFin.ToString("F2") %
-                        </td>
-                        @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
-                        {
-                            <td>
-                                @SectionSumACAndBWPropRECurrFin
-                            </td>
-                        }
-                        @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
-                        {
-                            <td>
-                                @SectionSumPerVarACBWRevEstOverBudgEstCurrFin.ToString("F2") %
-                            </td>
-                        }
-                        <td id="@Sumname7-Total">
-                            @SectionSumBudgEstNexFin.ToString("F4")
-                        </td>
-                        <td>
-                            @SectionSumPerVarRevEstOverBudgEstNxtFin.ToString("F2") %
-                        </td>
-                        @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
-                        {
-                            <td>
-                                @SectionSumACAndBWPropRENxtFin
-                            </td>
-
-                        }
-                        @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
-                        {
-                            <td>
-                                @SectionSumPerVarACBWRevEstOverBudgEstNxtFin.ToString("F2") %
-                            </td>
-
-                        }
-                        <td></td>
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <td>
-                            </td>
-                        }
-                        @if ((User.IsInRole("Admin")) && ((PendingForChairmanApproval > 0) || (PendingForFinCommitteeApproval > 0) || (PendingForGenBodyApproval > 0) || (PendingForPublishing > 0)))
-                        {
-                            <td></td>
-                        }
-                    </tr>
-                  sec++;
-                }
+                sec = counter;
                 
+                }
+                <tr>
+                    <td>
+                        Total
+                    </td>
+                    <td>
+                        Total
+                    </td>
+
+                    <td id="@Sumname1-Total">
+                        @SectionSumBudEstCurrFin.ToString("F4")
+                    </td>
+                    <td id="@Sumname2-Total">
+                        @SectionSumActPrevFin.ToString("F4")
+                    </td>
+                    <td id="@Sumname3-Total">
+                        @SectionSumActCurrFinTill2ndQuart.ToString("F4")
+                    </td>
+                    <td id="@Sumname4-Total">
+                        @SectionSumRevEstCurrFin.ToString("F4")
+                    </td>
+                    <td>
+                        @SectionSumPerVarRevEstOverBudgEstCurrFin.ToString("F2") %
+                    </td>
+                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                    {
+                        <td>
+                            @SectionSumACAndBWPropRECurrFin
+                        </td>
+                    }
+                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                    {
+                        <td>
+                            @SectionSumPerVarACBWRevEstOverBudgEstCurrFin.ToString("F2") %
+                        </td>
+                    }
+                    <td id="@Sumname7-Total">
+                        @SectionSumBudgEstNexFin.ToString("F4")
+                    </td>
+                    <td>
+                        @SectionSumPerVarRevEstOverBudgEstNxtFin.ToString("F2") %
+                    </td>
+                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                    {
+                        <td>
+                            @SectionSumACAndBWPropRENxtFin
+                        </td>
+
+                    }
+                    @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                    {
+                        <td>
+                            @SectionSumPerVarACBWRevEstOverBudgEstNxtFin.ToString("F2") %
+                        </td>
+
+                    }
+                    <td></td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <td>
+                        </td>
+                    }
+                    @if ((User.IsInRole("Admin")) && ((PendingForChairmanApproval > 0) || (PendingForFinCommitteeApproval > 0) || (PendingForGenBodyApproval > 0) || (PendingForPublishing > 0)))
+                    {
+                        <td></td>
+                    }
+                </tr>
                
             </tbody>
          </table>

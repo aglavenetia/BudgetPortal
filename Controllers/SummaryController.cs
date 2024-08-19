@@ -566,28 +566,41 @@ namespace BudgetPortal.Controllers
                       .Where(x => x.UserName.Equals(username))
                       .Select(x => x.BranchName).FirstOrDefault();
 
-            if (username != "admin@test.com")
+            if (username == "admin@test.com")
             {
-                SelectedDivisionID = _context.Division
-                                .Where(d => d.DivisionName == DivName)
-                                .Select(x => x.DivisionID).FirstOrDefault();
+               SelectedDivisionID = Convert.ToInt32(MD.SelectedDivisionID);
             }
             
+            
             var splitAcademicYear = MD.SelectedAcademicYear.ToString().Split("-");
-            var SectionNumber = _context.BudgetSections
-                              .Where(x => x.SectionName.Equals(MD.SectionName))
-                              .Select(x => x.SectionNo).FirstOrDefault();
-            var GroupNumber = _context.BudgetGroups
-                     .Where(x => x.GroupName.Equals(MD.GroupName))
-                     .Select(x => x.GroupNo).FirstOrDefault();
+            var SectionNumber = _context.BudgetGroups
+                                .Where(x => x.GroupNo.Equals(MD.SubGroupLedgerName))
+                                .Select(x => x.SectionNo).FirstOrDefault();
+            var GroupNumber = MD.SubGroupLedgerName.ToString();
+            
             
             ModelState.Remove("SubGroupLedgerName");
             ModelState.Remove("EditEnabled");
             ModelState.Remove("HasAdminSaved");
             ModelState.Remove("HasDelegateSaved");
+            ModelState.Remove("GroupName");
+            ModelState.Remove("ActPrevFin");
+            ModelState.Remove("SectionName");
+            ModelState.Remove("BudEstCurrFin");
+            ModelState.Remove("BudgEstNexFin");
+            ModelState.Remove("InterimRevEst");
+            ModelState.Remove("RevEstCurrFin");
+            ModelState.Remove("ProvisionalRevEst");
+            ModelState.Remove("ACAndBWPropRECurrFin");
+            ModelState.Remove("ACAndBWPropRENxtFin");
+            ModelState.Remove("ActCurrFinTillsecondQuart");
+            ModelState.Remove("PerVarRevEstOverBudgEstCurrFin"); 
+            ModelState.Remove("PerVarACBWRevEstOverBudgEstCurrFin");
+            ModelState.Remove("PerVarRevEstOverBudgEstNxtFin");
+            ModelState.Remove("PerVarACBWRevEstOverBudgEstNxtFin");
 
             //Saves Budget Finalised values of ACBW
-            if (User.Identity.Name.Equals("admin@test.com"))
+            if (username == "admin@test.com")
             {
                 if (ModelState.IsValid)
                 {
@@ -608,11 +621,13 @@ namespace BudgetPortal.Controllers
             }
          
             var DivisionID = _context.Division
-                                             .Where(d => d.DivisionName == DivName)
-                                             .Select(x => x.DivisionID).FirstOrDefault();
+                             .Where(d => d.DivisionName == DivName)
+                             .Select(x => x.DivisionID).FirstOrDefault();
             MD.EditEnabled = null;
             MD.Sectionss = _context.BudgetSections.ToList();
             MD.Groupss = _context.BudgetGroups.ToList();
+            MD.SubGroupss = _context.BudgetSubGroups.ToList();
+            MD.Ledgerss = _context.BudgetLedgers.ToList();
             MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == SelectedDivisionID)
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
             MD.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
