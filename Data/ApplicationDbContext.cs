@@ -82,7 +82,7 @@ namespace BudgetPortal.Data
                 .HasDefaultValueSql("GETDATE()");
 
             modelBuilder.Entity<BudgetdetailsStatus>()
-                .ToTable(b => b.HasTrigger("trInsertFinalSubmitStatus"))
+          //      .ToTable(b => b.HasTrigger("trInsertFinalSubmitStatus"))
                 .ToTable(b => b.HasTrigger("trUpdateFinalSubmitStatus"))
                 .Property(b => b.CreatedDateTime)
                 .HasDefaultValueSql("GETDATE()");

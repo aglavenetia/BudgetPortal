@@ -133,12 +133,10 @@
         @Html.Hidden("SubGroupLedgerName", Model.SubGroupLedgerName, new { @id = "SubGroupLedgerName" })
         @Html.Hidden("EditEnabled", Model.EditEnabled, new { @id = "EditEnabled" })
 
-<table id="Budget-Summary" class="table table-responsive table-hover table-bordered">
+        <table id="Budget-Summary" class="table table-responsive table-hover table-bordered">
 
             <thead>
-                <tr class="text-center">
-                    
-                </tr>
+                
                 <tr>
                     <th class="w-5">
                         HEAD NO.
@@ -202,15 +200,21 @@
 
                         </th>
                     }
-                    @if ((User.IsInRole("Admin")) && ((PendingForChairmanApproval > 0) || (PendingForFinCommitteeApproval > 0) || (PendingForGenBodyApproval > 0) || (PendingForPublishing > 0)))
-                    {
-                        <th></th>
-                    }
+                    
+                    <th style="border:none">
+                        
+                    </th>
+
+                    <th style="border:none">
+                        
+                    </th>
+                    <th style="border:none">
+                        
+                    </th>
                 </tr>
             </thead>
             <tbody>
-                <tr></tr>
-        
+                      
              @foreach (var inner in Model.Sectionss)
              {
                     var inneridenti = String.Concat("Budget", @inner.SectionNo.ToString());
@@ -387,7 +391,7 @@
                             @{
                                 var outcome = (from a in Model.Statuss where a.GroupNumber.Equals(@item.GroupNo) select a.Remarks).FirstOrDefault();
                             }
-                        @if (User.IsInRole("Admin") && ((PendingForChairmanApproval > 0) || (PendingForFinCommitteeApproval > 0) || (PendingForGenBodyApproval > 0) || (PendingForPublishing > 0)))
+                            @if (User.IsInRole("Admin") && ((PendingForChairmanApproval > 0) || (PendingForFinCommitteeApproval > 0) || (PendingForGenBodyApproval > 0) || (PendingForPublishing > 0)) && (outcome is null || Model.EditEnabled == item.GroupNo))
                         {
                                 <td>
                                     <div class="form-group">
@@ -395,6 +399,18 @@
                                             Model.Remarks.Insert(counter, Convert.ToString(outcome));
                                         }
                                         @Html.TextBoxFor(model => model.Remarks[counter], new { @class = "form-control", @id = @name1 })
+                                    </div>
+                                </td>
+                        }
+                        else if (User.IsInRole("Admin") && ((PendingForChairmanApproval > 0) || (PendingForFinCommitteeApproval > 0) || (PendingForGenBodyApproval > 0) || (PendingForPublishing > 0)))
+                        {
+                                <td>
+                                    <div class="form-group">
+                                        @{
+                                            Model.Remarks.Insert(counter, Convert.ToString(outcome));
+                                        }
+                                        @*Html.TextBoxFor(model => model.Remarks[counter], new { @class = "form-control", @id = @name1, @readonly = "readonly" })*@
+                                        @Html.DisplayFor(model => model.Remarks[counter])
                                     </div>
                                 </td>
                         }
@@ -409,27 +425,30 @@
                                     </div>
                             </td>
                         }
-
-                            @if (User.IsInRole("Admin") && ((PendingForChairmanApproval > 0) || (PendingForFinCommitteeApproval > 0) || (PendingForGenBodyApproval > 0) || (PendingForPublishing > 0)) && outcome is null)
+                            <td style="border:none">
+                            @if (User.IsInRole("Admin") && ((PendingForChairmanApproval > 0) || (PendingForFinCommitteeApproval > 0) || (PendingForGenBodyApproval > 0) || (PendingForPublishing > 0)) && (outcome is null || Model.EditEnabled == item.GroupNo))
                             {
-                                <td>
                                     <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/Summary/Save" type="submit" value="Save Budget" style="align-self:center">
                                         <i class='bx bx-check' style="color:limegreen"></i>
                                     </button>
-                                </td>
                             }
-                            else if (User.IsInRole("Admin") && ((PendingForChairmanApproval > 0) || (PendingForFinCommitteeApproval > 0) || (PendingForGenBodyApproval > 0) || (PendingForPublishing > 0)) )
+                            </td>
+                            <td style="border:none">
+                                @if (User.IsInRole("Admin") && ((PendingForChairmanApproval > 0) || (PendingForFinCommitteeApproval > 0) || (PendingForGenBodyApproval > 0) || (PendingForPublishing > 0)) && outcome is not null)
                             {
-                                 <td>
                                     <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/Summary/Edit" type="submit" value="Edit Budget" style="align-self:center">
                                         <i class='bx bxs-pencil' style="color:blue"></i>
                                     </button>
+                            }
+                            </td>
+                            <td style="border:none">
+                            @if (User.IsInRole("Admin") && ((PendingForChairmanApproval > 0) || (PendingForFinCommitteeApproval > 0) || (PendingForGenBodyApproval > 0) || (PendingForPublishing > 0)) && Model.EditEnabled == item.GroupNo)
+                            {
                                     <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/Summary/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
                                         <i class='bx bx-x' style="color:red"></i>
                                     </button>
-                                 </td>
                             }
-                        
+                            </td>
                     </tr>
 
                     counter++;
@@ -498,10 +517,16 @@
                         <td>
                         </td>
                     }
-                    @if ((User.IsInRole("Admin")) && ((PendingForChairmanApproval > 0) || (PendingForFinCommitteeApproval > 0) || (PendingForGenBodyApproval > 0) || (PendingForPublishing > 0)))
-                    {
-                        <td></td>
-                    }
+                    <td style="border:none">
+
+                    </td>
+
+                    <td style="border:none">
+
+                    </td>
+                    <td style="border:none">
+
+                    </td>
                 </tr>
                
             </tbody>

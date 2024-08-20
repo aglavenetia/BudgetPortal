@@ -615,7 +615,7 @@ namespace BudgetPortal.Controllers
                     
                     result.CreatedDateTime = DateTime.Now;
 
-                    _context.BudgetdetailsStatus.Update(result);
+                    //_context.BudgetdetailsStatus.Update(result);
                     _context.SaveChanges();
                 }
             }
@@ -697,6 +697,7 @@ namespace BudgetPortal.Controllers
 
             MD.Sectionss = _context.BudgetSections.ToList();
             MD.Groupss = _context.BudgetGroups.ToList();
+            MD.SubGroupss = _context.BudgetSubGroups.ToList();
             MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
             MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
@@ -705,7 +706,7 @@ namespace BudgetPortal.Controllers
                                          .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
             MD.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
-
+            MD.Ledgerss = _context.BudgetLedgers.ToList();
             //var Month = DateTime.Now.Month;
             var Month = 10;
 
