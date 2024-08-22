@@ -34,7 +34,7 @@ namespace BudgetPortal.Controllers
         public IActionResult Reports()
         {
             //var Year = DateTime.Now.Year;
-            var Year = 2023;
+            var Year = 2024;
             var username = User.Identity.Name;
 
             //var Month = DateTime.Now.Month;
@@ -42,7 +42,7 @@ namespace BudgetPortal.Controllers
             if (Month > 0 && Month < 4)
             {
                 //Year = DateTime.Now.Year - 1;
-                Year = 2023 - 1;
+                Year = 2024 - 1;
             }
             var AcademicYear = String.Concat(Year, "-", (Year + 1));
             var NextAcademicYear = String.Concat((Year + 1), "-", (Year + 2));

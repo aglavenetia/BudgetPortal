@@ -416,15 +416,15 @@
                                         <i class='bx bx-check' style="color:limegreen"></i>
                                     </button>
                             }
-                            
-                            @if (User.IsInRole("Admin") && ((PendingForChairmanApproval > 0) || (PendingForFinCommitteeApproval > 0) || (PendingForGenBodyApproval > 0) || (PendingForPublishing > 0)) && outcome is not null)
+
+                                @if (User.IsInRole("Admin") && ((PendingForChairmanApproval > 0) || (PendingForFinCommitteeApproval > 0) || (PendingForGenBodyApproval > 0) || (PendingForPublishing > 0)) && outcome is not null && Model.EditEnabled != item.GroupNo)
                             {
                                     <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/Summary/Edit" type="submit" value="Edit Budget" style="align-self:center">
                                         <i class='bx bxs-pencil' style="color:blue"></i>
                                     </button>
                             }
-                            
-                            @if (User.IsInRole("Admin") && ((PendingForChairmanApproval > 0) || (PendingForFinCommitteeApproval > 0) || (PendingForGenBodyApproval > 0) || (PendingForPublishing > 0)) && Model.EditEnabled == item.GroupNo)
+
+                                @if (User.IsInRole("Admin") && ((PendingForChairmanApproval > 0) || (PendingForFinCommitteeApproval > 0) || (PendingForGenBodyApproval > 0) || (PendingForPublishing > 0)) && (outcome is not null||Model.EditEnabled == item.GroupNo))
                             {
                                     <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/Summary/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
                                         <i class='bx bx-x' style="color:red"></i>
@@ -531,7 +531,7 @@
         $(document).ready(
             function () 
             {
-                var EditClicked = false;
+                /*var EditClicked = false;
                 $('body').on('click', "button[id*='Edit']",
                     function (evt) {
                         EditClicked = true;
@@ -543,7 +543,9 @@
                 {
                     alert('Inside EditClicked Dropdownchange');
                     dropdownchange();
-                }
+                }*/
+
+                onceDocReady();
                 
                 $('body').on('change', "#AcademicYear",
                     function (evt) 

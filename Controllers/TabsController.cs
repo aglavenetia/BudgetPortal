@@ -23,7 +23,7 @@ namespace BudgetPortal.Controllers
         public IActionResult Index()
         {
             /*var Year = DateTime.Now.Year;*/
-            var Year = 2023;
+            var Year = 2024;
             
             var username = User.Identity.Name;
             var DivName = _context.Users
@@ -38,7 +38,7 @@ namespace BudgetPortal.Controllers
             if (Month > 0 && Month < 4)
             {
                 /*Year = DateTime.Now.Year - 1;*/
-                Year = 2023 - 1;
+                Year = 2024 - 1;
             }
             var AcademicYear = String.Concat(Year, "-", (Year + 1));
             
@@ -109,7 +109,7 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.FinancialYear1 == Year).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
 
             
-            if (Month > 9 && mymodel.BudgetApprovedStatus != 1 && Year == 2023)
+            if (Month > 9 && mymodel.BudgetApprovedStatus != 1 && Year == 2024)
             {
                 mymodel.IsEnabled = true;
             }
@@ -242,7 +242,7 @@ namespace BudgetPortal.Controllers
             //var Month = DateTime.Now.Month;
             var Month = 10;
 
-            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2023)
+            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2024)
             {
                 MD.IsEnabled = true;
             }
@@ -410,7 +410,7 @@ namespace BudgetPortal.Controllers
             //var Month = DateTime.Now.Month;
             var Month = 10;
 
-            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2023)
+            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2024)
             {
                 MD.IsEnabled = true;
             }
@@ -535,7 +535,7 @@ namespace BudgetPortal.Controllers
             //var Month = DateTime.Now.Month;
             var Month = 10;
 
-            if (Month > 9 && mymodel.BudgetApprovedStatus != 1 && Year == 2023)
+            if (Month > 9 && mymodel.BudgetApprovedStatus != 1 && Year == 2024)
             {
                 mymodel.IsEnabled = true;
             }
@@ -776,7 +776,7 @@ namespace BudgetPortal.Controllers
                 //var Month = DateTime.Now.Month;
                 var Month = 10;
 
-                if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2023)
+                if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2024)
                 {
                     MD.IsEnabled = true;
                 }
@@ -927,7 +927,7 @@ namespace BudgetPortal.Controllers
             //var Month = DateTime.Now.Month;
             var Month = 10;
 
-            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2023)
+            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2024)
             {
                 MD.IsEnabled = true;
             }
@@ -1264,7 +1264,7 @@ namespace BudgetPortal.Controllers
             //var Month = DateTime.Now.Month;
             var Month = 10;
 
-            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2023)
+            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2024)
             {
                 MD.IsEnabled = true;
             }
@@ -1389,7 +1389,7 @@ namespace BudgetPortal.Controllers
             //var Month = DateTime.Now.Month;
             var Month = 10;
 
-            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2023)
+            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2024)
             {
                 MD.IsEnabled = true;
             }
@@ -1567,7 +1567,7 @@ namespace BudgetPortal.Controllers
             //var Month = DateTime.Now.Month;
             var Month = 10;
 
-            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2023)
+            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2024)
             {
                 MD.IsEnabled = true;
             }
@@ -1704,7 +1704,7 @@ namespace BudgetPortal.Controllers
             //var Month = DateTime.Now.Month;
             var Month = 10;
 
-            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2023)
+            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2024)
             {
                 MD.IsEnabled = true;
             }
