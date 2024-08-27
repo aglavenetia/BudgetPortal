@@ -1,4 +1,4 @@
-@model BudgetPortal.ViewModel.MultipleData
+﻿@model BudgetPortal.ViewModel.MultipleData
 @using System.Web;
 
 @using BudgetPortal.Entities;
@@ -617,7 +617,7 @@
                                                                  @{
                                                                         Model.BudEstCurrFin.Insert(Count, LedgerPastYearAppBudEstCurrFin != null ? Convert.ToDecimal(LedgerPastYearAppBudEstCurrFin) : Convert.ToDecimal(0.00));
                                                                    }
-                                                                 @Html.DisplayFor(model => model.BudEstCurrFin[Count], new { @class = "form-control", @id = @name1, @dir = "rtl"} )
+                                                                 @Html.TextBoxFor(model => model.BudEstCurrFin[Count],"{0:#.####}", new { @class = "form-control", @id = @name1, @dir = "rtl", @readonly = "readonly"} )
                                                                  @Html.ValidationMessageFor(model => model.BudEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
 
                                                                 </div>
@@ -631,7 +631,7 @@
                                                                     @{
                                                                         Model.BudEstCurrFin.Insert(Count, LedgerSumBudEstCurrFin != null ? Convert.ToDecimal(LedgerSumBudEstCurrFin) : Convert.ToDecimal(0.00));
                                                                      }
-                                                                     @Html.DisplayFor(model => model.BudEstCurrFin[Count], new { @class = "form-control", @id = @name1, @dir = "rtl", @readonly = "readonly"} )
+                                                                     @Html.TextBoxFor(model => model.BudEstCurrFin[Count],"{0:#.####}", new { @class = "form-control", @id = @name1, @dir = "rtl", @readonly = "readonly"} )
                                                                      @Html.ValidationMessageFor(model => model.BudEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                                 
@@ -644,7 +644,7 @@
                                                                    @{
                                                                         Model.BudEstCurrFin.Insert(Count, details != null ? Convert.ToDecimal(details.BudEstCurrFin) : Convert.ToDecimal(0.00));
                                                                     }
-                                                                    @Html.DisplayFor(model => model.BudEstCurrFin[Count], new { @class = "form-control", @id = @name1, @dir = "rtl", @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.BudEstCurrFin[Count],"{0:#.####}", new { @class = "form-control", @id = @name1, @dir = "rtl", @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.BudEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
 
                                                                 </div>
@@ -656,7 +656,7 @@
                                                                     @{
                                                                         Model.BudEstCurrFin.Insert(Count,(PrevYearApp != null) ? Convert.ToDecimal(PrevYearApp.BudEstNextFin) : Convert.ToDecimal(0.00));
                                                                      }
-                                                                    @Html.DisplayFor(model => model.BudEstCurrFin[Count], new { @class = "form-control", @id = @name1, @dir = "rtl", @readonly = "readonly" })
+                                                                    @Html.TextBoxFor(model => model.BudEstCurrFin[Count],"{0:#.####}", new { @class = "form-control", @id = @name1, @dir = "rtl", @readonly = "readonly" })
                                                                     @Html.ValidationMessageFor(model => model.BudEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
 
                                                                 </div>
@@ -673,7 +673,7 @@
                                                                     @{
                                                                         Model.InterimRevEst.Insert(Count, LedgerSumInterimRevEst != null ? Convert.ToDecimal(LedgerSumInterimRevEst) : Convert.ToDecimal(0.00));
                                                                      }
-                                                                     @Html.DisplayFor(model => model.InterimRevEst[Count], new { @class = "form-control", @id = @name12, @dir = "rtl", @readonly = "readonly"} )
+                                                                     @Html.TextBoxFor(model => model.InterimRevEst[Count], new { @class = "form-control", @id = @name12, @dir = "rtl", @readonly = "readonly"} )
                                                                      @Html.ValidationMessageFor(model => model.InterimRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                         }
@@ -683,7 +683,7 @@
                                                                    @{
                                                                         Model.InterimRevEst.Insert(Count, details != null ? Convert.ToDecimal(details.InterimRevEst) : Convert.ToDecimal(0.00));
                                                                     }
-                                                                    @Html.DisplayFor(model => model.InterimRevEst[Count], new { @class = "form-control", @id = @name12, @dir = "rtl"})
+                                                                    @Html.TextBoxFor(model => model.InterimRevEst[Count], new { @class = "form-control", @id = @name12, @dir = "rtl", @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.InterimRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                         }
@@ -699,7 +699,7 @@
                                                                     @{
                                                                         Model.ProvisionalRevEst.Insert(Count, LedgerSumProvisionalRevEst != null ? Convert.ToDecimal(LedgerSumProvisionalRevEst) : Convert.ToDecimal(0.00));
                                                                      }
-                                                                     @Html.DisplayFor(model => model.ProvisionalRevEst[Count], new { @class = "form-control", @id = @name13, @dir = "rtl"} )
+                                                                     @Html.TextBoxFor(model => model.ProvisionalRevEst[Count], new { @class = "form-control", @id = @name13, @dir = "rtl", @readonly = "readonly"} )
                                                                      @Html.ValidationMessageFor(model => model.ProvisionalRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                         }
@@ -709,7 +709,7 @@
                                                                    @{
                                                                         Model.ProvisionalRevEst.Insert(Count, details != null ? Convert.ToDecimal(details.ProvisionalRevEst) : Convert.ToDecimal(0.00));
                                                                     }
-                                                                    @Html.DisplayFor(model => model.ProvisionalRevEst[Count], new { @class = "form-control", @id = @name13, @dir = "rtl"})
+                                                                    @Html.TextBoxFor(model => model.ProvisionalRevEst[Count], new { @class = "form-control", @id = @name13, @dir = "rtl", @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.ProvisionalRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                         }
@@ -722,7 +722,7 @@
                                                                @{
                                                                   Model.ActPrevFin.Insert(Count, Convert.ToDecimal(0.00));
                                                                 }   
-                                                                @Html.DisplayFor(model => model.ActPrevFin[Count], new { @class = "form-control", @id = @name2, @dir = "rtl"})
+                                                                @Html.TextBoxFor(model => model.ActPrevFin[Count], new { @class = "form-control", @id = @name2, @dir = "rtl", @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.ActPrevFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
                                                         }
@@ -733,7 +733,7 @@
                                                                @{
                                                                   Model.ActPrevFin.Insert(Count, LedgerSumActPrevFin != null ? Convert.ToDecimal(LedgerSumActPrevFin) : Convert.ToDecimal(0.00));
                                                                 }   
-                                                                @Html.DisplayFor(model => model.ActPrevFin[Count], new { @class = "form-control", @id = @name2, @dir = "rtl"})
+                                                                @Html.TextBoxFor(model => model.ActPrevFin[Count], new { @class = "form-control", @id = @name2, @dir = "rtl", @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.ActPrevFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
                                                             
@@ -744,7 +744,7 @@
                                                                   @{ 
                                                                      Model.ActPrevFin.Insert(Count, details != null ? Convert.ToDecimal(details.ActPrevFin) : Convert.ToDecimal(0.00));
                                                                    }
-                                                                    @Html.DisplayFor(model => model.ActPrevFin[Count], new { @class = "form-control", @id = @name2, @dir = "rtl"} )
+                                                                    @Html.TextBoxFor(model => model.ActPrevFin[Count], new { @class = "form-control", @id = @name2, @dir = "rtl", @readonly = "readonly"} )
                                                                     @Html.ValidationMessageFor(model => model.ActPrevFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                                 
@@ -768,7 +768,7 @@
                                                                @{
                                                                   Model.ActCurrFinTillsecondQuart.Insert(Count, Convert.ToDecimal(0.00));
                                                                  }
-                                                                 @Html.DisplayFor(model => model.ActCurrFinTillsecondQuart[Count], new { @class = "form-control", @id = @name3, @dir = "rtl"})
+                                                                 @Html.TextBoxFor(model => model.ActCurrFinTillsecondQuart[Count], new { @class = "form-control", @id = @name3, @dir = "rtl", @readonly = "readonly"})
                                                                  @Html.ValidationMessageFor(model => model.ActCurrFinTillsecondQuart[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
                                                         }
@@ -780,7 +780,7 @@
                                                                @{
                                                                   Model.ActCurrFinTillsecondQuart.Insert(Count, LedgerSumActCurrFinTill2ndQuart != null ? Convert.ToDecimal(LedgerSumActCurrFinTill2ndQuart) : Convert.ToDecimal(0.00));
                                                                  }
-                                                                 @Html.DisplayFor(model => model.ActCurrFinTillsecondQuart[Count], new { @class = "form-control", @id = @name3, @dir = "rtl"})
+                                                                 @Html.TextBoxFor(model => model.ActCurrFinTillsecondQuart[Count], new { @class = "form-control", @id = @name3, @dir = "rtl", @readonly = "readonly"})
                                                                  @Html.ValidationMessageFor(model => model.ActCurrFinTillsecondQuart[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                                 
@@ -790,7 +790,7 @@
                                                                 @{
                                                                    Model.ActCurrFinTillsecondQuart.Insert(Count, details != null ? Convert.ToDecimal(details.ActCurrFinTill2ndQuart) : Convert.ToDecimal(0.00));
                                                                  }
-                                                                  @Html.DisplayFor(model => model.ActCurrFinTillsecondQuart[Count], new { @class = "form-control", @id = @name3, @dir = "rtl"})
+                                                                  @Html.TextBoxFor(model => model.ActCurrFinTillsecondQuart[Count], new { @class = "form-control", @id = @name3, @dir = "rtl", @readonly = "readonly"})
                                                                  @Html.ValidationMessageFor(model => model.ActCurrFinTillsecondQuart[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                                 
@@ -922,7 +922,7 @@
                                                                                              @{  
                                                                                                 Model.DelegateJustificationRevEst.Insert(Count, (details != null && details.DelegateJustificationRevEst!=null) ? details.DelegateJustificationRevEst.ToString(): "");
                                                                                               }  
-                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @dir = "rtl", @readonly = "readonly"})
+                                                                                            @Html.TextBoxFor(model => model.DelegateJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @dir = "rtl", @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                         
@@ -933,7 +933,7 @@
                                                                                              @{  
                                                                                                 Model.DelegateJustificationRevEst.Insert(Count, "");
                                                                                               }  
-                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @dir = "rtl", @readonly = "readonly"})
+                                                                                            @Html.TextBoxFor(model => model.DelegateJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @dir = "rtl", @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                     }
@@ -1099,7 +1099,7 @@
                                                                                              @{  
                                                                                                 Model.ACBWJustificationRevEst.Insert(Count, "");
                                                                                               }  
-                                                                                            @Html.TextAreaFor(model => model.ACBWJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @dir = "rtl", @readonly = "readonly"})
+                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @dir = "rtl", @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                         </td>
@@ -1183,7 +1183,7 @@
                                                                 @{
                                                                     Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, PastYearSumBudEstCurrFin!=Convert.ToDecimal(0.0000) ? Convert.ToString(((Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F"))- Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")))/Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F")))*100) : (0).ToString("F2"));
                                                                  }
-                                                                    
+                                                                   
                                                                     @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
@@ -1197,7 +1197,7 @@
                                                                         Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, LedgerSumBudEstNextFin!=Convert.ToDecimal(0.0000) ? Convert.ToString(((Convert.ToDecimal(LedgerSumBudEstNextFin.ToString("F"))- Convert.ToDecimal(LedgerSumRevEstCurrFin.ToString("F")))/Convert.ToDecimal(LedgerSumRevEstCurrFin.ToString("F")))*100) : (0).ToString("F2"));
                                                                     }
                                                                     
-                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name8,  @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             }
@@ -1208,7 +1208,7 @@
                                                                     @{
                                                                         Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (details!=null && details.RevEstCurrFin!=Convert.ToDecimal(0.0000)) ? Convert.ToString(((Convert.ToDecimal(details.BudgEstNexFin.ToString("F"))- Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))/Convert.ToDecimal(details.RevEstCurrFin.ToString("F")))*100) : (0).ToString("F2"));
                                                                     }
-                                                                   
+                                                                    
                                                                     @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name8, @readonly = "readonly"})
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
@@ -1220,7 +1220,7 @@
                                                                         Model.PerVarRevEstOverBudgEstNxtFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.0000)) ? Convert.ToString(((Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F")))*100) : (0).ToString("F2"));
                                                                    }
                                                                     
-                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],"{0:0.00}%",new { @class = "form-control", @id = @name8, @readonly = "readonly"})
+                                                                    @Html.TextBoxFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],"{0:0.00}%")
                                                                     @Html.ValidationMessageFor(model => model.PerVarRevEstOverBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                 </div>
                                                             }
@@ -1233,7 +1233,7 @@
                                                                     Model.Justification.Insert(Count, (details != null && details.Justification!=null) ? details.Justification.ToString(): "");
                                                                  }
                                                                 
-                                                                @Html.TextAreaFor(model => model.Justification[Count] , new { @class = "form-control", @id = @name10, @dir = "rtl", @readonly = "readonly"})
+                                                                @Html.TextBoxFor(model => model.Justification[Count] , new { @class = "form-control", @id = @name10, @dir = "rtl", @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.Justification[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
                                                         }
@@ -1244,7 +1244,7 @@
                                                                     Model.Justification.Insert(Count, "");
                                                                  }
                                                                 
-                                                                @Html.TextAreaFor(model => model.Justification[Count] , new { @class = "form-control", @id = @name10, @dir = "rtl", @readonly = "readonly"})
+                                                                @Html.TextBoxFor(model => model.Justification[Count] , new { @class = "form-control", @id = @name10, @dir = "rtl", @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.Justification[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>   
                                                         }
@@ -1416,7 +1416,7 @@
                                                                     Model.ACBWJustificationBudgEstNxtFin.Insert(Count, "");
                                                                  }
                                                                 
-                                                                @Html.TextAreaFor(model => model.ACBWJustificationBudgEstNxtFin[Count] , new { @class = "form-control", @id = @name16, @dir = "rtl", @readonly = "readonly"})
+                                                                @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[Count] , new { @class = "form-control", @id = @name16, @dir = "rtl", @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.ACBWJustificationBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>   
                                                             </td>
@@ -1521,7 +1521,7 @@
                                                                                          @{
                                                                                           Model.BudEstCurrFin.Insert(LedgerNo, Ledgerdetails != null ? Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F4")): Convert.ToDecimal(0.00));
                                                                                           }     
-                                                                                          @Html.DisplayFor(model => model.BudEstCurrFin[LedgerNo], new { @class = "form-control", id = @name1 + @Ledgers.LedgerNo, @dir = "rtl"})
+                                                                                          @Html.TextBoxFor(model => model.BudEstCurrFin[LedgerNo], new { @class = "form-control", id = @name1 + @Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
                                                                                           @Html.ValidationMessageFor(model => model.BudEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div> 
                                                                                             
@@ -1532,7 +1532,7 @@
                                                                                                 @{
                                                                                                   Model.BudEstCurrFin.Insert(LedgerNo, LedPrevYearApp != null ? Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F4")) : Convert.ToDecimal(0.00));
                                                                                                 }
-                                                                                                @Html.DisplayFor(model => model.BudEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name1 + @Ledgers.LedgerNo, @dir = "rtl" })
+                                                                                                @Html.TextBoxFor(model => model.BudEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name1 + @Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly" })
                                                                                                 @Html.ValidationMessageFor(model => model.BudEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                         }
@@ -1582,7 +1582,7 @@
                                                                                            @{
                                                                                               Model.ActPrevFin.Insert(LedgerNo,Ledgerdetails != null ? Convert.ToDecimal(Ledgerdetails.ActPrevFin.ToString("F4")) : Convert.ToDecimal(0.00));
                                                                                             }
-                                                                                                @Html.TextBoxFor(model => model.ActPrevFin[LedgerNo], new { @class = "form-control", @id = @name2 + @Ledgers.LedgerNo })
+                                                                                                @Html.TextBoxFor(model => model.ActPrevFin[LedgerNo], new { @class = "form-control", @id = @name2 + @Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly" })
                                                                                                 @Html.ValidationMessageFor(model => model.ActPrevFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                       </div>  
                                                                                        
@@ -1981,7 +1981,7 @@
                                                                                                   Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=" "? Ledgerdetails.ACBWJustificationBudgEstNxtFin.ToString()  : " ");
                                                                                                }
                                                                                                 
-                                                                                                @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name16+@Ledgers.LedgerNo, @dir = "rtl"})
+                                                                                                @Html.TextAreaFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name16+@Ledgers.LedgerNo, @dir = "rtl"})
                                                                                                 @Html.ValidationMessageFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                         </td>
@@ -1994,7 +1994,7 @@
                                                                                                  Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=" " ? Ledgerdetails.ACBWJustificationBudgEstNxtFin.ToString() : "");
                                                                                                }
                                                                                             
-                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name16+@Ledgers.LedgerNo, @dir = "rtl",@readonly = "readonly"})
+                                                                                            @Html.TextAreaFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name16+@Ledgers.LedgerNo, @dir = "rtl",@readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                           </div>
                                                                                         </td>
@@ -2066,7 +2066,7 @@
                                                                         
                                                                         Count = LedgerNo;
                                                             }
-                                                        </tr>
+                                                    </tr>
                                                     Count++;
                                                     TableCount++;
                                         }

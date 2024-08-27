@@ -105,7 +105,7 @@ namespace BudgetPortal.ViewModel
         public List<String>? DelegateJustificationRevEst { get; set; }
 
         [Column(TypeName = "decimal(4,2)")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.00}%")]
+        [DisplayFormat(DataFormatString = "{0:0.00}%", ApplyFormatInEditMode = true)]
         public List<String> PerVarACBWRevEstOverBudgEstCurrFin { get; set; }
         //public Decimal PerVarRevEstOverBudgEstCurrFin { get; set; }
 
@@ -117,8 +117,9 @@ namespace BudgetPortal.ViewModel
         public List<Decimal> BudgEstNexFin { get; set; }
         //public Decimal BudgEstNexFin { get; set; }
 
+
         [Column(TypeName = "decimal(4,2)")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.00}%")]
+        [DisplayFormat(DataFormatString = "{0:0.00}%", ApplyFormatInEditMode = true)]
         public List<String> PerVarRevEstOverBudgEstNxtFin { get; set; }
         //public Decimal PerVarRevEstOverBudgEstNxtFin { get; set; }
 
@@ -129,7 +130,7 @@ namespace BudgetPortal.ViewModel
         //public Decimal ACAndBWPropRENxtFin { get; set; }
 
         [Column(TypeName = "decimal(4,2)")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:0.00}%")]
+        [DisplayFormat(DataFormatString = "{0:0.00}%", ApplyFormatInEditMode = true)]
         public List<String> PerVarACBWRevEstOverBudgEstNxtFin { get; set; }
         public List<String>? Justification { get; set; }
         //public String Justification { get; set; }
