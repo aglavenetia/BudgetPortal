@@ -162,13 +162,13 @@ namespace BudgetPortal.Controllers
                      .Select(x => x.SubGroupNo).FirstOrDefault();
 
             var LedgerNumber = _context.BudgetLedgers
-                     .Where(x => x.LedgerName.Equals(MD.SubGroupLedgerName))
+                     .Where(x => x.LedgerNo.Equals(MD.SubGroupLedgerName))
                      .Select(x => x.LedgerNo).FirstOrDefault();
 
             if (LedgerNumber != null)
             {
                 SubGroupNumber = _context.BudgetLedgers
-                    .Where(x => x.LedgerName.Equals(MD.SubGroupLedgerName))
+                    .Where(x => x.LedgerNo.Equals(MD.SubGroupLedgerName))
                     .Select(x => x.SubGroupNo).FirstOrDefault();
             }
 
@@ -879,12 +879,12 @@ namespace BudgetPortal.Controllers
                                                    && (b.GroupNumber == GroupNumber)
                                                    && (b.SubGroupNumber == SubGroupNumber)
                                                    && (b.LedgerNumber == LedgerNumber)).FirstOrDefault();
-                result.ActPrevFin = Convert.ToDecimal(0.00);
-                result.ActCurrFinTill2ndQuart = Convert.ToDecimal(0.00);
-                result.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(0.00);
-                result.PerVarRevEstOverBudgEstNxtFin = Convert.ToDecimal(0.00);
-                result.RevEstCurrFin = Convert.ToDecimal(0.00);
-                result.BudgEstNexFin = Convert.ToDecimal(0.00);
+                result.ActPrevFin = Convert.ToDecimal(0.0000);
+                result.ActCurrFinTill2ndQuart = Convert.ToDecimal(0.0000);
+                result.PerVarRevEstOverBudgEstCurrFin = Convert.ToDecimal(0.0000);
+                result.PerVarRevEstOverBudgEstNxtFin = Convert.ToDecimal(0.0000);
+                result.RevEstCurrFin = Convert.ToDecimal(0.0000);
+                result.BudgEstNexFin = Convert.ToDecimal(0.0000);
                 result.DelegateJustificationRevEst = " ";
                 result.Justification = " ";
 
