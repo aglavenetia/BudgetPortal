@@ -223,7 +223,9 @@ namespace BudgetPortal.Controllers
             }
 
             MD.Sectionss = _context.BudgetSections.ToList();
+            MD.SectionName = SectionNumber.ToString();
             MD.Groupss = _context.BudgetGroups.ToList();
+            MD.GroupName = GroupNumber;
             MD.SubGroupss = _context.BudgetSubGroups.ToList();
             MD.Ledgerss = _context.BudgetLedgers.ToList();
             MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
@@ -391,7 +393,9 @@ namespace BudgetPortal.Controllers
                 ModelState.AddModelError("FileMessage_"+index, "Please add any PDF file with maximum size 1 MB");
                }
             MD.Sectionss = _context.BudgetSections.ToList();
+            MD.SectionName = SectionNumber.ToString();
             MD.Groupss = _context.BudgetGroups.ToList();
+            MD.GroupName = GroupNumber;
             MD.SubGroupss = _context.BudgetSubGroups.ToList();
             MD.Ledgerss = _context.BudgetLedgers.ToList();
             MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
@@ -480,7 +484,6 @@ namespace BudgetPortal.Controllers
                                         .Where(x => x.FinancialYear1 == Convert.ToInt32(Year)).ToList();
                 mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == LoggedInDivisionID)
                                              .Where(x => x.FinancialYear1 == (Year - 1)).ToList();
-                
             mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
                         .Where(x => x.FinancialYear1 == Convert.ToInt32(Year)).ToList();
 
@@ -933,7 +936,10 @@ namespace BudgetPortal.Controllers
             }
 
             MD.Sectionss = _context.BudgetSections.ToList();
+            MD.SectionName = MD.SectionName;
             MD.Groupss = _context.BudgetGroups.ToList();
+            MD.GroupName = MD.GroupName;
+            MD.HeaderName = MD.HeaderName;
             MD.SubGroupss = _context.BudgetSubGroups.ToList();
             MD.Ledgerss = _context.BudgetLedgers.ToList();
             MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
@@ -1253,6 +1259,9 @@ namespace BudgetPortal.Controllers
                                              .Select(x => x.DivisionID).FirstOrDefault();
             MD.EditEnabled = null;
             MD.Sectionss = _context.BudgetSections.ToList();
+            MD.SectionName = MD.SectionName;
+            MD.GroupName = MD.GroupName;
+            MD.HeaderName = MD.HeaderName;
             MD.Groupss = _context.BudgetGroups.ToList();
             MD.SubGroupss = _context.BudgetSubGroups.ToList();
             MD.Ledgerss = _context.BudgetLedgers.ToList();
@@ -1385,7 +1394,9 @@ namespace BudgetPortal.Controllers
                                          .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
             MD.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
-
+            MD.SectionName = MD.SectionName;
+            MD.GroupName = MD.GroupName;
+            MD.HeaderName = MD.HeaderName;
             //var Month = DateTime.Now.Month;
             var Month = 10;
 

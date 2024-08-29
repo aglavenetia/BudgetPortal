@@ -182,6 +182,8 @@
        <br />  
        @Html.Hidden("SectionName",Model.SectionName, new{@id = "SectionName" })
        @Html.Hidden("GroupName",Model.GroupName,  new{@id = "GroupName" })
+       @Html.Hidden("HeaderName",Model.HeaderName, new{@id = "HeaderName" })
+       @Html.Hidden("GroupName",Model.GroupName,  new{@id = "GroupName" })
        @Html.Hidden("SubGroupLedgerName",Model.SubGroupLedgerName,  new{@id = "SubGroupLedgerName" })
        
        @Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = "SelectedAcademicYear" })
@@ -7746,7 +7748,7 @@
          function() 
          {
                onceDocReady();
-              //resumeActiveTab();
+               resumeActiveTab();
 
                 $('body').on('change',"#Division",
                     function (evt) {
@@ -7824,7 +7826,7 @@
                         var divisionname = $("#SelectedDivisionName").val();
 
                         var year = academicyear.split('-');
-                        alert(year[0]);
+                        //alert(year[0]);
 
                         var sectionnoid = $('#outerTab li button.active').attr('id');
 
@@ -7845,13 +7847,13 @@
                                 {
                                     //Whatever result you have got from your controller with html partial view replace with a specific html.
                                     //alert("Inside Ajax");
-                                    alert("Inside Function");
+                                    //alert("Inside Function");
  
                                     //$("#outerdiv").html(data);// HTML DOM replace
                                     
                                     //$("#outerdiv").html(data);
                                     $("#outerdiv").html($("#outerdiv", data).html());
-                                    alert("Function Completed");
+                                    //alert("Function Completed");
                                     
                                     onceDocReady();
                                    
@@ -7896,15 +7898,15 @@
                              {
                                     var SubGroupID = $(this).closest('tr').closest('td').closest('tr').children('td').eq(1);
                                      var Ledgerid = $(this).closest('tr').closest('td').closest('tr').children('td').eq(2);
-                                  alert("SubGroupID Delete"+SubGroupID.text());
-                                  alert("LedgerID Delete"+Ledgerid.text());
+                                  //alert("SubGroupID Delete"+SubGroupID.text());
+                                  //alert("LedgerID Delete"+Ledgerid.text());
                              }
                              else
                              {
                                  var SubGroupID = $(this).closest('tr').children('td').eq(1);
                                   var Ledgerid = $(this).closest('tr').children('td').eq(2);
-                                  alert("SubGroupID"+SubGroupID.text());
-                                  alert("LedgerID"+Ledgerid.text());
+                                  //alert("SubGroupID"+SubGroupID.text());
+                                  //alert("LedgerID"+Ledgerid.text());
                              }
                              $("#SelectedAcademicYear").val($("#AcademicYear option:selected").text().trim());
                              //alert($("#SelectedAcademicYear").val());
@@ -7921,15 +7923,18 @@
                              $('#GroupName').val($('#' + groupnoid).text());
                              //alert($('#'+groupnoid).text());
 
+                             $('#HeaderName').val($(this).attr('id'));
+                             //alert($('#HeaderName').val());
+
                              if(SubGroupID.text().trim() == "")
                              {
                                    $('#SubGroupLedgerName').val(Ledgerid.text().trim());
-                                   alert("SubGroupLedgerName is blank" + $('#SubGroupLedgerName').val());
+                                   //alert("SubGroupLedgerName is blank" + $('#SubGroupLedgerName').val());
                              }
                              else
                              {
                                    $('#SubGroupLedgerName').val(SubGroupID.text().trim());
-                                   alert("SubGroupLedgerName is not blank"+ $('#SubGroupLedgerName').val());
+                                   //alert("SubGroupLedgerName is not blank"+ $('#SubGroupLedgerName').val());
                              }
 
                              //alert($('#SubGroupLedgerName').val());
@@ -8020,47 +8025,88 @@
                  $(".ACBWJustificationBudgEstNxtFin").text('Justification(by ACBW)');
                  $(".UploadDocuments").text('Upload Documents');
 
+                 
 
-                        
+                 
         } 
         
         function resumeActiveTab()
         {
-            var SectionName =  $('#SectionName').val();
-              //alert("Stored Section Name : "+SectionName);
-                        
-           var GroupName = $('#GroupName').val();
-               //alert("Stored Group Name :"+ GroupName);
-                        
-           var activesectionno = $('#outerTab li button.active').attr('id');
+                var SectionName =  $('#SectionName').val();
+                 //alert("Stored Section Name : "+SectionName);
 
-            var section = activesectionno.split('-');
-                        
-            var activegroupno = $('#' + section[0] + ' ul li button.active').attr('id');
+                 var GroupName = $('#GroupName').val();
+                 //alert("Stored Group Name :"+ GroupName);
 
+                 var HeaderName = $('#HeaderName').val();
+                 
+                 var Headerid = HeaderName.split('_');
+                 alert("Stored Header ID :"+ Headerid);
+
+                 if(SectionName!="" && GroupName!="")
+                 {
+                    var SetSectionNo = $('#outerTab li button:contains('+SectionName+')').attr('id');
+                    //alert("Section to be set :"+SetSectionNo);
+
+                    var SetSection = SetSectionNo.split('-');
+
+                    var SetGroupNo = $('#' + SetSection[0] + ' ul li button:contains('+GroupName+')').attr('id');
+                    //alert("Group to be set :"+SetGroupNo);
+                 
+                 }
+
+                 var activesectionno = $('#outerTab li button.active').attr('id');
+                 //alert("Active Section Name :"+ activesectionno);
+            
+                 var secname = $('#outerTab li button.active').text();
+                 //alert("sectionname : "+secname);
+
+                 var section = activesectionno.split('-');
+               
+                 var activegroupno = $('#' + section[0] + ' ul li button.active').attr('id');
+                 //alert("Active Group Name :"+ activegroupno); 
+
+                 var groname = $('#' + section[0] + ' ul li button.active').text();
+
+                 var activenavigationid = $('#' + activegroupno).attr('data-bs-target');
+                        //alert(activenavigationid);
               //alert("Active Section Name :"+activesectionno);
               //alert("Active Group Name :"+activegroupno);
 
-             if(SectionName!=' ' && SectionName!=activesectionno)
+             if(SectionName!="" && SectionName!=secname)
              {
                    $('#'+activesectionno).removeClass("active");
-                   $('#'+SectionName).addClass("active");
+                   $('#'+activesectionno).removeClass("show");
+
+                   $('#'+SetSectionNo).addClass("active");
+                   $('#'+SetSectionNo).addClass("show");
                    //alert("Section class updated");
              }
                         
-             if(GroupName!=' ' && GroupName!=activegroupno)
+             if(GroupName!="" && GroupName!=groname)
              {
                     $('#'+activegroupno).removeClass("active");
-                    $('#' + GroupName).addClass("active");
+                    $('#'+activegroupno).removeClass("show");
+
+                    $('#' + SetGroupNo).addClass("active");
+                    $('#' + SetGroupNo).addClass("show");
                     //alert("Group class updated");
+
+                    $(activenavigationid).removeClass("active");
+                    $(activenavigationid).removeClass("show");
+
+                    var navigationid = $('#'+SetGroupNo).attr('data-bs-target');
+
+                       $(navigationid).addClass("active");
+                       $(navigationid).addClass("show");
+                   
+                   setTimeout(function()
+                   {
+                       $("button[id*='"+ Headerid[1] +"']").focus();
+                   }, 500);
+                 
              }
         }
-       // function validateinput()
-       // {
-
-        //   alert("Inside Validation");
-       //    return true;
-        //}
-
+       
     </script>
 }

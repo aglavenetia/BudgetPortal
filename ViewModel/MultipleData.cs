@@ -36,6 +36,8 @@ namespace BudgetPortal.ViewModel
         public IEnumerable<BudgetFiles>? Filess { get; set; }
         public String SectionName { get; set; }
         public String GroupName { get; set; }
+
+        public String HeaderName { get; set; }
         public String SubGroupLedgerName { get; set; }
 
         public String? SelectedDivisionName { get; set; }
