@@ -1759,32 +1759,85 @@
         function resumeActiveTab()
         {
             var SectionName =  $('#SectionName').val();
-              alert("Stored Section Name : "+SectionName);
-                        
-           var GroupName = $('#GroupName').val();
-               alert("Stored Group Name :"+ GroupName);
-                        
-           var activesectionno = $('#outerTab li button.active').attr('id');
+                 //alert("Stored Section Name : "+SectionName);
 
-            var section = activesectionno.split('-');
-                        
-            var activegroupno = $('#' + section[0] + ' ul li button.active').attr('id');
+                 var GroupName = $('#GroupName').val();
+                 //alert("Stored Group Name :"+ GroupName);
 
+                 var HeaderName = $('#HeaderName').val();
+                 
+                 var Headerid = HeaderName.split('_');
+                 //alert("Stored Header ID :"+ Headerid);
+
+                 if(SectionName!="" && GroupName!="")
+                 {
+                    var SetSectionNo = $('#outerTab li button:contains('+SectionName+')').attr('id');
+                    //alert("Section to be set :"+SetSectionNo);
+
+                    var SetSection = SetSectionNo.split('-');
+
+                    var SetGroupNo = $('#' + SetSection[0] + ' ul li button:contains('+GroupName+')').attr('id');
+                    //alert("Group to be set :"+SetGroupNo);
+                 
+                 }
+
+                 var activesectionno = $('#outerTab li button.active').attr('id');
+                 //alert("Active Section Name :"+ activesectionno);
+            
+                 var secname = $('#outerTab li button.active').text();
+                 //alert("sectionname : "+secname);
+
+                 var section = activesectionno.split('-');
+               
+                 var activegroupno = $('#' + section[0] + ' ul li button.active').attr('id');
+                 //alert("Active Group Name :"+ activegroupno); 
+
+                 var groname = $('#' + section[0] + ' ul li button.active').text();
+
+                 var activenavigationid = $('#' + activegroupno).attr('data-bs-target');
+                        //alert(activenavigationid);
               //alert("Active Section Name :"+activesectionno);
               //alert("Active Group Name :"+activegroupno);
 
-             if(SectionName!=' ' && SectionName!=activesectionno)
+             if(SectionName!="" && SectionName!=secname)
              {
                    $('#'+activesectionno).removeClass("active");
-                   $('#'+SectionName).addClass("active");
+                   $('#'+activesectionno).removeClass("show");
+
+                   $('#'+SetSectionNo).addClass("active");
+                   $('#'+SetSectionNo).addClass("show");
                    //alert("Section class updated");
              }
                         
-             if(GroupName!=' ' && GroupName!=activegroupno)
+             if(GroupName!="" && GroupName!=groname)
              {
                     $('#'+activegroupno).removeClass("active");
-                    $('#' + GroupName).addClass("active");
+                    $('#'+activegroupno).removeClass("show");
+
+                    $('#' + SetGroupNo).addClass("active");
+                    $('#' + SetGroupNo).addClass("show");
                     //alert("Group class updated");
+
+                    $(activenavigationid).removeClass("active");
+                    $(activenavigationid).removeClass("show");
+
+                    var navigationid = $('#'+SetGroupNo).attr('data-bs-target');
+
+                       $(navigationid).addClass("active");
+                       $(navigationid).addClass("show");
+                   
+                   setTimeout(function()
+                   {
+                       $("button[id*='"+ Headerid[1] +"']").focus();
+                   }, 500);
+                 
+             }
+             else
+             {
+                 setTimeout(function()
+                   {
+                       $("button[id*='"+ Headerid[1] +"']").focus();
+                   }, 500);
              }
         }
        // function validateinput()

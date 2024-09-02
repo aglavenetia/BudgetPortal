@@ -231,7 +231,7 @@
                 
             <div id="@inneridenti" class="tab-pane fade show active" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="true" style="width: 1750px;">
               
-              @if(GroupsCount > 0)
+              @*if(GroupsCount > 0)
               {
                  <table id="@inneridenti-Totaltable" class="table">
                       <thead>
@@ -323,7 +323,7 @@
                                                 </tr>
                                     </tbody>
                 </table>
-              }
+              }*@
 
                    <ul id="innertab1" class="nav nav-pills nav-justified" role="tablist">
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
@@ -443,6 +443,24 @@
                                            <th colspan="100" style="color:red;border-bottom:hidden;">(*FIGURES IN CRORES)</th>
                                         </tr>
                                         <tr>
+                                          @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
+                                          {
+                                           <th colspan="4">     </th>
+                                           <th colspan="3" style= "background-color: floralwhite;align-content:center;"> Interim Revision Sections </th>
+                                           <th colspan="8" style= "background-color: aliceblue;align-content:center;"> Revision Estimates Section of CY    </th>
+                                           <th colspan="6" style= "background-color:whitesmoke;align-content:center;">Budget Estimates Section of Next Year   </th>
+                                           <th colspan="1">     </th>
+                                          }
+                                          else
+                                          {
+                                              <th colspan="4">     </th>
+                                              <th colspan="3" style= "background-color: floralwhite;align-content:center;"> Interim Revision Sections </th>
+                                              <th colspan="5" style= "background-color: aliceblue;align-content:center;"> Revision Estimates Section of CY    </th>
+                                              <th colspan="3" style= "background-color:whitesmoke;align-content:center;">Budget Estimates Section of Next Year   </th>
+                                              <th colspan="1">     </th>
+                                          }
+                                        </tr>
+                                        <tr>
                                             <th></th>
                                             <th class="w-5">
                                                 @*SubGroupNumber*@
@@ -455,75 +473,75 @@
                                                 @*SubGroupName*@
                                                 HEAD NAME
                                             </th>
-                                            <th class="CurrentBudgetEstimates w-10" >
+                                            <th class="CurrentBudgetEstimates w-10" style= "background-color: floralwhite;">
                                                         
                                             </th>
-                                            <th class="InterimRevEst w-10" >
+                                            <th class="InterimRevEst w-10" style= "background-color: floralwhite;">
                                                         
                                             </th>
-                                            <th class="ProvisionalRevEst w-10" >
+                                            <th class="ProvisionalRevEst w-10" style= "background-color: floralwhite;">
                                                         
                                             </th>
-                                            <th class="PreviousActualBudget w-10" >
+                                            <th class="PreviousActualBudget w-10" style= "background-color: aliceblue;">
                                                 
                                             </th>
-                                            <th class="PreviousHalfYearActualBudget w-10" >
+                                            <th class="PreviousHalfYearActualBudget w-10" style= "background-color: aliceblue;">
                                                 
                                             </th>
-                                            <th class="CurrentYearRevisedEstimates w-10" >
+                                            <th class="CurrentYearRevisedEstimates w-10" style= "background-color: aliceblue;">
                                                 
                                             </th>
-                                            <th class="VariationInRevisedEstimates w-10" >
+                                            <th class="VariationInRevisedEstimates w-10" style= "background-color: aliceblue;">
                                                        
                                             </th>
-                                            <th class="DelegateJustificationRevEst w-10">
+                                            <th class="DelegateJustificationRevEst w-10" style= "background-color: aliceblue;">
                                                        
                                             </th>
                                             @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                              {
-                                               <th class="ACBWProposalForRevisedEstimates w-10" >
+                                               <th class="ACBWProposalForRevisedEstimates w-10" style= "background-color: aliceblue;">
                                                  
                                                </th>
                                                }
                                              @if (User.IsInRole("Admin"))
                                              {
-                                             <th class="VariationInRevisedEstimates w-10" >
+                                             <th class="VariationInRevisedEstimates w-10" style= "background-color: aliceblue;">
                                                       
                                             </th>
                                             } 
                                             @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                              {
-                                                        <th class="ACBWJustificationRevEst w-10">
+                                                        <th class="ACBWJustificationRevEst w-10" style= "background-color: aliceblue;">
 
                                                         </th>
                                                     }
-                                            <th class="BudgetEstimatesNextYear w-10">
+                                            <th class="BudgetEstimatesNextYear w-10" style= "background-color:whitesmoke;">
                                                 
                                             </th>
-                                            <th class="VariationInBudgetEstimates w-10">
+                                            <th class="VariationInBudgetEstimates w-10" style= "background-color:whitesmoke;">
                                                 
                                             </th>
                                            
-                                            <th class="Justification w-10">
+                                            <th class="Justification w-10" style= "background-color:whitesmoke;">
                                                        
                                             </th>
                                             @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                     {
-                                                        <th class="ACBWProposalForBudgetEstimates w-10">
+                                                        <th class="ACBWProposalForBudgetEstimates w-10" style= "background-color:whitesmoke;">
 
                                                         </th>
 
                                                     }
                                                 @if (User.IsInRole("Admin"))
                                                 {
-                                                <th class="VariationInBudgetEstimates w-10">
+                                                <th class="VariationInBudgetEstimates w-10" style= "background-color:whitesmoke;">
                                                 
                                                 </th>
                                                 
                                                 }
                                                @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                {
-                                                        <th class="ACBWJustificationBudgEstNxtFin w-10">
+                                                        <th class="ACBWJustificationBudgEstNxtFin w-10" style= "background-color:whitesmoke;">
 
                                                         </th>
                                                     }
@@ -609,7 +627,7 @@
                                                         <td class="w-5">
                                                             @Subs.subGroupName
                                                         </td class="w-5">
-                                                        <td class="w-5">
+                                                        <td class="w-5" style= "background-color: floralwhite;">
                                                         
                                                         @if (@Subs.RequireInput && DelegateEditStatus && !IsDelegateSaved)
                                                         {
@@ -665,7 +683,7 @@
                                                                 
                                                         }
                                                         </td>
-                                                        <td class="w-5">
+                                                        <td class="w-5" style= "background-color: floralwhite;">
                                                         
                                                         @if (@Subs.RequireInput)
                                                         {
@@ -691,7 +709,7 @@
                                                         }
                                                            
                                                         </td>
-                                                        <td class="w-5">
+                                                        <td class="w-5" style= "background-color: floralwhite;">
                                                         
                                                         @if (@Subs.RequireInput)
                                                         {
@@ -717,7 +735,7 @@
                                                         }
                                                            
                                                         </td>
-                                                        <td class="w-5">
+                                                        <td class="w-5" style= "background-color: aliceblue;">
                                                         @if(DelegateEditStatus && User.IsInRole("Admin"))
                                                         {
                                                             <div>
@@ -763,7 +781,7 @@
                                                             
                                                         }
                                                         </td>
-                                                        <td class="w-5">
+                                                        <td class="w-5" style= "background-color: aliceblue;">
                                                         @if(DelegateEditStatus && User.IsInRole("Admin"))
                                                         {
                                                             <div class="form-group">
@@ -809,7 +827,7 @@
                                                             
                                                         }
                                                         </td>
-                                                        <td class="w-5">
+                                                        <td class="w-5" style= "background-color: aliceblue;">
                                                         @if (@Subs.RequireInput && DelegateEditStatus && !IsDelegateSaved)
                                                         {
                                                                 var PastYearBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin ).Sum();
@@ -869,7 +887,7 @@
                                                             </div>
                                                         }
                                                         </td>
-                                                        <td class="w-5">
+                                                        <td class="w-5" style= "background-color: aliceblue;">
                                                         @if (@Subs.RequireInput && DelegateEditStatus && !IsDelegateSaved)
                                                         {
                                                             
@@ -917,7 +935,7 @@
                                                             }
                                                         </td>
                                                         
-                                                        <td>
+                                                        <td class="w-5" style= "background-color: aliceblue;">
                                                                                     @if ((!DelegateEditStatus && !@Subs.RequireInput) || (!User.IsInRole("Admin") && IsDelegateSaved))
                                                                                     {
                                                                                             <div class="form-group">
@@ -954,7 +972,7 @@
                                                         @if (((User.IsInRole("Admin") && (AdminEditStatus||!AdminEditStatus))||(!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0 )) && @Subs.RequireInput)
                                                         {
                                                             var LedgerSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
-                                                            <td class="w-5">
+                                                            <td class="w-5" style= "background-color: aliceblue;">
                                                               <div class="form-group">
                                                                @{
                                                                  Model.ACAndBWPropRECurrFin.Insert(Count, LedgerSumACAndBWPropRECurrFin!=null ? Convert.ToDecimal(LedgerSumACAndBWPropRECurrFin) : Convert.ToDecimal(0.00));
@@ -966,7 +984,7 @@
                                                         }
                                                         else if (User.IsInRole("Admin") && !@Subs.RequireInput && AdminEditStatus && (!IsAdminSaved || (Model.EditEnabled == @Subs.SubGroupNo)))
                                                         {
-                                                            <td class="w-5">
+                                                            <td class="w-5" style= "background-color: aliceblue;">
                                                                 <div class="form-group">
                                                                @{ 
                                                                 Model.ACAndBWPropRECurrFin.Insert(Count, details!=null ? Convert.ToDecimal(details.ACAndBWPropRECurrFin) : Convert.ToDecimal(0.00));
@@ -978,7 +996,7 @@
                                                         }
                                                         else if (((User.IsInRole("Admin") && (!AdminEditStatus || IsAdminSaved)) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0) ) && !@Subs.RequireInput)
                                                         {
-                                                            <td class="w-5">
+                                                            <td class="w-5" style= "background-color: aliceblue;">
                                                                 <div class="form-group">
                                                                  @{   
                                                                     Model.ACAndBWPropRECurrFin.Insert(Count, details != null ? Convert.ToDecimal(details.ACAndBWPropRECurrFin) : Convert.ToDecimal(0.00));
@@ -1013,7 +1031,7 @@
                                                         @if (User.IsInRole("Admin") && @Subs.RequireInput && AdminEditStatus && !IsAdminSaved)
                                                         {
                                                          var PastYearSumBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();                                                                                                                           
-                                                         <td class="w-5">
+                                                         <td class="w-5" style= "background-color: aliceblue;">
                                                               <div class="form-group">
                                                               @{
                                                                         Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(Count, PastYearSumBudEstCurrFin != Convert.ToDecimal(0.0000) ? Convert.ToString(((Convert.ToDecimal(PastYearSumBudEstCurrFin) - Convert.ToDecimal(PastYearSumBudEstCurrFin)) / Convert.ToDecimal(PastYearSumBudEstCurrFin)) * 100) : (0).ToString("F2"));
@@ -1028,7 +1046,7 @@
                                                         {
                                                             var LedgerSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
                                                             var LedgerSumBudEstCurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstCurrFin).Sum();
-                                                            <td class="w-5">
+                                                            <td class="w-5" style= "background-color: aliceblue;">
                                                                 <div class="form-group">
                                                                 @{
                                                                     Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(Count, LedgerSumBudEstCurrFin!=Convert.ToDecimal(0.0000) ? Convert.ToString(((Convert.ToDecimal(LedgerSumACAndBWPropRECurrFin)- Convert.ToDecimal(LedgerSumBudEstCurrFin))/Convert.ToDecimal(LedgerSumBudEstCurrFin))*100): (0).ToString("F2"));
@@ -1041,7 +1059,7 @@
                                                         
                                                         else if (User.IsInRole("Admin") && IsAdminSaved)
                                                         {
-                                                          <td class="w-5">
+                                                          <td class="w-5" style= "background-color: aliceblue;">
                                                             <div class="form-group">
                                                                @{ 
                                                                   Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(Count, (details!=null && details.BudEstCurrFin!=Convert.ToDecimal(0.0000)) ? Convert.ToString(((Convert.ToDecimal(details.ACAndBWPropRECurrFin)- Convert.ToDecimal(details.BudEstCurrFin))/Convert.ToDecimal(details.BudEstCurrFin))*100)  : (0).ToString("F2"));
@@ -1053,7 +1071,7 @@
                                                         }
                                                        else if (User.IsInRole("Admin") && !IsAdminSaved)
                                                         {
-                                                            <td class="w-5">
+                                                            <td class="w-5" style= "background-color: aliceblue;">
                                                                 <div class="form-group">
                                                                  @{
                                                                     Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.0000)) ? Convert.ToString(((Convert.ToDecimal(PrevYearApp.BudEstNextFin)- Convert.ToDecimal(PrevYearApp.BudEstNextFin))/Convert.ToDecimal(PrevYearApp.BudEstNextFin))*100)   : (0).ToString("F2"));
@@ -1070,7 +1088,7 @@
                                                        
                                                         @if (User.IsInRole("Admin") && AdminEditStatus && !@Subs.RequireInput && (!IsAdminSaved || (Model.EditEnabled == @Subs.SubGroupNo)))
                                                         {
-                                                                                        <td>
+                                                                                        <td class="w-5" style= "background-color: aliceblue;">
                                                                                             <div class="form-group"> 
                                                                                                 @{
                                                                                                   Model.ACBWJustificationRevEst.Insert(Count, details!=null && details.ACBWJustificationRevEst!=null && details.ACBWJustificationRevEst!=" " ? details.ACBWJustificationRevEst.ToString()  : " ");
@@ -1083,7 +1101,7 @@
                                                         }
                                                        else if ((User.IsInRole("Admin") && (!AdminEditStatus ||IsAdminSaved) ) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                        {
-                                                                                      <td>
+                                                                                      <td class="w-5" style= "background-color: aliceblue;">
                                                                                           <div class="form-group">
                                                                                               @{
                                                                                                  Model.ACBWJustificationRevEst.Insert(Count, (details!=null && details.ACBWJustificationRevEst!=" " && details.ACBWJustificationRevEst!=null) ? details.ACBWJustificationRevEst.ToString() : "");
@@ -1096,7 +1114,7 @@
                                                         }
                                                         else if(User.IsInRole("Admin") && (DelegateEditStatus || @Subs.RequireInput) )
                                                                                     {
-                                                                                        <td>
+                                                                                        <td class="w-5" style= "background-color: aliceblue;">
                                                                                         <div class="form-group">
                                                                                              @{  
                                                                                                 Model.ACBWJustificationRevEst.Insert(Count, "");
@@ -1110,7 +1128,7 @@
                                                         {
                                                              Model.ACBWJustificationRevEst.Insert(Count, " ");
                                                         }
-                                                        <td class="w-5">
+                                                        <td class="w-5" style= "background-color:whitesmoke;">
                                                         @if (@Subs.RequireInput && DelegateEditStatus && !IsDelegateSaved)
                                                         {
                                                                 var PastYearBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin ).Sum();
@@ -1176,7 +1194,7 @@
                                                            
                                                         }
                                                         </td>
-                                                        <td class="w-5">
+                                                        <td class="w-5" style= "background-color:whitesmoke;">
                                                             @if (@Subs.RequireInput && DelegateEditStatus && !IsDelegateSaved)
                                                             {
 
@@ -1227,7 +1245,7 @@
                                                                 </div>
                                                             }
                                                         </td>
-                                                        <td class="w-5">
+                                                        <td class="w-5" style= "background-color:whitesmoke;">
                                                             @if ((!DelegateEditStatus && !@Subs.RequireInput) || (!User.IsInRole("Admin") && IsDelegateSaved && Model.EditEnabled!=@Subs.SubGroupNo))
                                                         {
                                                             <div class="form-group">
@@ -1266,7 +1284,7 @@
                                                         @if (((User.IsInRole("Admin") && (AdminEditStatus || !AdminEditStatus)) ||(!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0)) && @Subs.RequireInput )
                                                         {
                                                             var LedgerSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
-                                                            <td class="w-5">
+                                                            <td class="w-5" style= "background-color:whitesmoke;">
                                                                 <div class="form-group">
                                                                     @{
                                                                         Model.ACAndBWPropRENxtFin.Insert(Count, LedgerSumACAndBWPropRENxtFin!=null ? Convert.ToDecimal(LedgerSumACAndBWPropRENxtFin.ToString("F4")) : Convert.ToDecimal(0.00));
@@ -1279,7 +1297,7 @@
                                                         }
                                                         else if (User.IsInRole("Admin") && !@Subs.RequireInput && AdminEditStatus && (!IsAdminSaved || (Model.EditEnabled == @Subs.SubGroupNo))) 
                                                         {
-                                                            <td class="w-5">
+                                                            <td class="w-5" style= "background-color:whitesmoke;">
                                                                 <div class="form-group">
                                                                     @{
                                                                         Model.ACAndBWPropRENxtFin.Insert(Count, details != null ? Convert.ToDecimal(details.ACAndBWPropRENxtFin.ToString("F4")) : Convert.ToDecimal(0.00));
@@ -1292,7 +1310,7 @@
                                                         }
                                                         else if (((User.IsInRole("Admin") && (!AdminEditStatus || IsAdminSaved)) || (!User.IsInRole("Admin")&& !FinalAdminEditStatus && FinalAdminEditCount>0)) && !@Subs.RequireInput ) 
                                                         {
-                                                            <td class="w-5">
+                                                            <td class="w-5" style= "background-color:whitesmoke;">
                                                                 <div class="form-group">
                                                                     @{
                                                                         Model.ACAndBWPropRENxtFin.Insert(Count, details != null ? Convert.ToDecimal(details.ACAndBWPropRENxtFin.ToString("F4")) : Convert.ToDecimal(0.00));
@@ -1327,7 +1345,7 @@
                                                             @if (User.IsInRole("Admin") && @Subs.RequireInput && AdminEditStatus && !IsAdminSaved)
                                                             {
                                                                 var PastYearSumBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();
-                                                                <td class="w-5">
+                                                                <td class="w-5" style= "background-color:whitesmoke;">
                                                                 <div class="form-group">
                                                                 @{
                                                                     Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(Count, PastYearSumBudEstCurrFin!=Convert.ToDecimal(0.0000) ? Convert.ToString(((Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F4"))- Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F4")))/Convert.ToDecimal(PastYearSumBudEstCurrFin.ToString("F4")))*100) : (0).ToString("F2"));
@@ -1342,7 +1360,7 @@
                                                             {
                                                                 var LedgerSumACAndBWPropRECurrFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRECurrFin).Sum();
                                                                 var LedgerSumACAndBWPropRENxtFin = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ACAndBWPropRENxtFin).Sum();
-                                                              <td class="w-5">
+                                                              <td class="w-5" style= "background-color:whitesmoke;">
                                                                 <div class="form-group">
                                                                     @{
                                                                         Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(Count, LedgerSumACAndBWPropRENxtFin!=Convert.ToDecimal(0.0000) ? Convert.ToString(((Convert.ToDecimal(LedgerSumACAndBWPropRENxtFin.ToString("F4"))- Convert.ToDecimal(LedgerSumACAndBWPropRECurrFin.ToString("F4")))/Convert.ToDecimal(LedgerSumACAndBWPropRECurrFin.ToString("F4")))*100) : (0).ToString("F2"));
@@ -1356,7 +1374,7 @@
 
                                                             else if (User.IsInRole("Admin") && IsAdminSaved)
                                                             {
-                                                                <td class="w-5">
+                                                                <td class="w-5" style= "background-color:whitesmoke;">
                                                                 <div class="form-group">
                                                                     @{
                                                                         Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(Count, (details!=null && details.ACAndBWPropRECurrFin!=Convert.ToDecimal(0.0000)) ? Convert.ToString(((Convert.ToDecimal(details.ACAndBWPropRENxtFin.ToString("F4"))- Convert.ToDecimal(details.ACAndBWPropRECurrFin.ToString("F4")))/Convert.ToDecimal(details.ACAndBWPropRECurrFin.ToString("F4")))*100) : (0).ToString("F2"));
@@ -1369,7 +1387,7 @@
                                                             }
                                                            else if (User.IsInRole("Admin") && !IsAdminSaved)
                                                             {
-                                                                <td class="w-5">
+                                                                <td class="w-5" style= "background-color:whitesmoke;">
                                                                 <div class="form-group"> 
                                                                     @{
                                                                         Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(Count, (PrevYearApp!=null && PrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.0000)) ? Convert.ToString(((Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F4"))- Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F4")))/Convert.ToDecimal(PrevYearApp.BudEstNextFin.ToString("F4")))*100) : (0).ToString("F2"));
@@ -1386,7 +1404,7 @@
                                                         }
                                                         @if (User.IsInRole("Admin") && AdminEditStatus && !@Subs.RequireInput && (!IsAdminSaved || (Model.EditEnabled == @Subs.SubGroupNo)))
                                                                                     {
-                                                                                        <td>
+                                                                                        <td class="w-5" style= "background-color:whitesmoke;">
                                                                                             <div class="form-group"> 
                                                                                                 @{
                                                                                                   Model.ACBWJustificationBudgEstNxtFin.Insert(Count, details!=null && details.ACBWJustificationBudgEstNxtFin!=null && details.ACBWJustificationBudgEstNxtFin!=" " ? details.ACBWJustificationBudgEstNxtFin.ToString()  : " ");
@@ -1399,7 +1417,7 @@
                                                                                     }
                                                                                     else if ((User.IsInRole("Admin") && (!AdminEditStatus || IsAdminSaved ) && !@Subs.RequireInput) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                                                     {
-                                                                                      <td>
+                                                                                      <td class="w-5" style= "background-color:whitesmoke;">
                                                                                           <div class="form-group">
                                                                                               @{
                                                                                                  Model.ACBWJustificationBudgEstNxtFin.Insert(Count, details!=null && details.ACBWJustificationBudgEstNxtFin!=null && details.ACBWJustificationBudgEstNxtFin!=" "? details.ACBWJustificationBudgEstNxtFin.ToString() : "");
@@ -1412,7 +1430,7 @@
                                                                                     }
                                                         else if(User.IsInRole("Admin") && (DelegateEditStatus || @Subs.RequireInput))
                                                         {
-                                                            <td>
+                                                            <td class="w-5" style= "background-color:whitesmoke;">
                                                              <div class="form-group">
                                                                 @{
                                                                     Model.ACBWJustificationBudgEstNxtFin.Insert(Count, "");
@@ -1513,7 +1531,7 @@
                                                                                     @Html.HiddenFor(model => model.SubGroupNameOrLedgerName[LedgerNo])
                                                                                  </td>
                                                                                 <td>@Ledgers.LedgerName</td>
-                                                                                <td>
+                                                                                <td style= "background-color: floralwhite;">
                                                                                    
                                                                                     @if ((!DelegateEditStatus && IsSubmittedToACBW) || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                     {
@@ -1538,7 +1556,7 @@
                                                                                             </div>
                                                                                         }
                                                                                 </td>
-                                                                                <td>
+                                                                                <td style= "background-color: floralwhite;">
                                                                                         <div class="form-group">
                                                                                         @{
                                                                                             Model.InterimRevEst.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.InterimRevEst.ToString("F4")) : Convert.ToDecimal(0.00));
@@ -1547,7 +1565,7 @@
                                                                                             @Html.ValidationMessageFor(model => model.InterimRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                 </td>
-                                                                                <td>
+                                                                                <td style= "background-color: floralwhite;">
                                                                                         <div class="form-group">
                                                                                         @{
                                                                                             Model.ProvisionalRevEst.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.ProvisionalRevEst.ToString("F4")) : Convert.ToDecimal(0.00));
@@ -1556,7 +1574,7 @@
                                                                                             @Html.ValidationMessageFor(model => model.ProvisionalRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                 </td>
-                                                                                <td>
+                                                                                <td class="w-5" style= "background-color: aliceblue;">
                                                                                     @if ((!DelegateEditStatus ) || (!User.IsInRole("Admin") && LedgerIsDelegateSaved && Model.EditEnabled!=@Ledgers.LedgerNo))
                                                                                     {
                                                                                         <div class="form-group"> 
@@ -1589,7 +1607,7 @@
                                                                                        
                                                                                     }
                                                                                 </td>
-                                                                                <td>
+                                                                                <td class="w-5" style= "background-color: aliceblue;">
                                                                                     @if ((!DelegateEditStatus)|| (!User.IsInRole("Admin") && LedgerIsDelegateSaved && Model.EditEnabled!=@Ledgers.LedgerNo))
                                                                                     {
                                                                                        <div class="form-group">
@@ -1621,7 +1639,7 @@
                                                                                        </div> 
                                                                                     }
                                                                                 </td>
-                                                                                <td>
+                                                                                <td class="w-5" style= "background-color: aliceblue;">
                                                                                      @if(User.IsInRole("Admin") && DelegateEditStatus)
                                                                                     {
                                                                                         <div class="form-group">
@@ -1659,7 +1677,7 @@
                                                                                        </div>
                                                                                     }
                                                                                 </td>
-                                                                                    <td>
+                                                                                    <td class="w-5" style= "background-color: aliceblue;">
                                                                                         @if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved))
                                                                                         {
                                                                                           <div class="form-group"> 
@@ -1682,7 +1700,7 @@
                                                                                         }
                                                                                     </td>
                                                                                    
-                                                                                    <td>
+                                                                                    <td class="w-5" style= "background-color: aliceblue;">
                                                                                     @if (!DelegateEditStatus|| (!User.IsInRole("Admin") && LedgerIsDelegateSaved) && Model.EditEnabled!=@Ledgers.LedgerNo)
                                                                                     {
                                                                                             <div class="form-group">
@@ -1718,7 +1736,7 @@
                                                                                 </td>
                                                                                     @if (User.IsInRole("Admin") && AdminEditStatus && (!LedgerIsAdminSaved || Model.EditEnabled == @Ledgers.LedgerNo))
                                                                                     {
-                                                                                        <td>
+                                                                                        <td class="w-5" style= "background-color: aliceblue;">
                                                                                             <div class="form-group"> 
                                                                                                 @{
                                                                                                   Model.ACAndBWPropRECurrFin.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.ACAndBWPropRECurrFin.ToString("F4"))  : Convert.ToDecimal(0.00));
@@ -1731,7 +1749,7 @@
                                                                                     }
                                                                                     else if ((User.IsInRole("Admin") && !AdminEditStatus) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0) || (User.IsInRole("Admin") && LedgerIsAdminSaved))
                                                                                     {
-                                                                                      <td>
+                                                                                      <td class="w-5" style= "background-color: aliceblue;">
                                                                                           <div class="form-group">
                                                                                               @{
                                                                                                  Model.ACAndBWPropRECurrFin.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.ACAndBWPropRECurrFin.ToString("F4"))  : Convert.ToDecimal(0.00));
@@ -1749,7 +1767,7 @@
                                                                                     
                                                                                         @if (User.IsInRole("Admin") && LedgerIsAdminSaved)
                                                                                         {
-                                                                                            <td>
+                                                                                            <td class="w-5" style= "background-color: aliceblue;">
                                                                                           <div class="form-group"> 
                                                                                               @{                                                                                                                                          
                                                                                               Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(LedgerNo, (Ledgerdetails!=null && Ledgerdetails.BudEstCurrFin!=Convert.ToDecimal(0.0000)) ? (Convert.ToString(((Convert.ToDecimal(Convert.ToDecimal(Ledgerdetails.ACAndBWPropRECurrFin.ToString("F4")) - Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F4"))) / Convert.ToDecimal(Ledgerdetails.BudEstCurrFin.ToString("F4"))))*100)) : (0).ToString("F2"));
@@ -1763,7 +1781,7 @@
                                                                                         }
                                                                                         else if(User.IsInRole("Admin") && !LedgerIsAdminSaved)
                                                                                         {
-                                                                                            <td>
+                                                                                            <td class="w-5" style= "background-color: aliceblue;">
                                                                                            <div class="form-group"> 
                                                                                                @{
                                                                                                  Model.PerVarACBWRevEstOverBudgEstCurrFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.0000)) ? Convert.ToString(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F4"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F4")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F4")))*100) : (0).ToString("F2"));
@@ -1781,7 +1799,7 @@
                                                                                 
                                                                                 @if (User.IsInRole("Admin") && AdminEditStatus && (!LedgerIsAdminSaved || (Model.EditEnabled == @Ledgers.LedgerNo)))
                                                                                     {
-                                                                                        <td>
+                                                                                        <td class="w-5" style= "background-color: aliceblue;">
                                                                                             <div class="form-group"> 
                                                                                                 @{
                                                                                                   Model.ACBWJustificationRevEst.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationRevEst!=null && Ledgerdetails.ACBWJustificationRevEst!=" " ? Ledgerdetails.ACBWJustificationRevEst.ToString()  : " ");
@@ -1794,7 +1812,7 @@
                                                                                     }
                                                                                     else if ((User.IsInRole("Admin") && (!AdminEditStatus || LedgerIsAdminSaved)) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                                                     {
-                                                                                      <td>
+                                                                                      <td class="w-5" style= "background-color: aliceblue;">
                                                                                           <div class="form-group">
                                                                                               @{
                                                                                                  Model.ACBWJustificationRevEst.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationRevEst!=null && Ledgerdetails.ACBWJustificationRevEst!=" "? Ledgerdetails.ACBWJustificationRevEst.ToString() : "");
@@ -1809,7 +1827,7 @@
                                                                                     {
                                                                                         Model.ACBWJustificationRevEst.Insert(LedgerNo, " ");
                                                                                     }
-                                                                                <td>
+                                                                                <td class="w-5" style= "background-color:whitesmoke;">
                                                                                     @if (User.IsInRole("Admin") && DelegateEditStatus )
                                                                                     {
                                                                                         <div class="form-group">
@@ -1851,7 +1869,7 @@
                                                                                       
                                                                                     }
                                                                                 </td>
-                                                                                    <td>
+                                                                                    <td class="w-5" style= "background-color:whitesmoke;">
                                                                                         @if ((User.IsInRole("Admin") && (!AdminEditStatus || LedgerIsAdminSaved)))
                                                                                         {
                                                                                             <div class="form-group">
@@ -1877,7 +1895,7 @@
                                                                                             
                                                                                         }
                                                                                     </td>
-                                                                                    <td>
+                                                                                    <td class="w-5" style= "background-color:whitesmoke;">
                                                                                     @if (!DelegateEditStatus || (!User.IsInRole("Admin") && LedgerIsDelegateSaved && Model.EditEnabled!=@Ledgers.LedgerNo))
                                                                                     {
                                                                                             <div class="form-group">
@@ -1913,7 +1931,7 @@
                                                                                 </td>
                                                                                 @if (User.IsInRole("Admin") && AdminEditStatus && (!LedgerIsAdminSaved || (Model.EditEnabled == @Ledgers.LedgerNo)))
                                                                                 {
-                                                                                    <td>
+                                                                                    <td class="w-5" style= "background-color:whitesmoke;">
                                                                                         <div class="form-group">
                                                                                           @{
                                                                                               Model.ACAndBWPropRENxtFin.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.ACAndBWPropRENxtFin.ToString("F4")) : Convert.ToDecimal(0.00));
@@ -1926,7 +1944,7 @@
                                                                                 }
                                                                                 else if ((User.IsInRole("Admin") && (!AdminEditStatus || LedgerIsAdminSaved)) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                                                 {
-                                                                                    <td>
+                                                                                    <td class="w-5" style= "background-color:whitesmoke;">
                                                                                         <div class="form-group">
                                                                                            @{
                                                                                               Model.ACAndBWPropRENxtFin.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.ACAndBWPropRENxtFin.ToString("F4")) : Convert.ToDecimal(0.00));
@@ -1944,7 +1962,7 @@
                                                                                 
                                                                                         @if ((User.IsInRole("Admin") && LedgerIsAdminSaved) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                                                         {
-                                                                                          <td>
+                                                                                          <td class="w-5" style= "background-color:whitesmoke;">
                                                                                             <div class="form-group">
                                                                                              
                                                                                              @{
@@ -1959,7 +1977,7 @@
                                                                                         }
                                                                                         else if (User.IsInRole("Admin") && !LedgerIsAdminSaved)
                                                                                         {
-                                                                                          <td>
+                                                                                          <td class="w-5" style= "background-color:whitesmoke;">
                                                                                             <div class="form-group">
                                                                                             @{
                                                                                               Model.PerVarACBWRevEstOverBudgEstNxtFin.Insert(LedgerNo, (LedPrevYearApp!=null && LedPrevYearApp.BudEstNextFin!=Convert.ToDecimal(0.0000)) ? Convert.ToString(((Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F4"))- Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F4")))/Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F4")))*100) : (0).ToString("F2"));
@@ -1976,7 +1994,7 @@
                                                                                     
                                                                                 @if (User.IsInRole("Admin") && AdminEditStatus && (!LedgerIsAdminSaved || (Model.EditEnabled == @Ledgers.LedgerNo)))
                                                                                     {
-                                                                                        <td>
+                                                                                        <td class="w-5" style= "background-color:whitesmoke;">
                                                                                             <div class="form-group"> 
                                                                                                 @{
                                                                                                   Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=" "? Ledgerdetails.ACBWJustificationBudgEstNxtFin.ToString()  : " ");
@@ -1989,7 +2007,7 @@
                                                                                     }
                                                                                     else if ((User.IsInRole("Admin") && (!AdminEditStatus || LedgerIsAdminSaved)) || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                                                                     {
-                                                                                      <td>
+                                                                                      <td class="w-5" style= "background-color:whitesmoke;">
                                                                                           <div class="form-group">
                                                                                               @{
                                                                                                  Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=" " ? Ledgerdetails.ACBWJustificationBudgEstNxtFin.ToString() : "");
@@ -3977,7 +3995,7 @@
            {
              <div id="@inneridenti" class="tab-pane fade" role="tabpanel" aria-labelledby="@inneridenti-tab" aria-selected="false" style="width: 1750px;">
 
-                @if(GroupsCount>0)
+                @*if(GroupsCount>0)
                 {
                     <table id="@inneridenti-Totaltable" class="table">
                         <thead>
@@ -4081,7 +4099,7 @@
                             </tr>
                         </tbody>
                     </table>
-                }
+                }*@
                 <ul id="innertab2" class="nav nav-pills" role="tablist">
 
                     @foreach (var item in Model.Groupss.Where(d => d.SectionNo == @inner.SectionNo))
@@ -8041,7 +8059,7 @@
                  var HeaderName = $('#HeaderName').val();
                  
                  var Headerid = HeaderName.split('_');
-                 alert("Stored Header ID :"+ Headerid);
+                 //alert("Stored Header ID :"+ Headerid);
 
                  if(SectionName!="" && GroupName!="")
                  {
@@ -8105,6 +8123,13 @@
                        $("button[id*='"+ Headerid[1] +"']").focus();
                    }, 500);
                  
+             }
+             else
+             {
+                 setTimeout(function()
+                   {
+                       $("button[id*='"+ Headerid[1] +"']").focus();
+                   }, 500);
              }
         }
        
