@@ -1367,16 +1367,26 @@ namespace BudgetPortal.Controllers
         {
             MD.EditEnabled = MD.SubGroupLedgerName;
             
-            var DivName = " ";
+            
+            var DivName = _context.Users
+                      .Where(x => x.UserName.Equals(User.Identity.Name))
+                      .Select(x => x.BranchName).FirstOrDefault(); 
             var DivisionID = " ";
             if (User.Identity.Name.Equals("admin@test.com"))
             {
-                DivName = MD.SelectedDivisionName.ToString();
                 DivisionID = _context.Division
-                                     .Where(d => d.DivisionName == DivName)
-                                     .Select(x => x.DivisionID).FirstOrDefault().ToString();
+                             .Where(d => d.DivisionName == DivName)
+                             .Select(x => x.DivisionID).FirstOrDefault().ToString();
             }
-
+            else
+            {
+                DivName = _context.Users
+                             .Where(x => x.UserName.Equals(User.Identity.Name))
+                             .Select(x => x.BranchName).FirstOrDefault().ToString();
+                DivisionID = _context.Division
+                             .Where(d => d.DivisionName == DivName)
+                             .Select(x => x.DivisionID).FirstOrDefault().ToString();
+            }
             var splitAcademicYear = MD.SelectedAcademicYear.ToString().Split("-");
             int index = MD.SubGroupNameOrLedgerName.IndexOf(MD.SubGroupLedgerName);
 

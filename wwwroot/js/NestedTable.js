@@ -20,12 +20,20 @@ $(document).ready(
         //Calculating Percentage variation for Revised Estimates of Current Financial Year
         $("body").on("change", "input[id^='RevEstCurrFin']", 
             function () {
-            //alert($(this).attr("id"));
+                //alert($(this).val());
+            var Provisionalid = $(this).closest("tr").find($("input[id^='ProvisionalRevEst']"));
+                var ProvisionalValue = Provisionalid.val();
+                //alert("Provisional Value " + ProvisionalValue);
             var elementid = $(this).closest("tr").find($("input[id^='BudEstCurrFin']"));
             //alert(elementid);
             var Pervariationid = $(this).closest("tr").find($("input[id^='PerVarRevEstOverBudgEstCurrFin']"));
             //alert(Pervariationid);
 
+               //Checking if enereted Revised Estimates value is less than the Provisional Interim Value
+                if (parseFloat($(this).val()) < ProvisionalValue)
+                {
+                    alert("The Entered Revised Estimates value " + $(this).val() + "is less than the Provisional Interim Revision value " + ProvisionalValue);
+                }
                 if (elementid.val() == 0)
                 {
                     Pervariationid.val(0+"%");
@@ -39,11 +47,11 @@ $(document).ready(
             if (PerVariation > 10) {
                 
                 $(this).closest("tr").find($("textarea[id^='DelegateJustificationRevEst']")).prop('required', true);
-                alert(PerVariation);
+                //alert(PerVariation);
             }
             else {
                 $(this).closest("tr").find($("textarea[id^='DelegateJustificationRevEst']")).removeProp('required', true);
-                alert("Removed");
+                //alert("Removed");
             }
 
         });
