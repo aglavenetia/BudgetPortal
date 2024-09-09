@@ -447,19 +447,19 @@
                                         <tr>
                                           @if (User.IsInRole("Admin") || (!User.IsInRole("Admin") && !FinalAdminEditStatus && FinalAdminEditCount > 0))
                                           {
-                                           <th colspan="3" class="align-text-middle" style="background-color:honeydew;">     </th>
-                                           <th colspan="3" class="align-text-middle" style= "background-color: floralwhite;text-align:center;"> Interim Revision Sections </th>
-                                           <th colspan="8" class="align-text-middle" style= "background-color: aliceblue;text-align:center;"> Revision Estimates Section of CY    </th>
-                                           <th colspan="6" class="align-text-middle" style= "background-color:whitesmoke;text-align:center;">Budget Estimates Section of Next Year   </th>
-                                           <th colspan="2" class="align-text-middle" style="background-color:honeydew;">     </th>
+                                                        <th colspan="3" class="align-text-middle" style="background-color:honeydew;position:sticky;top:0;">     </th>
+                                           <th colspan="3" class="align-text-middle" style= "background-color: floralwhite;text-align:center;position:sticky;top:0;"> Interim Revision Sections </th>
+                                           <th colspan="8" class="align-text-middle" style= "background-color: aliceblue;text-align:center;position:sticky;top:0;"> Revision Estimates Section of CY    </th>
+                                           <th colspan="6" class="align-text-middle" style= "background-color:whitesmoke;text-align:center;position:sticky;top:0;">Budget Estimates Section of Next Year   </th>
+                                           <th colspan="2" class="align-text-middle" style="background-color:honeydew;position:sticky;top:0;">     </th>
                                           }
                                           else
                                           {
-                                              <th colspan="3" class="align-text-middle" style="background-color:honeydew;">     </th>
-                                              <th colspan="3" class="align-text-middle" style= "background-color: floralwhite;text-align:center;"> Interim Revision Sections </th>
-                                              <th colspan="5" class="align-text-middle" style= "background-color: aliceblue;text-align:center;"> Revision Estimates Section of CY    </th>
-                                              <th colspan="3" class="align-text-middle" style= "background-color:whitesmoke;text-align:center;">Budget Estimates Section of Next Year   </th>
-                                              <th colspan="2" class="align-text-middle" style="background-color:honeydew;">     </th>
+                                              <th colspan="3" class="align-text-middle" style="background-color:honeydew;position:sticky;top:0;">     </th>
+                                              <th colspan="3" class="align-text-middle" style= "background-color: floralwhite;text-align:center;position:sticky;top:0;"> Interim Revision Sections </th>
+                                              <th colspan="5" class="align-text-middle" style= "background-color: aliceblue;text-align:center;position:sticky;top:0;"> Revision Estimates Section of CY    </th>
+                                              <th colspan="3" class="align-text-middle" style= "background-color:whitesmoke;text-align:center;position:sticky;top:0;">Budget Estimates Section of Next Year   </th>
+                                                        <th colspan="2" class="align-text-middle" style="background-color:honeydew;position:sticky;top:0;">     </th>
                                           }
                                         </tr>
                                         <tr class="align-text-top">
@@ -945,7 +945,7 @@
                                                                                              @{  
                                                                                                 Model.DelegateJustificationRevEst.Insert(Count, (details != null && details.DelegateJustificationRevEst!=null) ? details.DelegateJustificationRevEst.ToString(): "");
                                                                                               }  
-                                                                                            @Html.TextBoxFor(model => model.DelegateJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @dir = "rtl", @readonly = "readonly"})
+                                                                                            @Html.TextBoxFor(model => model.DelegateJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                         
@@ -956,7 +956,7 @@
                                                                                              @{  
                                                                                                 Model.DelegateJustificationRevEst.Insert(Count, "");
                                                                                               }  
-                                                                                            @Html.TextBoxFor(model => model.DelegateJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @dir = "rtl", @readonly = "readonly"})
+                                                                                            @Html.TextBoxFor(model => model.DelegateJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                     }
@@ -1110,7 +1110,7 @@
                                                                                                  Model.ACBWJustificationRevEst.Insert(Count, (details!=null && details.ACBWJustificationRevEst!=" " && details.ACBWJustificationRevEst!=null) ? details.ACBWJustificationRevEst.ToString() : "");
                                                                                                }
                                                                                             
-                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationRevEst[Count], new { @class = "form-control", @id = @name15, @dir = "rtl",@readonly = "readonly"})
+                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationRevEst[Count], new { @class = "form-control", @id = @name15, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                           </div>
                                                                                         </td>
@@ -1122,7 +1122,7 @@
                                                                                              @{  
                                                                                                 Model.ACBWJustificationRevEst.Insert(Count, "");
                                                                                               }  
-                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @dir = "rtl", @readonly = "readonly"})
+                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                         </td>
@@ -1256,7 +1256,7 @@
                                                                     Model.Justification.Insert(Count, (details != null && details.Justification!=null) ? details.Justification.ToString(): "");
                                                                  }
                                                                 
-                                                                @Html.TextBoxFor(model => model.Justification[Count] , new { @class = "form-control", @id = @name10, @dir = "rtl", @readonly = "readonly"})
+                                                                @Html.TextBoxFor(model => model.Justification[Count] , new { @class = "form-control", @id = @name10, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.Justification[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
                                                         }
@@ -1267,7 +1267,7 @@
                                                                     Model.Justification.Insert(Count, "");
                                                                  }
                                                                 
-                                                                @Html.TextBoxFor(model => model.Justification[Count] , new { @class = "form-control", @id = @name10, @dir = "rtl", @readonly = "readonly"})
+                                                                @Html.TextBoxFor(model => model.Justification[Count] , new { @class = "form-control", @id = @name10, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.Justification[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>   
                                                         }
@@ -1426,7 +1426,7 @@
                                                                                                  Model.ACBWJustificationBudgEstNxtFin.Insert(Count, details!=null && details.ACBWJustificationBudgEstNxtFin!=null && details.ACBWJustificationBudgEstNxtFin!=" "? details.ACBWJustificationBudgEstNxtFin.ToString() : "");
                                                                                                }
                                                                                             
-                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[Count], new { @class = "form-control", @id = @name16, @dir = "rtl",@readonly = "readonly"})
+                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[Count], new { @class = "form-control", @id = @name16, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.ACBWJustificationBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                           </div>
                                                                                         </td>
@@ -1439,7 +1439,7 @@
                                                                     Model.ACBWJustificationBudgEstNxtFin.Insert(Count, "");
                                                                  }
                                                                 
-                                                                @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[Count] , new { @class = "form-control", @id = @name16, @dir = "rtl", @readonly = "readonly"})
+                                                                @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[Count] , new { @class = "form-control", @id = @name16, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.ACBWJustificationBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>   
                                                             </td>
@@ -1706,7 +1706,7 @@
                                                                                              @{  
                                                                                                 Model.DelegateJustificationRevEst.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.DelegateJustificationRevEst!=null) ? Ledgerdetails.DelegateJustificationRevEst.ToString(): "");
                                                                                               }  
-                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                         
@@ -1717,7 +1717,7 @@
                                                                                              @{  
                                                                                                 Model.DelegateJustificationRevEst.Insert(LedgerNo, "");
                                                                                               }  
-                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                     }
@@ -1727,7 +1727,7 @@
                                                                                            @{ 
                                                                                               Model.DelegateJustificationRevEst.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.DelegateJustificationRevEst!=null) ? Ledgerdetails.DelegateJustificationRevEst.ToString() : "");
                                                                                              }   
-                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14+@Ledgers.LedgerNo, @dir = "rtl"})
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14+@Ledgers.LedgerNo})
                                                                                             @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                             
@@ -1804,7 +1804,7 @@
                                                                                                   Model.ACBWJustificationRevEst.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationRevEst!=null && Ledgerdetails.ACBWJustificationRevEst!=" " ? Ledgerdetails.ACBWJustificationRevEst.ToString()  : " ");
                                                                                                }
                                                                                                 
-                                                                                                @Html.TextBoxFor(model => model.ACBWJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name15+@Ledgers.LedgerNo, @dir = "rtl"})
+                                                                                                @Html.TextBoxFor(model => model.ACBWJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name15+@Ledgers.LedgerNo})
                                                                                                 @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                         </td>
@@ -1817,7 +1817,7 @@
                                                                                                  Model.ACBWJustificationRevEst.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationRevEst!=null && Ledgerdetails.ACBWJustificationRevEst!=" "? Ledgerdetails.ACBWJustificationRevEst.ToString() : "");
                                                                                                }
                                                                                             
-                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name15+@Ledgers.LedgerNo, @dir = "rtl",@readonly = "readonly"})
+                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name15+@Ledgers.LedgerNo,@readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                           </div>
                                                                                         </td>
@@ -1901,7 +1901,7 @@
                                                                                              @{  
                                                                                                 Model.Justification.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.Justification!=null) ? Ledgerdetails.Justification.ToString(): "");
                                                                                               }  
-                                                                                            @Html.TextAreaFor(model => model.Justification[LedgerNo], new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                            @Html.TextAreaFor(model => model.Justification[LedgerNo], new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.Justification[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                         
@@ -1912,7 +1912,7 @@
                                                                                              @{  
                                                                                                 Model.Justification.Insert(LedgerNo, "");
                                                                                               }  
-                                                                                            @Html.TextAreaFor(model => model.Justification[LedgerNo], new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                            @Html.TextAreaFor(model => model.Justification[LedgerNo], new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.Justification[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                     }
@@ -1922,7 +1922,7 @@
                                                                                            @{ 
                                                                                               Model.Justification.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.Justification!=null) ? Ledgerdetails.Justification.ToString() : "");
                                                                                              }   
-                                                                                            @Html.TextAreaFor(model => model.Justification[LedgerNo], new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @dir = "rtl"})
+                                                                                            @Html.TextAreaFor(model => model.Justification[LedgerNo], new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo})
                                                                                             @Html.ValidationMessageFor(model => model.Justification[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                             
@@ -1999,7 +1999,7 @@
                                                                                                   Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=" "? Ledgerdetails.ACBWJustificationBudgEstNxtFin.ToString()  : " ");
                                                                                                }
                                                                                                 
-                                                                                                @Html.TextAreaFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name16+@Ledgers.LedgerNo, @dir = "rtl"})
+                                                                                                @Html.TextAreaFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name16+@Ledgers.LedgerNo})
                                                                                                 @Html.ValidationMessageFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                         </td>
@@ -2012,7 +2012,7 @@
                                                                                                  Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=" " ? Ledgerdetails.ACBWJustificationBudgEstNxtFin.ToString() : "");
                                                                                                }
                                                                                             
-                                                                                            @Html.TextAreaFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name16+@Ledgers.LedgerNo, @dir = "rtl",@readonly = "readonly"})
+                                                                                            @Html.TextAreaFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name16+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                           </div>
                                                                                         </td>
@@ -2731,7 +2731,7 @@
                                                                                              @{  
                                                                                                 Model.DelegateJustificationRevEst.Insert(Count, (details != null && details.DelegateJustificationRevEst!=null) ? details.DelegateJustificationRevEst.ToString(): "");
                                                                                               }  
-                                                                                            @Html.TextBoxFor(model => model.DelegateJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @dir = "rtl", @readonly = "readonly"})
+                                                                                            @Html.TextBoxFor(model => model.DelegateJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                         
@@ -2742,7 +2742,7 @@
                                                                                              @{  
                                                                                                 Model.DelegateJustificationRevEst.Insert(Count, "");
                                                                                               }  
-                                                                                            @Html.TextBoxFor(model => model.DelegateJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @dir = "rtl", @readonly = "readonly"})
+                                                                                            @Html.TextBoxFor(model => model.DelegateJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                     }
@@ -2896,7 +2896,7 @@
                                                                                                  Model.ACBWJustificationRevEst.Insert(Count, (details!=null && details.ACBWJustificationRevEst!=" " && details.ACBWJustificationRevEst!=null) ? details.ACBWJustificationRevEst.ToString() : "");
                                                                                                }
                                                                                             
-                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationRevEst[Count], new { @class = "form-control", @id = @name15, @dir = "rtl",@readonly = "readonly"})
+                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationRevEst[Count], new { @class = "form-control", @id = @name15,@readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                           </div>
                                                                                         </td>
@@ -2908,7 +2908,7 @@
                                                                                              @{  
                                                                                                 Model.ACBWJustificationRevEst.Insert(Count, "");
                                                                                               }  
-                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @dir = "rtl", @readonly = "readonly"})
+                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                         </td>
@@ -3042,7 +3042,7 @@
                                                                     Model.Justification.Insert(Count, (details != null && details.Justification!=null) ? details.Justification.ToString(): "");
                                                                  }
                                                                 
-                                                                @Html.TextBoxFor(model => model.Justification[Count] , new { @class = "form-control", @id = @name10, @dir = "rtl", @readonly = "readonly"})
+                                                                @Html.TextBoxFor(model => model.Justification[Count] , new { @class = "form-control", @id = @name10, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.Justification[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
                                                         }
@@ -3053,7 +3053,7 @@
                                                                     Model.Justification.Insert(Count, "");
                                                                  }
                                                                 
-                                                                @Html.TextBoxFor(model => model.Justification[Count] , new { @class = "form-control", @id = @name10, @dir = "rtl", @readonly = "readonly"})
+                                                                @Html.TextBoxFor(model => model.Justification[Count] , new { @class = "form-control", @id = @name10, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.Justification[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>   
                                                         }
@@ -3212,7 +3212,7 @@
                                                                                                  Model.ACBWJustificationBudgEstNxtFin.Insert(Count, details!=null && details.ACBWJustificationBudgEstNxtFin!=null && details.ACBWJustificationBudgEstNxtFin!=" "? details.ACBWJustificationBudgEstNxtFin.ToString() : "");
                                                                                                }
                                                                                             
-                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[Count], new { @class = "form-control", @id = @name16, @dir = "rtl",@readonly = "readonly"})
+                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[Count], new { @class = "form-control", @id = @name16, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.ACBWJustificationBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                           </div>
                                                                                         </td>
@@ -3225,7 +3225,7 @@
                                                                     Model.ACBWJustificationBudgEstNxtFin.Insert(Count, "");
                                                                  }
                                                                 
-                                                                @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[Count] , new { @class = "form-control", @id = @name16, @dir = "rtl", @readonly = "readonly"})
+                                                                @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[Count] , new { @class = "form-control", @id = @name16, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.ACBWJustificationBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>   
                                                             </td>
@@ -3492,7 +3492,7 @@
                                                                                              @{  
                                                                                                 Model.DelegateJustificationRevEst.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.DelegateJustificationRevEst!=null) ? Ledgerdetails.DelegateJustificationRevEst.ToString(): "");
                                                                                               }  
-                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14+@Ledgers.LedgerNo,@readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                         
@@ -3503,7 +3503,7 @@
                                                                                              @{  
                                                                                                 Model.DelegateJustificationRevEst.Insert(LedgerNo, "");
                                                                                               }  
-                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                     }
@@ -3513,7 +3513,7 @@
                                                                                            @{ 
                                                                                               Model.DelegateJustificationRevEst.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.DelegateJustificationRevEst!=null) ? Ledgerdetails.DelegateJustificationRevEst.ToString() : "");
                                                                                              }   
-                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14+@Ledgers.LedgerNo, @dir = "rtl"})
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14+@Ledgers.LedgerNo})
                                                                                             @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                             
@@ -3590,7 +3590,7 @@
                                                                                                   Model.ACBWJustificationRevEst.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationRevEst!=null && Ledgerdetails.ACBWJustificationRevEst!=" " ? Ledgerdetails.ACBWJustificationRevEst.ToString()  : " ");
                                                                                                }
                                                                                                 
-                                                                                                @Html.TextBoxFor(model => model.ACBWJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name15+@Ledgers.LedgerNo, @dir = "rtl"})
+                                                                                                @Html.TextBoxFor(model => model.ACBWJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name15+@Ledgers.LedgerNo})
                                                                                                 @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                         </td>
@@ -3603,7 +3603,7 @@
                                                                                                  Model.ACBWJustificationRevEst.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationRevEst!=null && Ledgerdetails.ACBWJustificationRevEst!=" "? Ledgerdetails.ACBWJustificationRevEst.ToString() : "");
                                                                                                }
                                                                                             
-                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name15+@Ledgers.LedgerNo, @dir = "rtl",@readonly = "readonly"})
+                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name15+@Ledgers.LedgerNo,@readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                           </div>
                                                                                         </td>
@@ -3687,7 +3687,7 @@
                                                                                              @{  
                                                                                                 Model.Justification.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.Justification!=null) ? Ledgerdetails.Justification.ToString(): "");
                                                                                               }  
-                                                                                            @Html.TextAreaFor(model => model.Justification[LedgerNo], new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                            @Html.TextAreaFor(model => model.Justification[LedgerNo], new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.Justification[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                         
@@ -3698,7 +3698,7 @@
                                                                                              @{  
                                                                                                 Model.Justification.Insert(LedgerNo, "");
                                                                                               }  
-                                                                                            @Html.TextAreaFor(model => model.Justification[LedgerNo], new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                            @Html.TextAreaFor(model => model.Justification[LedgerNo], new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo,@readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.Justification[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                     }
@@ -3708,7 +3708,7 @@
                                                                                            @{ 
                                                                                               Model.Justification.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.Justification!=null) ? Ledgerdetails.Justification.ToString() : "");
                                                                                              }   
-                                                                                            @Html.TextAreaFor(model => model.Justification[LedgerNo], new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @dir = "rtl"})
+                                                                                            @Html.TextAreaFor(model => model.Justification[LedgerNo], new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo})
                                                                                             @Html.ValidationMessageFor(model => model.Justification[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                             
@@ -3785,7 +3785,7 @@
                                                                                                   Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=" "? Ledgerdetails.ACBWJustificationBudgEstNxtFin.ToString()  : " ");
                                                                                                }
                                                                                                 
-                                                                                                @Html.TextAreaFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name16+@Ledgers.LedgerNo, @dir = "rtl"})
+                                                                                                @Html.TextAreaFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name16+@Ledgers.LedgerNo})
                                                                                                 @Html.ValidationMessageFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                         </td>
@@ -3798,7 +3798,7 @@
                                                                                                  Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=" " ? Ledgerdetails.ACBWJustificationBudgEstNxtFin.ToString() : "");
                                                                                                }
                                                                                             
-                                                                                            @Html.TextAreaFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name16+@Ledgers.LedgerNo, @dir = "rtl",@readonly = "readonly"})
+                                                                                            @Html.TextAreaFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name16+@Ledgers.LedgerNo,@readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                           </div>
                                                                                         </td>
@@ -4731,7 +4731,7 @@
                                                                                              @{  
                                                                                                 Model.DelegateJustificationRevEst.Insert(Count, (details != null && details.DelegateJustificationRevEst!=null) ? details.DelegateJustificationRevEst.ToString(): "");
                                                                                               }  
-                                                                                            @Html.TextBoxFor(model => model.DelegateJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @dir = "rtl", @readonly = "readonly"})
+                                                                                            @Html.TextBoxFor(model => model.DelegateJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                         
@@ -4742,7 +4742,7 @@
                                                                                              @{  
                                                                                                 Model.DelegateJustificationRevEst.Insert(Count, "");
                                                                                               }  
-                                                                                            @Html.TextBoxFor(model => model.DelegateJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @dir = "rtl", @readonly = "readonly"})
+                                                                                            @Html.TextBoxFor(model => model.DelegateJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                     }
@@ -4896,7 +4896,7 @@
                                                                                                  Model.ACBWJustificationRevEst.Insert(Count, (details!=null && details.ACBWJustificationRevEst!=" " && details.ACBWJustificationRevEst!=null) ? details.ACBWJustificationRevEst.ToString() : "");
                                                                                                }
                                                                                             
-                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationRevEst[Count], new { @class = "form-control", @id = @name15, @dir = "rtl",@readonly = "readonly"})
+                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationRevEst[Count], new { @class = "form-control", @id = @name15, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                           </div>
                                                                                         </td>
@@ -4908,7 +4908,7 @@
                                                                                              @{  
                                                                                                 Model.ACBWJustificationRevEst.Insert(Count, "");
                                                                                               }  
-                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @dir = "rtl", @readonly = "readonly"})
+                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationRevEst[Count], new { @class = "form-control", @id = @name14, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                         </td>
@@ -5042,7 +5042,7 @@
                                                                     Model.Justification.Insert(Count, (details != null && details.Justification!=null) ? details.Justification.ToString(): "");
                                                                  }
                                                                 
-                                                                @Html.TextBoxFor(model => model.Justification[Count] , new { @class = "form-control", @id = @name10, @dir = "rtl", @readonly = "readonly"})
+                                                                @Html.TextBoxFor(model => model.Justification[Count] , new { @class = "form-control", @id = @name10, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.Justification[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>
                                                         }
@@ -5053,7 +5053,7 @@
                                                                     Model.Justification.Insert(Count, "");
                                                                  }
                                                                 
-                                                                @Html.TextBoxFor(model => model.Justification[Count] , new { @class = "form-control", @id = @name10, @dir = "rtl", @readonly = "readonly"})
+                                                                @Html.TextBoxFor(model => model.Justification[Count] , new { @class = "form-control", @id = @name10,@readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.Justification[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>   
                                                         }
@@ -5212,7 +5212,7 @@
                                                                                                  Model.ACBWJustificationBudgEstNxtFin.Insert(Count, details!=null && details.ACBWJustificationBudgEstNxtFin!=null && details.ACBWJustificationBudgEstNxtFin!=" "? details.ACBWJustificationBudgEstNxtFin.ToString() : "");
                                                                                                }
                                                                                             
-                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[Count], new { @class = "form-control", @id = @name16, @dir = "rtl",@readonly = "readonly"})
+                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[Count], new { @class = "form-control", @id = @name16, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.ACBWJustificationBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                           </div>
                                                                                         </td>
@@ -5225,7 +5225,7 @@
                                                                     Model.ACBWJustificationBudgEstNxtFin.Insert(Count, "");
                                                                  }
                                                                 
-                                                                @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[Count] , new { @class = "form-control", @id = @name16, @dir = "rtl", @readonly = "readonly"})
+                                                                @Html.TextBoxFor(model => model.ACBWJustificationBudgEstNxtFin[Count] , new { @class = "form-control", @id = @name16, @readonly = "readonly"})
                                                                 @Html.ValidationMessageFor(model => model.ACBWJustificationBudgEstNxtFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                             </div>   
                                                             </td>
@@ -5492,7 +5492,7 @@
                                                                                              @{  
                                                                                                 Model.DelegateJustificationRevEst.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.DelegateJustificationRevEst!=null) ? Ledgerdetails.DelegateJustificationRevEst.ToString(): "");
                                                                                               }  
-                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14+@Ledgers.LedgerNo,@readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                         
@@ -5503,7 +5503,7 @@
                                                                                              @{  
                                                                                                 Model.DelegateJustificationRevEst.Insert(LedgerNo, "");
                                                                                               }  
-                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                     }
@@ -5513,7 +5513,7 @@
                                                                                            @{ 
                                                                                               Model.DelegateJustificationRevEst.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.DelegateJustificationRevEst!=null) ? Ledgerdetails.DelegateJustificationRevEst.ToString() : "");
                                                                                              }   
-                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14+@Ledgers.LedgerNo, @dir = "rtl"})
+                                                                                            @Html.TextAreaFor(model => model.DelegateJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name14+@Ledgers.LedgerNo})
                                                                                             @Html.ValidationMessageFor(model => model.DelegateJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                             
@@ -5590,7 +5590,7 @@
                                                                                                   Model.ACBWJustificationRevEst.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationRevEst!=null && Ledgerdetails.ACBWJustificationRevEst!=" " ? Ledgerdetails.ACBWJustificationRevEst.ToString()  : " ");
                                                                                                }
                                                                                                 
-                                                                                                @Html.TextBoxFor(model => model.ACBWJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name15+@Ledgers.LedgerNo, @dir = "rtl"})
+                                                                                                @Html.TextBoxFor(model => model.ACBWJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name15+@Ledgers.LedgerNo})
                                                                                                 @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                         </td>
@@ -5603,7 +5603,7 @@
                                                                                                  Model.ACBWJustificationRevEst.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationRevEst!=null && Ledgerdetails.ACBWJustificationRevEst!=" "? Ledgerdetails.ACBWJustificationRevEst.ToString() : "");
                                                                                                }
                                                                                             
-                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name15+@Ledgers.LedgerNo, @dir = "rtl",@readonly = "readonly"})
+                                                                                            @Html.TextBoxFor(model => model.ACBWJustificationRevEst[LedgerNo], new { @class = "form-control", @id = @name15+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.ACBWJustificationRevEst[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                           </div>
                                                                                         </td>
@@ -5687,7 +5687,7 @@
                                                                                              @{  
                                                                                                 Model.Justification.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.Justification!=null) ? Ledgerdetails.Justification.ToString(): "");
                                                                                               }  
-                                                                                            @Html.TextAreaFor(model => model.Justification[LedgerNo], new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                            @Html.TextAreaFor(model => model.Justification[LedgerNo], new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.Justification[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                         
@@ -5698,7 +5698,7 @@
                                                                                              @{  
                                                                                                 Model.Justification.Insert(LedgerNo, "");
                                                                                               }  
-                                                                                            @Html.TextAreaFor(model => model.Justification[LedgerNo], new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @dir = "rtl", @readonly = "readonly"})
+                                                                                            @Html.TextAreaFor(model => model.Justification[LedgerNo], new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.Justification[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                     }
@@ -5708,7 +5708,7 @@
                                                                                            @{ 
                                                                                               Model.Justification.Insert(LedgerNo, (Ledgerdetails != null && Ledgerdetails.Justification!=null) ? Ledgerdetails.Justification.ToString() : "");
                                                                                              }   
-                                                                                            @Html.TextAreaFor(model => model.Justification[LedgerNo], new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo, @dir = "rtl"})
+                                                                                            @Html.TextAreaFor(model => model.Justification[LedgerNo], new { @class = "form-control", @id = @name10+@Ledgers.LedgerNo})
                                                                                             @Html.ValidationMessageFor(model => model.Justification[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                         </div>
                                                                                             
@@ -5785,7 +5785,7 @@
                                                                                                   Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=" "? Ledgerdetails.ACBWJustificationBudgEstNxtFin.ToString()  : " ");
                                                                                                }
                                                                                                 
-                                                                                                @Html.TextAreaFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name16+@Ledgers.LedgerNo, @dir = "rtl"})
+                                                                                                @Html.TextAreaFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name16+@Ledgers.LedgerNo})
                                                                                                 @Html.ValidationMessageFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                         </td>
@@ -5798,7 +5798,7 @@
                                                                                                  Model.ACBWJustificationBudgEstNxtFin.Insert(LedgerNo, Ledgerdetails!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=null && Ledgerdetails.ACBWJustificationBudgEstNxtFin!=" " ? Ledgerdetails.ACBWJustificationBudgEstNxtFin.ToString() : "");
                                                                                                }
                                                                                             
-                                                                                            @Html.TextAreaFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name16+@Ledgers.LedgerNo, @dir = "rtl",@readonly = "readonly"})
+                                                                                            @Html.TextAreaFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo], new { @class = "form-control", @id = @name16+@Ledgers.LedgerNo,@readonly = "readonly"})
                                                                                             @Html.ValidationMessageFor(model => model.ACBWJustificationBudgEstNxtFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                           </div>
                                                                                         </td>

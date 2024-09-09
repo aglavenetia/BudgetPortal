@@ -53,6 +53,7 @@ namespace BudgetPortal.ViewModel
 
         public Boolean? IsEnabled { get; set; }
 
+        public Boolean? IsChecked { get; set; }
         public List<String> SubGroupNameOrLedgerName { get; set; }
 
         public List<Boolean> HasDelegateSaved { get;set;}
@@ -94,7 +95,7 @@ namespace BudgetPortal.ViewModel
         //public Decimal RevEstCurrFin { get; set; }
 
         
-        [Column(TypeName = "decimal(4,2)")]
+        [Column(TypeName = "decimal(8,2)")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.##}%")]
         public List<String> PerVarRevEstOverBudgEstCurrFin { get; set; }
         //public Decimal PerVarRevEstOverBudgEstCurrFin { get; set; }
@@ -106,7 +107,7 @@ namespace BudgetPortal.ViewModel
         //public Decimal ACAndBWPropRECurrFin { get; set; }
         public List<String>? DelegateJustificationRevEst { get; set; }
 
-        [Column(TypeName = "decimal(4,2)")]
+        [Column(TypeName = "decimal(8,2)")]
         [DisplayFormat(DataFormatString = "{0:#.##}%", ApplyFormatInEditMode = true)]
         public List<String> PerVarACBWRevEstOverBudgEstCurrFin { get; set; }
         //public Decimal PerVarRevEstOverBudgEstCurrFin { get; set; }
@@ -120,7 +121,7 @@ namespace BudgetPortal.ViewModel
         //public Decimal BudgEstNexFin { get; set; }
 
 
-        [Column(TypeName = "decimal(4,2)")]
+        [Column(TypeName = "decimal(8,2)")]
         [DisplayFormat(DataFormatString = "{0:#.##}%", ApplyFormatInEditMode = true)]
         public List<String> PerVarRevEstOverBudgEstNxtFin { get; set; }
         //public Decimal PerVarRevEstOverBudgEstNxtFin { get; set; }
@@ -131,7 +132,7 @@ namespace BudgetPortal.ViewModel
         public List<Decimal> ACAndBWPropRENxtFin { get; set; }
         //public Decimal ACAndBWPropRENxtFin { get; set; }
 
-        [Column(TypeName = "decimal(4,2)")]
+        [Column(TypeName = "decimal(8,2)")]
         [DisplayFormat(DataFormatString = "{0:#.##}%", ApplyFormatInEditMode = true)]
         public List<String> PerVarACBWRevEstOverBudgEstNxtFin { get; set; }
         public List<String>? Justification { get; set; }

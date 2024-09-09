@@ -46,7 +46,7 @@ namespace BudgetPortal.Entities
         [Required]
         public Decimal RevEstCurrFin { get; set; }
 
-        [Column(TypeName = "decimal(4,2)")]
+        [Column(TypeName = "decimal(8,2)")]
         public Decimal PerVarRevEstOverBudgEstCurrFin { get; set; }
 
         [Column(TypeName = "decimal(8,2)")]
