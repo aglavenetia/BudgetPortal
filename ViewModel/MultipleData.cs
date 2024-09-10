@@ -53,7 +53,10 @@ namespace BudgetPortal.ViewModel
 
         public Boolean? IsEnabled { get; set; }
 
-        public Boolean? IsChecked { get; set; }
+        public Boolean IsChecked { get; set; }
+
+        public String eOfficeFileNumber { get; set; }
+
         public List<String> SubGroupNameOrLedgerName { get; set; }
 
         public List<Boolean> HasDelegateSaved { get;set;}

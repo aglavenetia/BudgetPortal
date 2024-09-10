@@ -505,21 +505,46 @@
                 </tr>
                
             </tbody>
-         </table>
+        </table>
 
-        
-    
         var TotalGroups = (from b in Model.Groupss select b.GroupNo).Count();
-    
-
+        var DivType = (from a in Model.Divisionss select a.DivisionType).FirstOrDefault();
+        var comment = (from a in Model.Statuss where a.GroupNumber.Equals("0") && a.SectionNumber == 0 select a.Remarks).FirstOrDefault();
+                            
+        @if (!User.IsInRole("Admin") && (NoOfGroupsReadyToBeSubmitted == TotalGroups))
+        {
+           <div clss="form-group" style="width:500px;display:flex; flex-direction: row;align-items: center;justify-content:space-between">
+                @{
+                    Model.Remarks.Insert(0, Convert.ToString(comment));
+                 }
+               
+               @Html.Label("Additional Comments : ")
+              @Html.TextAreaFor(m => m.Remarks[0], new { @class = "form-control", @id = "AdditionalCmnts" })
+            </div>
+            <div style="width:850px;display:flex; flex-direction: row;align-items: center;justify-content:space-between">
+            @Html.CheckBoxFor(m => m.IsChecked, new { @checked = false })
+                @if (DivType == "Regional Office")
+                {
+                    @Html.Label(" The above proposal has been approved by Regional Director through eoffice File Number ")
+                }
+                else
+                {
+                    @Html.Label(" The above proposal has been approved by Head Of Department through eoffice File Number ")
+                }
+                @Html.TextBoxFor(model => model.eOfficeFileNumber, new { @class = "form-control", @id = "eofficeFile", style = "width:150px" })
+            </div>
+        }
+        
         @if (User.IsInRole("Admin") && (NoOfGroupsReadyToBeSubmitted == TotalGroups))
         {
            <input id="SubmitChairPerson" class="Submit" formaction="~/Summary/Index" type="submit" value="Submit to Chairperson for Approval" style="align-self:center" />
         }
-        else if (!User.IsInRole("Admin") && (NoOfGroupsReadyToBeSubmitted == TotalGroups))
-        {
+        
+            <br/>
+          <div id="ACBWSubmit" style="justify-content:center;display:flex;flex-direction: row;align-items: center;">
             <input id="SubmitACBW" class="Submit" formaction="~/Summary/Index" type="submit" value="Submit to AC&BW for Approval" style="align-self:center" />
-        }
+          </div>
+        
     }
 </div>
 
@@ -585,6 +610,14 @@
                         }
                     });
 
+
+                $('#IsChecked').change(
+                    function () 
+                    {
+                        $('#ACBWSubmit').toggle($(this).is(':checked'));
+                    });
+                
+
             });
         
         function onceDocReady() 
@@ -606,6 +639,7 @@
             $(".VariationInBudgetEstimates").text('% Variation in BE ' + Number.parseInt(year[1]) + '-' + (Number.parseInt(year[1]) + Number.parseInt(1)) + 'over the RE ' + $("#SelectedAcademicYear").val());
             $(".ACBWProposalForBudgetEstimates").text('AC & BW Proposal for BE ' + Number.parseInt(year[1]) + '-' + (Number.parseInt(year[1]) + Number.parseInt(1)));
             $(".Remarks").text('Remarks');
+            $("#ACBWSubmit").hide();
         }
 
         function dropdownchange() 

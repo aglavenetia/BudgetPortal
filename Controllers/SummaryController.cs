@@ -417,6 +417,7 @@ namespace BudgetPortal.Controllers
                     _context.SaveChanges();
                 }
 
+
                 MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
                          .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
 
