@@ -508,7 +508,7 @@
         </table>
 
         var TotalGroups = (from b in Model.Groupss select b.GroupNo).Count();
-        var DivType = (from a in Model.Divisionss select a.DivisionType).FirstOrDefault();
+        var DivType = (from a in Model.LoggedInDivID select a.DivisionType).FirstOrDefault();
         var comment = (from a in Model.Statuss where a.GroupNumber.Equals("0") && a.SectionNumber == 0 select a.Remarks).FirstOrDefault();
                             
         @if (!User.IsInRole("Admin") && (NoOfGroupsReadyToBeSubmitted == TotalGroups))

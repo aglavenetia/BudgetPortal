@@ -27,6 +27,8 @@ namespace BudgetPortal.ViewModel
 
         public IEnumerable<BudgetdetailsStatus>? Statuss { get; set; }
 
+        public IEnumerable<Division>? LoggedInDivID { get; set; }
+
         public IEnumerable<BudgetDetailsApproved>? Approved { get; set; }
 
         public IEnumerable<Division>? Divisionss { get; set; }
@@ -45,7 +47,6 @@ namespace BudgetPortal.ViewModel
 
         public Boolean? AdminEditStatus { get; set; }
         public Boolean? DelegateEditStatus { get; set; }
-
 
         public String EditEnabled { get; set; }
 

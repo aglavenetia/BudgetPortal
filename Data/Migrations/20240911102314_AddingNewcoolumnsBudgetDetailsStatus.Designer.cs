@@ -4,6 +4,7 @@ using BudgetPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetPortal.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240911102314_AddingNewcoolumnsBudgetDetailsStatus")]
+    partial class AddingNewcoolumnsBudgetDetailsStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -480,13 +483,14 @@ namespace BudgetPortal.Data.Migrations
                     b.Property<bool>("GenBodyApproval")
                         .HasColumnType("bit");
 
-                    b.Property<bool?>("IsHeadApproved")
+                    b.Property<bool>("IsHeadApproved")
                         .HasColumnType("bit");
 
                     b.Property<string>("Remarks")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("eoffFileNo")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("DivisionID", "FinancialYear1", "FinancialYear2", "SectionNumber", "GroupNumber");

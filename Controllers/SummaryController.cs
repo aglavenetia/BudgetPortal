@@ -42,6 +42,7 @@ namespace BudgetPortal.Controllers
                                    .Select(x => x.DivisionID).FirstOrDefault();
             }
             var AcademicYear = JsonConvert.DeserializeObject(TempData["SelAcademicYear"].ToString());
+            TempData["SelAcademicYear"] = AcademicYear;
             var SplitAcYear = AcademicYear.ToString().Split("-");
             var Year = Convert.ToInt32(SplitAcYear[0]);
             
@@ -69,7 +70,7 @@ namespace BudgetPortal.Controllers
             mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == LoggedInDivisionID).Where(x => x.FinancialYear1 == (Year - 1)).ToList();
             mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID).Where(x => x.FinancialYear1 == Year).ToList();
             mymodel.Ledgerss = _context.BudgetLedgers.ToList();
-
+            mymodel.LoggedInDivID = _context.Division.Where(x => x.DivisionID == LoggedInDivisionID).ToList();
             if (username.Equals("admin@test.com"))
             {
                 
@@ -131,6 +132,7 @@ namespace BudgetPortal.Controllers
             mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == LoggedInDivisionID).Where(x => x.FinancialYear1 == (Year - 1)).ToList();
             mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID).Where(x => x.FinancialYear1 == Year).ToList();
             mymodel.Ledgerss = _context.BudgetLedgers.ToList();
+            mymodel.LoggedInDivID = _context.Division.Where(x => x.DivisionID == LoggedInDivisionID).ToList();
 
             if (username.Equals("admin@test.com"))
             {
@@ -417,6 +419,19 @@ namespace BudgetPortal.Controllers
                     _context.SaveChanges();
                 }
 
+                var Commts = new BudgetdetailsStatus();
+                
+                Commts.DivisionID = Convert.ToInt32(SelectedDivisionID);
+                Commts.FinancialYear1 = Convert.ToInt32(splitAcademicYear[0]);
+                Commts.FinancialYear2 = Convert.ToInt32(splitAcademicYear[1]);
+                Commts.SectionNumber = 0;
+                Commts.GroupNumber = "AddCmts";
+                Commts.AdditionalComments = MD.Remarks[0];
+                Commts.IsHeadApproved = MD.IsChecked;
+                Commts.eoffFileNo = MD.eOfficeFileNumber;
+
+                _context.BudgetdetailsStatus.Add(Commts);
+                _context.SaveChanges();
 
                 MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
                          .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
@@ -465,7 +480,7 @@ namespace BudgetPortal.Controllers
                     MD.WaitingForApprovalMessage = " ";
                 }
 
-
+                MD.LoggedInDivID = _context.Division.Where(x => x.DivisionID == LoggedInDivisionID).ToList();
 
                 MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
                                      .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
@@ -682,7 +697,7 @@ namespace BudgetPortal.Controllers
                         Value = x.DivisionID.ToString()
 
                     }).ToList();
-
+            MD.LoggedInDivID = _context.Division.Where(x => x.DivisionID == SelectedDivisionID).ToList();
             MD.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
                 new SelectListItem()
                 {
@@ -737,6 +752,7 @@ namespace BudgetPortal.Controllers
             MD.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
             MD.Ledgerss = _context.BudgetLedgers.ToList();
+            MD.LoggedInDivID = _context.Division.Where(x => x.DivisionID == Convert.ToInt32(DivisionID)).ToList();
             //var Month = DateTime.Now.Month;
             var Month = 10;
 

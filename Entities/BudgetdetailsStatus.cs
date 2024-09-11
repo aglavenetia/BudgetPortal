@@ -36,5 +36,11 @@ namespace BudgetPortal.Entities
         public Boolean GenBodyApproval { get; set; }
         public DateTime CreatedDateTime { get; set; }
         public String? Remarks { get; set; }
+
+        public String? AdditionalComments { get; set; }
+
+        public Boolean? IsHeadApproved   { get; set; }
+
+        public String? eoffFileNo { get; set; }
     }
 }
