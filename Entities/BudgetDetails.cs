@@ -16,7 +16,7 @@ namespace BudgetPortal.Entities
         [Required]
         public int FinancialYear2 { get; set; }
 
-        [StringLength(10)]
+        [StringLength(15)]
         [Required]
         public String? SubGroupNumber { get; set; }
 

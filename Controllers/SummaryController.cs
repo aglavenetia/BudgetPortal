@@ -28,6 +28,7 @@ namespace BudgetPortal.Controllers
             if (username.Equals("admin@test.com"))
             {
                  Div = (string)JsonConvert.DeserializeObject(TempData["SelDivisionName"].ToString());
+                TempData["SelDivisionName"] = JsonConvert.SerializeObject(Div);
                  LoggedInDivisionID = _context.Division
                                    .Where(d => d.DivisionName == Div)
                                    .Select(x => x.DivisionID).FirstOrDefault();
@@ -42,7 +43,7 @@ namespace BudgetPortal.Controllers
                                    .Select(x => x.DivisionID).FirstOrDefault();
             }
             var AcademicYear = JsonConvert.DeserializeObject(TempData["SelAcademicYear"].ToString());
-            TempData["SelAcademicYear"] = AcademicYear;
+            TempData["SelAcademicYear"] = JsonConvert.SerializeObject(AcademicYear);
             var SplitAcYear = AcademicYear.ToString().Split("-");
             var Year = Convert.ToInt32(SplitAcYear[0]);
             
@@ -71,6 +72,9 @@ namespace BudgetPortal.Controllers
             mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID).Where(x => x.FinancialYear1 == Year).ToList();
             mymodel.Ledgerss = _context.BudgetLedgers.ToList();
             mymodel.LoggedInDivID = _context.Division.Where(x => x.DivisionID == LoggedInDivisionID).ToList();
+            mymodel.IsChecked = (bool)_context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID).Where(x => x.FinancialYear1 == Year).Select(x => x.IsHeadApproved).FirstOrDefault();
+
+
             if (username.Equals("admin@test.com"))
             {
                 

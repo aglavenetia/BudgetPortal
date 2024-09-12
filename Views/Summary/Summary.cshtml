@@ -509,20 +509,22 @@
 
         var TotalGroups = (from b in Model.Groupss select b.GroupNo).Count();
         var DivType = (from a in Model.LoggedInDivID select a.DivisionType).FirstOrDefault();
-        var comment = (from a in Model.Statuss where a.GroupNumber.Equals("0") && a.SectionNumber == 0 select a.Remarks).FirstOrDefault();
-                            
+        var comment = (from a in Model.Statuss where a.GroupNumber.Equals("AddCmts") && a.SectionNumber == 0 select a.AdditionalComments).FirstOrDefault();
+        Boolean IsSubmittedToACBW = (Boolean)(from a in Model.Statuss where (a.SectionNumber.Equals(0) && a.GroupNumber.Equals("AddCmts")) select a.IsHeadApproved).FirstOrDefault();
+        
         @if (!User.IsInRole("Admin") && (NoOfGroupsReadyToBeSubmitted == TotalGroups))
         {
            <div clss="form-group" style="width:500px;display:flex; flex-direction: row;align-items: center;justify-content:space-between">
                 @{
                     Model.Remarks.Insert(0, Convert.ToString(comment));
+                    Model.eOfficeFileNumber = (from a in Model.Statuss where a.GroupNumber.Equals("AddCmts") && a.SectionNumber == 0 select a.eoffFileNo).FirstOrDefault();
                  }
                
                @Html.Label("Additional Comments : ")
               @Html.TextAreaFor(m => m.Remarks[0], new { @class = "form-control", @id = "AdditionalCmnts" })
             </div>
-            <div style="width:850px;display:flex; flex-direction: row;align-items: center;justify-content:space-between">
-            @Html.CheckBoxFor(m => m.IsChecked, new { @checked = false })
+            <div style="width:1300px;display:flex; flex-direction: row;align-items: center;justify-content:space-between">
+            @Html.CheckBoxFor(m => m.IsChecked, new { @checked = "false" })
                 @if (DivType == "Regional Office")
                 {
                     @Html.Label(" The above proposal has been approved by Regional Director through eoffice File Number ")
@@ -531,10 +533,36 @@
                 {
                     @Html.Label(" The above proposal has been approved by Head Of Department through eoffice File Number ")
                 }
-                @Html.TextBoxFor(model => model.eOfficeFileNumber, new { @class = "form-control", @id = "eofficeFile", style = "width:150px" })
+                
+                @Html.TextBoxFor(model => model.eOfficeFileNumber, new { @class = "form-control", @id = "eofficeFile", style = "width:500px" })
             </div>
         }
-        
+        else if(!User.IsInRole("Admin") && IsSubmittedToACBW)
+        {
+            <div clss="form-group" style="width:500px;display:flex; flex-direction: row;align-items: center;justify-content:space-between">
+                @{
+                    Model.Remarks.Insert(0, Convert.ToString(comment));
+                    Model.eOfficeFileNumber = (from a in Model.Statuss where a.GroupNumber.Equals("AddCmts") && a.SectionNumber == 0 select a.eoffFileNo).FirstOrDefault();
+                 }
+               
+               @Html.Label("Additional Comments : ")
+              @Html.TextAreaFor(m => m.Remarks[0], new { @class = "form-control", @id = "AdditionalCmnts",@readonly = "readonly" })
+            </div>
+                    <div style="width:1300px;display:flex; flex-direction: row;align-items: center;justify-content:space-between">
+            @Html.CheckBoxFor(m => m.IsChecked, new { @checked = true, @disabled = "disabled" })
+                @if (DivType == "Regional Office")
+                {
+                    @Html.Label(" The above proposal has been approved by Regional Director through eoffice File Number ")
+                }
+                else
+                {
+                    @Html.Label(" The above proposal has been approved by Head Of Department through eoffice File Number ")
+                }
+                
+                @Html.TextBoxFor(model => model.eOfficeFileNumber, new { @class = "form-control", @id = "eofficeFile", style = "width:500px", @readonly = "readonly" })
+            </div>
+        }
+
         @if (User.IsInRole("Admin") && (NoOfGroupsReadyToBeSubmitted == TotalGroups))
         {
            <input id="SubmitChairPerson" class="Submit" formaction="~/Summary/Index" type="submit" value="Submit to Chairperson for Approval" style="align-self:center" />
