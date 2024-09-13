@@ -46,7 +46,7 @@ namespace BudgetPortal.Controllers
             mymodel.SelectedAcademicYear = AcademicYear;
             mymodel.Sectionss = _context.BudgetSections.ToList();
             mymodel.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
-            mymodel.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.CreatedDateTime).ToList();
+            mymodel.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.SubGroupNo).ToList();
             mymodel.Ledgerss = _context.BudgetLedgers.ToList();
             mymodel.Detailss = _context.BudgetDetails.Where(x => x.DivisionID==LoggedInDivisionID)
                                 .Where(x => x.FinancialYear1 == Year).ToList();
@@ -225,7 +225,7 @@ namespace BudgetPortal.Controllers
             MD.Sectionss = _context.BudgetSections.ToList();
             MD.SectionName = SectionNumber.ToString();
             MD.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
-            MD.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.CreatedDateTime).ToList();
+            MD.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.SubGroupNo).ToList();
             MD.GroupName = GroupNumber;
             MD.Ledgerss = _context.BudgetLedgers.ToList();
             MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
@@ -396,7 +396,7 @@ namespace BudgetPortal.Controllers
             MD.SectionName = SectionNumber.ToString();
             MD.GroupName = GroupNumber;
             MD.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
-            MD.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.CreatedDateTime).ToList();
+            MD.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.SubGroupNo).ToList();
             MD.Ledgerss = _context.BudgetLedgers.ToList();
             MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
@@ -476,7 +476,7 @@ namespace BudgetPortal.Controllers
                 mymodel.SelectedAcademicYear = AcademicYear;
                 mymodel.Sectionss = _context.BudgetSections.ToList();
                 mymodel.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
-                mymodel.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.CreatedDateTime).ToList();
+                mymodel.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.SubGroupNo).ToList();
                 mymodel.Ledgerss = _context.BudgetLedgers.ToList();
                 mymodel.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
                                     .Where(x => x.FinancialYear1 == Year).ToList();
@@ -715,7 +715,7 @@ namespace BudgetPortal.Controllers
                                            .Select(x => x.DivisionID).FirstOrDefault();
                 MD.Sectionss = _context.BudgetSections.ToList();
                 MD.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
-                MD.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.CreatedDateTime).ToList();
+                MD.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.SubGroupNo).ToList();
                 MD.Ledgerss = _context.BudgetLedgers.ToList();
                 MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == DivisionID)
                                     .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
@@ -940,7 +940,7 @@ namespace BudgetPortal.Controllers
             MD.GroupName = MD.GroupName;
             MD.HeaderName = MD.HeaderName;
             MD.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
-            MD.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.CreatedDateTime).ToList();
+            MD.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.SubGroupNo).ToList();
             MD.Ledgerss = _context.BudgetLedgers.ToList();
             MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
@@ -1263,7 +1263,7 @@ namespace BudgetPortal.Controllers
             MD.GroupName = MD.GroupName;
             MD.HeaderName = MD.HeaderName;
             MD.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
-            MD.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.CreatedDateTime).ToList();
+            MD.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.SubGroupNo).ToList();
             MD.Ledgerss = _context.BudgetLedgers.ToList();
             MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == SelectedDivisionID)
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
@@ -1392,7 +1392,7 @@ namespace BudgetPortal.Controllers
 
             MD.Sectionss = _context.BudgetSections.ToList();
             MD.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
-            MD.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.CreatedDateTime).ToList();
+            MD.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.SubGroupNo).ToList();
             MD.Ledgerss = _context.BudgetLedgers.ToList();
             MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
@@ -1528,7 +1528,7 @@ namespace BudgetPortal.Controllers
                                              .Select(x => x.DivisionID).FirstOrDefault();
             MD.Sectionss = _context.BudgetSections.ToList();
             MD.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
-            MD.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.CreatedDateTime).ToList();
+            MD.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.SubGroupNo).ToList();
             MD.Ledgerss = _context.BudgetLedgers.ToList();
             MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == DivisionID)
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
@@ -1666,7 +1666,7 @@ namespace BudgetPortal.Controllers
                                              .Select(x => x.DivisionID).FirstOrDefault();
             MD.Sectionss = _context.BudgetSections.ToList();
             MD.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
-            MD.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.CreatedDateTime).ToList();
+            MD.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.SubGroupNo).ToList();
             MD.Ledgerss = _context.BudgetLedgers.ToList();
             MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == DivisionID)
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
