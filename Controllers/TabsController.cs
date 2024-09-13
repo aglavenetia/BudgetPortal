@@ -23,7 +23,7 @@ namespace BudgetPortal.Controllers
         public IActionResult Index()
         {
             /*var Year = DateTime.Now.Year;*/
-            var Year = 2024;
+            var Year = 2023;
             
             var username = User.Identity.Name;
             var DivName = _context.Users
@@ -38,15 +38,15 @@ namespace BudgetPortal.Controllers
             if (Month > 0 && Month < 4)
             {
                 /*Year = DateTime.Now.Year - 1;*/
-                Year = 2024 - 1;
+                Year = 2023 - 1;
             }
             var AcademicYear = String.Concat(Year, "-", (Year + 1));
             
             var mymodel = new MultipleData();
             mymodel.SelectedAcademicYear = AcademicYear;
             mymodel.Sectionss = _context.BudgetSections.ToList();
-            mymodel.Groupss = _context.BudgetGroups.ToList();
-            mymodel.SubGroupss = _context.BudgetSubGroups.ToList();
+            mymodel.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
+            mymodel.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.CreatedDateTime).ToList();
             mymodel.Ledgerss = _context.BudgetLedgers.ToList();
             mymodel.Detailss = _context.BudgetDetails.Where(x => x.DivisionID==LoggedInDivisionID)
                                 .Where(x => x.FinancialYear1 == Year).ToList();
@@ -109,7 +109,7 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.FinancialYear1 == Year).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
 
             
-            if (Month > 9 && mymodel.BudgetApprovedStatus != 1 && Year == 2024)
+            if (Month > 9 && mymodel.BudgetApprovedStatus != 1 && Year == 2023)
             {
                 mymodel.IsEnabled = true;
             }
@@ -224,9 +224,9 @@ namespace BudgetPortal.Controllers
 
             MD.Sectionss = _context.BudgetSections.ToList();
             MD.SectionName = SectionNumber.ToString();
-            MD.Groupss = _context.BudgetGroups.ToList();
+            MD.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
+            MD.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.CreatedDateTime).ToList();
             MD.GroupName = GroupNumber;
-            MD.SubGroupss = _context.BudgetSubGroups.ToList();
             MD.Ledgerss = _context.BudgetLedgers.ToList();
             MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
@@ -244,7 +244,7 @@ namespace BudgetPortal.Controllers
             //var Month = DateTime.Now.Month;
             var Month = 10;
 
-            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2024)
+            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2023)
             {
                 MD.IsEnabled = true;
             }
@@ -394,9 +394,9 @@ namespace BudgetPortal.Controllers
                }
             MD.Sectionss = _context.BudgetSections.ToList();
             MD.SectionName = SectionNumber.ToString();
-            MD.Groupss = _context.BudgetGroups.ToList();
             MD.GroupName = GroupNumber;
-            MD.SubGroupss = _context.BudgetSubGroups.ToList();
+            MD.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
+            MD.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.CreatedDateTime).ToList();
             MD.Ledgerss = _context.BudgetLedgers.ToList();
             MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
@@ -414,7 +414,7 @@ namespace BudgetPortal.Controllers
             //var Month = DateTime.Now.Month;
             var Month = 10;
 
-            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2024)
+            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2023)
             {
                 MD.IsEnabled = true;
             }
@@ -475,8 +475,8 @@ namespace BudgetPortal.Controllers
                 var mymodel = new MultipleData();
                 mymodel.SelectedAcademicYear = AcademicYear;
                 mymodel.Sectionss = _context.BudgetSections.ToList();
-                mymodel.Groupss = _context.BudgetGroups.ToList();
-                mymodel.SubGroupss = _context.BudgetSubGroups.ToList();
+                mymodel.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
+                mymodel.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.CreatedDateTime).ToList();
                 mymodel.Ledgerss = _context.BudgetLedgers.ToList();
                 mymodel.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
                                     .Where(x => x.FinancialYear1 == Year).ToList();
@@ -538,7 +538,7 @@ namespace BudgetPortal.Controllers
             //var Month = DateTime.Now.Month;
             var Month = 10;
 
-            if (Month > 9 && mymodel.BudgetApprovedStatus != 1 && Year == 2024)
+            if (Month > 9 && mymodel.BudgetApprovedStatus != 1 && Year == 2023)
             {
                 mymodel.IsEnabled = true;
             }
@@ -714,8 +714,8 @@ namespace BudgetPortal.Controllers
                                            .Where(d => d.DivisionName == DivName)
                                            .Select(x => x.DivisionID).FirstOrDefault();
                 MD.Sectionss = _context.BudgetSections.ToList();
-                MD.Groupss = _context.BudgetGroups.ToList();
-                MD.SubGroupss = _context.BudgetSubGroups.ToList();
+                MD.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
+                MD.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.CreatedDateTime).ToList();
                 MD.Ledgerss = _context.BudgetLedgers.ToList();
                 MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == DivisionID)
                                     .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
@@ -779,7 +779,7 @@ namespace BudgetPortal.Controllers
                 //var Month = DateTime.Now.Month;
                 var Month = 10;
 
-                if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2024)
+                if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2023)
                 {
                     MD.IsEnabled = true;
                 }
@@ -930,17 +930,17 @@ namespace BudgetPortal.Controllers
             //var Month = DateTime.Now.Month;
             var Month = 10;
 
-            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2024)
+            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2023)
             {
                 MD.IsEnabled = true;
             }
 
             MD.Sectionss = _context.BudgetSections.ToList();
             MD.SectionName = MD.SectionName;
-            MD.Groupss = _context.BudgetGroups.ToList();
             MD.GroupName = MD.GroupName;
             MD.HeaderName = MD.HeaderName;
-            MD.SubGroupss = _context.BudgetSubGroups.ToList();
+            MD.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
+            MD.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.CreatedDateTime).ToList();
             MD.Ledgerss = _context.BudgetLedgers.ToList();
             MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
@@ -1262,8 +1262,8 @@ namespace BudgetPortal.Controllers
             MD.SectionName = MD.SectionName;
             MD.GroupName = MD.GroupName;
             MD.HeaderName = MD.HeaderName;
-            MD.Groupss = _context.BudgetGroups.ToList();
-            MD.SubGroupss = _context.BudgetSubGroups.ToList();
+            MD.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
+            MD.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.CreatedDateTime).ToList();
             MD.Ledgerss = _context.BudgetLedgers.ToList();
             MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == SelectedDivisionID)
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
@@ -1273,7 +1273,7 @@ namespace BudgetPortal.Controllers
             //var Month = DateTime.Now.Month;
             var Month = 10;
 
-            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2024)
+            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2023)
             {
                 MD.IsEnabled = true;
             }
@@ -1391,8 +1391,8 @@ namespace BudgetPortal.Controllers
             int index = MD.SubGroupNameOrLedgerName.IndexOf(MD.SubGroupLedgerName);
 
             MD.Sectionss = _context.BudgetSections.ToList();
-            MD.Groupss = _context.BudgetGroups.ToList();
-            MD.SubGroupss = _context.BudgetSubGroups.ToList();
+            MD.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
+            MD.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.CreatedDateTime).ToList();
             MD.Ledgerss = _context.BudgetLedgers.ToList();
             MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
@@ -1410,7 +1410,7 @@ namespace BudgetPortal.Controllers
             //var Month = DateTime.Now.Month;
             var Month = 10;
 
-            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2024)
+            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2023)
             {
                 MD.IsEnabled = true;
             }
@@ -1527,8 +1527,8 @@ namespace BudgetPortal.Controllers
                                              .Where(d => d.DivisionName == DivName)
                                              .Select(x => x.DivisionID).FirstOrDefault();
             MD.Sectionss = _context.BudgetSections.ToList();
-            MD.Groupss = _context.BudgetGroups.ToList();
-            MD.SubGroupss = _context.BudgetSubGroups.ToList();
+            MD.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
+            MD.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.CreatedDateTime).ToList();
             MD.Ledgerss = _context.BudgetLedgers.ToList();
             MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == DivisionID)
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
@@ -1588,7 +1588,7 @@ namespace BudgetPortal.Controllers
             //var Month = DateTime.Now.Month;
             var Month = 10;
 
-            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2024)
+            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2023)
             {
                 MD.IsEnabled = true;
             }
@@ -1665,8 +1665,8 @@ namespace BudgetPortal.Controllers
                                              .Where(d => d.DivisionName == DivName)
                                              .Select(x => x.DivisionID).FirstOrDefault();
             MD.Sectionss = _context.BudgetSections.ToList();
-            MD.Groupss = _context.BudgetGroups.ToList();
-            MD.SubGroupss = _context.BudgetSubGroups.ToList();
+            MD.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
+            MD.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.CreatedDateTime).ToList();
             MD.Ledgerss = _context.BudgetLedgers.ToList();
             MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == DivisionID)
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
@@ -1725,7 +1725,7 @@ namespace BudgetPortal.Controllers
             //var Month = DateTime.Now.Month;
             var Month = 10;
 
-            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2024)
+            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2023)
             {
                 MD.IsEnabled = true;
             }

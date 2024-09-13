@@ -13,6 +13,7 @@ namespace BudgetPortal.Entities
 
         [StringLength(15)]
         public String? SubGroupNo { get; set; }
+
         public BudgetSubGroups? subGroups { get; set; }
         public DateTime CreatedDateTime { get; set; }
     }

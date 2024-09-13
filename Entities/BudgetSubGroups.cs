@@ -6,7 +6,7 @@ namespace BudgetPortal.Entities
     public class BudgetSubGroups
     {
         [Key]
-        [StringLength(10)]
+        [StringLength(15)]
         public String SubGroupNo { get; set; }
 
         [StringLength(200)]

@@ -4,6 +4,7 @@ using BudgetPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetPortal.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240913041541_Removing Foreign Key")]
+    partial class RemovingForeignKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -356,13 +359,16 @@ namespace BudgetPortal.Data.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("SubGroupNo")
-                        .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
+                    b.Property<string>("subGroupsSubGroupNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(10)");
+
                     b.HasKey("LedgerNo");
 
-                    b.HasIndex("SubGroupNo");
+                    b.HasIndex("subGroupsSubGroupNo");
 
                     b.ToTable("BudgetLedgers");
                 });
@@ -409,8 +415,8 @@ namespace BudgetPortal.Data.Migrations
             modelBuilder.Entity("BudgetPortal.Entities.BudgetSubGroups", b =>
                 {
                     b.Property<string>("SubGroupNo")
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<DateTime>("CreatedDateTime")
                         .ValueGeneratedOnAdd()
@@ -688,7 +694,7 @@ namespace BudgetPortal.Data.Migrations
                 {
                     b.HasOne("BudgetPortal.Entities.BudgetSubGroups", "subGroups")
                         .WithMany("Ledgers")
-                        .HasForeignKey("SubGroupNo")
+                        .HasForeignKey("subGroupsSubGroupNo")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetPortal.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240912115931_Changing Leddergs Table")]
-    partial class ChangingLeddergsTable
+    [Migration("20240913073038_AddingUserAccountCOEWestDelhi")]
+    partial class AddingUserAccountCOEWestDelhi
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -412,8 +412,8 @@ namespace BudgetPortal.Data.Migrations
             modelBuilder.Entity("BudgetPortal.Entities.BudgetSubGroups", b =>
                 {
                     b.Property<string>("SubGroupNo")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<DateTime>("CreatedDateTime")
                         .ValueGeneratedOnAdd()
