@@ -75,12 +75,12 @@ $(document).ready(
                 }
 
                 if (PerVariation > 10) {
-                    alert(PerVariation);
+                    //alert(PerVariation);
                     $(this).closest("tr").find($("textarea[id^='Justification']")).prop('required', true);
                 }
                 else {
                     $(this).closest("tr").find($("textarea[id^='Justification']")).removeProp('required', true);
-                    alert("Removed");
+                    //alert("Removed");
                 }
             }
         );
@@ -223,10 +223,10 @@ $(document).ready(
         $("body").on("focusout input", "td[id^='-Total']",
             function () {
 
-            alert("Sum updated");
+            //alert("Sum updated");
             var elementid = $(this).attr("id");
             var newid = elementid.split(".");
-            alert(newid[0]);
+            //alert(newid[0]);
             var FinalIDReplace = elementid.split(/[^a-z]/gi);
             //alert(FinalIDReplace[0]);
             var Finaltotalid = $("#Sum" + FinalIDReplace[0]);
