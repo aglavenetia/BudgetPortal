@@ -72,8 +72,7 @@ namespace BudgetPortal.Controllers
             mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID).Where(x => x.FinancialYear1 == Year).ToList();
             mymodel.Ledgerss = _context.BudgetLedgers.ToList();
             mymodel.LoggedInDivID = _context.Division.Where(x => x.DivisionID == LoggedInDivisionID).ToList();
-            mymodel.IsChecked = (bool)_context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID).Where(x => x.FinancialYear1 == Year).Select(x => x.IsHeadApproved).FirstOrDefault();
-
+            mymodel.IsChecked = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID).Where(x => x.FinancialYear1 == Year).Select(x => x.IsHeadApproved).FirstOrDefault();
 
             if (username.Equals("admin@test.com"))
             {

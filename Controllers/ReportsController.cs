@@ -34,7 +34,7 @@ namespace BudgetPortal.Controllers
         public IActionResult Reports()
         {
             //var Year = DateTime.Now.Year;
-            var Year = 2024;
+            var Year = 2023;
             var username = User.Identity.Name;
 
             //var Month = DateTime.Now.Month;
@@ -42,15 +42,15 @@ namespace BudgetPortal.Controllers
             if (Month > 0 && Month < 4)
             {
                 //Year = DateTime.Now.Year - 1;
-                Year = 2024 - 1;
+                Year = 2023 - 1;
             }
             var AcademicYear = String.Concat(Year, "-", (Year + 1));
             var NextAcademicYear = String.Concat((Year + 1), "-", (Year + 2));
             var mymodel = new ReportView();
 
             mymodel.Sectionss = _context.BudgetSections.ToList();
-            mymodel.Groupss = _context.BudgetGroups.ToList();
-            mymodel.SubGroupss = _context.BudgetSubGroups.ToList();
+            mymodel.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
+            mymodel.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.SubGroupNo).ToList();
             mymodel.Ledgerss = _context.BudgetLedgers.ToList();
             mymodel.Detailss = _context.BudgetDetails.Where(x => x.FinancialYear1 == Year).ToList();
             mymodel.Divisionss = _context.Division.ToList();
@@ -111,8 +111,8 @@ namespace BudgetPortal.Controllers
             var mymodel = new ReportView();
 
             mymodel.Sectionss = _context.BudgetSections.ToList();
-            mymodel.Groupss = _context.BudgetGroups.ToList();
-            mymodel.SubGroupss = _context.BudgetSubGroups.ToList();
+            mymodel.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
+            mymodel.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.SubGroupNo).ToList();
             mymodel.Ledgerss = _context.BudgetLedgers.ToList();
             mymodel.Detailss = _context.BudgetDetails.Where(x => x.FinancialYear1 == Year).ToList();
             mymodel.Divisionss = _context.Division.ToList();
@@ -209,8 +209,8 @@ namespace BudgetPortal.Controllers
             var mymodel = new ReportView();
 
             mymodel.Sectionss = _context.BudgetSections.ToList();
-            mymodel.Groupss = _context.BudgetGroups.ToList();
-            mymodel.SubGroupss = _context.BudgetSubGroups.ToList();
+            mymodel.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
+            mymodel.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.SubGroupNo).ToList();
             mymodel.Ledgerss = _context.BudgetLedgers.ToList();
             mymodel.Detailss = _context.BudgetDetails.Where(x => x.FinancialYear1 == Year).ToList();
             mymodel.Divisionss = _context.Division.ToList();
@@ -312,8 +312,8 @@ namespace BudgetPortal.Controllers
             var mymodel = new ReportView();
 
             mymodel.Sectionss = _context.BudgetSections.ToList();
-            mymodel.Groupss = _context.BudgetGroups.ToList();
-            mymodel.SubGroupss = _context.BudgetSubGroups.ToList();
+            mymodel.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
+            mymodel.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.SubGroupNo).ToList();
             mymodel.Ledgerss = _context.BudgetLedgers.ToList();
             mymodel.Detailss = _context.BudgetDetails.Where(x => x.FinancialYear1 == Year).ToList();
             mymodel.Divisionss = _context.Division.ToList();

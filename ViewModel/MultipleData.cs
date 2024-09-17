@@ -54,7 +54,7 @@ namespace BudgetPortal.ViewModel
 
         public Boolean? IsEnabled { get; set; }
 
-        public Boolean IsChecked { get; set; }
+        public Boolean? IsChecked { get; set; }
 
         public String eOfficeFileNumber { get; set; }
 

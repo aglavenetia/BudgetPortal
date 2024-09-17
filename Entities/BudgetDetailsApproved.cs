@@ -25,7 +25,7 @@ namespace BudgetPortal.Entities
         [Required]
         public String? GroupNumber { get; set; }
 
-        [StringLength(10)]
+        [StringLength(15)]
         [Required]
         public String SubGroupNumber { get; set; }
 
