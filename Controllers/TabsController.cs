@@ -13,13 +13,16 @@ namespace BudgetPortal.Controllers
     public class TabsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        
-        public TabsController(ApplicationDbContext context)
+        private readonly ILogger<TabsController> _logger;
+
+        public TabsController(ApplicationDbContext context, ILogger<TabsController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Index()
         {
             /*var Year = DateTime.Now.Year;*/

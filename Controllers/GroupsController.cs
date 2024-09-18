@@ -8,18 +8,22 @@ using Microsoft.EntityFrameworkCore;
 using BudgetPortal.Data;
 using BudgetPortal.Entities;
 using static System.Collections.Specialized.BitVector32;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BudgetPortal.Controllers
 {
     public class GroupsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public GroupsController(ApplicationDbContext context)
+        private readonly ILogger<GroupsController> _logger;
+        public GroupsController(ApplicationDbContext context, ILogger<GroupsController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: Groups
+        [Authorize]
         public async Task<IActionResult> Index(int Sectionid, string sortOrder)
         {
             //var applicationDbContext = _context.BudgetGroups.Where(b =>b.SectionNo == Sectionid).Include(b => b.Sections);
@@ -45,6 +49,7 @@ namespace BudgetPortal.Controllers
         }
 
         // GET: Groups/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(string id)
         {
             if (id == null || _context.BudgetGroups == null)
@@ -63,8 +68,9 @@ namespace BudgetPortal.Controllers
             return View(budgetGroups);
         }
 
-       
+
         // GET: Groups/Create
+        [Authorize]
         public IActionResult Create(int Sectionid)
         {
             ViewData["SectionNo"] = new SelectList(_context.BudgetSections, "SectionNo", "SectionNo", Sectionid);
@@ -76,6 +82,7 @@ namespace BudgetPortal.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("GroupNo,GroupName,SectionNo,CreatedDateTime")] BudgetGroups budgetGroups)
         {
@@ -91,6 +98,7 @@ namespace BudgetPortal.Controllers
         }
 
         // GET: Groups/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null || _context.BudgetGroups == null)
@@ -112,6 +120,7 @@ namespace BudgetPortal.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("GroupNo,GroupName,SectionNo,CreatedDateTime")] BudgetGroups budgetGroups)
         {
@@ -146,6 +155,7 @@ namespace BudgetPortal.Controllers
         }
 
         // GET: Groups/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null || _context.BudgetGroups == null)
@@ -166,6 +176,7 @@ namespace BudgetPortal.Controllers
 
         // POST: Groups/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
@@ -184,6 +195,7 @@ namespace BudgetPortal.Controllers
             return RedirectToAction(nameof(Index), "Groups", new { sectionid = budgetGroups.SectionNo });
         }
 
+        [Authorize]
         private bool BudgetGroupsExists(string id)
         {
           return (_context.BudgetGroups?.Any(e => e.GroupNo == id)).GetValueOrDefault();

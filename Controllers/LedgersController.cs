@@ -7,19 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BudgetPortal.Data;
 using BudgetPortal.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BudgetPortal.Controllers
 {
     public class LedgersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<LedgersController> _logger;
 
-        public LedgersController(ApplicationDbContext context)
+        public LedgersController(ApplicationDbContext context, ILogger<LedgersController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: Ledgers
+        [Authorize]
         public async Task<IActionResult> Index(String SubGroupid, String sortOrder)
         {
             //var applicationDbContext = _context.BudgetLedgers.Where (b=> (b.SubGroupNo).Equals(SubGroupid) ).Include(b => b.subGroups);
@@ -48,6 +52,7 @@ namespace BudgetPortal.Controllers
         }
 
         // GET: Ledgers/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(string id)
         {
             if (id == null || _context.BudgetLedgers == null)
@@ -67,6 +72,7 @@ namespace BudgetPortal.Controllers
         }
 
         // GET: Ledgers/Create
+        [Authorize]
         public IActionResult Create(String SubGroupid)
         {
             ViewData["SubGroupNo"] = new SelectList(_context.BudgetSubGroups, "SubGroupNo", "SubGroupNo", SubGroupid);
@@ -78,6 +84,7 @@ namespace BudgetPortal.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("LedgerNo,LedgerName,SubGroupNo,CreatedDateTime")] BudgetLedgers budgetLedgers)
         {
@@ -92,6 +99,7 @@ namespace BudgetPortal.Controllers
         }
 
         // GET: Ledgers/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null || _context.BudgetLedgers == null)
@@ -113,6 +121,7 @@ namespace BudgetPortal.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("LedgerNo,LedgerName,SubGroupNo,CreatedDateTime")] BudgetLedgers budgetLedgers)
         {
@@ -147,6 +156,7 @@ namespace BudgetPortal.Controllers
         }
 
         // GET: Ledgers/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null || _context.BudgetLedgers == null)
@@ -167,6 +177,7 @@ namespace BudgetPortal.Controllers
 
         // POST: Ledgers/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
@@ -185,6 +196,7 @@ namespace BudgetPortal.Controllers
             return RedirectToAction(nameof(Index), "Ledgers", new { SubGroupid = budgetLedgers.SubGroupNo });
         }
 
+        [Authorize]
         private bool BudgetLedgersExists(string id)
         {
           return (_context.BudgetLedgers?.Any(e => e.LedgerNo == id)).GetValueOrDefault();

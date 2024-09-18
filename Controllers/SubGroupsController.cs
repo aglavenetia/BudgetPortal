@@ -9,19 +9,22 @@ using BudgetPortal.Data;
 using BudgetPortal.Entities;
 using System.Text.RegularExpressions;
 using static System.Collections.Specialized.BitVector32;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BudgetPortal.Controllers
 {
     public class SubGroupsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public SubGroupsController(ApplicationDbContext context)
+        private readonly ILogger<SubGroupsController> _logger;
+        public SubGroupsController(ApplicationDbContext context, ILogger<SubGroupsController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: SubGroups
+        [Authorize]
         public async Task<IActionResult> Index(String Groupid, String sortOrder)
         {
             //var applicationDbContext = _context.BudgetSubGroups.Where(b => (b.GroupNo).Equals(Groupid)).Include(b => b.groups);
@@ -51,6 +54,7 @@ namespace BudgetPortal.Controllers
         }
 
         // GET: SubGroups/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(string id)
         {
             if (id == null || _context.BudgetSubGroups == null)
@@ -70,6 +74,7 @@ namespace BudgetPortal.Controllers
         }
 
         // GET: SubGroups/Create
+        [Authorize]
         public IActionResult Create(String Groupid)
         {
             ViewData["GroupNo"] = new SelectList(_context.BudgetGroups, "GroupNo", "GroupNo", Groupid);
@@ -81,6 +86,7 @@ namespace BudgetPortal.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("SubGroupNo,subGroupName,GroupNo,RequireInput,CreatedDateTime")] BudgetSubGroups budgetSubGroups)
         {
@@ -96,6 +102,7 @@ namespace BudgetPortal.Controllers
         }
 
         // GET: SubGroups/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null || _context.BudgetSubGroups == null)
@@ -117,6 +124,7 @@ namespace BudgetPortal.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("SubGroupNo,subGroupName,GroupNo,RequireInput,CreatedDateTime")] BudgetSubGroups budgetSubGroups)
         {
@@ -151,6 +159,7 @@ namespace BudgetPortal.Controllers
         }
 
         // GET: SubGroups/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null || _context.BudgetSubGroups == null)
@@ -172,6 +181,7 @@ namespace BudgetPortal.Controllers
 
         // POST: SubGroups/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
@@ -190,6 +200,7 @@ namespace BudgetPortal.Controllers
             return RedirectToAction(nameof(Index), "SubGroups", new { Groupid = budgetSubGroups.GroupNo });
         }
 
+        [Authorize]
         private bool BudgetSubGroupsExists(string id)
         {
           return (_context.BudgetSubGroups?.Any(e => e.SubGroupNo == id)).GetValueOrDefault();

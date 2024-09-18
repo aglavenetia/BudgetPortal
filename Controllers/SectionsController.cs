@@ -7,19 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BudgetPortal.Data;
 using BudgetPortal.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BudgetPortal.Controllers
 {
     public class SectionsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<SectionsController> _logger;
 
-        public SectionsController(ApplicationDbContext context)
+        public SectionsController(ApplicationDbContext context, ILogger<SectionsController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: Sections
+        [Authorize]
         public async Task<IActionResult> Index()
         {
               return _context.BudgetSections != null ? 
@@ -28,6 +32,7 @@ namespace BudgetPortal.Controllers
         }
 
         // GET: Sections/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.BudgetSections == null)
@@ -46,6 +51,7 @@ namespace BudgetPortal.Controllers
         }
 
         // GET: Sections/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -55,6 +61,7 @@ namespace BudgetPortal.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("SectionNo,SectionName,CreatedDateTime")] BudgetSections budgetSections)
         {
@@ -68,6 +75,7 @@ namespace BudgetPortal.Controllers
         }
 
         // GET: Sections/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.BudgetSections == null)
@@ -87,6 +95,7 @@ namespace BudgetPortal.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("SectionNo,SectionName,CreatedDateTime")] BudgetSections budgetSections)
         {
@@ -119,6 +128,7 @@ namespace BudgetPortal.Controllers
         }
 
         // GET: Sections/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.BudgetSections == null)
@@ -138,6 +148,7 @@ namespace BudgetPortal.Controllers
 
         // POST: Sections/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -155,6 +166,7 @@ namespace BudgetPortal.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize]
         private bool BudgetSectionsExists(int id)
         {
           return (_context.BudgetSections?.Any(e => e.SectionNo == id)).GetValueOrDefault();

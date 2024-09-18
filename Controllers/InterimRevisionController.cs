@@ -12,13 +12,16 @@ namespace BudgetPortal.Controllers
     public class InterimRevisionController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<InterimRevisionController> _logger;
 
-        public InterimRevisionController(ApplicationDbContext context)
+        public InterimRevisionController(ApplicationDbContext context, ILogger<InterimRevisionController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult InterimRev()
         {
             //var Year = DateTime.Now.Year;
@@ -257,6 +260,7 @@ namespace BudgetPortal.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult GetDetails(int Year, String Division)
         {
 

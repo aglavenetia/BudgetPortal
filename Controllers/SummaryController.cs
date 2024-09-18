@@ -12,13 +12,15 @@ namespace BudgetPortal.Controllers
     public class SummaryController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public SummaryController(ApplicationDbContext context)
+        private readonly ILogger<SummaryController> _logger;
+        public SummaryController(ApplicationDbContext context, ILogger<SummaryController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Summary()
         {
             var username = User.Identity.Name;
@@ -102,6 +104,7 @@ namespace BudgetPortal.Controllers
             return View(mymodel);
         }
 
+        [Authorize]
         public IActionResult GetDetails(int Year, String Division)
         {
             var AcademicYear = String.Concat(Year, "-", (Year + 1));

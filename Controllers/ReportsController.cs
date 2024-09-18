@@ -24,13 +24,15 @@ namespace BudgetPortal.Controllers
     public class ReportsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public ReportsController(ApplicationDbContext context)
+        private readonly ILogger<ReportsController> _logger;
+        public ReportsController(ApplicationDbContext context, ILogger<ReportsController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Reports()
         {
             //var Year = DateTime.Now.Year;
@@ -102,6 +104,7 @@ namespace BudgetPortal.Controllers
 
         //Displays details while changing values in DropDownList
         [HttpGet]
+        [Authorize]
         public IActionResult GetDetails(int Year, String DivisionType, String Report)
         {
             var AcademicYear = String.Concat(Year, "-", (Year + 1));
@@ -201,6 +204,7 @@ namespace BudgetPortal.Controllers
 
         }
 
+        [Authorize]
         public ActionResult PrintPDF(int Year, String DivisionType, String Report)
         {
             var AcademicYear = String.Concat(Year, "-", (Year + 1));
@@ -280,7 +284,7 @@ namespace BudgetPortal.Controllers
             };
         }
 
-
+        [Authorize]
         public async Task<FileResult> ExportBudgetInExcel(int Year, String DivisionType, String Rep)
         {
 
@@ -298,7 +302,7 @@ namespace BudgetPortal.Controllers
 
         }
 
-
+        [Authorize]
         private ActionResult GenerateExcel(String fileName, int Year, String DivisionType, String Rep)
         {
 
