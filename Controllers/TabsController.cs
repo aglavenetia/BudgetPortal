@@ -276,7 +276,7 @@ namespace BudgetPortal.Controllers
             return View("Index",MD);
         }
 
-        
+        //Uploads File in the website
         [HttpPost]
         [RequestFormLimits(ValueCountLimit = 20000)]
         [Authorize]
@@ -593,7 +593,7 @@ namespace BudgetPortal.Controllers
             return View("Index", mymodel);
         }
 
-
+        //Saves the Final Approved Budget Details to BudgetDetailsApproved Database, after Publishing the Budget
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
@@ -817,7 +817,7 @@ namespace BudgetPortal.Controllers
             return View("Index", MD);
         }
 
-
+        //Deletes the Budget Values entered by Delegate User/Admin User
         [HttpPost]
         [RequestFormLimits(ValueCountLimit = 20000)]
         [Authorize]
@@ -1019,7 +1019,8 @@ namespace BudgetPortal.Controllers
             ModelState.Clear();
             return View("Index", MD);
         }
-
+        
+        //Saves the Budget Values entered by Delegate User/Admin User
         [HttpPost]
         [RequestFormLimits(ValueCountLimit = 20000)]
         [Authorize]
@@ -1361,7 +1362,7 @@ namespace BudgetPortal.Controllers
 
         }
 
-
+        //Edits the Budget Values entered by Delegate User/Admin User
         [HttpPost]
         [RequestFormLimits(ValueCountLimit = 20000)]
         [Authorize]
@@ -1485,7 +1486,7 @@ namespace BudgetPortal.Controllers
 
         }
 
-
+        //Budget Details will be submitted to Financial Commitee
         [HttpPost]
         [RequestFormLimits(ValueCountLimit = 20000)]
         [Authorize]
@@ -1624,6 +1625,7 @@ namespace BudgetPortal.Controllers
             return View("Index", MD);
         }
 
+        //Budget Details will be submitted to General Body
         [HttpPost]
         [RequestFormLimits(ValueCountLimit = 20000)]
         [Authorize]
@@ -1759,6 +1761,68 @@ namespace BudgetPortal.Controllers
 
 
             return View("Index", MD);
+        }
+
+        //Yet to be implemented. Prints the Budeget Proposal Page as PDF.
+        [Authorize]
+        public ActionResult PrintPDF(int Year, String Division)
+        {
+            var AcademicYear = String.Concat(Year, "-", (Year + 1));
+            var NextAcademicYear = String.Concat((Year + 1), "-", (Year + 2));
+
+            var mymodel = new MultipleData();
+
+            mymodel.Sectionss = _context.BudgetSections.ToList();
+            mymodel.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
+            mymodel.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.SubGroupNo).ToList();
+            mymodel.Ledgerss = _context.BudgetLedgers.ToList();
+            mymodel.Detailss = _context.BudgetDetails.Where(x => x.FinancialYear1 == Year).ToList();
+            mymodel.Divisionss = _context.Division.ToList();
+            mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.FinancialYear1 == (Year - 1)).ToList();
+
+            mymodel.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
+                    new SelectListItem()
+                    {
+                        Selected = false,
+                        Text = x.Year1 + "-" + x.Year2,
+                        Value = x.Id.ToString()
+
+                    }).ToList();
+            mymodel.AcademicYears.Where(x => x.Text.Equals(AcademicYear)).Single().Selected = true;
+
+            mymodel.DivisionNames = _context.Division.AsEnumerable().Select(x =>
+                    new SelectListItem()
+                    {
+                        Selected = false,
+                        Text = x.DivisionName,
+                        Value = x.DivisionID.ToString()
+
+                    }).ToList();
+
+            mymodel.DivisionNames.Where(x => x.Text.Equals(Division)).Single().Selected = true;
+
+            //return View("PrintPDF",mymodel);
+
+            /*string customSwitches = string.Format("--header-html  \"{0}\" " +
+                               "--header-spacing \"0\" " +
+                               "--footer-html \"{1}\" " +
+                               "--footer-spacing \"10\" " +
+                               "--footer-font-size \"10\" " +
+                               "--header-font-size \"10\" ", header, footer);*/
+            //var SelectedFileName = mymodel.ReportNames.Where(x => x.Selected == true).Select(x => x.Text).FirstOrDefault();
+            //var ReportName = "";
+            //var SelectedAcademicYear = mymodel.AcademicYears.Where(x => x.Selected == true).Select(x => x.Text).FirstOrDefault();
+
+            //var SelectedDivisionTypeName = mymodel.DivisionTypeNames.Where(x => x.Selected == true).Select(x => x.Text).FirstOrDefault();
+
+
+            return new Rotativa.AspNetCore.ViewAsPdf("PrintPDF", mymodel)
+            {
+
+                FileName = "Budget in " + AcademicYear + " for " + Division + "_" + DateTime.Now + ".pdf",
+                CustomSwitches = "--page-offset 0 --footer-center [page] --footer-font-size 8",
+                PageOrientation = Rotativa.AspNetCore.Options.Orientation.Landscape,
+            };
         }
 
     }

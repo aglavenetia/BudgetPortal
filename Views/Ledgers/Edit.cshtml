@@ -7,24 +7,29 @@
 
 <h1>Edit</h1>
 
-<h4>BudgetLedgers</h4>
+<h4>Ledgers</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="LedgerNo" />
+            <input type="hidden" asp-for="SubGroupNo" />
             
             <div class="form-group">
-                <label asp-for="LedgerName" class="control-label"></label>
-                <input asp-for="LedgerName" class="form-control" />
-                <span asp-validation-for="LedgerName" class="text-danger"></span>
+                <label asp-for="subGroupName" class="control-label"></label>
+                <input asp-for="subGroupName" class="form-control" />
+                <span asp-validation-for="subGroupName" class="text-danger"></span>
             </div><br />
             <div class="form-group">
-                <label asp-for="SubGroupNo" class="control-label"></label>
-                <select asp-for="SubGroupNo" class="form-control" asp-items="ViewBag.SubGroupNo"></select>
-                <span asp-validation-for="SubGroupNo" class="text-danger"></span>
+                <label asp-for="GroupNo" class="control-label"></label>
+                <select asp-for="GroupNo" class="form-control" asp-items="ViewBag.GroupNo"></select>
+                <span asp-validation-for="GroupNo" class="text-danger"></span>
             </div><br />
+            <div class="form-group">
+                <label asp-for="RequireInput" class="control-label">Does Ledger has Sub-Ledgers ?</label><br />
+                <input type="radio" asp-for="RequireInput" value="true" id="true" /> True <br />
+                <input type="radio" asp-for="RequireInput" value="false" id="false"/> False <br />
+            </div> <br />
             <div class="form-group">
                 <label asp-for="CreatedDateTime" class="control-label"></label>
                 <input asp-for="CreatedDateTime" class="form-control" readonly="readonly" />
@@ -38,7 +43,7 @@
 </div>
 
 <div>
-    <a asp-action="Index" asp-controller="Ledgers" asp-route-SubGroupid="@ViewData["SubGroupId"]">Back to List</a>
+    <a asp-action="Index" asp-controller="Ledgers" asp-route-Groupid="@ViewData["GroupId"]">Back to List</a>
 </div>
 
 @section Scripts {

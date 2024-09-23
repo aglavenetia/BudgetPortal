@@ -17,7 +17,7 @@ namespace BudgetPortal.Entities
 
         public BudgetSections? Sections { get; set; } = null!;
 
-        public ICollection<BudgetSubGroups>? SubGroups { get; set; }
+        public ICollection<BudgetLedgers>? SubGroups { get; set; }
 
         public DateTime CreatedDateTime { get; set; }
     }

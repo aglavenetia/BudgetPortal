@@ -141,7 +141,7 @@
                         var ROSumGroupReport = 0.00;
                         var COESumGroupReport = 0.00;
                         var UnitSumGroupReport = 0.00;
-
+     //Calculating values in prior
                         if (ReportName != null && ReportName.Equals("Actual"))
                         {
                             //SumGroupReport = (Double)(from a in Model.Detailss where (a.GroupNumber.Equals(@item.GroupNo) ) select a.ActPrevFin).Sum();
@@ -265,6 +265,8 @@
                                          select a.ACAndBWPropRENxtFin).Sum();
         }
 
+
+        //Reports
                             @if (ReportName != null && ReportName.Equals("Headwise Consolidation"))
                             {
                                  @*<div class="row" style="background-color:darkkhaki">@item.GroupName</div> *@
@@ -1054,7 +1056,7 @@
 
                       
 
-                                            @if (LedgerCount > 0)
+                            @if (LedgerCount > 0)
                             {
                                 @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
                                 {

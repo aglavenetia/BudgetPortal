@@ -7,35 +7,40 @@
 
 <h1>Create</h1>
 
-<h4>BudgetLedgers</h4>
+<h4>Ledgers</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="LedgerNo" class="control-label"></label>
-                <input asp-for="LedgerNo" class="form-control" />
-                <span asp-validation-for="LedgerNo" class="text-danger"></span>
-            </div><br/>
-            <div class="form-group">
-                <label asp-for="LedgerName" class="control-label"></label>
-                <input asp-for="LedgerName" class="form-control" />
-                <span asp-validation-for="LedgerName" class="text-danger"></span>
-            </div><br />
-            <div class="form-group">
                 <label asp-for="SubGroupNo" class="control-label"></label>
-                <select asp-for="SubGroupNo" class="form-control" asp-items="ViewBag.SubGroupNo" readonly="readonly"></select>
+                <input asp-for="SubGroupNo" class="form-control" />
+                <span asp-validation-for="SubGroupNo" class="text-danger"></span>
             </div><br />
+            <div class="form-group">
+                <label asp-for="subGroupName" class="control-label"></label>
+                <input asp-for="subGroupName" class="form-control" />
+                <span asp-validation-for="subGroupName" class="text-danger"></span>
+            </div><br />
+            <div class="form-group">
+                <label asp-for="GroupNo" class="control-label"></label>
+                <select asp-for="GroupNo" class="form-control" asp-items="ViewBag.GroupNo" readonly="readonly"></select>
+            </div><br />
+            <div class="form-group">
+                <label asp-for="RequireInput" class="control-label">Does Ledger has Sub-Ledgers ?</label><br />
+                <input type="radio" asp-for="RequireInput" value="true" id="true" /> True <br />
+                <input type="radio" asp-for="RequireInput" value="false" id="false" Checked="checked" /> False <br />
+            </div> <br />
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
-            </div> <br />
+            </div><br />
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index" asp-controller="Ledgers" asp-route-SubGroupid="@ViewData["SubGroupID"]">Back to List</a>
+    <a asp-action="Index" asp-controller="Ledgers" asp-route-Groupid="@ViewData["GroupID"]">Back to List</a>
 </div>
 
 @section Scripts {

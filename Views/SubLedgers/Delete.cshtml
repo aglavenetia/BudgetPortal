@@ -1,4 +1,4 @@
-﻿@model BudgetPortal.Entities.BudgetSubGroups
+﻿@model BudgetPortal.Entities.BudgetSubLedgers
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -9,20 +9,20 @@
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>BudgetSubGroups</h4>
+    <h4>BudgetLedgers</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.subGroupName)
+            @Html.DisplayNameFor(model => model.LedgerName)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.subGroupName)
+            @Html.DisplayFor(model => model.LedgerName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.groups)
+            @Html.DisplayNameFor(model => model.subGroups)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.groups.GroupNo)
+            @Html.DisplayFor(model => model.subGroups.SubGroupNo)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.CreatedDateTime)
@@ -33,8 +33,8 @@
     </dl>
     
     <form asp-action="Delete">
-        <input type="hidden" asp-for="SubGroupNo" />
+        <input type="hidden" asp-for="LedgerNo" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index" asp-controller="SubGroups" asp-route-Groupid="@ViewData["GroupId"]">Back to List</a>
+        <a asp-action="Index" asp-controller="SubLedgers" asp-route-SubGroupid="@ViewData["SubGroupId"]">Back to List</a>
     </form>
 </div>

@@ -104,6 +104,7 @@ namespace BudgetPortal.Controllers
             return View(mymodel);
         }
 
+        //Display the Summary Details according to the FinancialYear selected
         [Authorize]
         public IActionResult GetDetails(int Year, String Division)
         {
@@ -497,7 +498,7 @@ namespace BudgetPortal.Controllers
             }
         }
 
-
+        //Deletes the Remarks added by Admin User
         [HttpPost]
         [RequestFormLimits(ValueCountLimit = 20000)]
         [Authorize]
@@ -596,6 +597,8 @@ namespace BudgetPortal.Controllers
             return View("Summary", MD);
         }
 
+
+        //Saves the Remarks added by Admin User
         [HttpPost]
         [RequestFormLimits(ValueCountLimit = 20000)]
         [Authorize]
@@ -643,7 +646,7 @@ namespace BudgetPortal.Controllers
             ModelState.Remove("PerVarRevEstOverBudgEstNxtFin");
             ModelState.Remove("PerVarACBWRevEstOverBudgEstNxtFin");
 
-            //Saves Budget Finalised values of ACBW
+            //Saves Remarks of ACBW
             if (username == "admin@test.com")
             {
                 if (ModelState.IsValid)
@@ -724,7 +727,7 @@ namespace BudgetPortal.Controllers
 
         }
 
-
+        //Edits the Remarks added by Admin User
         [HttpPost]
         [RequestFormLimits(ValueCountLimit = 20000)]
         [Authorize]

@@ -31,11 +31,25 @@
 
 <div id="outerdiv">
     
-    <div style="float:right">
+    <div style="float:right;">
 
         @Html.AntiForgeryToken()
 
         <table border="0" cellpadding="5" cellspacing="0">
+            <tr>
+                <td>
+                    @Html.LabelFor(Model => Model.SelectedReportID)
+                </td>
+                <td>
+                    @Html.LabelFor(Model => Model.SelectedAcademicYearID)
+                </td>
+                @if(ReportName != "Headwise Consolidation" && !ReportName.Contains("Consolidated"))
+                {
+                <td>
+                    @Html.LabelFor(Model => Model.SelectedDivisionTypeID)
+                </td>
+                }
+            </tr>
             <tr>
                 <td class="w-20">
                     @Html.DropDownListFor(m => m.SelectedReportID, Model.ReportNames,"--Please select any Report--", new { @class = "form-control", @id="Reports" })
@@ -64,7 +78,9 @@
 
     <br />
     <br />
-    <div style="float:right;margin:50px">
+    <br />
+    <br />
+    <div style="margin:20px;float:right">
         @{
             var SelAcademicYear = (from a in Model.AcademicYears where a.Selected == true select a.Text).FirstOrDefault();
             SplitAcademicYear = SelAcademicYear.Split("-");
@@ -78,9 +94,8 @@
     </div>
     <br />
     <br />
-
+    <br />
     
-
     <ul id="outerTab" class="nav nav-pills" role="tablist">
         @foreach (var item in Model.Sectionss)
         {

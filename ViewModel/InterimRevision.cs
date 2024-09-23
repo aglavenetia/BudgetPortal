@@ -10,9 +10,9 @@ namespace BudgetPortal.ViewModel
         public IEnumerable<BudgetSections>? Sectionss { get; set; }
         public IEnumerable<BudgetGroups>? Groupss { get; set; }
 
-        public IEnumerable<BudgetSubGroups>? SubGroupss { get; set; }
+        public IEnumerable<BudgetLedgers>? SubGroupss { get; set; }
 
-        public IEnumerable<BudgetLedgers>? Ledgerss { get; set; }
+        public IEnumerable<BudgetSubLedgers>? Ledgerss { get; set; }
 
         public IEnumerable<BudgetDetails>? Detailss { get; set; }
 

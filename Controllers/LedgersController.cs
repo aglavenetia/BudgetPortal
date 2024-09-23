@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BudgetPortal.Data;
 using BudgetPortal.Entities;
+using System.Text.RegularExpressions;
+using static System.Collections.Specialized.BitVector32;
 using Microsoft.AspNetCore.Authorization;
 
 namespace BudgetPortal.Controllers
@@ -15,26 +17,26 @@ namespace BudgetPortal.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<LedgersController> _logger;
-
         public LedgersController(ApplicationDbContext context, ILogger<LedgersController> logger)
         {
             _context = context;
             _logger = logger;
         }
 
-        // GET: Ledgers
+        // GET: SubGroups
         [Authorize]
-        public async Task<IActionResult> Index(String SubGroupid, String sortOrder)
+        public async Task<IActionResult> Index(String Groupid, String sortOrder)
         {
-            //var applicationDbContext = _context.BudgetLedgers.Where (b=> (b.SubGroupNo).Equals(SubGroupid) ).Include(b => b.subGroups);
+            //var applicationDbContext = _context.BudgetSubGroups.Where(b => (b.GroupNo).Equals(Groupid)).Include(b => b.groups);
 
-            var applicationDbContext = from b in _context.BudgetLedgers where(b.SubGroupNo.Equals(SubGroupid)) select b;
-            ViewData["SubGroupNo"] = SubGroupid;
-            var GroupNo = _context.BudgetSubGroups.Where(a=>a.SubGroupNo.Equals(SubGroupid)).Select(a=>a.GroupNo).FirstOrDefault();
-            ViewData["GroupNo"] = GroupNo.ToString();
+            var applicationDbContext = from b in _context.BudgetSubGroups where((b.GroupNo).Equals(Groupid)) select b;
+
+            ViewData["GroupNo"] = Groupid;
+            var SectionNo = _context.BudgetGroups.Where (a => a.GroupNo.Equals(Groupid)).Select (a => a.SectionNo).FirstOrDefault();
+            ViewData["SectionNo"] = SectionNo;
 
             ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
-
+           
             switch (sortOrder)
             {
                 case "Date":
@@ -51,81 +53,82 @@ namespace BudgetPortal.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Ledgers/Details/5
+        // GET: SubGroups/Details/5
         [Authorize]
         public async Task<IActionResult> Details(string id)
         {
-            if (id == null || _context.BudgetLedgers == null)
+            if (id == null || _context.BudgetSubGroups == null)
             {
                 return NotFound();
             }
 
-            var budgetLedgers = await _context.BudgetLedgers
-                .Include(b => b.subGroups)
-                .FirstOrDefaultAsync(m => m.LedgerNo == id);
-            if (budgetLedgers == null)
+            var budgetSubGroups = await _context.BudgetSubGroups
+                .Include(b => b.groups)
+                .FirstOrDefaultAsync(m => m.SubGroupNo == id);
+            if (budgetSubGroups == null)
             {
                 return NotFound();
             }
-            ViewData["SubGroupId"] = _context.BudgetLedgers.Where(b => b.LedgerNo == id).Select(b => b.SubGroupNo).FirstOrDefault();
-            return View(budgetLedgers);
+            ViewData["GroupId"] = _context.BudgetSubGroups.Where(b => b.SubGroupNo == id).Select(b => b.GroupNo).FirstOrDefault();
+            return View(budgetSubGroups);
         }
 
-        // GET: Ledgers/Create
+        // GET: SubGroups/Create
         [Authorize]
-        public IActionResult Create(String SubGroupid)
+        public IActionResult Create(String Groupid)
         {
-            ViewData["SubGroupNo"] = new SelectList(_context.BudgetSubGroups, "SubGroupNo", "SubGroupNo", SubGroupid);
-            ViewData["SubGroupID"] = SubGroupid;
+            ViewData["GroupNo"] = new SelectList(_context.BudgetGroups, "GroupNo", "GroupNo", Groupid);
+            ViewData["GroupID"] = Groupid;
             return View();
         }
 
-        // POST: Ledgers/Create
+        // POST: SubGroups/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LedgerNo,LedgerName,SubGroupNo,CreatedDateTime")] BudgetLedgers budgetLedgers)
+        public async Task<IActionResult> Create([Bind("SubGroupNo,subGroupName,GroupNo,RequireInput,CreatedDateTime")] BudgetLedgers budgetSubGroups)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(budgetLedgers);
+                _context.Add(budgetSubGroups);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index),"Ledgers",new { SubGroupid  = budgetLedgers.SubGroupNo});
+                return RedirectToAction(nameof(Index),"SubGroups", new { Groupid = budgetSubGroups.GroupNo });
             }
-            ViewData["SubGroupNo"] = new SelectList(_context.BudgetSubGroups, "SubGroupNo", "SubGroupNo", budgetLedgers.SubGroupNo);
-            return View(budgetLedgers);
+            ViewData["GroupNo"] = new SelectList(_context.BudgetGroups, "GroupNo", "GroupNo", budgetSubGroups.GroupNo);
+            
+            return View(budgetSubGroups);
         }
 
-        // GET: Ledgers/Edit/5
+        // GET: SubGroups/Edit/5
         [Authorize]
         public async Task<IActionResult> Edit(string id)
         {
-            if (id == null || _context.BudgetLedgers == null)
+            if (id == null || _context.BudgetSubGroups == null)
             {
                 return NotFound();
             }
 
-            var budgetLedgers = await _context.BudgetLedgers.FindAsync(id);
-            if (budgetLedgers == null)
+            var budgetSubGroups = await _context.BudgetSubGroups.FindAsync(id);
+            if (budgetSubGroups == null)
             {
                 return NotFound();
             }
-            ViewData["SubGroupId"] = _context.BudgetLedgers.Where(b => b.LedgerNo == id).Select(b => b.SubGroupNo).FirstOrDefault();
-            ViewData["SubGroupNo"] = new SelectList(_context.BudgetSubGroups, "SubGroupNo", "SubGroupNo", budgetLedgers.SubGroupNo);
-            return View(budgetLedgers);
+            ViewData["GroupId"] = _context.BudgetSubGroups.Where(b => b.SubGroupNo == id).Select(b => b.GroupNo).FirstOrDefault();
+            ViewData["GroupNo"] = new SelectList(_context.BudgetGroups, "GroupNo", "GroupNo", budgetSubGroups.GroupNo);
+            return View(budgetSubGroups);
         }
 
-        // POST: Ledgers/Edit/5
+        // POST: SubGroups/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("LedgerNo,LedgerName,SubGroupNo,CreatedDateTime")] BudgetLedgers budgetLedgers)
+        public async Task<IActionResult> Edit(string id, [Bind("SubGroupNo,subGroupName,GroupNo,RequireInput,CreatedDateTime")] BudgetLedgers budgetSubGroups)
         {
-            if (id != budgetLedgers.LedgerNo)
+            if (id != budgetSubGroups.SubGroupNo)
             {
                 return NotFound();
             }
@@ -134,12 +137,12 @@ namespace BudgetPortal.Controllers
             {
                 try
                 {
-                    _context.Update(budgetLedgers);
+                    _context.Update(budgetSubGroups);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BudgetLedgersExists(budgetLedgers.LedgerNo))
+                    if (!BudgetSubGroupsExists(budgetSubGroups.SubGroupNo))
                     {
                         return NotFound();
                     }
@@ -149,57 +152,58 @@ namespace BudgetPortal.Controllers
                     }
                 }
                 //return RedirectToAction(nameof(Index));
-                return RedirectToAction(nameof(Index), "Ledgers", new { SubGroupid = budgetLedgers.SubGroupNo });
+                return RedirectToAction(nameof(Index), "SubGroups", new { Groupid = budgetSubGroups.GroupNo });
             }
-            ViewData["SubGroupNo"] = new SelectList(_context.BudgetSubGroups, "SubGroupNo", "SubGroupNo", budgetLedgers.SubGroupNo);
-            return View(budgetLedgers);
+            ViewData["GroupNo"] = new SelectList(_context.BudgetGroups, "GroupNo", "GroupNo", budgetSubGroups.GroupNo);
+            return View(budgetSubGroups);
         }
 
-        // GET: Ledgers/Delete/5
+        // GET: SubGroups/Delete/5
         [Authorize]
         public async Task<IActionResult> Delete(string id)
         {
-            if (id == null || _context.BudgetLedgers == null)
+            if (id == null || _context.BudgetSubGroups == null)
             {
                 return NotFound();
             }
 
-            var budgetLedgers = await _context.BudgetLedgers
-                .Include(b => b.subGroups)
-                .FirstOrDefaultAsync(m => m.LedgerNo == id);
-            if (budgetLedgers == null)
+            var budgetSubGroups = await _context.BudgetSubGroups
+                .Include(b => b.groups)
+                .FirstOrDefaultAsync(m => m.SubGroupNo == id);
+            if (budgetSubGroups == null)
             {
                 return NotFound();
             }
-            ViewData["SubGroupId"] = _context.BudgetLedgers.Where(b => b.LedgerNo == id).Select(b => b.SubGroupNo).FirstOrDefault();
-            return View(budgetLedgers);
+            ViewData["GroupId"] = _context.BudgetSubGroups.Where(b => b.SubGroupNo == id).Select(b => b.GroupNo).FirstOrDefault();
+
+            return View(budgetSubGroups);
         }
 
-        // POST: Ledgers/Delete/5
+        // POST: SubGroups/Delete/5
         [HttpPost, ActionName("Delete")]
         [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            if (_context.BudgetLedgers == null)
+            if (_context.BudgetSubGroups == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.BudgetLedgers'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.BudgetSubGroups'  is null.");
             }
-            var budgetLedgers = await _context.BudgetLedgers.FindAsync(id);
-            if (budgetLedgers != null)
+            var budgetSubGroups = await _context.BudgetSubGroups.FindAsync(id);
+            if (budgetSubGroups != null)
             {
-                _context.BudgetLedgers.Remove(budgetLedgers);
+                _context.BudgetSubGroups.Remove(budgetSubGroups);
             }
             
             await _context.SaveChangesAsync();
             //return RedirectToAction(nameof(Index));
-            return RedirectToAction(nameof(Index), "Ledgers", new { SubGroupid = budgetLedgers.SubGroupNo });
+            return RedirectToAction(nameof(Index), "SubGroups", new { Groupid = budgetSubGroups.GroupNo });
         }
 
         [Authorize]
-        private bool BudgetLedgersExists(string id)
+        private bool BudgetSubGroupsExists(string id)
         {
-          return (_context.BudgetLedgers?.Any(e => e.LedgerNo == id)).GetValueOrDefault();
+          return (_context.BudgetSubGroups?.Any(e => e.SubGroupNo == id)).GetValueOrDefault();
         }
     }
 }

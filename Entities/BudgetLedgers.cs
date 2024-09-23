@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace BudgetPortal.Entities
 {
@@ -6,15 +7,24 @@ namespace BudgetPortal.Entities
     {
         [Key]
         [StringLength(15)]
-        public String? LedgerNo { get; set; }
+        [DisplayName("Ledger No")]
+        public String SubGroupNo { get; set; }
 
         [StringLength(200)]
-        public String? LedgerName { get; set; }
+        [DisplayName("Ledger Name")]
+        public String subGroupName { get; set; }
 
-        [StringLength(15)]
-        public String? SubGroupNo { get; set; }
+        public String GroupNo { get; set; }
 
-        public BudgetSubGroups? subGroups { get; set; }
+        public BudgetGroups? groups { get; set; }
+
+        public ICollection<BudgetSubLedgers>? Ledgers { get; set; }
+
+        [DisplayName("Does Ledger has Sub-Ledgers ?")]
+        public Boolean RequireInput { get; set; }
+
         public DateTime CreatedDateTime { get; set; }
+
+        // ICollection<BudgetDetails> Budgets { get; set; }
     }
 }

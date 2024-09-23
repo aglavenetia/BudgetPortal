@@ -1,4 +1,4 @@
-﻿@model BudgetPortal.Entities.BudgetGroups
+﻿@model BudgetPortal.Entities.BudgetSubLedgers
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,23 +7,23 @@
 
 <h1>Edit</h1>
 
-<h4>Groups</h4>
+<h4>Sub-Ledgers</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="GroupNo" />
-           
+            <input type="hidden" asp-for="LedgerNo" />
+            
             <div class="form-group">
-                <label asp-for="GroupName" class="control-label"></label>
-                <input asp-for="GroupName" class="form-control" />
-                <span asp-validation-for="GroupName" class="text-danger"></span>
+                <label asp-for="LedgerName" class="control-label"></label>
+                <input asp-for="LedgerName" class="form-control" />
+                <span asp-validation-for="LedgerName" class="text-danger"></span>
             </div><br />
             <div class="form-group">
-                <label asp-for="SectionNo" class="control-label"></label>
-                <select asp-for="SectionNo" class="form-control" asp-items="ViewBag.SectionNo"></select>
-                <span asp-validation-for="SectionNo" class="text-danger"></span>
+                <label asp-for="SubGroupNo" class="control-label"></label>
+                <select asp-for="SubGroupNo" class="form-control" asp-items="ViewBag.SubGroupNo"></select>
+                <span asp-validation-for="SubGroupNo" class="text-danger"></span>
             </div><br />
             <div class="form-group">
                 <label asp-for="CreatedDateTime" class="control-label"></label>
@@ -38,7 +38,7 @@
 </div>
 
 <div>
-    <a asp-action="Index" asp-controller="Groups" asp-route-Sectionid="@ViewData["SectionId"]">Back to List</a>
+    <a asp-action="Index" asp-controller="SubLedgers" asp-route-SubGroupid="@ViewData["SubGroupId"]">Back to List</a>
 </div>
 
 @section Scripts {

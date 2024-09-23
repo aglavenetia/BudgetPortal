@@ -18,28 +18,38 @@ namespace BudgetPortal.ViewModel
         public IEnumerable<BudgetSections>? Sectionss { get; set; }
         public IEnumerable<BudgetGroups>? Groupss { get; set; }
 
-        public IEnumerable<BudgetSubGroups>? SubGroupss { get; set; }
+        public IEnumerable<BudgetLedgers>? SubGroupss { get; set; }
 
-        public IEnumerable<BudgetLedgers>? Ledgerss { get; set; }
+        public IEnumerable<BudgetSubLedgers>? Ledgerss { get; set; }
         public IEnumerable<BudgetDetailsApproved>? Approved { get; set; }
         public IEnumerable<BudgetDetails>? Detailss { get; set; }
         public IEnumerable<BudgetReports>? Reports { get; set; }
         public IEnumerable<Division>? Divisionss { get; set; }
 
         public List<SelectListItem>? DivisionTypeNames { get; set; }
+
+        [Display(Name = "DivisionType Names")]
+        [Required(ErrorMessage = "DivisionType Names are Required")]
         public String? SelectedDivisionTypeID { get; set; }
         public String? SelectedDivisionTypeName { get; set; }
         
         public IEnumerable<SelectListItem>? ReportNames { get; set; }
+
+        [Display(Name = "Report Names")]
+        [Required(ErrorMessage = "Please select any Report")]
         public String? SelectedReportID { get; set; }
         public String? SelectedReportName { get; set; }
 
-        [Required(ErrorMessage = "Please select the Academic Year")]
-        [Display(Name = "Financial Year")]
+        
         public IEnumerable<SelectListItem>? AcademicYears { get; set; }
+
+        [Display(Name = "Financial Year")]
+        [Required(ErrorMessage = "Academic Year Required")]
         public String? SelectedAcademicYearID { get; set; }
         
         public String? SelectedAcademicYear { get; set; }
+
+        
         public String? SelectedDivisionName { get; set; }
         public String? SectionName { get; set; }
 

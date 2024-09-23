@@ -51,17 +51,17 @@ namespace BudgetPortal.Data
                 .HasForeignKey(e => e.GroupNo)
                 .IsRequired();
 
-            modelBuilder.Entity<BudgetSubGroups>()
+            modelBuilder.Entity<BudgetLedgers>()
                 .Property(b => b.CreatedDateTime)
                 .HasDefaultValueSql("GETDATE()");
 
-            modelBuilder.Entity<BudgetSubGroups>()
+            modelBuilder.Entity<BudgetLedgers>()
                 .HasMany(e => e.Ledgers)
                 .WithOne(e => e.subGroups)
                 .HasForeignKey(e => e.SubGroupNo)
                 .IsRequired();
 
-            modelBuilder.Entity<BudgetLedgers>()
+            modelBuilder.Entity<BudgetSubLedgers>()
                 .Property(b => b.CreatedDateTime)
                 .HasDefaultValueSql("GETDATE()");   
 
@@ -96,8 +96,8 @@ namespace BudgetPortal.Data
 
         public DbSet<BudgetSections> BudgetSections { get; set; }
         public DbSet<BudgetGroups> BudgetGroups { get; set; }
-        public DbSet<BudgetSubGroups> BudgetSubGroups { get; set; }
-        public DbSet<BudgetLedgers> BudgetLedgers { get; set; }
+        public DbSet<BudgetLedgers> BudgetSubGroups { get; set; }
+        public DbSet<BudgetSubLedgers> BudgetLedgers { get; set; }
         public DbSet<Division> Division { get; set; }
         public DbSet<BudgetDetails> BudgetDetails { get; set; }
         public DbSet<AcademicYears> AcademicYears { get; set; }
