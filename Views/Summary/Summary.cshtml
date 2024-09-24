@@ -105,14 +105,34 @@
         </table>
 
     </div>
-        <div style="float:right;margin:50px">
+       @* <div style="float:right;margin:50px">
         @{
             var SelAcademicYear = (from a in Model.AcademicYears where a.Selected == true select a.Text).FirstOrDefault();
             SplitAcademicYear = SelAcademicYear.Split("-");
             
             //var DivType = (from a in Model.DivisionTypeNames where a.Selected == true select a.Text).FirstOrDefault();
         }
-    </div>
+    </div>*@
+        <br />
+        <br />
+        <br />
+        <br />
+        <div style="margin:20px;float:right">
+            @{
+                var SelAcademicYear = (from a in Model.AcademicYears where a.Selected == true select a.Text).FirstOrDefault();
+                SplitAcademicYear = SelAcademicYear.Split("-");
+                var Div = (from a in Model.DivisionNames where a.Selected == true select a.Text).FirstOrDefault();
+            }
+
+            @if (Div is not null)
+            {
+                @Html.ActionLink("Export To PDF", "PrintPDF", "Summary", new { Year = SplitAcademicYear[0], Division = Div }, new { @class = "btn btn-primary" })
+            }
+
+        </div>
+        <br />
+        <br />
+        <br />
         <table class="table table-borderless">
             <tr class="text-center" style="color:chocolate;border-bottom:hidden;"><th colspan="100">CENTRAL BOARD OF SECONDARY EDUCATION</th></tr>
             <tr class="text-center" style="color:chocolate;border-bottom:hidden;">

@@ -18,6 +18,7 @@ using DocumentFormat.OpenXml.Bibliography;
 using DocumentFormat.OpenXml.Drawing;
 using System;
 using DocumentFormat.OpenXml.Wordprocessing;
+using Newtonsoft.Json;
 
 namespace BudgetPortal.Controllers
 {
@@ -98,6 +99,8 @@ namespace BudgetPortal.Controllers
 
                     }).ToList();
             mymodel.AcademicYears.Where(x => x.Text.Equals(AcademicYear)).Single().Selected = true;
+            var AcYear = mymodel.AcademicYears.Where(x => x.Selected.Equals(true)).Select(x => x.Text).FirstOrDefault();
+            TempData["SelAcademicYear"] = JsonConvert.SerializeObject(AcYear);
 
             return View(mymodel);
         }

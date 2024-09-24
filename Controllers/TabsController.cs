@@ -1763,22 +1763,45 @@ namespace BudgetPortal.Controllers
             return View("Index", MD);
         }
 
-        //Yet to be implemented. Prints the Budeget Proposal Page as PDF.
+        //Prints the Budeget Proposal Page as PDF.
         [Authorize]
         public ActionResult PrintPDF(int Year, String Division)
         {
             var AcademicYear = String.Concat(Year, "-", (Year + 1));
             var NextAcademicYear = String.Concat((Year + 1), "-", (Year + 2));
-
+            var LoggedInDivisionID = 0;
+            var username = User.Identity.Name;
+            var DivName = _context.Users
+                          .Where(x => x.UserName.Equals(username))
+                          .Select(x => x.BranchName).FirstOrDefault();
+            if (username != "admin@test.com")
+            {
+                 LoggedInDivisionID = _context.Division
+                                 .Where(d => d.DivisionName == DivName)
+                                 .Select(x => x.DivisionID).FirstOrDefault();
+            }
+            else
+            {
+                 LoggedInDivisionID = _context.Division
+                                    .Where(d => d.DivisionName == Division)
+                                    .Select(x => x.DivisionID).FirstOrDefault();
+            }
+            //var Month = DateTime.Now.Month;
             var mymodel = new MultipleData();
-
+            mymodel.SelectedAcademicYear = AcademicYear;
             mymodel.Sectionss = _context.BudgetSections.ToList();
             mymodel.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
             mymodel.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.SubGroupNo).ToList();
             mymodel.Ledgerss = _context.BudgetLedgers.ToList();
-            mymodel.Detailss = _context.BudgetDetails.Where(x => x.FinancialYear1 == Year).ToList();
+            mymodel.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
+                                .Where(x => x.FinancialYear1 == Year).ToList();
+            mymodel.Filess = _context.BudgetFiles.Where(x => x.DivisionID == LoggedInDivisionID)
+                                .Where(x => x.FinancialYear1 == Year).ToList();
+            mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == LoggedInDivisionID)
+                                .Where(x => x.FinancialYear1 == (Year - 1)).ToList();
+            mymodel.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
+                                .Where(x => x.FinancialYear1 == Year).ToList();
             mymodel.Divisionss = _context.Division.ToList();
-            mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.FinancialYear1 == (Year - 1)).ToList();
 
             mymodel.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
                     new SelectListItem()
@@ -1801,25 +1824,10 @@ namespace BudgetPortal.Controllers
 
             mymodel.DivisionNames.Where(x => x.Text.Equals(Division)).Single().Selected = true;
 
-            //return View("PrintPDF",mymodel);
-
-            /*string customSwitches = string.Format("--header-html  \"{0}\" " +
-                               "--header-spacing \"0\" " +
-                               "--footer-html \"{1}\" " +
-                               "--footer-spacing \"10\" " +
-                               "--footer-font-size \"10\" " +
-                               "--header-font-size \"10\" ", header, footer);*/
-            //var SelectedFileName = mymodel.ReportNames.Where(x => x.Selected == true).Select(x => x.Text).FirstOrDefault();
-            //var ReportName = "";
-            //var SelectedAcademicYear = mymodel.AcademicYears.Where(x => x.Selected == true).Select(x => x.Text).FirstOrDefault();
-
-            //var SelectedDivisionTypeName = mymodel.DivisionTypeNames.Where(x => x.Selected == true).Select(x => x.Text).FirstOrDefault();
-
-
             return new Rotativa.AspNetCore.ViewAsPdf("PrintPDF", mymodel)
             {
 
-                FileName = "Budget in " + AcademicYear + " for " + Division + "_" + DateTime.Now + ".pdf",
+                FileName = "Budget " + AcademicYear + " for " + Division + "_" + DateTime.Now + ".pdf",
                 CustomSwitches = "--page-offset 0 --footer-center [page] --footer-font-size 8",
                 PageOrientation = Rotativa.AspNetCore.Options.Orientation.Landscape,
             };

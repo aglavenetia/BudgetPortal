@@ -37,6 +37,7 @@
     Model.PerVarACBWRevEstOverBudgEstNxtFin = new List<String>();
     Model.Justification = new List<String>();
     Model.ACBWJustificationBudgEstNxtFin = new List<String>();
+    String[] SplitAcademicYear = new String[1];
     
     //Model.File = new List<IFormFile>();
 
@@ -107,10 +108,26 @@
     </div>
 
     @*Html.ValidationSummary(false, "", new { @class = "text-danger" })*@
-      <br />
-      <br />
-      <br />
-      <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <div style="margin:20px;float:right">
+            @{
+                var SelAcademicYear = (from a in Model.AcademicYears where a.Selected == true select a.Text).FirstOrDefault();
+                SplitAcademicYear = SelAcademicYear.Split("-");
+                var Div = (from a in Model.DivisionNames where a.Selected == true select a.Text).FirstOrDefault();
+            }
+
+            @if( Div is not null)
+            {
+                 @Html.ActionLink("Export To PDF", "PrintPDF", "Tabs", new { Year = SplitAcademicYear[0], Division = Div}, new { @class = "btn btn-primary" })
+            }
+
+        </div>
+        <br />
+        <br />
+        <br />
        <div>
        <table>
        <tr>
@@ -143,18 +160,11 @@
             <br /><br/>
         </td>
         }
-        
-        
-        
-        
-        
-        
-        
         </tr>
         </table>
         </div>
         
-
+    
     <ul id="outerTab" class="nav nav-pills" role="tablist" >    
       @foreach (var item in Model.Sectionss)
       {
