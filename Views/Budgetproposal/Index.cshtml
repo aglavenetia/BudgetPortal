@@ -121,7 +121,7 @@
 
             @if( Div is not null)
             {
-                 @Html.ActionLink("Export To PDF", "PrintPDF", "Tabs", new { Year = SplitAcademicYear[0], Division = Div}, new { @class = "btn btn-primary" })
+                 @Html.ActionLink("Export To PDF", "PrintPDF", "BudgetProposal", new { Year = SplitAcademicYear[0], Division = Div}, new { @class = "btn btn-primary" })
             }
 
         </div>
@@ -135,7 +135,7 @@
         @if (User.IsInRole("Admin") && FinancialCommiteeApprovalStatus && !GenBodyApprovalStatus)
         {
             <td>
-            <input id="FinalSubmit" class="FinalSubmit" formaction="~/Tabs/FinalSubmit" value="Publish Budget" type="submit" style="align-self:center"/>
+            <input id="FinalSubmit" class="FinalSubmit" formaction="~/BudgetProposal/FinalSubmit" value="Publish Budget" type="submit" style="align-self:center"/>
             @*Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = "FinalSubmit-SelectedAcademicYear" })
             @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = "FinalSubmit-SelectedDivisionName" })*@
             <br /><br/>
@@ -144,7 +144,7 @@
         else if (User.IsInRole("Admin") && ChairpersonApprovalStatus && !FinancialCommiteeApprovalStatus)
         {
             <td>
-            <input id="SubmitGB" class="SubmitGB" formaction="~/Tabs/GeneralBodySubmission" value="Submit to General Body" type="submit" style="align-self:center"/>
+            <input id="SubmitGB" class="SubmitGB" formaction="~/BudgetProposal/GeneralBodySubmission" value="Submit to General Body" type="submit" style="align-self:center"/>
             @*Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = "FinalSubmit-SelectedAcademicYear" })
             @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = "FinalSubmit-SelectedDivisionName" })*@
             </td>
@@ -154,7 +154,7 @@
         {
        <td>
         
-            <input id="SubmitFinCommitee" class="FinCommitee" formaction="~/Tabs/FinancialCommiteeSubmission" value="Submit to Financial Comittee" type="submit" style="align-self:center"/>
+            <input id="SubmitFinCommitee" class="FinCommitee" formaction="~/BudgetProposal/FinancialCommiteeSubmission" value="Submit to Financial Comittee" type="submit" style="align-self:center"/>
             @*Html.Hidden("SelectedAcademicYear", Model.SelectedAcademicYear,  new{@id = "FinalSubmit-SelectedAcademicYear" })
             @Html.Hidden("SelectedDivisionName",Model.SelectedDivisionName,  new{@id = "FinalSubmit-SelectedDivisionName" })*@
             <br /><br/>
@@ -1471,7 +1471,7 @@
                                                                    <tr><td  style="border:none"> @Html.ValidationMessage("Caution"+Count,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
                                                                    <tr><td  style="border:none"> @Html.ValidationMessage("FileMessage_"+Count,null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
                                                                    <br/>
-                                                                   <tr><td style="border:none"><input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload" /></td></tr>
+                                                                            <tr><td style="border:none"><input id="@upload" class="Submit" formaction="~/BudgetProposal/Upload" type="submit" value="Upload" /></td></tr>
                                                               }
                                                              
                                                                                     @foreach(var Files in Model.Filess.Where(a => a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
@@ -1481,11 +1481,11 @@
                                                                                       @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin") || (User.IsInRole("Admin") && FinalSubmitStatus > 0))
                                                                                       {
                                                                                        <td style="border:none">@Html.ActionLink(@Files.FileName,null,null,null,new{href =@Files.SupportingDocumentPath, target = "_blank"} )</td>
-                                                                                       /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@Files.FileName" /></td>*/
+                                                                                       /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/BudgetProposal/ViewFile" type="submit" value= "@Files.FileName" /></td>*/
                                                                                       }
                                                                                         @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && !IsDelegateSaved)
                                                                                         {
-                                                                                           <td style="border:none"><input id="@delete" class="Submit  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete"/></td>
+                                                                                           <td style="border:none"><input id="@delete" class="Submit  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/BudgetProposal/Delete" type="submit" value="Delete"/></td>
                                                                                         }
                                                                                      </tr>      
                                                                                          
@@ -1497,17 +1497,17 @@
                                                         <td style="background-color:honeydew;">
                                                         @if((!User.IsInRole("Admin") && !@Subs.RequireInput && DelegateEditStatus && (!IsDelegateSaved || Model.EditEnabled==@Subs.SubGroupNo))||(User.IsInRole("Admin") && !@Subs.RequireInput && AdminEditStatus && (!IsAdminSaved|| (Model.EditEnabled == @Subs.SubGroupNo)) ))
                                                         {
-                                                                                   <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/Tabs/Save" type="submit" value="Save Budget" style="align-self:center">
+                                                                                   <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/BudgetProposal/Save" type="submit" value="Save Budget" style="align-self:center">
                                                                                    <i class='bx bx-check' style="color:limegreen"></i></button>
                                                           }
                                                           @if((!User.IsInRole("Admin") && IsDelegateSaved && !@Subs.RequireInput && DelegateEditStatus && (Model.EditEnabled != @Subs.SubGroupNo) )||(User.IsInRole("Admin") && IsAdminSaved && !@Subs.RequireInput && AdminEditStatus && (Model.EditEnabled != @Subs.SubGroupNo)))
                                                           {
-                                                                                   <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/Tabs/Edit" type="submit" value="Edit Budget" style="align-self:center">
+                                                                                   <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/BudgetProposal/Edit" type="submit" value="Edit Budget" style="align-self:center">
                                                                                    <i class='bx bxs-pencil' style="color:blue"></i></button>
                                                            }
                                                            @if((!User.IsInRole("Admin") && !@Subs.RequireInput && DelegateEditStatus && (IsDelegateSaved  || (Model.EditEnabled == @Subs.SubGroupNo)))||(User.IsInRole("Admin") && !@Subs.RequireInput && AdminEditStatus && (IsAdminSaved|| (Model.EditEnabled == @Subs.SubGroupNo)) ))
                                                            {
-                                                                                    <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/Tabs/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
+                                                                                    <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/BudgetProposal/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
                                                                                     <i class='bx bx-x' style="color:red"></i>     
                                                                                     </button>
                                                            }
@@ -2041,7 +2041,7 @@
                                                                                             <tr><td  style="border:none"> @Html.ValidationMessage("Caution"+LedgerNo,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
                                                                                             <tr><td  style="border:none"> @Html.ValidationMessage("FileMessage_"+LedgerNo,null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
                                                                                             <br/>
-                                                                                            <tr><td style="border:none"> <input id="@upload@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload" /></td> </tr>
+                                                                                            <tr><td style="border:none"> <input id="@upload@Ledgers.LedgerNo" class="Submit" formaction="~/BudgetProposal/Upload" type="submit" value="Upload" /></td> </tr>
                                                                                         }
                                                                                         
                                                                                     @foreach(var LedgerFiles in Model.Filess.Where (a => (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo))))
@@ -2051,11 +2051,11 @@
                                                                                                         @if ((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin") || (User.IsInRole("Admin") && (FinalSubmitStatus > 0)))
                                                                                                         {
                                                                                                             <td style="border:none">@Html.ActionLink(@LedgerFiles.FileName,null,null,null,new{href =@LedgerFiles.SupportingDocumentPath, target = "_blank"} )</td>
-                                                                                                            /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>*/
-                                                                                                        }
+                                                                                        /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/BudgetProposal/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>*/
+                                                                                    }
                                                                                                         @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && !LedgerIsDelegateSaved)
                                                                                                         {
-                                                                                                           <td style="border:none"><input id="@delete@Ledgers.LedgerNo" class="Submit btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
+                                                                                                           <td style="border:none"><input id="@delete@Ledgers.LedgerNo" class="Submit btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/BudgetProposal/Delete" type="submit" value="Delete"/> </td>
                                                                                                         }
                                                                                                      </tr>      
                                                                                          
@@ -2067,17 +2067,17 @@
                                                                                     @if((!User.IsInRole("Admin") && DelegateEditStatus && (!LedgerIsDelegateSaved || Model.EditEnabled==@Ledgers.LedgerNo) )||(User.IsInRole("Admin") && AdminEditStatus && (!LedgerIsAdminSaved  || (Model.EditEnabled == @Ledgers.LedgerNo))))
                                                                                     {
                                                                                 
-                                                                                   <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/Tabs/Save" type="submit" value="Save Budget" style="align-self:center">
+                                                                                   <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/BudgetProposal/Save" type="submit" value="Save Budget" style="align-self:center">
                                                                                    <i class='bx bx-check' style="color:limegreen"></i></button>
                                                                                     }
                                                                                     @if ((!User.IsInRole("Admin") && LedgerIsDelegateSaved && DelegateEditStatus && (Model.EditEnabled != @Ledgers.LedgerNo)) || (User.IsInRole("Admin") && LedgerIsAdminSaved && AdminEditStatus && (Model.EditEnabled != @Ledgers.LedgerNo)))
                                                                                     {
-                                                                                            <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/Tabs/Edit" type="submit" value="Edit Budget" style="align-self:center">
+                                                                                            <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/BudgetProposal/Edit" type="submit" value="Edit Budget" style="align-self:center">
                                                                                                 <i class='bx bxs-pencil' style="color:blue"></i></button>
                                                                                     }
                                                                                 @if((!User.IsInRole("Admin") && DelegateEditStatus && (LedgerIsDelegateSaved || Model.EditEnabled==@Ledgers.LedgerNo ))||(User.IsInRole("Admin") && AdminEditStatus && (LedgerIsAdminSaved || (Model.EditEnabled == @Ledgers.LedgerNo))))
                                                                                 {
-                                                                                            <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/Tabs/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
+                                                                        <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/BudgetProposal/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
                                                                                                 <i class='bx bx-x' style="color:red"></i>     
                                                                                             </button>
                                                                                  }
@@ -2210,11 +2210,11 @@
                                         
                                     @if (User.IsInRole("Admin") && AdminEditStatus && (TotalAdminSavedLedgers == TotalSubGroups)  && Model.IsEnabled.Equals(true) && !ACBWSubmission)
                                     {
-                                            <input id="@SubmitChairPerson" class="Submit" formaction="~/Tabs/Index" type="submit" value="Submit to Chairperson for Approval" style="align-self:center"/>
+                                            <input id="@SubmitChairPerson" class="Submit" formaction="~/BudgetProposal/Index" type="submit" value="Submit to Chairperson for Approval" style="align-self:center"/>
                                         }
                                         else if(!User.IsInRole("Admin") && DelegateEditStatus && (TotalDelegateSavedLedgers == TotalSubGroups)  && Model.IsEnabled.Equals(true))
                                         {
-                                            <input id="@SubmitACBW" class="Submit" formaction="~/Tabs/Index" type="submit" value="Submit to AC&BW for Approval" style="align-self:center"/>
+                    <input id="@SubmitACBW" class="Submit" formaction="~/BudgetProposal/Index" type="submit" value="Submit to AC&BW for Approval" style="align-self:center"/>
                                         }
                                         }*@
                             </div>
@@ -3258,7 +3258,7 @@
                                                                             <tr><td style="border:none"> @Html.ValidationMessage("Caution" + Count, "* only .pdf files with size 1 MB are allowed", new { @class = "text-danger", @style = "font-size: 0.8em;font-style: italic;" })</td></tr>
                                                                             <tr><td style="border:none"> @Html.ValidationMessage("FileMessage_" + Count, null, new { @class = "text-danger", @style = "font-size: 0.8em;font-style: italic;" })</td></tr>
                                                                             <br />
-                                                                            <tr><td style="border:none"><input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload" /></td></tr>
+                                                                            <tr><td style="border:none"><input id="@upload" class="Submit" formaction="~/BudgetProposal/Upload" type="submit" value="Upload" /></td></tr>
                                                                         }
 
                                                                         @foreach (var Files in Model.Filess.Where(a => a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
@@ -3268,11 +3268,11 @@
                                                                                 @if ((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin") || (User.IsInRole("Admin") && FinalSubmitStatus > 0))
                                                                                 {
                                                                                     <td style="border:none">@Html.ActionLink(@Files.FileName, null, null, null, new { href = @Files.SupportingDocumentPath, target = "_blank" })</td>
-                                                                                    /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@Files.FileName" /></td>*/
+                                                                                    /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/BudgetProposal/ViewFile" type="submit" value= "@Files.FileName" /></td>*/
                                                                                 }
                                                                                 @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && !IsDelegateSaved)
                                                                                 {
-                                                                                    <td style="border:none"><input id="@delete" class="Submit  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete" /></td>
+                                                                                    <td style="border:none"><input id="@delete" class="Submit  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/BudgetProposal/Delete" type="submit" value="Delete" /></td>
                                                                                 }
                                                                             </tr>
 
@@ -3284,19 +3284,19 @@
                                                         <td style="background-color:honeydew;">
                                                             @if ((!User.IsInRole("Admin") && !@Subs.RequireInput && DelegateEditStatus && (!IsDelegateSaved || Model.EditEnabled == @Subs.SubGroupNo)) || (User.IsInRole("Admin") && !@Subs.RequireInput && AdminEditStatus && (!IsAdminSaved || (Model.EditEnabled == @Subs.SubGroupNo))))
                                                             {
-                                                                <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/Tabs/Save" type="submit" value="Save Budget" style="align-self:center">
+                                                                <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/BudgetProposal/Save" type="submit" value="Save Budget" style="align-self:center">
                                                                     <i class='bx bx-check' style="color:limegreen"></i>
                                                                 </button>
                                                             }
                                                             @if ((!User.IsInRole("Admin") && IsDelegateSaved && !@Subs.RequireInput && DelegateEditStatus && (Model.EditEnabled != @Subs.SubGroupNo)) || (User.IsInRole("Admin") && IsAdminSaved && !@Subs.RequireInput && AdminEditStatus && (Model.EditEnabled != @Subs.SubGroupNo)))
                                                             {
-                                                                <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/Tabs/Edit" type="submit" value="Edit Budget" style="align-self:center">
+                                                                <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/BudgetProposal/Edit" type="submit" value="Edit Budget" style="align-self:center">
                                                                     <i class='bx bxs-pencil' style="color:blue"></i>
                                                                 </button>
                                                             }
                                                             @if ((!User.IsInRole("Admin") && !@Subs.RequireInput && DelegateEditStatus && (IsDelegateSaved || (Model.EditEnabled == @Subs.SubGroupNo))) || (User.IsInRole("Admin") && !@Subs.RequireInput && AdminEditStatus && (IsAdminSaved || (Model.EditEnabled == @Subs.SubGroupNo))))
                                                             {
-                                                                <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/Tabs/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
+                                                                <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/BudgetProposal/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
                                                                     <i class='bx bx-x' style="color:red"></i>
                                                                 </button>
                                                             }
@@ -3830,7 +3830,7 @@
                                                                                 <tr><td style="border:none"> @Html.ValidationMessage("Caution" + LedgerNo, "* only .pdf files with size 1 MB are allowed", new { @class = "text-danger", @style = "font-size: 0.8em;font-style: italic;" })</td></tr>
                                                                                 <tr><td style="border:none"> @Html.ValidationMessage("FileMessage_" + LedgerNo, null, new { @class = "text-danger", @style = "font-size: 0.8em;font-style: italic;" })</td></tr>
                                                                                 <br />
-                                                                                <tr><td style="border:none"> <input id="@upload@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload" /></td> </tr>
+                                                                                <tr><td style="border:none"> <input id="@upload@Ledgers.LedgerNo" class="Submit" formaction="~/BudgetProposal/Upload" type="submit" value="Upload" /></td> </tr>
                                                                             }
 
                                                                             @foreach (var LedgerFiles in Model.Filess.Where(a => (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo))))
@@ -3840,11 +3840,11 @@
                                                                                     @if ((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin") || (User.IsInRole("Admin") && (FinalSubmitStatus > 0)))
                                                                                     {
                                                                                         <td style="border:none">@Html.ActionLink(@LedgerFiles.FileName, null, null, null, new { href = @LedgerFiles.SupportingDocumentPath, target = "_blank" })</td>
-                                                                                        /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>*/
+                                                                                        /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/BudgetProposal/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>*/
                                                                                     }
                                                                                     @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && !LedgerIsDelegateSaved)
                                                                                     {
-                                                                                        <td style="border:none"><input id="@delete@Ledgers.LedgerNo" class="Submit btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete" /> </td>
+                                                                                        <td style="border:none"><input id="@delete@Ledgers.LedgerNo" class="Submit btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/BudgetProposal/Delete" type="submit" value="Delete" /> </td>
                                                                                     }
                                                                                 </tr>
 
@@ -3856,19 +3856,19 @@
                                                                     @if ((!User.IsInRole("Admin") && DelegateEditStatus && (!LedgerIsDelegateSaved || Model.EditEnabled == @Ledgers.LedgerNo)) || (User.IsInRole("Admin") && AdminEditStatus && (!LedgerIsAdminSaved || (Model.EditEnabled == @Ledgers.LedgerNo))))
                                                                     {
 
-                                                                        <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/Tabs/Save" type="submit" value="Save Budget" style="align-self:center">
+                                                                        <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/BudgetProposal/Save" type="submit" value="Save Budget" style="align-self:center">
                                                                             <i class='bx bx-check' style="color:limegreen"></i>
                                                                         </button>
                                                                     }
                                                                     @if ((!User.IsInRole("Admin") && LedgerIsDelegateSaved && DelegateEditStatus && (Model.EditEnabled != @Ledgers.LedgerNo)) || (User.IsInRole("Admin") && LedgerIsAdminSaved && AdminEditStatus && (Model.EditEnabled != @Ledgers.LedgerNo)))
                                                                     {
-                                                                        <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/Tabs/Edit" type="submit" value="Edit Budget" style="align-self:center">
+                                                                        <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/BudgetProposal/Edit" type="submit" value="Edit Budget" style="align-self:center">
                                                                             <i class='bx bxs-pencil' style="color:blue"></i>
                                                                         </button>
                                                                     }
                                                                     @if ((!User.IsInRole("Admin") && DelegateEditStatus && (LedgerIsDelegateSaved || Model.EditEnabled == @Ledgers.LedgerNo)) || (User.IsInRole("Admin") && AdminEditStatus && (LedgerIsAdminSaved || (Model.EditEnabled == @Ledgers.LedgerNo))))
                                                                     {
-                                                                        <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/Tabs/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
+                                                                        <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/BudgetProposal/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
                                                                             <i class='bx bx-x' style="color:red"></i>
                                                                         </button>
                                                                     }
@@ -4001,11 +4001,11 @@
                                         
                                     @if (User.IsInRole("Admin") && AdminEditStatus && (TotalAdminSavedLedgers == TotalSubGroups)  && Model.IsEnabled.Equals(true) && !ACBWSubmission)
                                     {
-                                            <input id="@SubmitChairPerson" class="Submit" formaction="~/Tabs/Index" type="submit" value="Submit to Chairperson for Approval" style="align-self:center"/>
+                                            <input id="@SubmitChairPerson" class="Submit" formaction="~/BudgetProposal/Index" type="submit" value="Submit to Chairperson for Approval" style="align-self:center"/>
                                         }
                                         else if(!User.IsInRole("Admin") && DelegateEditStatus && (TotalDelegateSavedLedgers == TotalSubGroups)  && Model.IsEnabled.Equals(true))
                                         {
-                                            <input id="@SubmitACBW" class="Submit" formaction="~/Tabs/Index" type="submit" value="Submit to AC&BW for Approval" style="align-self:center"/>
+                                            <input id="@SubmitACBW" class="Submit" formaction="~/BudgetProposal/Index" type="submit" value="Submit to AC&BW for Approval" style="align-self:center"/>
                                         }
                                         }*@
                             </div>
@@ -5262,7 +5262,7 @@
                                                                    <tr><td  style="border:none"> @Html.ValidationMessage("Caution"+Count,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
                                                                    <tr><td  style="border:none"> @Html.ValidationMessage("FileMessage_"+Count,null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
                                                                    <br/>
-                                                                   <tr><td style="border:none"><input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload" /></td></tr>
+                                                                            <tr><td style="border:none"><input id="@upload" class="Submit" formaction="~/BudgetProposal/Upload" type="submit" value="Upload" /></td></tr>
                                                               }
                                                              
                                                                                     @foreach(var Files in Model.Filess.Where(a => a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
@@ -5272,11 +5272,11 @@
                                                                                       @if((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin") || (User.IsInRole("Admin") && FinalSubmitStatus > 0))
                                                                                       {
                                                                                        <td style="border:none">@Html.ActionLink(@Files.FileName,null,null,null,new{href =@Files.SupportingDocumentPath, target = "_blank"} )</td>
-                                                                                       /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@Files.FileName" /></td>*/
+                                                                                       /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/BudgetProposal/ViewFile" type="submit" value= "@Files.FileName" /></td>*/
                                                                                       }
                                                                                         @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && !IsDelegateSaved)
                                                                                         {
-                                                                                           <td style="border:none"><input id="@delete" class="Submit  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete"/></td>
+                                                                                           <td style="border:none"><input id="@delete" class="Submit  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/BudgetProposal/Delete" type="submit" value="Delete"/></td>
                                                                                         }
                                                                                      </tr>      
                                                                                          
@@ -5288,17 +5288,17 @@
                                                         <td style="background-color:honeydew;">
                                                         @if((!User.IsInRole("Admin") && !@Subs.RequireInput && DelegateEditStatus && (!IsDelegateSaved || Model.EditEnabled==@Subs.SubGroupNo))||(User.IsInRole("Admin") && !@Subs.RequireInput && AdminEditStatus && (!IsAdminSaved|| (Model.EditEnabled == @Subs.SubGroupNo)) ))
                                                         {
-                                                                                   <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/Tabs/Save" type="submit" value="Save Budget" style="align-self:center">
+                                                                                   <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/BudgetProposal/Save" type="submit" value="Save Budget" style="align-self:center">
                                                                                    <i class='bx bx-check' style="color:limegreen"></i></button>
                                                           }
                                                           @if((!User.IsInRole("Admin") && IsDelegateSaved && !@Subs.RequireInput && DelegateEditStatus && (Model.EditEnabled != @Subs.SubGroupNo) )||(User.IsInRole("Admin") && IsAdminSaved && !@Subs.RequireInput && AdminEditStatus && (Model.EditEnabled != @Subs.SubGroupNo)))
                                                           {
-                                                                                   <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/Tabs/Edit" type="submit" value="Edit Budget" style="align-self:center">
+                                                                                   <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/BudgetProposal/Edit" type="submit" value="Edit Budget" style="align-self:center">
                                                                                    <i class='bx bxs-pencil' style="color:blue"></i></button>
                                                            }
                                                            @if((!User.IsInRole("Admin") && !@Subs.RequireInput && DelegateEditStatus && (IsDelegateSaved  || (Model.EditEnabled == @Subs.SubGroupNo)))||(User.IsInRole("Admin") && !@Subs.RequireInput && AdminEditStatus && (IsAdminSaved|| (Model.EditEnabled == @Subs.SubGroupNo)) ))
                                                            {
-                                                                                    <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/Tabs/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
+                                                                                    <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/BudgetProposal/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
                                                                                     <i class='bx bx-x' style="color:red"></i>     
                                                                                     </button>
                                                            }
@@ -5832,7 +5832,7 @@
                                                                                             <tr><td  style="border:none"> @Html.ValidationMessage("Caution"+LedgerNo,"* only .pdf files with size 1 MB are allowed",new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
                                                                                             <tr><td  style="border:none"> @Html.ValidationMessage("FileMessage_"+LedgerNo,null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})</td></tr>
                                                                                             <br/>
-                                                                                            <tr><td style="border:none"> <input id="@upload@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload" /></td> </tr>
+                                                                                            <tr><td style="border:none"> <input id="@upload@Ledgers.LedgerNo" class="Submit" formaction="~/BudgetProposal/Upload" type="submit" value="Upload" /></td> </tr>
                                                                                         }
                                                                                         
                                                                                     @foreach(var LedgerFiles in Model.Filess.Where (a => (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo))))
@@ -5842,11 +5842,11 @@
                                                                                                         @if ((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin") || (User.IsInRole("Admin") && (FinalSubmitStatus > 0)))
                                                                                                         {
                                                                                                             <td style="border:none">@Html.ActionLink(@LedgerFiles.FileName,null,null,null,new{href =@LedgerFiles.SupportingDocumentPath, target = "_blank"} )</td>
-                                                                                                            /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>*/
+                                                                                                            /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/BudgetProposal/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>*/
                                                                                                         }
                                                                                                         @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && !LedgerIsDelegateSaved)
                                                                                                         {
-                                                                                                           <td style="border:none"><input id="@delete@Ledgers.LedgerNo" class="Submit btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
+                                                                                                           <td style="border:none"><input id="@delete@Ledgers.LedgerNo" class="Submit btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/BudgetProposal/Delete" type="submit" value="Delete"/> </td>
                                                                                                         }
                                                                                                      </tr>      
                                                                                          
@@ -5858,17 +5858,17 @@
                                                                                     @if((!User.IsInRole("Admin") && DelegateEditStatus && (!LedgerIsDelegateSaved || Model.EditEnabled==@Ledgers.LedgerNo) )||(User.IsInRole("Admin") && AdminEditStatus && (!LedgerIsAdminSaved  || (Model.EditEnabled == @Ledgers.LedgerNo))))
                                                                                     {
                                                                                 
-                                                                                   <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/Tabs/Save" type="submit" value="Save Budget" style="align-self:center">
+                                                                                   <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/BudgetProposal/Save" type="submit" value="Save Budget" style="align-self:center">
                                                                                    <i class='bx bx-check' style="color:limegreen"></i></button>
                                                                                     }
                                                                                     @if ((!User.IsInRole("Admin") && LedgerIsDelegateSaved && DelegateEditStatus && (Model.EditEnabled != @Ledgers.LedgerNo)) || (User.IsInRole("Admin") && LedgerIsAdminSaved && AdminEditStatus && (Model.EditEnabled != @Ledgers.LedgerNo)))
                                                                                     {
-                                                                                            <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/Tabs/Edit" type="submit" value="Edit Budget" style="align-self:center">
+                                                                                            <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/BudgetProposal/Edit" type="submit" value="Edit Budget" style="align-self:center">
                                                                                                 <i class='bx bxs-pencil' style="color:blue"></i></button>
                                                                                     }
                                                                                 @if((!User.IsInRole("Admin") && DelegateEditStatus && (LedgerIsDelegateSaved || Model.EditEnabled==@Ledgers.LedgerNo ))||(User.IsInRole("Admin") && AdminEditStatus && (LedgerIsAdminSaved || (Model.EditEnabled == @Ledgers.LedgerNo))))
                                                                                 {
-                                                                                            <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/Tabs/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
+                                                                                            <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/BudgetProposal/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
                                                                                                 <i class='bx bx-x' style="color:red"></i>     
                                                                                             </button>
                                                                                  }
@@ -6001,11 +6001,11 @@
                                         
                                     @if (User.IsInRole("Admin") && AdminEditStatus && (TotalAdminSavedLedgers == TotalSubGroups)  && Model.IsEnabled.Equals(true) && !ACBWSubmission)
                                     {
-                                            <input id="@SubmitChairPerson" class="Submit" formaction="~/Tabs/Index" type="submit" value="Submit to Chairperson for Approval" style="align-self:center"/>
+                                            <input id="@SubmitChairPerson" class="Submit" formaction="~/BudgetProposal/Index" type="submit" value="Submit to Chairperson for Approval" style="align-self:center"/>
                                         }
                                         else if(!User.IsInRole("Admin") && DelegateEditStatus && (TotalDelegateSavedLedgers == TotalSubGroups)  && Model.IsEnabled.Equals(true))
                                         {
-                                            <input id="@SubmitACBW" class="Submit" formaction="~/Tabs/Index" type="submit" value="Submit to AC&BW for Approval" style="align-self:center"/>
+                                            <input id="@SubmitACBW" class="Submit" formaction="~/BudgetProposal/Index" type="submit" value="Submit to AC&BW for Approval" style="align-self:center"/>
                                         }
                                         @*}*@
                             </div>
@@ -7049,7 +7049,7 @@
                                                                             <tr><td style="border:none"> @Html.ValidationMessage("Caution" + Count, "* only .pdf files with size 1 MB are allowed", new { @class = "text-danger", @style = "font-size: 0.8em;font-style: italic;" })</td></tr>
                                                                             <tr><td style="border:none"> @Html.ValidationMessage("FileMessage_" + Count, null, new { @class = "text-danger", @style = "font-size: 0.8em;font-style: italic;" })</td></tr>
                                                                             <br />
-                                                                            <tr><td style="border:none"><input id="@upload" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload" /></td></tr>
+                                                                            <tr><td style="border:none"><input id="@upload" class="Submit" formaction="~/BudgetProposal/Upload" type="submit" value="Upload" /></td></tr>
                                                                         }
 
                                                                         @foreach (var Files in Model.Filess.Where(a => a.SubGroupNumber.Equals(@Subs.SubGroupNo)))
@@ -7059,11 +7059,11 @@
                                                                                 @if ((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin") || (User.IsInRole("Admin") && FinalSubmitStatus > 0))
                                                                                 {
                                                                                     <td style="border:none">@Html.ActionLink(@Files.FileName, null, null, null, new { href = @Files.SupportingDocumentPath, target = "_blank" })</td>
-                                                                                    /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@Files.FileName" /></td>*/
+                                                                                    /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/BudgetProposal/ViewFile" type="submit" value= "@Files.FileName" /></td>*/
                                                                                 }
                                                                                 @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && !IsDelegateSaved)
                                                                                 {
-                                                                                    <td style="border:none"><input id="@delete" class="Submit  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete" /></td>
+                                                                                    <td style="border:none"><input id="@delete" class="Submit  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/BudgetProposal/Delete" type="submit" value="Delete" /></td>
                                                                                 }
                                                                             </tr>
 
@@ -7075,19 +7075,19 @@
                                                         <td style="background-color:honeydew;">
                                                             @if ((!User.IsInRole("Admin") && !@Subs.RequireInput && DelegateEditStatus && (!IsDelegateSaved || Model.EditEnabled == @Subs.SubGroupNo)) || (User.IsInRole("Admin") && !@Subs.RequireInput && AdminEditStatus && (!IsAdminSaved || (Model.EditEnabled == @Subs.SubGroupNo))))
                                                             {
-                                                                <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/Tabs/Save" type="submit" value="Save Budget" style="align-self:center">
+                                                                <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/BudgetProposal/Save" type="submit" value="Save Budget" style="align-self:center">
                                                                     <i class='bx bx-check' style="color:limegreen"></i>
                                                                 </button>
                                                             }
                                                             @if ((!User.IsInRole("Admin") && IsDelegateSaved && !@Subs.RequireInput && DelegateEditStatus && (Model.EditEnabled != @Subs.SubGroupNo)) || (User.IsInRole("Admin") && IsAdminSaved && !@Subs.RequireInput && AdminEditStatus && (Model.EditEnabled != @Subs.SubGroupNo)))
                                                             {
-                                                                <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/Tabs/Edit" type="submit" value="Edit Budget" style="align-self:center">
+                                                                <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/BudgetProposal/Edit" type="submit" value="Edit Budget" style="align-self:center">
                                                                     <i class='bx bxs-pencil' style="color:blue"></i>
                                                                 </button>
                                                             }
                                                             @if ((!User.IsInRole("Admin") && !@Subs.RequireInput && DelegateEditStatus && (IsDelegateSaved || (Model.EditEnabled == @Subs.SubGroupNo))) || (User.IsInRole("Admin") && !@Subs.RequireInput && AdminEditStatus && (IsAdminSaved || (Model.EditEnabled == @Subs.SubGroupNo))))
                                                             {
-                                                                <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/Tabs/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
+                                                                <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/BudgetProposal/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
                                                                     <i class='bx bx-x' style="color:red"></i>
                                                                 </button>
                                                             }
@@ -7621,7 +7621,7 @@
                                                                                 <tr><td style="border:none"> @Html.ValidationMessage("Caution" + LedgerNo, "* only .pdf files with size 1 MB are allowed", new { @class = "text-danger", @style = "font-size: 0.8em;font-style: italic;" })</td></tr>
                                                                                 <tr><td style="border:none"> @Html.ValidationMessage("FileMessage_" + LedgerNo, null, new { @class = "text-danger", @style = "font-size: 0.8em;font-style: italic;" })</td></tr>
                                                                                 <br />
-                                                                                <tr><td style="border:none"> <input id="@upload@Ledgers.LedgerNo" class="Submit" formaction="~/Tabs/Upload" type="submit" value="Upload" /></td> </tr>
+                                                                                <tr><td style="border:none"> <input id="@upload@Ledgers.LedgerNo" class="Submit" formaction="~/BudgetProposal/Upload" type="submit" value="Upload" /></td> </tr>
                                                                             }
 
                                                                             @foreach (var LedgerFiles in Model.Filess.Where(a => (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo))))
@@ -7631,11 +7631,11 @@
                                                                                     @if ((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin") || (User.IsInRole("Admin") && (FinalSubmitStatus > 0)))
                                                                                     {
                                                                                         <td style="border:none">@Html.ActionLink(@LedgerFiles.FileName, null, null, null, new { href = @LedgerFiles.SupportingDocumentPath, target = "_blank" })</td>
-                                                                                        /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>*/
+                                                                                        /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/BudgetProposal/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>*/
                                                                                     }
                                                                                     @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && !LedgerIsDelegateSaved)
                                                                                     {
-                                                                                        <td style="border:none"><input id="@delete@Ledgers.LedgerNo" class="Submit btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete" /> </td>
+                                                                                        <td style="border:none"><input id="@delete@Ledgers.LedgerNo" class="Submit btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/BudgetProposal/Delete" type="submit" value="Delete" /> </td>
                                                                                     }
                                                                                 </tr>
 
@@ -7647,19 +7647,19 @@
                                                                     @if ((!User.IsInRole("Admin") && DelegateEditStatus && (!LedgerIsDelegateSaved || Model.EditEnabled == @Ledgers.LedgerNo)) || (User.IsInRole("Admin") && AdminEditStatus && (!LedgerIsAdminSaved || (Model.EditEnabled == @Ledgers.LedgerNo))))
                                                                     {
 
-                                                                        <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/Tabs/Save" type="submit" value="Save Budget" style="align-self:center">
+                                                                        <button style="border:none;background-color:white" id="@save" class="Submit" formaction="~/BudgetProposal/Save" type="submit" value="Save Budget" style="align-self:center">
                                                                             <i class='bx bx-check' style="color:limegreen"></i>
                                                                         </button>
                                                                     }
                                                                     @if ((!User.IsInRole("Admin") && LedgerIsDelegateSaved && DelegateEditStatus && (Model.EditEnabled != @Ledgers.LedgerNo)) || (User.IsInRole("Admin") && LedgerIsAdminSaved && AdminEditStatus && (Model.EditEnabled != @Ledgers.LedgerNo)))
                                                                     {
-                                                                        <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/Tabs/Edit" type="submit" value="Edit Budget" style="align-self:center">
+                                                                        <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="~/BudgetProposal/Edit" type="submit" value="Edit Budget" style="align-self:center">
                                                                             <i class='bx bxs-pencil' style="color:blue"></i>
                                                                         </button>
                                                                     }
                                                                     @if ((!User.IsInRole("Admin") && DelegateEditStatus && (LedgerIsDelegateSaved || Model.EditEnabled == @Ledgers.LedgerNo)) || (User.IsInRole("Admin") && AdminEditStatus && (LedgerIsAdminSaved || (Model.EditEnabled == @Ledgers.LedgerNo))))
                                                                     {
-                                                                        <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/Tabs/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
+                                                                        <button style="border:none;background-color:white" id="@Budgetdelete" class="Submit" formaction="~/BudgetProposal/BudgetDelete" type="submit" value="Delete Budget" style="align-self:center">
                                                                             <i class='bx bx-x' style="color:red"></i>
                                                                         </button>
                                                                     }
@@ -7792,11 +7792,11 @@
                                         
                                     @if (User.IsInRole("Admin") && AdminEditStatus && (TotalAdminSavedLedgers == TotalSubGroups)  && Model.IsEnabled.Equals(true) && !ACBWSubmission)
                                     {
-                                            <input id="@SubmitChairPerson" class="Submit" formaction="~/Tabs/Index" type="submit" value="Submit to Chairperson for Approval" style="align-self:center"/>
+                                            <input id="@SubmitChairPerson" class="Submit" formaction="~/BudgetProposal/Index" type="submit" value="Submit to Chairperson for Approval" style="align-self:center"/>
                                         }
                                         else if(!User.IsInRole("Admin") && DelegateEditStatus && (TotalDelegateSavedLedgers == TotalSubGroups)  && Model.IsEnabled.Equals(true) )
                                         {
-                                            <input id="@SubmitACBW" class="Submit" formaction="~/Tabs/Index" type="submit" value="Submit to AC&BW for Approval" style="align-self:center"/>
+                                            <input id="@SubmitACBW" class="Submit" formaction="~/BudgetProposal/Index" type="submit" value="Submit to AC&BW for Approval" style="align-self:center" />
                                         }
                                         @*}*@
                             </div>
@@ -7861,7 +7861,7 @@
                         $.ajax
                             ({
                                 type: "Get",
-                                url: '@Url.Action("GetDetails","Tabs")',
+                                url: '@Url.Action("GetDetails","BudgetProposal")',
                                 data: { Year: year[0], Division: divisionname },
                                 dataType: "html",
                                 success: function (data) {
@@ -7892,7 +7892,7 @@
                                     //$('#'+groupnoid).addClass("active");
                                 },
                                 error: function (jqXHR, textStatus, errorThrown) {
-                                    alert("errorThrown Tabs");
+                                    alert("errorThrown BudgetProposal");
                                 }
 
                             });
@@ -7927,7 +7927,7 @@
                         $.ajax
                             ({
                                 type: "Get",
-                                url: '@Url.Action("GetDetails","Tabs")',
+                                url: '@Url.Action("GetDetails", "BudgetProposal")',
                                 data: { Year: year[0], Division: divisionname },
                                 dataType: "html",
                                 success: function (data)

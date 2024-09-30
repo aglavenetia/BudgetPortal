@@ -29,11 +29,18 @@ namespace BudgetPortal.Controllers
             var LoggedInDivisionID = 0;
             if (username.Equals("admin@test.com"))
             {
+              try
+              { 
                  Div = (string)JsonConvert.DeserializeObject(TempData["SelDivisionName"].ToString());
                 TempData["SelDivisionName"] = JsonConvert.SerializeObject(Div);
                  LoggedInDivisionID = _context.Division
                                    .Where(d => d.DivisionName == Div)
                                    .Select(x => x.DivisionID).FirstOrDefault();
+              }
+              catch(Exception e)
+              {
+                    ModelState.AddModelError("SelectedDivisionID", "Please select any Division");
+              }
             }
             else
             { 
@@ -66,8 +73,8 @@ namespace BudgetPortal.Controllers
             
 
             mymodel.Sectionss = _context.BudgetSections.ToList();
-            mymodel.Groupss = _context.BudgetGroups.ToList();
-            mymodel.SubGroupss = _context.BudgetSubGroups.ToList();
+            mymodel.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
+            mymodel.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.SubGroupNo).ToList();
             mymodel.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID).Where(x => x.FinancialYear1 == Year).ToList();
             mymodel.Divisionss = _context.Division.ToList();
             mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == LoggedInDivisionID).Where(x => x.FinancialYear1 == (Year - 1)).ToList();
@@ -364,8 +371,10 @@ namespace BudgetPortal.Controllers
                                     .Select(x => x.DivisionID).FirstOrDefault();
 
                 MD.Sectionss = _context.BudgetSections.ToList();
-                MD.Groupss = _context.BudgetGroups.ToList();
-                MD.SubGroupss = _context.BudgetSubGroups.ToList();
+                MD.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
+                MD.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.SubGroupNo).ToList();
+                //MD.Groupss = _context.BudgetGroups.ToList();
+                //MD.SubGroupss = _context.BudgetSubGroups.ToList();
                 MD.Ledgerss = _context.BudgetLedgers.ToList();
                 MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID)
                                  .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
@@ -565,8 +574,10 @@ namespace BudgetPortal.Controllers
             }
 
             MD.Sectionss = _context.BudgetSections.ToList();
-            MD.Groupss = _context.BudgetGroups.ToList();
-            MD.SubGroupss = _context.BudgetSubGroups.ToList();
+            MD.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
+            MD.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.SubGroupNo).ToList();
+            //MD.Groupss = _context.BudgetGroups.ToList();
+            //MD.SubGroupss = _context.BudgetSubGroups.ToList();
             MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
             MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
@@ -679,8 +690,10 @@ namespace BudgetPortal.Controllers
                              .Select(x => x.DivisionID).FirstOrDefault();
             MD.EditEnabled = null;
             MD.Sectionss = _context.BudgetSections.ToList();
-            MD.Groupss = _context.BudgetGroups.ToList();
-            MD.SubGroupss = _context.BudgetSubGroups.ToList();
+            MD.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
+            MD.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.SubGroupNo).ToList();
+            //MD.Groupss = _context.BudgetGroups.ToList();
+            //MD.SubGroupss = _context.BudgetSubGroups.ToList();
             MD.Ledgerss = _context.BudgetLedgers.ToList();
             MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == SelectedDivisionID)
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
@@ -750,8 +763,10 @@ namespace BudgetPortal.Controllers
             int index = MD.SubGroupNameOrLedgerName.IndexOf(MD.SubGroupLedgerName);
 
             MD.Sectionss = _context.BudgetSections.ToList();
-            MD.Groupss = _context.BudgetGroups.ToList();
-            MD.SubGroupss = _context.BudgetSubGroups.ToList();
+            MD.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
+            MD.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.SubGroupNo).ToList();
+            //MD.Groupss = _context.BudgetGroups.ToList();
+            //MD.SubGroupss = _context.BudgetSubGroups.ToList();
             MD.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
             MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
@@ -819,8 +834,10 @@ namespace BudgetPortal.Controllers
             //var Month = DateTime.Now.Month;
             var mymodel = new MultipleData();
             mymodel.Sectionss = _context.BudgetSections.ToList();
-            mymodel.Groupss = _context.BudgetGroups.ToList();
-            mymodel.SubGroupss = _context.BudgetSubGroups.ToList();
+            mymodel.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
+            mymodel.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.SubGroupNo).ToList();
+            //mymodel.Groupss = _context.BudgetGroups.ToList();
+            //mymodel.SubGroupss = _context.BudgetSubGroups.ToList();
             mymodel.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == LoggedInDivisionID).Where(x => x.FinancialYear1 == Year).ToList();
             mymodel.Divisionss = _context.Division.ToList();
             mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == LoggedInDivisionID).Where(x => x.FinancialYear1 == (Year - 1)).ToList();

@@ -1206,11 +1206,11 @@
                                                                                 @if ((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin") || (User.IsInRole("Admin") && FinalSubmitStatus > 0))
                                                                                 {
                                                                                                                            <td style="border:none">@Html.ActionLink(@Files.FileName, null, null, null, new { href = @Files.SupportingDocumentPath, target = "_blank" })</td>
-                                                                                    /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@Files.FileName" /></td>*/
+                                                    /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/BudgetProposal/ViewFile" type="submit" value= "@Files.FileName" /></td>*/
                                                                                 }
                                                                                 @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && !IsDelegateSaved)
                                                                                 {
-                                                                                                                               <td style="border:none"><input id="@delete" class="Submit  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete"/></td>
+                                                    <td style="border:none"><input id="@delete" class="Submit  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/BudgetProposal/Delete" type="submit" value="Delete" /></td>
                                                                                 }
                                                                                                                      </tr>      
 
@@ -1751,11 +1751,11 @@
                                                                                     @if ((User.IsInRole("Admin") && AdminEditStatus) || !User.IsInRole("Admin") || (User.IsInRole("Admin") && (FinalSubmitStatus > 0)))
                                                                                     {
                                                                                                                                                     <td style="border:none">@Html.ActionLink(@LedgerFiles.FileName, null, null, null, new { href = @LedgerFiles.SupportingDocumentPath, target = "_blank" })</td>
-                                                                                        /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>*/
+                                                        /*<td><input id="@view" class="ViewFile  btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/BudgetProposal/ViewFile" type="submit" value= "@LedgerFiles.FileName" /></td>*/
                                                                                     }
                                                                                     @if (!User.IsInRole("Admin") && GroupsStatusRowCount == 0 && !LedgerIsDelegateSaved)
                                                                                     {
-                                                                                                                                                   <td style="border:none"><input id="@delete@Ledgers.LedgerNo" class="Submit btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/Tabs/Delete" type="submit" value="Delete"/> </td>
+                                                        <td style="border:none"><input id="@delete@Ledgers.LedgerNo" class="Submit btn-link" style="border:none; outline:none;  background-color: transparent;" formaction="~/BudgetProposal/Delete" type="submit" value="Delete" /> </td>
                                                                                     }
                                                                                                                                          </tr>      
 

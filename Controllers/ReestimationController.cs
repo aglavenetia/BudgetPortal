@@ -1,20 +1,18 @@
 ﻿using BudgetPortal.Data;
 using BudgetPortal.Entities;
 using BudgetPortal.ViewModel;
-using DocumentFormat.OpenXml.Bibliography;
-using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BudgetPortal.Controllers
 {
-    public class InterimRevisionController : Controller
+    public class ReestimationController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger<InterimRevisionController> _logger;
+        private readonly ILogger<ReestimationController> _logger;
 
-        public InterimRevisionController(ApplicationDbContext context, ILogger<InterimRevisionController> logger)
+        public ReestimationController(ApplicationDbContext context, ILogger<ReestimationController> logger)
         {
             _context = context;
             _logger = logger;
@@ -22,7 +20,7 @@ namespace BudgetPortal.Controllers
 
         [HttpGet]
         [Authorize]
-        public IActionResult InterimRev()
+        public IActionResult Reestimation()
         {
             //var Year = DateTime.Now.Year;
             var Year = 2023;
@@ -36,9 +34,9 @@ namespace BudgetPortal.Controllers
             var LoggedInDivisionID = _context.Division
                                    .Where(d => d.DivisionName == DivName)
                                    .Select(x => x.DivisionID).FirstOrDefault();
-            
+
             var mymodel = new InterimRevision();
-            
+
             mymodel.Sectionss = _context.BudgetSections.ToList();
             mymodel.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
             mymodel.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.SubGroupNo).ToList();
@@ -47,7 +45,7 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.FinancialYear1 == Year).ToList();
             mymodel.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == LoggedInDivisionID)
                                 .Where(x => x.FinancialYear1 == (Year - 1)).ToList();
-            
+
             mymodel.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                     new SelectListItem()
                     {
@@ -61,10 +59,10 @@ namespace BudgetPortal.Controllers
             mymodel.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
                                 .Where(x => x.FinancialYear1 == Year).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
 
-            if ((Month >3 && mymodel.BudgetApprovedStatus != 1) && IsDivNull!=null)
+            if ((Month > 3 && mymodel.BudgetApprovedStatus != 1) && IsDivNull != null)
             {
-                
-                mymodel.IsEnabled= true;
+
+                mymodel.IsEnabled = true;
             }
             else
             {
@@ -94,10 +92,10 @@ namespace BudgetPortal.Controllers
         [RequestFormLimits(ValueCountLimit = 20000)]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public IActionResult InterimRev(InterimRevision IM)
+        public IActionResult Reestimation(InterimRevision IM)
         {
             //Boolean valid = true;
-            
+
             //Saves Interim Revision Details
             if (User.Identity.Name.Equals("admin@test.com"))
             {
@@ -122,16 +120,16 @@ namespace BudgetPortal.Controllers
 
                 if (SubGroupNumber is null)
                 {
-                     LedgerNumber = _context.BudgetLedgers
-                                       .Where(x => x.LedgerNo.Equals(IM.SubGroupLedgerName))
-                                       .Select(x => x.LedgerNo).FirstOrDefault();
+                    LedgerNumber = _context.BudgetLedgers
+                                      .Where(x => x.LedgerNo.Equals(IM.SubGroupLedgerName))
+                                      .Select(x => x.LedgerNo).FirstOrDefault();
                     SubGroupNumber = _context.BudgetLedgers
                                        .Where(x => x.LedgerNo.Equals(LedgerNumber))
                                        .Select(x => x.SubGroupNo).FirstOrDefault();
                 }
                 else
-                { 
-                     LedgerNumber = 0.ToString();
+                {
+                    LedgerNumber = 0.ToString();
                 }
 
                 ModelState.Remove("SubGroupLedgerName");
@@ -224,7 +222,7 @@ namespace BudgetPortal.Controllers
                 IM.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == DivisionID)
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
 
-                if (Month > 3 && IM.BudgetApprovedStatus!=1)
+                if (Month > 3 && IM.BudgetApprovedStatus != 1)
                 {
                     IM.IsEnabled = true;
                 }
@@ -270,11 +268,11 @@ namespace BudgetPortal.Controllers
                           .Where(x => x.UserName.Equals(username))
                           .Select(x => x.BranchName).FirstOrDefault();
 
-           
-                LoggedInDivisionID = _context.Division
-                                    .Where(d => d.DivisionName == Division)
-                                    .Select(x => x.DivisionID).FirstOrDefault();
-            
+
+            LoggedInDivisionID = _context.Division
+                                .Where(d => d.DivisionName == Division)
+                                .Select(x => x.DivisionID).FirstOrDefault();
+
             var AcademicYear = String.Concat(Year, "-", (Year + 1));
             var mymodel = new InterimRevision();
             mymodel.SelectedAcademicYear = AcademicYear;
@@ -294,8 +292,8 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.FinancialYear1 == Year).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
 
             //if ((Month > 3 && Month < 10) && (Year == DateTime.Now.Year))
-            if ((Month > 3 && mymodel.BudgetApprovedStatus!=1) && (Year == 2023))
-           {
+            if ((Month > 3 && mymodel.BudgetApprovedStatus != 1) && (Year == 2023))
+            {
                 mymodel.IsEnabled = true;
             }
             /*int FinalApproved = (from a in mymodel.Statuss where a.SectionNumber == 0 && a.GroupNumber.Equals("0") && a.AdminEditStatus.Equals(false) select a.AdminEditStatus).Count();
@@ -354,17 +352,17 @@ namespace BudgetPortal.Controllers
 
             }
             //mymodel.SelectedAcademicYearID = String.Concat(Year.ToString(),"-",(Year+1).ToString());
-            
+
             try
             {
-                    mymodel.DivisionNames.Where(x => x.Text.Equals(Division)).Single().Selected = true;
+                mymodel.DivisionNames.Where(x => x.Text.Equals(Division)).Single().Selected = true;
             }
             catch (Exception ex)
             {
-                    ModelState.AddModelError("SelectedDivisionID", "Please select any Division");
+                ModelState.AddModelError("SelectedDivisionID", "Please select any Division");
 
             }
-            
+
 
             return View("InterimRev", mymodel);
         }
@@ -390,7 +388,7 @@ namespace BudgetPortal.Controllers
                      .Where(x => x.SubGroupNo.Equals(IM.SubGroupLedgerName))
                      .Select(x => x.SubGroupNo).FirstOrDefault();
 
-            
+
             var LedgerNumber = _context.BudgetLedgers
                      .Where(x => x.LedgerNo.Equals(IM.SubGroupLedgerName))
                      .Select(x => x.LedgerNo).FirstOrDefault();
@@ -403,7 +401,7 @@ namespace BudgetPortal.Controllers
             }
             else
             {
-                 LedgerNumber = 0.ToString();
+                LedgerNumber = 0.ToString();
             }
 
             if (User.Identity.Name.Equals("admin@test.com"))
@@ -431,7 +429,7 @@ namespace BudgetPortal.Controllers
             //var Month = DateTime.Now.Month;
             var Month = 10;
 
-            
+
 
             IM.Sectionss = _context.BudgetSections.ToList();
             IM.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
@@ -449,7 +447,7 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
 
             //if ((Month > 3 && Month < 10) && (Convert.ToInt32(splitAcademicYear[0]) == DateTime.Now.Year))
-            if ((Month > 3 && IM.BudgetApprovedStatus!=1) && (Convert.ToInt32(splitAcademicYear[0]) == 2023))
+            if ((Month > 3 && IM.BudgetApprovedStatus != 1) && (Convert.ToInt32(splitAcademicYear[0]) == 2023))
             {
                 IM.IsEnabled = true;
             }
@@ -502,8 +500,8 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
 
             //if ((Month > 3 && Month < 10) && (Convert.ToInt32(splitAcademicYear[0]) == DateTime.Now.Year))
-            if ((Month > 3 && IM.BudgetApprovedStatus!=1) && (Convert.ToInt32(splitAcademicYear[0]) == 2023))
-              {
+            if ((Month > 3 && IM.BudgetApprovedStatus != 1) && (Convert.ToInt32(splitAcademicYear[0]) == 2023))
+            {
                 IM.IsEnabled = true;
             }
 
@@ -536,7 +534,7 @@ namespace BudgetPortal.Controllers
 
                 }).ToList();
             IM.AcademicYears.Where(x => x.Text.Equals(IM.SelectedAcademicYear.ToString())).Single().Selected = true;
-            
+
             return View("InterimRev", IM);
 
         }

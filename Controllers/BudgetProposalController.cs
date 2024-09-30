@@ -10,12 +10,12 @@ using DocumentFormat.OpenXml.Bibliography;
 
 namespace BudgetPortal.Controllers
 {
-    public class TabsController : Controller
+    public class BudgetProposalController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger<TabsController> _logger;
+        private readonly ILogger<BudgetProposalController> _logger;
 
-        public TabsController(ApplicationDbContext context, ILogger<TabsController> logger)
+        public BudgetProposalController(ApplicationDbContext context, ILogger<BudgetProposalController> logger)
         {
             _context = context;
             _logger = logger;
@@ -103,10 +103,6 @@ namespace BudgetPortal.Controllers
                 mymodel.ApprovedMessage = " ";
                 mymodel.WaitingForApprovalMessage = " ";
             }
-
-
-
-
 
             mymodel.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
                                 .Where(x => x.FinancialYear1 == Year).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
@@ -582,7 +578,7 @@ namespace BudgetPortal.Controllers
                       mymodel.DivisionNames.Where(x => x.Text.Equals(Division)).Single().Selected = true;
                     var DiName = mymodel.DivisionNames.Where(x => x.Selected.Equals(true)).Select(x => x.Text).FirstOrDefault();
                     TempData["SelDivisionName"] = JsonConvert.SerializeObject(DiName);
-                }
+                   }
                    catch (Exception ex)
                    {
                        ModelState.AddModelError("SelectedDivisionID", "Please select any Division");

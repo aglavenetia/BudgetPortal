@@ -121,10 +121,15 @@
             @{
                 var SelAcademicYear = (from a in Model.AcademicYears where a.Selected == true select a.Text).FirstOrDefault();
                 SplitAcademicYear = SelAcademicYear.Split("-");
-                var Div = (from a in Model.DivisionNames where a.Selected == true select a.Text).FirstOrDefault();
-            }
+                var Div = (String?)null;
+                @if(User.IsInRole("Admin"))
+                {
+                   Div = (from a in Model.DivisionNames where a.Selected == true select a.Text).FirstOrDefault();
+                }
+                
+             }
 
-            @if (Div is not null)
+            @if (Div is not null && User.IsInRole("Admin"))
             {
                 @Html.ActionLink("Export To PDF", "PrintPDF", "Summary", new { Year = SplitAcademicYear[0], Division = Div }, new { @class = "btn btn-primary" })
             }

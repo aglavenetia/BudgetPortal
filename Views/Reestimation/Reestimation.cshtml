@@ -1,5 +1,5 @@
 ﻿
-@model BudgetPortal.ViewModel.InterimRevision
+@model BudgetPortal.ViewModel.Reestimation
 @using System.Web;
 
 @using BudgetPortal.Entities;
@@ -23,9 +23,8 @@
 
 
     Model.SubGroupNameOrLedgerName = new List<String>();
-    Model.BudEstCurrFin = new List<Decimal>();
-    Model.InterimRev = new List<Decimal>();
-    Model.ProvisionalRE = new List<Decimal>();
+    Model.RevEstCurrFin = new List<Decimal>();
+   
     
     //Model.File = new List<IFormFile>();
 
@@ -157,10 +156,8 @@
                         
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
                         
-                         var SumBudEstCurrFin = (from a in Model.Approved where a.GroupNumber.Equals(@item.GroupNo) select a.BudEstNextFin).Sum();
-                         var SumInterimRev = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.InterimRevEst).Sum();
-                         var SumProvisionalRE = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ProvisionalRevEst).Sum();
-
+                         var SumRevEstCurrFin = (from a in Model.Approved where a.GroupNumber.Equals(@item.GroupNo) select a.RevEstCurrFinACandBW).Sum();
+                         
                          var Sumname1 = String.Concat("SumBudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                          var Sumname2 = String.Concat("SumInterimRev", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                          var Sumname3 = String.Concat("SumProvisionalRE", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -188,10 +185,7 @@
                                             </th>
                                             <th class="CurrentBudgetEstimates w-10" >
                                             </th>
-                                            <th class="InterimRevision w-10" >
-                                            </th>
-                                            <th class="ProvisionalRevisedEstimates w-10" >
-                                            </th>
+                                            
                                         </tr>
                                     </thead>
                                     <tbody> 
@@ -250,44 +244,13 @@
                                                                                 <td>
                                                                                             <div class="form-group">
                                                                                                 @{
-                                                                                                  Model.BudEstCurrFin.Insert(LedgerNo, LedPrevYearApp != null ? Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : Convert.ToDecimal(0.0000));
+                                                                                                  Model.RevEstCurrFin.Insert(LedgerNo, LedPrevYearApp != null ? Convert.ToDecimal(LedPrevYearApp.RevEstCurrFinACandBW.ToString("F")) : Convert.ToDecimal(0.0000));
                                                                                                 }
-                                                                                                @Html.TextBoxFor(model => model.BudEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name1 + @Ledgers.LedgerNo, @readonly = "readonly" })
-                                                                                                @Html.ValidationMessageFor(model => model.BudEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                                @Html.TextBoxFor(model => model.RevEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name1 + @Ledgers.LedgerNo, @readonly = "readonly" })
+                                                                                                @Html.ValidationMessageFor(model => model.RevEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                 </td>
-                                                                                <td>
-                                                                                    @if (!Model.IsEnabled || (Model.IsEnabled && Ledgerdetails!=null && Model.EditEnabled!=Ledgers.LedgerNo))
-                                                                                    {
-                                                                                        <div class="form-group"> 
-                                                                                          @{
-                                                                                            Model.InterimRev.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.InterimRevEst.ToString("F")) : Convert.ToDecimal(0.0000));
-                                                                                           } 
-                                                                                            @Html.TextBoxFor(model => model.InterimRev[LedgerNo], new { @class = "form-control", @id = @name2 + @Ledgers.LedgerNo, @readonly = "readonly" })
-                                                                                            @Html.ValidationMessageFor(model => model.InterimRev[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                                                        </div>  
-                                                                                    }
-                                                                                    else
-                                                                                    {
-                                                                                       <div class="form-group">
-                                                                                           @{
-                                                                                              Model.InterimRev.Insert(LedgerNo,Ledgerdetails != null ? Convert.ToDecimal(Ledgerdetails.InterimRevEst.ToString("F")) : Convert.ToDecimal(0.0000));
-                                                                                            }
-                                                                                                @Html.TextBoxFor(model => model.InterimRev[LedgerNo], new { @class = "form-control", @id = @name2 + @Ledgers.LedgerNo })
-                                                                                                @Html.ValidationMessageFor(model => model.InterimRev[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                                                      </div>  
-                                                                                       
-                                                                                    }
-                                                                                </td>
-                                                                                <td>
-                                                                                       <div class="form-group">
-                                                                                           @{
-                                                                                               Model.ProvisionalRE.Insert(LedgerNo, Ledgerdetails != null ? Convert.ToDecimal(Ledgerdetails.ProvisionalRevEst.ToString("F")) : Convert.ToDecimal(0.0000));
-                                                                                            }
-                                                                                               @Html.TextBoxFor(model => model.ProvisionalRE[LedgerNo], new { @class = "form-control", @id = @name3 + @Ledgers.LedgerNo, @readonly = "readonly" })
-                                                                                               @Html.ValidationMessageFor(model => model.ProvisionalRE[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                                                      </div>  
-                                                                                </td>
+                                                                                
                                                                                 @if(Model.IsEnabled && Ledgerdetails == null || (Model.IsEnabled && Model.EditEnabled==Ledgers.LedgerNo))
                                                                                 {
                                                                                 <td>
@@ -352,14 +315,14 @@
                                                         
                                                         @if (@Subs.RequireInput)
                                                         {
-                                                            var LedgerPastYearAppBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();
+                                                            var LedgerPastYearAppRevEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.RevEstCurrFinACandBW).Sum();
 
                                                                 <div class="form-group"> 
                                                                  @{
-                                                                        Model.BudEstCurrFin.Insert(Count, LedgerPastYearAppBudEstCurrFin != null ? Convert.ToDecimal(LedgerPastYearAppBudEstCurrFin) : Convert.ToDecimal(0.0000));
+                                                                        Model.RevEstCurrFin.Insert(Count, LedgerPastYearAppRevEstCurrFin != null ? Convert.ToDecimal(LedgerPastYearAppRevEstCurrFin) : Convert.ToDecimal(0.0000));
                                                                    }
-                                                                 @Html.TextBoxFor(model => model.BudEstCurrFin[Count], new { @class = "form-control", @id = @name1, @readonly = "readonly"} )
-                                                                 @Html.ValidationMessageFor(model => model.BudEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                 @Html.TextBoxFor(model => model.RevEstCurrFin[Count], new { @class = "form-control", @id = @name1, @readonly = "readonly"} )
+                                                                 @Html.ValidationMessageFor(model => model.RevEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
 
                                                                 </div>
                                                         }
@@ -367,75 +330,13 @@
                                                         {
                                                                 <div class="form-group">
                                                                     @{
-                                                                        Model.BudEstCurrFin.Insert(Count,(PrevYearApp != null) ? Convert.ToDecimal(PrevYearApp.BudEstNextFin) : Convert.ToDecimal(0.0000));
+                                                                        Model.RevEstCurrFin.Insert(Count,(PrevYearApp != null) ? Convert.ToDecimal(PrevYearApp.RevEstCurrFinACandBW) : Convert.ToDecimal(0.0000));
                                                                      }
-                                                                    @Html.TextBoxFor(model => model.BudEstCurrFin[Count], new { @class = "form-control", @id = @name1, @readonly = "readonly" })
-                                                                    @Html.ValidationMessageFor(model => model.BudEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                    @Html.TextBoxFor(model => model.RevEstCurrFin[Count], new { @class = "form-control", @id = @name1, @readonly = "readonly" })
+                                                                    @Html.ValidationMessageFor(model => model.RevEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
 
                                                                 </div>
                                                         }
-                                                        </td>
-                                                        <td class="w-5">
-                                                        @if (@Subs.RequireInput)
-                                                        {
-                                                            var LedgerSumInterimRev = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.InterimRevEst).Sum();
-                                                            <div class="form-group">  
-                                                               @{
-                                                                  Model.InterimRev.Insert(Count, LedgerSumInterimRev != null ? Convert.ToDecimal(LedgerSumInterimRev) : Convert.ToDecimal(0.0000));
-                                                                }   
-                                                                @Html.TextBoxFor(model => model.InterimRev[Count], new { @class = "form-control", @id = @name2, @readonly = "readonly"})
-                                                                @Html.ValidationMessageFor(model => model.InterimRev[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                            </div>
-                                                            
-                                                        }
-                                                        else if (!Model.IsEnabled || (Model.IsEnabled && details!=null && Model.EditEnabled!=Subs.SubGroupNo))
-                                                        {
-                                                               <div class="form-group">
-                                                               @{
-                                                                  Model.InterimRev.Insert(Count, details != null ? Convert.ToDecimal(details.InterimRevEst) : Convert.ToDecimal(0.0000));
-                                                                }
-                                                                @Html.TextBoxFor(model => model.InterimRev[Count], new { @class = "form-control", @id = @name2, @readonly = "readonly" })
-                                                                @Html.ValidationMessageFor(model => model.InterimRev[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                            </div>
-                                                                
-                                                        }
-                                                        else
-                                                        {
-                                                            <div class="form-group">
-                                                               @{
-                                                                  Model.InterimRev.Insert(Count, details != null ? Convert.ToDecimal(details.InterimRevEst) : Convert.ToDecimal(0.0000));
-                                                                }
-                                                                @Html.TextBoxFor(model => model.InterimRev[Count], new { @class = "form-control", @id = @name2 })
-                                                                @Html.ValidationMessageFor(model => model.InterimRev[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                            </div>
-                                                            
-                                                        }
-                                                        </td>
-                                                        <td class="w-5">
-                                                        @if (@Subs.RequireInput)
-                                                        {
-                                                                var LedgerSumProvisionalRE = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ProvisionalRevEst).Sum();
-                                                             <div class="form-group">
-                                                               @{
-                                                                  Model.ProvisionalRE.Insert(Count, LedgerSumProvisionalRE != null ? Convert.ToDecimal(LedgerSumProvisionalRE) : Convert.ToDecimal(0.0000));
-                                                                 }
-                                                                 @Html.TextBoxFor(model => model.ProvisionalRE[Count], new { @class = "form-control", @id = @name3, @readonly = "readonly"})
-                                                                 @Html.ValidationMessageFor(model => model.ProvisionalRE[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                             </div>
-                                                                
-                                                        }
-                                                        else 
-                                                        {                                       
-                                                              <div class="form-group">
-                                                                @{
-                                                                   Model.ProvisionalRE.Insert(Count, details != null ? Convert.ToDecimal(details.ProvisionalRevEst) : Convert.ToDecimal(0.0000));
-                                                                 }
-                                                                  @Html.TextBoxFor(model => model.ProvisionalRE[Count], new { @class = "form-control", @id = @name3, @readonly = "readonly"})
-                                                                 @Html.ValidationMessageFor(model => model.ProvisionalRE[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                                </div>
-                                                                
-                                                        }
-                                                       
                                                         </td>
                                                         @if ((!@Subs.RequireInput && Model.IsEnabled && details == null) || (Model.IsEnabled && Model.EditEnabled==Subs.SubGroupNo))
                                                         {
@@ -458,6 +359,7 @@
                                                                   <i class='bx bx-x' style="color:red"></i></button>     
                                                              </td>
                                                         }
+                                                        
                                                      
                                                     </tr>
 
@@ -477,14 +379,9 @@
                                                     </td>
 
                                                     <td class="w-5" id="@Sumname1-Total">
-                                                        @SumBudEstCurrFin.ToString("F4")
+                                                        @SumRevEstCurrFin.ToString("F4")
                                                     </td>
-                                                    <td class="w-5" id="@Sumname2-Total">
-                                                       @SumInterimRev.ToString("F4")
-                                                    </td>
-                                                    <td class="w-5" id="@Sumname3-Total">
-                                                       @SumProvisionalRE.ToString("F4")
-                                                    </td>
+                                                    
                                                 </tr>
                                     </tbody>
                                 </table>
@@ -515,10 +412,7 @@
                                             </th>
                                             <th class="CurrentBudgetEstimates w-10" >
                                             </th>
-                                            <th class="InterimRevision w-10" >
-                                            </th>
-                                            <th class="ProvisionalRevisedEstimates w-10" >
-                                            </th>
+                                            
                                         </tr>
                                     </thead>
                                     <tbody> 
@@ -558,9 +452,9 @@
                                                                          var Ledgerdetails = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();
                                                                          var LedPrevYearApp = (from a in Model.Approved where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault(); 
                                                                           
-                                                                           save = String.Concat("Save", @inner.SectionNo.ToString(),"_",@Ledgers.LedgerNo, @TableCount);
-                                                                           edit = String.Concat("Edit", @inner.SectionNo.ToString(),"_",@Ledgers.LedgerNo, @TableCount);
-                                                                           delete = String.Concat("Delete", @inner.SectionNo.ToString(),"_",@Ledgers.LedgerNo, @TableCount);
+                                                                          save = String.Concat("Save", @inner.SectionNo.ToString(),"_",@Ledgers.LedgerNo, @TableCount);
+                                                                          edit = String.Concat("Edit", @inner.SectionNo.ToString(),"_",@Ledgers.LedgerNo, @TableCount);
+                                                                          delete = String.Concat("Delete", @inner.SectionNo.ToString(),"_",@Ledgers.LedgerNo, @TableCount);
                                                                             <tr>
                                                                                 <td></td>
                                                                                 <td>
@@ -577,43 +471,13 @@
                                                                                 <td>
                                                                                             <div class="form-group">
                                                                                                 @{
-                                                                                                  Model.BudEstCurrFin.Insert(LedgerNo, LedPrevYearApp != null ? Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : Convert.ToDecimal(0.0000));
+                                                                                                  Model.RevEstCurrFin.Insert(LedgerNo, LedPrevYearApp != null ? Convert.ToDecimal(LedPrevYearApp.RevEstCurrFinACandBW.ToString("F")) : Convert.ToDecimal(0.0000));
                                                                                                 }
-                                                                                                @Html.TextBoxFor(model => model.BudEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name1 + @Ledgers.LedgerNo, @readonly = "readonly" })
-                                                                                                @Html.ValidationMessageFor(model => model.BudEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                                @Html.TextBoxFor(model => model.RevEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name1 + @Ledgers.LedgerNo, @readonly = "readonly" })
+                                                                                                @Html.ValidationMessageFor(model => model.RevEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
-                                                                                <td>
-                                                                                    @if (!Model.IsEnabled || (Model.IsEnabled && Ledgerdetails!=null))
-                                                                                    {
-                                                                                        <div class="form-group"> 
-                                                                                          @{
-                                                                                            Model.InterimRev.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.InterimRevEst.ToString("F")) : Convert.ToDecimal(0.0000));
-                                                                                           } 
-                                                                                            @Html.TextBoxFor(model => model.InterimRev[LedgerNo], new { @class = "form-control", @id = @name2 + @Ledgers.LedgerNo, @readonly = "readonly" })
-                                                                                            @Html.ValidationMessageFor(model => model.InterimRev[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                                                        </div>  
-                                                                                    }
-                                                                                    else
-                                                                                    {
-                                                                                       <div class="form-group">
-                                                                                           @{
-                                                                                              Model.InterimRev.Insert(LedgerNo,Ledgerdetails != null ? Convert.ToDecimal(Ledgerdetails.InterimRevEst.ToString("F")) : Convert.ToDecimal(0.0000));
-                                                                                            }
-                                                                                                @Html.TextBoxFor(model => model.InterimRev[LedgerNo], new { @class = "form-control", @id = @name2 + @Ledgers.LedgerNo })
-                                                                                                @Html.ValidationMessageFor(model => model.InterimRev[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                                                      </div>  
-                                                                                       
-                                                                                    }
                                                                                 </td>
-                                                                                <td>
-                                                                                       <div class="form-group">
-                                                                                           @{
-                                                                                               Model.ProvisionalRE.Insert(LedgerNo, Ledgerdetails != null ? Convert.ToDecimal(Ledgerdetails.ProvisionalRevEst.ToString("F")) : Convert.ToDecimal(0.0000));
-                                                                                            }
-                                                                                               @Html.TextBoxFor(model => model.ProvisionalRE[LedgerNo], new { @class = "form-control", @id = @name3 + @Ledgers.LedgerNo, @readonly = "readonly" })
-                                                                                               @Html.ValidationMessageFor(model => model.ProvisionalRE[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                                                      </div>  
-                                                                                </td>
+                                                                                
                                                                                 @if(Model.IsEnabled && Ledgerdetails == null || (Model.IsEnabled && Model.EditEnabled==Ledgers.LedgerNo))
                                                                                 {
                                                                                 <td>
@@ -673,19 +537,19 @@
                                                         <td class="w-5"></td>
                                                         <td class="w-5">
                                                             @Subs.subGroupName
-                                                        </td class="w-5">
+                                                        </td>
                                                         <td class="w-5">
                                                         
                                                         @if (@Subs.RequireInput)
                                                         {
-                                                            var LedgerPastYearAppBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();
+                                                            var LedgerPastYearAppRevEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.RevEstCurrFinACandBW).Sum();
 
                                                                 <div class="form-group"> 
                                                                  @{
-                                                                        Model.BudEstCurrFin.Insert(Count, LedgerPastYearAppBudEstCurrFin != null ? Convert.ToDecimal(LedgerPastYearAppBudEstCurrFin) : Convert.ToDecimal(0.0000));
+                                                                        Model.RevEstCurrFin.Insert(Count, LedgerPastYearAppRevEstCurrFin != null ? Convert.ToDecimal(LedgerPastYearAppRevEstCurrFin) : Convert.ToDecimal(0.0000));
                                                                    }
-                                                                 @Html.TextBoxFor(model => model.BudEstCurrFin[Count], new { @class = "form-control", @id = @name1, @readonly = "readonly"} )
-                                                                 @Html.ValidationMessageFor(model => model.BudEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                 @Html.TextBoxFor(model => model.RevEstCurrFin[Count], new { @class = "form-control", @id = @name1, @readonly = "readonly"} )
+                                                                 @Html.ValidationMessageFor(model => model.RevEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
 
                                                                 </div>
                                                         }
@@ -693,75 +557,13 @@
                                                         {
                                                                 <div class="form-group">
                                                                     @{
-                                                                        Model.BudEstCurrFin.Insert(Count,(PrevYearApp != null) ? Convert.ToDecimal(PrevYearApp.BudEstNextFin) : Convert.ToDecimal(0.0000));
+                                                                        Model.RevEstCurrFin.Insert(Count,(PrevYearApp != null) ? Convert.ToDecimal(PrevYearApp.RevEstCurrFinACandBW) : Convert.ToDecimal(0.0000));
                                                                      }
-                                                                    @Html.TextBoxFor(model => model.BudEstCurrFin[Count], new { @class = "form-control", @id = @name1, @readonly = "readonly" })
-                                                                    @Html.ValidationMessageFor(model => model.BudEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                    @Html.TextBoxFor(model => model.RevEstCurrFin[Count], new { @class = "form-control", @id = @name1, @readonly = "readonly" })
+                                                                    @Html.ValidationMessageFor(model => model.RevEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
 
                                                                 </div>
                                                         }
-                                                        </td>
-                                                        <td class="w-5">
-                                                        @if (@Subs.RequireInput)
-                                                        {
-                                                            var LedgerSumInterimRev = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.InterimRevEst).Sum();
-                                                            <div class="form-group">  
-                                                               @{
-                                                                  Model.InterimRev.Insert(Count, LedgerSumInterimRev != null ? Convert.ToDecimal(LedgerSumInterimRev) : Convert.ToDecimal(0.0000));
-                                                                }   
-                                                                @Html.TextBoxFor(model => model.InterimRev[Count], new { @class = "form-control", @id = @name2, @readonly = "readonly"})
-                                                                @Html.ValidationMessageFor(model => model.InterimRev[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                            </div>
-                                                            
-                                                        }
-                                                        else if (!Model.IsEnabled || (Model.IsEnabled && details!=null))
-                                                        {
-                                                               <div class="form-group">
-                                                               @{
-                                                                  Model.InterimRev.Insert(Count, details != null ? Convert.ToDecimal(details.InterimRevEst) : Convert.ToDecimal(0.0000));
-                                                                }
-                                                                @Html.TextBoxFor(model => model.InterimRev[Count], new { @class = "form-control", @id = @name2, @readonly = "readonly"} )
-                                                                @Html.ValidationMessageFor(model => model.InterimRev[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                            </div>
-                                                                
-                                                        }
-                                                        else
-                                                        {
-                                                            <div class="form-group">
-                                                               @{
-                                                                  Model.InterimRev.Insert(Count, details != null ? Convert.ToDecimal(details.InterimRevEst) : Convert.ToDecimal(0.0000));
-                                                                }
-                                                                @Html.TextBoxFor(model => model.InterimRev[Count], new { @class = "form-control", @id = @name2 })
-                                                                @Html.ValidationMessageFor(model => model.InterimRev[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                            </div>
-                                                            
-                                                        }
-                                                        </td>
-                                                        <td class="w-5">
-                                                        @if (@Subs.RequireInput)
-                                                        {
-                                                                var LedgerSumProvisionalRE = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ProvisionalRevEst).Sum();
-                                                             <div class="form-group">
-                                                               @{
-                                                                  Model.ProvisionalRE.Insert(Count, LedgerSumProvisionalRE != null ? Convert.ToDecimal(LedgerSumProvisionalRE) : Convert.ToDecimal(0.0000));
-                                                                 }
-                                                                 @Html.TextBoxFor(model => model.ProvisionalRE[Count], new { @class = "form-control", @id = @name3, @readonly = "readonly"})
-                                                                 @Html.ValidationMessageFor(model => model.ProvisionalRE[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                                </div>
-                                                                
-                                                            }
-                                                        else 
-                                                        {                                       
-                                                              <div class="form-group">
-                                                                @{
-                                                                   Model.ProvisionalRE.Insert(Count, details != null ? Convert.ToDecimal(details.ProvisionalRevEst) : Convert.ToDecimal(0.0000));
-                                                                 }
-                                                                  @Html.TextBoxFor(model => model.ProvisionalRE[Count], new { @class = "form-control", @id = @name3, @readonly = "readonly"})
-                                                                 @Html.ValidationMessageFor(model => model.ProvisionalRE[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                                </div>
-                                                                
-                                                            }
-                                                       
                                                         </td>
                                                         @if ((!@Subs.RequireInput && Model.IsEnabled && details == null) || (Model.IsEnabled && Model.EditEnabled==Subs.SubGroupNo))
                                                         {
@@ -784,7 +586,7 @@
                                                                   <i class='bx bx-x' style="color:red"></i></button>     
                                                              </td>
                                                         }
-                                                     
+                                                    
                                                     </tr>
 
                                                     Count++;
@@ -803,13 +605,7 @@
                                                     </td>
 
                                                     <td class="w-5" id="@Sumname1-Total">
-                                                        @SumBudEstCurrFin.ToString("F4")
-                                                    </td>
-                                                    <td class="w-5" id="@Sumname2-Total">
-                                                       @SumInterimRev.ToString("F4")
-                                                    </td>
-                                                    <td class="w-5" id="@Sumname3-Total">
-                                                       @SumProvisionalRE.ToString("F4")
+                                                        @SumRevEstCurrFin.ToString("F4")
                                                     </td>
                                                 </tr>
                                     </tbody>
@@ -859,10 +655,8 @@
                         
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
                         
-                         var SumBudEstCurrFin = (from a in Model.Approved where a.GroupNumber.Equals(@item.GroupNo) select a.BudEstNextFin).Sum();
-                         var SumInterimRev = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.InterimRevEst).Sum();
-                         var SumProvisionalRE = (from a in Model.Detailss where a.GroupNumber.Equals(@item.GroupNo) select a.ProvisionalRevEst).Sum();
-
+                         var SumRevEstCurrFin = (from a in Model.Approved where a.GroupNumber.Equals(@item.GroupNo) select a.RevEstCurrFinACandBW).Sum();
+                         
                          var Sumname1 = String.Concat("SumBudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                          var Sumname2 = String.Concat("SumInterimRev", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                          var Sumname3 = String.Concat("SumProvisionalRE", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
@@ -889,10 +683,7 @@
                                             </th>
                                             <th class="CurrentBudgetEstimates w-10" >
                                             </th>
-                                            <th class="InterimRevision w-10" >
-                                            </th>
-                                            <th class="ProvisionalRevisedEstimates w-10" >
-                                            </th>
+                                            
                                         </tr>
                                     </thead>
                                     <tbody> 
@@ -953,43 +744,13 @@
                                                                                 <td>
                                                                                             <div class="form-group">
                                                                                                 @{
-                                                                                                  Model.BudEstCurrFin.Insert(LedgerNo, LedPrevYearApp != null ? Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : Convert.ToDecimal(0.0000));
+                                                                                                  Model.RevEstCurrFin.Insert(LedgerNo, LedPrevYearApp != null ? Convert.ToDecimal(LedPrevYearApp.RevEstCurrFinACandBW.ToString("F")) : Convert.ToDecimal(0.0000));
                                                                                                 }
-                                                                                                @Html.TextBoxFor(model => model.BudEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name1 + @Ledgers.LedgerNo, @readonly = "readonly" })
-                                                                                                @Html.ValidationMessageFor(model => model.BudEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                                                @Html.TextBoxFor(model => model.RevEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name1 + @Ledgers.LedgerNo, @readonly = "readonly" })
+                                                                                                @Html.ValidationMessageFor(model => model.RevEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
-                                                                                <td>
-                                                                                    @if (!Model.IsEnabled || (Model.IsEnabled && Ledgerdetails!=null))
-                                                                                    {
-                                                                                        <div class="form-group"> 
-                                                                                          @{
-                                                                                            Model.InterimRev.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.InterimRevEst.ToString("F")) : Convert.ToDecimal(0.0000));
-                                                                                           } 
-                                                                                            @Html.TextBoxFor(model => model.InterimRev[LedgerNo], new { @class = "form-control", @id = @name2 + @Ledgers.LedgerNo, @readonly = "readonly" })
-                                                                                            @Html.ValidationMessageFor(model => model.InterimRev[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                                                        </div>  
-                                                                                    }
-                                                                                    else
-                                                                                    {
-                                                                                       <div class="form-group">
-                                                                                           @{
-                                                                                              Model.InterimRev.Insert(LedgerNo,Ledgerdetails != null ? Convert.ToDecimal(Ledgerdetails.InterimRevEst.ToString("F")) : Convert.ToDecimal(0.0000));
-                                                                                            }
-                                                                                                @Html.TextBoxFor(model => model.InterimRev[LedgerNo], new { @class = "form-control", @id = @name2 + @Ledgers.LedgerNo })
-                                                                                                @Html.ValidationMessageFor(model => model.InterimRev[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                                                      </div>  
-                                                                                       
-                                                                                    }
                                                                                 </td>
-                                                                                <td>
-                                                                                       <div class="form-group">
-                                                                                           @{
-                                                                                               Model.ProvisionalRE.Insert(LedgerNo, Ledgerdetails != null ? Convert.ToDecimal(Ledgerdetails.ProvisionalRevEst.ToString("F")) : Convert.ToDecimal(0.0000));
-                                                                                            }
-                                                                                               @Html.TextBoxFor(model => model.ProvisionalRE[LedgerNo], new { @class = "form-control", @id = @name3 + @Ledgers.LedgerNo, @readonly = "readonly" })
-                                                                                               @Html.ValidationMessageFor(model => model.ProvisionalRE[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                                                      </div>  
-                                                                                </td>
+                                                                                
                                                                                 @if(Model.IsEnabled && Ledgerdetails == null || (Model.IsEnabled && Model.EditEnabled==Ledgers.LedgerNo))
                                                                                 {
                                                                                 <td>
@@ -1049,19 +810,19 @@
                                                         <td class="w-5"></td>
                                                         <td class="w-5">
                                                             @Subs.subGroupName
-                                                        </td class="w-5">
+                                                        </td>
                                                         <td class="w-5">
                                                         
                                                         @if (@Subs.RequireInput)
                                                         {
-                                                            var LedgerPastYearAppBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();
+                                                            var LedgerPastYearAppRevEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.RevEstCurrFinACandBW).Sum();
 
                                                                 <div class="form-group"> 
                                                                  @{
-                                                                        Model.BudEstCurrFin.Insert(Count, LedgerPastYearAppBudEstCurrFin != null ? Convert.ToDecimal(LedgerPastYearAppBudEstCurrFin) : Convert.ToDecimal(0.0000));
+                                                                        Model.RevEstCurrFin.Insert(Count, LedgerPastYearAppRevEstCurrFin != null ? Convert.ToDecimal(LedgerPastYearAppRevEstCurrFin) : Convert.ToDecimal(0.0000));
                                                                    }
-                                                                 @Html.TextBoxFor(model => model.BudEstCurrFin[Count], new { @class = "form-control", @id = @name1, @readonly = "readonly"} )
-                                                                 @Html.ValidationMessageFor(model => model.BudEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                 @Html.TextBoxFor(model => model.RevEstCurrFin[Count], new { @class = "form-control", @id = @name1, @readonly = "readonly"} )
+                                                                 @Html.ValidationMessageFor(model => model.RevEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
 
                                                                 </div>
                                                         }
@@ -1069,75 +830,13 @@
                                                         {
                                                                 <div class="form-group">
                                                                     @{
-                                                                        Model.BudEstCurrFin.Insert(Count,(PrevYearApp != null) ? Convert.ToDecimal(PrevYearApp.BudEstNextFin) : Convert.ToDecimal(0.0000));
+                                                                        Model.RevEstCurrFin.Insert(Count,(PrevYearApp != null) ? Convert.ToDecimal(PrevYearApp.RevEstCurrFinACandBW) : Convert.ToDecimal(0.0000));
                                                                      }
-                                                                    @Html.TextBoxFor(model => model.BudEstCurrFin[Count], new { @class = "form-control", @id = @name1, @readonly = "readonly" })
-                                                                    @Html.ValidationMessageFor(model => model.BudEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                    @Html.TextBoxFor(model => model.RevEstCurrFin[Count], new { @class = "form-control", @id = @name1, @readonly = "readonly" })
+                                                                    @Html.ValidationMessageFor(model => model.RevEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
 
                                                                 </div>
                                                         }
-                                                        </td>
-                                                        <td class="w-5">
-                                                        @if (@Subs.RequireInput)
-                                                        {
-                                                            var LedgerSumInterimRev = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.InterimRevEst).Sum();
-                                                            <div class="form-group">  
-                                                               @{
-                                                                  Model.InterimRev.Insert(Count, LedgerSumInterimRev != null ? Convert.ToDecimal(LedgerSumInterimRev) : Convert.ToDecimal(0.0000));
-                                                                }   
-                                                                @Html.TextBoxFor(model => model.InterimRev[Count], new { @class = "form-control", @id = @name2, @readonly = "readonly"})
-                                                                @Html.ValidationMessageFor(model => model.InterimRev[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                            </div>
-                                                            
-                                                        }
-                                                        else if (!Model.IsEnabled  || (Model.IsEnabled && details!=null))
-                                                        {
-                                                               <div class="form-group">
-                                                               @{
-                                                                  Model.InterimRev.Insert(Count, details != null ? Convert.ToDecimal(details.InterimRevEst) : Convert.ToDecimal(0.0000));
-                                                                }
-                                                                @Html.TextBoxFor(model => model.InterimRev[Count], new { @class = "form-control", @id = @name2, @readonly = "readonly" })
-                                                                @Html.ValidationMessageFor(model => model.InterimRev[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                            </div>
-                                                                
-                                                        }
-                                                        else
-                                                        {
-                                                            <div class="form-group">
-                                                               @{
-                                                                  Model.InterimRev.Insert(Count, details != null ? Convert.ToDecimal(details.InterimRevEst) : Convert.ToDecimal(0.0000));
-                                                                }
-                                                                @Html.TextBoxFor(model => model.InterimRev[Count], new { @class = "form-control", @id = @name2 })
-                                                                @Html.ValidationMessageFor(model => model.InterimRev[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                            </div>
-                                                            
-                                                        }
-                                                        </td>
-                                                        <td class="w-5">
-                                                        @if (@Subs.RequireInput)
-                                                        {
-                                                                var LedgerSumProvisionalRE = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ProvisionalRevEst).Sum();
-                                                             <div class="form-group">
-                                                               @{
-                                                                  Model.ProvisionalRE.Insert(Count, LedgerSumProvisionalRE != null ? Convert.ToDecimal(LedgerSumProvisionalRE) : Convert.ToDecimal(0.0000));
-                                                                 }
-                                                                 @Html.TextBoxFor(model => model.ProvisionalRE[Count], new { @class = "form-control", @id = @name3, @readonly = "readonly"})
-                                                                 @Html.ValidationMessageFor(model => model.ProvisionalRE[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                                </div>
-                                                                
-                                                            }
-                                                        else 
-                                                        {                                       
-                                                              <div class="form-group">
-                                                                @{
-                                                                   Model.ProvisionalRE.Insert(Count, details != null ? Convert.ToDecimal(details.ProvisionalRevEst) : Convert.ToDecimal(0.0000));
-                                                                 }
-                                                                  @Html.TextBoxFor(model => model.ProvisionalRE[Count], new { @class = "form-control", @id = @name3, @readonly = "readonly"})
-                                                                 @Html.ValidationMessageFor(model => model.ProvisionalRE[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                                </div>
-                                                                
-                                                            }
-                                                       
                                                         </td>
                                                         @if ((!@Subs.RequireInput && Model.IsEnabled && details == null) || (Model.IsEnabled && Model.EditEnabled==Subs.SubGroupNo))
                                                         {
@@ -1160,7 +859,7 @@
                                                                   <i class='bx bx-x' style="color:red"></i></button>     
                                                              </td>
                                                         }
-                                                  
+                                                        
                                                     </tr>
 
                                                     Count++;
@@ -1179,14 +878,9 @@
                                                     </td>
 
                                                     <td class="w-5" id="@Sumname1-Total">
-                                                        @SumBudEstCurrFin.ToString("F4")
+                                                        @SumRevEstCurrFin.ToString("F4")
                                                     </td>
-                                                    <td class="w-5" id="@Sumname2-Total">
-                                                       @SumInterimRev.ToString("F4")
-                                                    </td>
-                                                    <td class="w-5" id="@Sumname3-Total">
-                                                       @SumProvisionalRE.ToString("F4")
-                                                    </td>
+                                                    
                                                 </tr>
                                     </tbody>
                                 </table>
@@ -1217,10 +911,7 @@
                                             </th>
                                             <th class="CurrentBudgetEstimates w-10" >
                                             </th>
-                                            <th class="InterimRevision w-10" >
-                                            </th>
-                                            <th class="ProvisionalRevisedEstimates w-10" >
-                                            </th>
+                                            
                                         </tr>
                                     </thead>
                                     <tbody> 
@@ -1243,132 +934,103 @@
                                                     
                                                      
                                                     <tr>
-                                                        
+
                                                         <td class="w-5">
-                                                          @if(LedgerCount > 0)
-                                                          {
+                                                            @if (LedgerCount > 0)
+                                                            {
                                                                 <img src="~/Images/plus.png" />
-                                                             <div id="NestedTable" style="display:none"> 
-                                                               @if(@Subs.RequireInput)
-                                                               {
-                                                                 LedgerNo = Count;
+                                                                <div id="NestedTable" style="display:none">
+                                                                    @if (@Subs.RequireInput)
+                                                                    {
+                                                                        LedgerNo = Count;
 
-                                                                <table class="table ChildGrid">                                                 
-                                                                       @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
-                                                                       {
+                                                                        <table class="table ChildGrid">
+                                                                            @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
+                                                                            {
 
-                                                                         var Ledgerdetails = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();
-                                                                         var LedPrevYearApp = (from a in Model.Approved where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault(); 
-                                                                          
-                                                                          save = String.Concat("Save", @inner.SectionNo.ToString(),"_",@Ledgers.LedgerNo, @TableCount);
-                                                                          edit = String.Concat("Edit", @inner.SectionNo.ToString(),"_",@Ledgers.LedgerNo, @TableCount);
-                                                                          delete = String.Concat("Delete", @inner.SectionNo.ToString(),"_",@Ledgers.LedgerNo, @TableCount);
-                                                                            <tr>
-                                                                                <td></td>
-                                                                                <td>
-                                                                                    @{
-                                                                                        Model.SubGroupNameOrLedgerName.Insert(LedgerNo, Ledgers.LedgerNo);
-                                                                                     }
+                                                                                var Ledgerdetails = (from a in Model.Detailss where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();
+                                                                                var LedPrevYearApp = (from a in Model.Approved where (a.SubGroupNumber.Equals(@Subs.SubGroupNo) && a.LedgerNumber.Equals(@Ledgers.LedgerNo)) select a).FirstOrDefault();
 
-                                                                                     @Html.DisplayFor(model => model.SubGroupNameOrLedgerName[LedgerNo])
+                                                                                save = String.Concat("Save", @inner.SectionNo.ToString(), "_", @Ledgers.LedgerNo, @TableCount);
+                                                                                edit = String.Concat("Edit", @inner.SectionNo.ToString(), "_", @Ledgers.LedgerNo, @TableCount);
+                                                                                delete = String.Concat("Delete", @inner.SectionNo.ToString(), "_", @Ledgers.LedgerNo, @TableCount);
+                                                                                <tr>
+                                                                                    <td></td>
+                                                                                    <td>
+                                                                                        @{
+                                                                                            Model.SubGroupNameOrLedgerName.Insert(LedgerNo, Ledgers.LedgerNo);
+                                                                                        }
+
+                                                                                        @Html.DisplayFor(model => model.SubGroupNameOrLedgerName[LedgerNo])
 
 
-                                                                                    @Html.HiddenFor(model => model.SubGroupNameOrLedgerName[LedgerNo])
-                                                                                 </td>
-                                                                                <td>@Ledgers.LedgerName</td>
-                                                                                <td>
-                                                                                            <div class="form-group">
-                                                                                                @{
-                                                                                                  Model.BudEstCurrFin.Insert(LedgerNo, LedPrevYearApp != null ? Convert.ToDecimal(LedPrevYearApp.BudEstNextFin.ToString("F")) : Convert.ToDecimal(0.0000));
-                                                                                                }
-                                                                                                @Html.TextBoxFor(model => model.BudEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name1 + @Ledgers.LedgerNo, @readonly = "readonly" })
-                                                                                                @Html.ValidationMessageFor(model => model.BudEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                                                            </div>
-                                                                                </td>
-                                                                                <td>
-                                                                                    @if (!Model.IsEnabled || (Model.IsEnabled && Ledgerdetails!=null))
-                                                                                    {
-                                                                                        <div class="form-group"> 
-                                                                                          @{
-                                                                                            Model.InterimRev.Insert(LedgerNo, Ledgerdetails!=null ? Convert.ToDecimal(Ledgerdetails.InterimRevEst.ToString("F")) : Convert.ToDecimal(0.0000));
-                                                                                           } 
-                                                                                            @Html.TextBoxFor(model => model.InterimRev[LedgerNo], new { @class = "form-control", @id = @name2 + @Ledgers.LedgerNo, @readonly = "readonly" })
-                                                                                            @Html.ValidationMessageFor(model => model.InterimRev[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                                                        </div>  
-                                                                                    }
-                                                                                    else
-                                                                                    {
-                                                                                       <div class="form-group">
-                                                                                           @{
-                                                                                              Model.InterimRev.Insert(LedgerNo,Ledgerdetails != null ? Convert.ToDecimal(Ledgerdetails.InterimRevEst.ToString("F")) : Convert.ToDecimal(0.0000));
+                                                                                        @Html.HiddenFor(model => model.SubGroupNameOrLedgerName[LedgerNo])
+                                                                                    </td>
+                                                                                    <td>@Ledgers.LedgerName</td>
+                                                                                    <td>
+                                                                                        <div class="form-group">
+                                                                                            @{
+                                                                                                Model.RevEstCurrFin.Insert(LedgerNo, LedPrevYearApp != null ? Convert.ToDecimal(LedPrevYearApp.RevEstCurrFinACandBW.ToString("F")) : Convert.ToDecimal(0.0000));
                                                                                             }
-                                                                                                @Html.TextBoxFor(model => model.InterimRev[LedgerNo], new { @class = "form-control", @id = @name2 + @Ledgers.LedgerNo })
-                                                                                                @Html.ValidationMessageFor(model => model.InterimRev[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                                                      </div>  
-                                                                                       
+                                                                                            @Html.TextBoxFor(model => model.RevEstCurrFin[LedgerNo], new { @class = "form-control", @id = @name1 + @Ledgers.LedgerNo, @readonly = "readonly" })
+                                                                                            @Html.ValidationMessageFor(model => model.RevEstCurrFin[LedgerNo], null, new { @class = "text-danger", @style = "font-size: 0.8em;font-style: italic;" })
+                                                                                        </div>
+                                                                                    </td>
+
+                                                                                    @if (Model.IsEnabled && Ledgerdetails == null || (Model.IsEnabled && Model.EditEnabled == Ledgers.LedgerNo))
+                                                                                    {
+                                                                                        <td>
+                                                                                            <button style="border:none;background-color:white" id="@save" class="Submit" formaction="InterimRev" type="submit" value="Save Budget" style="align-self:center">
+                                                                                                <i class='bx bx-check' style="color:limegreen"></i>
+                                                                                            </button>
+                                                                                        </td>
                                                                                     }
-                                                                                </td>
-                                                                                <td>
-                                                                                       <div class="form-group">
-                                                                                           @{
-                                                                                               Model.ProvisionalRE.Insert(LedgerNo, Ledgerdetails != null ? Convert.ToDecimal(Ledgerdetails.ProvisionalRevEst.ToString("F")) : Convert.ToDecimal(0.0000));
-                                                                                            }
-                                                                                               @Html.TextBoxFor(model => model.ProvisionalRE[LedgerNo], new { @class = "form-control", @id = @name3 + @Ledgers.LedgerNo, @readonly = "readonly" })
-                                                                                               @Html.ValidationMessageFor(model => model.ProvisionalRE[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                                                      </div>  
-                                                                                </td>
-                                                                                @if(Model.IsEnabled && Ledgerdetails == null || (Model.IsEnabled && Model.EditEnabled==Ledgers.LedgerNo))
-                                                                                {
-                                                                                <td>
-                                                                                   <button style="border:none;background-color:white" id="@save" class="Submit" formaction="InterimRev" type="submit" value="Save Budget" style="align-self:center">
-                                                                                   <i class='bx bx-check' style="color:limegreen"></i></button>
-                                                                                </td>
-                                                                                }
-                                                                                @if(Model.IsEnabled && Ledgerdetails != null && Model.EditEnabled!=Ledgers.LedgerNo)
-                                                                                {
-                                                                                <td>
-                                                                                   <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="Edit" type="submit" value="Edit Budget" style="align-self:center">
-                                                                                   <i class='bx bxs-pencil' style="color:blue"></i></button>
-                                                                               </td>
-                                                                                }
-                                                                                @if(Model.IsEnabled && Ledgerdetails != null)
-                                                                                {
-                                                                                <td>
-                                                                                    <button style="border:none;background-color:white" id="@delete" class="Submit" formaction="Delete" type="submit" value="Delete Budget" style="align-self:center">
-                                                                                    <i class='bx bx-x' style="color:red"></i>     
-                                                                                    </button>
-                                                                               </td>
-                                                                                }
-                                                                             </tr>
-                                                                            
-                                                                        LedgerNo++;
-                                                                       }
+                                                                                    @if (Model.IsEnabled && Ledgerdetails != null && Model.EditEnabled != Ledgers.LedgerNo)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="Edit" type="submit" value="Edit Budget" style="align-self:center">
+                                                                                                <i class='bx bxs-pencil' style="color:blue"></i>
+                                                                                            </button>
+                                                                                        </td>
+                                                                                    }
+                                                                                    @if (Model.IsEnabled && Ledgerdetails != null)
+                                                                                    {
+                                                                                        <td>
+                                                                                            <button style="border:none;background-color:white" id="@delete" class="Submit" formaction="Delete" type="submit" value="Delete Budget" style="align-self:center">
+                                                                                                <i class='bx bx-x' style="color:red"></i>
+                                                                                            </button>
+                                                                                        </td>
+                                                                                    }
+                                                                                </tr>
+
+                                                                                LedgerNo++;
+                                                                            }
                                                                         </table>
                                                                         Count = LedgerNo;
-                                                               }
-                                                               else
-                                                               {
-                                                                <table class="table ChildGrid">                                                                     
-                                                                      @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
-                                                                      {
-                                                                        <tr>
-                                                                            <td></td>
-                                                                            <td>
-                                                                                @Ledgers.LedgerNo
-                                                                            </td>
-                                                                            <td>@Ledgers.LedgerName</td>
-                                                                        </tr>
-                                                                      }
-                                                                </table>
-                                                               }
-                                                             </div>
-                                                               
-                                                          }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <table class="table ChildGrid">
+                                                                            @foreach (var Ledgers in Model.Ledgerss.Where(d => d.SubGroupNo.Equals(@Subs.SubGroupNo)))
+                                                                            {
+                                                                                <tr>
+                                                                                    <td></td>
+                                                                                    <td>
+                                                                                        @Ledgers.LedgerNo
+                                                                                    </td>
+                                                                                    <td>@Ledgers.LedgerName</td>
+                                                                                </tr>
+                                                                            }
+                                                                        </table>
+                                                                    }
+                                                                </div>
+
+                                                            }
                                                         </td>
                                                         <td class="w-5">
                                                             @{
-                                                              Model.SubGroupNameOrLedgerName.Insert(Count, Subs.SubGroupNo);
-                                                             }
+                                                                Model.SubGroupNameOrLedgerName.Insert(Count, Subs.SubGroupNo);
+                                                            }
 
                                                             @Html.DisplayFor(model => model.SubGroupNameOrLedgerName[Count])
                                                             @Html.HiddenFor(model => model.SubGroupNameOrLedgerName[Count])
@@ -1378,94 +1040,33 @@
                                                             @Subs.subGroupName
                                                         </td>
                                                         <td class="w-5">
-                                                        
-                                                        @if (@Subs.RequireInput)
-                                                        {
-                                                            var LedgerPastYearAppBudEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.BudEstNextFin).Sum();
 
-                                                                <div class="form-group"> 
-                                                                 @{
-                                                                        Model.BudEstCurrFin.Insert(Count, LedgerPastYearAppBudEstCurrFin != null ? Convert.ToDecimal(LedgerPastYearAppBudEstCurrFin) : Convert.ToDecimal(0.0000));
-                                                                   }
-                                                                 @Html.TextBoxFor(model => model.BudEstCurrFin[Count], new { @class = "form-control", @id = @name1, @readonly = "readonly"} )
-                                                                 @Html.ValidationMessageFor(model => model.BudEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                            @if (@Subs.RequireInput)
+                                                            {
+                                                                var LedgerPastYearAppRevEstCurrFin = (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.RevEstCurrFinACandBW).Sum();
 
-                                                                </div>
-                                                        }
-                                                        else
-                                                        {
                                                                 <div class="form-group">
                                                                     @{
-                                                                        Model.BudEstCurrFin.Insert(Count,(PrevYearApp != null) ? Convert.ToDecimal(PrevYearApp.BudEstNextFin) : Convert.ToDecimal(0.0000));
-                                                                     }
-                                                                    @Html.TextBoxFor(model => model.BudEstCurrFin[Count], new { @class = "form-control", @id = @name1, @readonly = "readonly" })
-                                                                    @Html.ValidationMessageFor(model => model.BudEstCurrFin[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                                        Model.RevEstCurrFin.Insert(Count, LedgerPastYearAppRevEstCurrFin != null ? Convert.ToDecimal(LedgerPastYearAppRevEstCurrFin) : Convert.ToDecimal(0.0000));
+                                                                    }
+                                                                    @Html.TextBoxFor(model => model.RevEstCurrFin[Count], new { @class = "form-control", @id = @name1, @readonly = "readonly" })
+                                                                    @Html.ValidationMessageFor(model => model.RevEstCurrFin[Count], null, new { @class = "text-danger", @style = "font-size: 0.8em;font-style: italic;" })
 
                                                                 </div>
-                                                        }
-                                                        </td>
-                                                        <td class="w-5">
-                                                        @if (@Subs.RequireInput)
-                                                        {
-                                                            var LedgerSumInterimRev = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.InterimRevEst).Sum();
-                                                            <div class="form-group">  
-                                                               @{
-                                                                  Model.InterimRev.Insert(Count, LedgerSumInterimRev != null ? Convert.ToDecimal(LedgerSumInterimRev) : Convert.ToDecimal(0.0000));
-                                                                }   
-                                                                @Html.TextBoxFor(model => model.InterimRev[Count], new { @class = "form-control", @id = @name2, @readonly = "readonly"})
-                                                                @Html.ValidationMessageFor(model => model.InterimRev[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                            </div>
-                                                            
-                                                        }
-                                                        else if (!Model.IsEnabled || (Model.IsEnabled && details!=null))
-                                                        {
-                                                               <div class="form-group">
-                                                               @{
-                                                                  Model.InterimRev.Insert(Count, details != null ? Convert.ToDecimal(details.InterimRevEst) : Convert.ToDecimal(0.0000));
-                                                                }
-                                                                @Html.TextBoxFor(model => model.InterimRev[Count], new { @class = "form-control", @id = @name2 })
-                                                                @Html.ValidationMessageFor(model => model.InterimRev[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                            </div>
-                                                                
-                                                        }
-                                                        else
-                                                        {
-                                                            <div class="form-group">
-                                                               @{
-                                                                  Model.InterimRev.Insert(Count, details != null ? Convert.ToDecimal(details.InterimRevEst) : Convert.ToDecimal(0.0000));
-                                                                }
-                                                                @Html.TextBoxFor(model => model.InterimRev[Count], new { @class = "form-control", @id = @name2 })
-                                                                @Html.ValidationMessageFor(model => model.InterimRev[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                            </div>
-                                                            
-                                                        }
-                                                        </td>
-                                                        <td class="w-5">
-                                                        @if (@Subs.RequireInput)
-                                                        {
-                                                                var LedgerSumProvisionalRE = (from a in Model.Detailss where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a.ActCurrFinTill2ndQuart).Sum();
-                                                             <div class="form-group">
-                                                               @{
-                                                                  Model.ProvisionalRE.Insert(Count, LedgerSumProvisionalRE != null ? Convert.ToDecimal(LedgerSumProvisionalRE) : Convert.ToDecimal(0.0000));
-                                                                 }
-                                                                 @Html.TextBoxFor(model => model.ProvisionalRE[Count], new { @class = "form-control", @id = @name3, @readonly = "readonly"})
-                                                                 @Html.ValidationMessageFor(model => model.ProvisionalRE[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
-                                                                </div>
-                                                                
                                                             }
-                                                        else 
-                                                        {                                       
-                                                              <div class="form-group">
-                                                                @{
-                                                                   Model.ProvisionalRE.Insert(Count, details != null ? Convert.ToDecimal(details.ProvisionalRevEst) : Convert.ToDecimal(0.0000));
-                                                                 }
-                                                                  @Html.TextBoxFor(model => model.ProvisionalRE[Count], new { @class = "form-control", @id = @name3, @readonly = "readonly"})
-                                                                 @Html.ValidationMessageFor(model => model.ProvisionalRE[Count],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
+                                                            else
+                                                            {
+                                                                <div class="form-group">
+                                                                    @{
+                                                                        Model.RevEstCurrFin.Insert(Count, (PrevYearApp != null) ? Convert.ToDecimal(PrevYearApp.RevEstCurrFinACandBW) : Convert.ToDecimal(0.0000));
+                                                                    }
+                                                                    @Html.TextBoxFor(model => model.RevEstCurrFin[Count], new { @class = "form-control", @id = @name1, @readonly = "readonly" })
+                                                                    @Html.ValidationMessageFor(model => model.RevEstCurrFin[Count], null, new { @class = "text-danger", @style = "font-size: 0.8em;font-style: italic;" })
+
                                                                 </div>
-                                                                
                                                             }
-                                                       
                                                         </td>
+                                                        
                                                         @if ((!@Subs.RequireInput && Model.IsEnabled && details == null) || (Model.IsEnabled && Model.EditEnabled==Subs.SubGroupNo))
                                                         {
                                                             <td>
@@ -1506,14 +1107,9 @@
                                                     </td>
 
                                                     <td class="w-5" id="@Sumname1-Total">
-                                                        @SumBudEstCurrFin.ToString("F4")
+                                                        @SumRevEstCurrFin.ToString("F4")
                                                     </td>
-                                                    <td class="w-5" id="@Sumname2-Total">
-                                                       @SumInterimRev.ToString("F4")
-                                                    </td>
-                                                    <td class="w-5" id="@Sumname3-Total">
-                                                       @SumProvisionalRE.ToString("F4")
-                                                    </td>
+                                                    
                                                 </tr>
                                     </tbody>
                                 </table>

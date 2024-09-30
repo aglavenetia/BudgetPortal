@@ -121,7 +121,7 @@ namespace BudgetPortal.Areas.Identity.Pages.Account
                     //if (User.IsInRole("Admin"))
                    //{
                         _logger.LogInformation("User logged in.");
-                        ReturnUrl = @Url.Action("Index","Tabs");
+                        ReturnUrl = @Url.Action("Index","BudgetProposal");
                         return Redirect(ReturnUrl);
                    //}
                   // else
