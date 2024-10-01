@@ -158,7 +158,7 @@
                         
                          var SumRevEstCurrFin = (from a in Model.Approved where a.GroupNumber.Equals(@item.GroupNo) select a.RevEstCurrFinACandBW).Sum();
                          
-                         var Sumname1 = String.Concat("SumBudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                         var Sumname1 = String.Concat("SumRevEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                          var Sumname2 = String.Concat("SumInterimRev", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                          var Sumname3 = String.Concat("SumProvisionalRE", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
@@ -183,9 +183,10 @@
                                             <th class="w-5">
                                                 HEAD NAME
                                             </th>
-                                            <th class="CurrentBudgetEstimates w-10" >
+                                            <th class="CurrentRevisedEstimates w-10" >
                                             </th>
-                                            
+                                            <th>Increase/Decrease Estimate by</th>
+                                            <th>Estimates after ReAppropriation</th>
                                         </tr>
                                     </thead>
                                     <tbody> 
@@ -196,7 +197,7 @@
                                                     var PrevYearApp =  (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
                                                     
 
-                                                    var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name1 = String.Concat("RevEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name2 = String.Concat("InterimRev", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name3 = String.Concat("ProvisionalRE", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
@@ -338,6 +339,7 @@
                                                                 </div>
                                                         }
                                                         </td>
+                                                        <td class="w-5"></td>
                                                         @if ((!@Subs.RequireInput && Model.IsEnabled && details == null) || (Model.IsEnabled && Model.EditEnabled==Subs.SubGroupNo))
                                                         {
                                                             <td>
@@ -410,7 +412,7 @@
                                             <th class="w-5">
                                                 HEAD NAME
                                             </th>
-                                            <th class="CurrentBudgetEstimates w-10" >
+                                            <th class="CurrentRevisedEstimates w-10" >
                                             </th>
                                             
                                         </tr>
@@ -423,7 +425,7 @@
                                                     var PrevYearApp =  (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
                                                     
 
-                                                    var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name1 = String.Concat("RevEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name2 = String.Concat("InterimRev", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name3 = String.Concat("ProvisionalRE", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
@@ -565,6 +567,7 @@
                                                                 </div>
                                                         }
                                                         </td>
+                                                        <td class="w-5"></td>
                                                         @if ((!@Subs.RequireInput && Model.IsEnabled && details == null) || (Model.IsEnabled && Model.EditEnabled==Subs.SubGroupNo))
                                                         {
                                                             <td>
@@ -607,6 +610,8 @@
                                                     <td class="w-5" id="@Sumname1-Total">
                                                         @SumRevEstCurrFin.ToString("F4")
                                                     </td>
+                                                    <td class="w-5"></td>
+                                                    <td class="w-5"></td>
                                                 </tr>
                                     </tbody>
                                 </table>
@@ -681,8 +686,10 @@
                                             <th class="w-5">
                                                 HEAD NAME
                                             </th>
-                                            <th class="CurrentBudgetEstimates w-10" >
+                                            <th class="CurrentRevisedEstimates w-10" >
                                             </th>
+                                            <th>ReEstimates</th>
+                                            <th>FinalEstimates</th>
                                             
                                         </tr>
                                     </thead>
@@ -838,6 +845,8 @@
                                                                 </div>
                                                         }
                                                         </td>
+                                                        <td class="w-5"></td>
+                                                        <td class="w-5"></td>
                                                         @if ((!@Subs.RequireInput && Model.IsEnabled && details == null) || (Model.IsEnabled && Model.EditEnabled==Subs.SubGroupNo))
                                                         {
                                                             <td>
@@ -909,8 +918,10 @@
                                             <th class="w-5">
                                                 HEAD NAME
                                             </th>
-                                            <th class="CurrentBudgetEstimates w-10" >
+                                            <th class="CurrentRevisedEstimates w-10" >
                                             </th>
+                                            <th>ReEstimates</th>
+                                            <th>FinalEstimates</th>
                                             
                                         </tr>
                                     </thead>
@@ -922,7 +933,7 @@
                                                     var PrevYearApp =  (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
                                                     
 
-                                                    var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name1 = String.Concat("RevEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name2 = String.Concat("InterimRev", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
                                                     var name3 = String.Concat("ProvisionalRE", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
@@ -1066,6 +1077,8 @@
                                                                 </div>
                                                             }
                                                         </td>
+                                                        <td class="w-5"></td>
+                                                        <td class="w-5"></td>
                                                         
                                                         @if ((!@Subs.RequireInput && Model.IsEnabled && details == null) || (Model.IsEnabled && Model.EditEnabled==Subs.SubGroupNo))
                                                         {
@@ -1109,6 +1122,8 @@
                                                     <td class="w-5" id="@Sumname1-Total">
                                                         @SumRevEstCurrFin.ToString("F4")
                                                     </td>
+                                                    <td class="w-5"></td>
+                                                    <td class="w-5"></td>
                                                     
                                                 </tr>
                                     </tbody>
@@ -1346,7 +1361,7 @@
 
                  $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
 
-                 $(".CurrentBudgetEstimates").text('Budget Estimates ' + $("#SelectedAcademicYear").val());
+                 $(".CurrentRevisedEstimates").text('Revised Estimates ' + $("#SelectedAcademicYear").val());
                  $(".InterimRevision").text('Interim Addition' + $("#SelectedAcademicYear").val());
                  $(".ProvisionalRevisedEstimates").text('Provisional Revised Estimates' + $("#SelectedAcademicYear").val());
                  
