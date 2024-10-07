@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BudgetPortal.ViewModel
 {
-    public class Reestimation
+    public class Reappropriation
     {
         public IEnumerable<BudgetSections>? Sectionss { get; set; }
         public IEnumerable<BudgetGroups>? Groupss { get; set; }
@@ -38,6 +38,14 @@ namespace BudgetPortal.ViewModel
         [Column(TypeName = "money")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.####}")]
         public List<Decimal> RevEstCurrFin { get; set; }
+
+        [Column(TypeName = "money")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.####}")]
+        public List<Decimal> IncreasedEstimate { get; set; }
+
+        [Column(TypeName = "money")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#.####}")]
+        public List<Decimal> FinalEstimate { get; set; }
 
         public IEnumerable<SelectListItem>? DivisionNames { get; set; }
 

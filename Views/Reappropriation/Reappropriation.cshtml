@@ -1,5 +1,5 @@
 ﻿
-@model BudgetPortal.ViewModel.Reestimation
+@model BudgetPortal.ViewModel.Reappropriation
 @using System.Web;
 
 @using BudgetPortal.Entities;
@@ -159,8 +159,8 @@
                          var SumRevEstCurrFin = (from a in Model.Approved where a.GroupNumber.Equals(@item.GroupNo) select a.RevEstCurrFinACandBW).Sum();
                          
                          var Sumname1 = String.Concat("SumRevEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                         var Sumname2 = String.Concat("SumInterimRev", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                         var Sumname3 = String.Concat("SumProvisionalRE", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                         var Sumname2 = String.Concat("SumIncestimate", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                         var Sumname3 = String.Concat("SumFinalEstimate", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
                         @if (CounterBody == 0)
                         {
@@ -198,8 +198,8 @@
                                                     
 
                                                     var name1 = String.Concat("RevEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name2 = String.Concat("InterimRev", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name3 = String.Concat("ProvisionalRE", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name2 = String.Concat("Incestimate", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name3 = String.Concat("FinalEstimate", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
                                                     var save = String.Concat("Save", @inner.SectionNo.ToString(),"_",@Subs.SubGroupNo, @TableCount);
                                                     var edit = String.Concat("Edit", @inner.SectionNo.ToString(), "_",@Subs.SubGroupNo, @TableCount);
@@ -251,7 +251,8 @@
                                                                                                 @Html.ValidationMessageFor(model => model.RevEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                 </td>
-                                                                                
+                                                                                <td class="w-5">@Html.TextBox("Incestimate", null, new { @class = "form-control", @readonly = "readonly" })</td>
+                                                                                <td class="w-5">@Html.TextBox("FinalEstimate", null, new { @class = "form-control", @readonly = "readonly" })</td>
                                                                                 @if(Model.IsEnabled && Ledgerdetails == null || (Model.IsEnabled && Model.EditEnabled==Ledgers.LedgerNo))
                                                                                 {
                                                                                 <td>
@@ -339,7 +340,8 @@
                                                                 </div>
                                                         }
                                                         </td>
-                                                        <td class="w-5"></td>
+                                                        <td class="w-5">@Html.TextBox(@name2, null, new { @class = "form-control", @readonly = "readonly" })</td>
+                                                        <td class="w-5">@Html.TextBox(@name3, null, new { @class = "form-control", @readonly = "readonly" })</td>
                                                         @if ((!@Subs.RequireInput && Model.IsEnabled && details == null) || (Model.IsEnabled && Model.EditEnabled==Subs.SubGroupNo))
                                                         {
                                                             <td>
@@ -383,6 +385,8 @@
                                                     <td class="w-5" id="@Sumname1-Total">
                                                         @SumRevEstCurrFin.ToString("F4")
                                                     </td>
+                                                    <td></td>
+                                                    <td></td>
                                                     
                                                 </tr>
                                     </tbody>
@@ -414,6 +418,8 @@
                                             </th>
                                             <th class="CurrentRevisedEstimates w-10" >
                                             </th>
+                                                    <th>Increase/Decrease Estimate by</th>
+                                                    <th>Estimates after ReAppropriation</th>
                                             
                                         </tr>
                                     </thead>
@@ -426,8 +432,8 @@
                                                     
 
                                                     var name1 = String.Concat("RevEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name2 = String.Concat("InterimRev", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name3 = String.Concat("ProvisionalRE", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name2 = String.Concat("Incestimate", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name3 = String.Concat("FinalEstimate", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
                                                     var save = String.Concat("Save", @inner.SectionNo.ToString(), "_",@Subs.SubGroupNo, @TableCount);
                                                     var edit = String.Concat("Edit", @inner.SectionNo.ToString(), "_",@Subs.SubGroupNo, @TableCount);
@@ -479,7 +485,8 @@
                                                                                                 @Html.ValidationMessageFor(model => model.RevEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                 </td>
-                                                                                
+                                                                                <td class="w-5">@Html.TextBox("Incestimate", null, new { @class = "form-control", @readonly = "readonly" })</td>
+                                                                                <td class="w-5">@Html.TextBox("FinalEstimate", null, new { @class = "form-control", @readonly = "readonly" })</td>
                                                                                 @if(Model.IsEnabled && Ledgerdetails == null || (Model.IsEnabled && Model.EditEnabled==Ledgers.LedgerNo))
                                                                                 {
                                                                                 <td>
@@ -567,7 +574,8 @@
                                                                 </div>
                                                         }
                                                         </td>
-                                                        <td class="w-5"></td>
+                                                        <td class="w-5">@Html.TextBox(@name2, null, new { @class = "form-control", @readonly = "readonly" })</td>
+                                                        <td class="w-5">@Html.TextBox(@name3, null, new { @class = "form-control", @readonly = "readonly" })</td>
                                                         @if ((!@Subs.RequireInput && Model.IsEnabled && details == null) || (Model.IsEnabled && Model.EditEnabled==Subs.SubGroupNo))
                                                         {
                                                             <td>
@@ -661,10 +669,10 @@
                         var identi = String.Concat("Budget", Convert.ToInt32((Convert.ToDecimal(@item.GroupNo) * 10)).ToString());
                         
                          var SumRevEstCurrFin = (from a in Model.Approved where a.GroupNumber.Equals(@item.GroupNo) select a.RevEstCurrFinACandBW).Sum();
-                         
-                         var Sumname1 = String.Concat("SumBudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                         var Sumname2 = String.Concat("SumInterimRev", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                         var Sumname3 = String.Concat("SumProvisionalRE", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+
+                         var Sumname1 = String.Concat("SumRevEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                         var Sumname2 = String.Concat("SumIncestimate", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                         var Sumname3 = String.Concat("SumFinalEstimate", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
                           @if (CounterBody == 0)
                           {
@@ -688,8 +696,8 @@
                                             </th>
                                             <th class="CurrentRevisedEstimates w-10" >
                                             </th>
-                                            <th>ReEstimates</th>
-                                            <th>FinalEstimates</th>
+                                                    <th>Increase/Decrease Estimate by</th>
+                                                    <th>Estimates after ReAppropriation</th>
                                             
                                         </tr>
                                     </thead>
@@ -702,9 +710,9 @@
                                                     var PrevYearApp =  (from a in Model.Approved where a.SubGroupNumber.Equals(@Subs.SubGroupNo) select a).FirstOrDefault();
                                                     
 
-                                                    var name1 = String.Concat("BudEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name2 = String.Concat("InterimRev", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name3 = String.Concat("ProvisionalRE", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name1 = String.Concat("RevEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name2 = String.Concat("Incestimate", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name3 = String.Concat("FinalEstimate", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
                                                    
                                                     var save = String.Concat("Save", @inner.SectionNo.ToString(), "_",@Subs.SubGroupNo, @TableCount);
@@ -757,7 +765,8 @@
                                                                                                 @Html.ValidationMessageFor(model => model.RevEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                 </td>
-                                                                                
+                                                                                <td class="w-5">@Html.TextBox("Incestimate", null, new { @class = "form-control", @readonly = "readonly" })</td>
+                                                                                <td class="w-5">@Html.TextBox("FinalEstimate", null, new { @class = "form-control", @readonly = "readonly" })</td>
                                                                                 @if(Model.IsEnabled && Ledgerdetails == null || (Model.IsEnabled && Model.EditEnabled==Ledgers.LedgerNo))
                                                                                 {
                                                                                 <td>
@@ -845,8 +854,8 @@
                                                                 </div>
                                                         }
                                                         </td>
-                                                        <td class="w-5"></td>
-                                                        <td class="w-5"></td>
+                                                        <td class="w-5">@Html.TextBox("Incestimate", null, new { @class = "form-control", @readonly = "readonly" })</td>
+                                                        <td class="w-5">@Html.TextBox("FinalEstimate", null, new { @class = "form-control", @readonly = "readonly" })</td>
                                                         @if ((!@Subs.RequireInput && Model.IsEnabled && details == null) || (Model.IsEnabled && Model.EditEnabled==Subs.SubGroupNo))
                                                         {
                                                             <td>
@@ -889,6 +898,8 @@
                                                     <td class="w-5" id="@Sumname1-Total">
                                                         @SumRevEstCurrFin.ToString("F4")
                                                     </td>
+                                                    <td class="w-5"></td>
+                                                    <td class="w-5"></td>
                                                     
                                                 </tr>
                                     </tbody>
@@ -920,8 +931,8 @@
                                             </th>
                                             <th class="CurrentRevisedEstimates w-10" >
                                             </th>
-                                            <th>ReEstimates</th>
-                                            <th>FinalEstimates</th>
+                                            <th>Increase/Decrease Estimate by</th>
+                                            <th>Estimates after ReAppropriation</th>
                                             
                                         </tr>
                                     </thead>
@@ -934,8 +945,8 @@
                                                     
 
                                                     var name1 = String.Concat("RevEstCurrFin", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name2 = String.Concat("InterimRev", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
-                                                    var name3 = String.Concat("ProvisionalRE", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name2 = String.Concat("Incestimate", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
+                                                    var name3 = String.Concat("FinalEstimate", @inner.SectionNo.ToString(), @item.GroupNo, @TableCount);
 
                                                     var save = String.Concat("Save", @inner.SectionNo.ToString(), "_",@Subs.SubGroupNo, @TableCount);
                                                     var edit = String.Concat("Edit", @inner.SectionNo.ToString(), "_",@Subs.SubGroupNo, @TableCount);
@@ -987,7 +998,8 @@
                                                                                             @Html.ValidationMessageFor(model => model.RevEstCurrFin[LedgerNo], null, new { @class = "text-danger", @style = "font-size: 0.8em;font-style: italic;" })
                                                                                         </div>
                                                                                     </td>
-
+                                                                                    <td class="w-5">@Html.TextBox("Incestimate", null, new { @class = "form-control", @readonly = "readonly" })</td>
+                                                                                    <td class="w-5">@Html.TextBox("FinalEstimate", null, new { @class = "form-control", @readonly = "readonly" })</td>
                                                                                     @if (Model.IsEnabled && Ledgerdetails == null || (Model.IsEnabled && Model.EditEnabled == Ledgers.LedgerNo))
                                                                                     {
                                                                                         <td>
@@ -1077,8 +1089,8 @@
                                                                 </div>
                                                             }
                                                         </td>
-                                                        <td class="w-5"></td>
-                                                        <td class="w-5"></td>
+                                                        <td class="w-5">@Html.TextBox("Incestimate", null, new { @class = "form-control", @readonly = "readonly" })</td>
+                                                        <td class="w-5">@Html.TextBox("FinalEstimate", null, new { @class = "form-control", @readonly = "readonly" })</td>
                                                         
                                                         @if ((!@Subs.RequireInput && Model.IsEnabled && details == null) || (Model.IsEnabled && Model.EditEnabled==Subs.SubGroupNo))
                                                         {
@@ -1190,7 +1202,7 @@
                         $.ajax
                             ({
                                 type: "Get",
-                                url: '@Url.Action("GetDetails","InterimRevision")',
+                                url: '@Url.Action("GetDetails","Reappropriation")',
                                 data: { Year: year[0], Division: divisionname },
                                 dataType: "html",
                                 success: function (data) {
@@ -1256,7 +1268,7 @@
                         $.ajax
                             ({
                                 type: "Get",
-                                url: '@Url.Action("GetDetails","InterimRevision")',
+                                url: '@Url.Action("GetDetails", "Reappropriation")',
                                 data: { Year: year[0], Division: divisionname },
                                 dataType: "html",
                                 success: function (data)
@@ -1290,7 +1302,7 @@
                                 },
                                 error: function (jqXHR, textStatus, errorThrown)
                                 {
-                                    alert("errorThrown Interim Revision ");
+                                    alert("errorThrown Re appropriation ");
                                     //alert("Error Thrown");
                                 }
 
@@ -1362,8 +1374,8 @@
                  $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
 
                  $(".CurrentRevisedEstimates").text('Revised Estimates ' + $("#SelectedAcademicYear").val());
-                 $(".InterimRevision").text('Interim Addition' + $("#SelectedAcademicYear").val());
-                 $(".ProvisionalRevisedEstimates").text('Provisional Revised Estimates' + $("#SelectedAcademicYear").val());
+                 $(".Incestimate").text('Estimates Increased by ' + $("#SelectedAcademicYear").val());
+                 $(".FinalEstimate").text('Final Estimates' + $("#SelectedAcademicYear").val());
                  
         } 
         
