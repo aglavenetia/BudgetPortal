@@ -40,6 +40,15 @@ namespace BudgetPortal.Entities
         [Required]
         public Decimal RevEstCurrFinACandBW { get; set; }
 
+        [Column(TypeName = "decimal(8,2)")]
+        [Required]
+        public Decimal EstIncreasedBy { get; set; }
+
+        [Column(TypeName = "money")]
+        [Required]
+        public Decimal FinalEstimates { get; set; }
+
+
         [Column(TypeName = "money")]
         [Required]
         public Decimal BudEstNextFin { get; set; }

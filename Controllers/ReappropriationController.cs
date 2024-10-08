@@ -1,6 +1,7 @@
 ﻿using BudgetPortal.Data;
 using BudgetPortal.Entities;
 using BudgetPortal.ViewModel;
+using DocumentFormat.OpenXml.Bibliography;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -23,10 +24,14 @@ namespace BudgetPortal.Controllers
         public IActionResult Reappropriation()
         {
             //var Year = DateTime.Now.Year;
-            var Year = 2023;
+            var Year = GlobalVariables.Year;
             //var Month = DateTime.Now.Month;
-            var Month = 10;
-
+            var Month = GlobalVariables.Month;
+            if (Month > 0 && Month < 4)
+            {
+                /*Year = DateTime.Now.Year - 1;*/
+                Year = Year - 1;
+            }
             var username = User.Identity.Name;
             var DivName = _context.Users
                           .Where(x => x.UserName.Equals(username))
@@ -117,13 +122,20 @@ namespace BudgetPortal.Controllers
                                          .Where(x => x.FinancialYear1 == (Year - 1)).ToList();
 
             //var Month = DateTime.Now.Month;
-            var Month = 10;
+            var Month = GlobalVariables.Month;
+            
+            
 
             mymodel.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == LoggedInDivisionID)
                                 .Where(x => x.FinancialYear1 == Year).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
 
-            //if ((Month > 3 && Month < 10) && (Year == DateTime.Now.Year))
-            if ((mymodel.BudgetApprovedStatus == 1) && (Year == 2023))
+            if (Month > 0 && Month < 4)
+            {
+                /*Year = DateTime.Now.Year - 1;*/
+                Year = Year + 1;
+            }
+            //if ((Month > 3 && Month < 1) && (Year == DateTime.Now.Year))
+            if ((mymodel.BudgetApprovedStatus == 1) && (Year == GlobalVariables.Year))
             {
                 mymodel.IsEnabled = true;
             }
@@ -196,6 +208,79 @@ namespace BudgetPortal.Controllers
 
 
             return View("Reappropriation", mymodel);
+        }
+
+
+
+        [HttpPost]
+        [RequestFormLimits(ValueCountLimit = 20000)]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Reappropriation IM)
+        {
+            IM.EditEnabled = IM.SubGroupLedgerName;
+            //var Month = DateTime.Now.Month;
+            var Month = GlobalVariables.Month;
+            
+            var DivName = " ";
+            var DivisionID = " ";
+            if (User.Identity.Name.Equals("admin@test.com"))
+            {
+                DivName = IM.SelectedDivisionName.ToString();
+                DivisionID = _context.Division
+                                     .Where(d => d.DivisionName == DivName)
+                                     .Select(x => x.DivisionID).FirstOrDefault().ToString();
+            }
+
+            var splitAcademicYear = IM.SelectedAcademicYear.ToString().Split("-");
+            if (Month > 0 && Month < 4)
+            {
+                splitAcademicYear[0] = (Convert.ToInt32(splitAcademicYear[0]) + 1).ToString();
+            }
+
+            int index = IM.SubGroupNameOrLedgerName.IndexOf(IM.SubGroupLedgerName);
+
+            IM.BudgetApprovedStatus = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
+
+            //if ((Month > 3 && Month < 1) && (Convert.ToInt32(splitAcademicYear[0]) == DateTime.Now.Year))
+            if ((IM.BudgetApprovedStatus == 1) && (Convert.ToInt32(splitAcademicYear[0]) == GlobalVariables.Year))
+            {
+                IM.IsEnabled = true;
+            }
+
+            IM.Sectionss = _context.BudgetSections.ToList();
+            //IM.Groupss = _context.BudgetGroups.ToList();
+            IM.Groupss = _context.BudgetGroups.OrderBy(x => x.CreatedDateTime).ToList();
+            IM.SubGroupss = _context.BudgetSubGroups.OrderBy(x => x.SubGroupNo).ToList();
+            IM.Detailss = _context.BudgetDetails.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+            IM.IncreasedEstimate[index] = Convert.ToDecimal(0.00);
+            IM.FinalEstimate[index] = Convert.ToDecimal(0.00);
+
+            IM.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                         .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
+            IM.DivisionNames = _context.Division.AsEnumerable().Select(x =>
+                    new SelectListItem()
+                    {
+                        Selected = false,
+                        Text = x.DivisionName,
+                        Value = x.DivisionID.ToString()
+
+                    }).ToList();
+
+            IM.AcademicYears = _context.AcademicYears.AsEnumerable().Select(x =>
+                new SelectListItem()
+                {
+                    Selected = false,
+                    Text = x.Year1 + "-" + x.Year2,
+                    Value = x.Id.ToString()
+
+                }).ToList();
+            IM.AcademicYears.Where(x => x.Text.Equals(IM.SelectedAcademicYear.ToString())).Single().Selected = true;
+
+            return View("Reappropriation", IM);
+
         }
 
 

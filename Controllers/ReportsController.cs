@@ -37,15 +37,15 @@ namespace BudgetPortal.Controllers
         public IActionResult Reports()
         {
             //var Year = DateTime.Now.Year;
-            var Year = 2023;
+            var Year = GlobalVariables.Year;
             var username = User.Identity.Name;
 
             //var Month = DateTime.Now.Month;
-            var Month = 10;
+            var Month = GlobalVariables.Month;
             if (Month > 0 && Month < 4)
             {
                 //Year = DateTime.Now.Year - 1;
-                Year = 2023 - 1;
+                Year = Year - 1;
             }
             var AcademicYear = String.Concat(Year, "-", (Year + 1));
             var NextAcademicYear = String.Concat((Year + 1), "-", (Year + 2));
@@ -83,7 +83,7 @@ namespace BudgetPortal.Controllers
                     new SelectListItem()
                     {
                         Selected = false,
-                        Text = x.ReportID.ToString().Equals("6") ? x.ReportName + " " + NextAcademicYear : x.ReportID.ToString().Equals("10") ? x.ReportName + " " + NextAcademicYear:x.ReportName,
+                        Text = x.ReportID.ToString().Equals("6") ? x.ReportName + " " + NextAcademicYear : x.ReportID.ToString().Equals("1") ? x.ReportName + " " + NextAcademicYear:x.ReportName,
                         Value = x.ReportID.ToString()
 
                     }).ToList();
@@ -171,7 +171,7 @@ namespace BudgetPortal.Controllers
                     new SelectListItem()
                     {
                         Selected = false,
-                        Text = x.ReportID.ToString().Equals("10") ? x.ReportName + " " + NextAcademicYear : x.ReportID.ToString().Equals("6") ? x.ReportName + " " + NextAcademicYear : x.ReportName,
+                        Text = x.ReportID.ToString().Equals("1") ? x.ReportName + " " + NextAcademicYear : x.ReportID.ToString().Equals("6") ? x.ReportName + " " + NextAcademicYear : x.ReportName,
                         Value = x.ReportID.ToString()
 
                     }).ToList();
@@ -263,9 +263,9 @@ namespace BudgetPortal.Controllers
             /*string customSwitches = string.Format("--header-html  \"{0}\" " +
                                "--header-spacing \"0\" " +
                                "--footer-html \"{1}\" " +
-                               "--footer-spacing \"10\" " +
-                               "--footer-font-size \"10\" " +
-                               "--header-font-size \"10\" ", header, footer);*/
+                               "--footer-spacing \"1\" " +
+                               "--footer-font-size \"1\" " +
+                               "--header-font-size \"1\" ", header, footer);*/
             //var SelectedFileName = mymodel.ReportNames.Where(x => x.Selected == true).Select(x => x.Text).FirstOrDefault();
             //var ReportName = "";
             //var SelectedAcademicYear = mymodel.AcademicYears.Where(x => x.Selected == true).Select(x => x.Text).FirstOrDefault();
@@ -1287,7 +1287,7 @@ namespace BudgetPortal.Controllers
                         Row1.Style.Fill.BackgroundColor = XLColor.BabyPink;
 
                         Row2.Merge();
-                        Row2.Value = "Shiksha Kendra 2, Community Centre, Preet Vihar, Delhi - 110 092";
+                        Row2.Value = "Shiksha Kendra 2, Community Centre, Preet Vihar, Delhi - 11 092";
                         Row2.Style.Font.Bold = true;
                         Row2.Style.Fill.BackgroundColor = XLColor.Champagne;
 
@@ -1365,7 +1365,7 @@ namespace BudgetPortal.Controllers
                         Row1.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
 
                         Row2.Merge();
-                        Row2.Value = "Shiksha Kendra 2, Community Centre, Preet Vihar, Delhi - 110 092";
+                        Row2.Value = "Shiksha Kendra 2, Community Centre, Preet Vihar, Delhi - 11 092";
                         Row2.Style.Font.Bold = true;
                         Row2.Style.Fill.BackgroundColor = XLColor.Champagne;
                         Row2.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
@@ -1446,7 +1446,7 @@ namespace BudgetPortal.Controllers
 
                         Row2.Merge();
                         Row2.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                        Row2.Value = "Shiksha Kendra 2, Community Centre, Preet Vihar, Delhi - 110 092";
+                        Row2.Value = "Shiksha Kendra 2, Community Centre, Preet Vihar, Delhi - 11 092";
                         Row2.Style.Font.Bold = true;
                         Row2.Style.Fill.BackgroundColor = XLColor.Champagne;
                         Row2.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;

@@ -26,7 +26,7 @@ namespace BudgetPortal.Controllers
         public IActionResult Index()
         {
             /*var Year = DateTime.Now.Year;*/
-            var Year = 2023;
+            var Year = GlobalVariables.Year;
             
             var username = User.Identity.Name;
             var DivName = _context.Users
@@ -36,12 +36,12 @@ namespace BudgetPortal.Controllers
                                    .Where(d => d.DivisionName == DivName)
                                    .Select(x => x.DivisionID).FirstOrDefault();
             //var Month = DateTime.Now.Month;
-            var Month = 10;
+            var Month = GlobalVariables.Month;
 
             if (Month > 0 && Month < 4)
             {
                 /*Year = DateTime.Now.Year - 1;*/
-                Year = 2023 - 1;
+                Year = Year - 1;
             }
             var AcademicYear = String.Concat(Year, "-", (Year + 1));
             
@@ -108,7 +108,7 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.FinancialYear1 == Year).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
 
             
-            if (Month > 9 && mymodel.BudgetApprovedStatus != 1 && Year == 2023)
+            if (Month > 9 && mymodel.BudgetApprovedStatus != 1 && Year == GlobalVariables.Year)
             {
                 mymodel.IsEnabled = true;
             }
@@ -241,15 +241,24 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
             
             //var Month = DateTime.Now.Month;
-            var Month = 10;
+            
 
-            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2023)
+            MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                         .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
+
+            var Month = GlobalVariables.Month;
+
+            if (Month > 0 && Month < 4)
+            {
+                /*Year = DateTime.Now.Year - 1;*/
+                splitAcademicYear[0] = (Convert.ToInt32(splitAcademicYear[0]) + 1).ToString();
+            }
+
+            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == GlobalVariables.Year)
             {
                 MD.IsEnabled = true;
             }
 
-            MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
-                                         .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
             MD.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                     new SelectListItem()
                     {
@@ -354,7 +363,7 @@ namespace BudgetPortal.Controllers
 
            
 
-                if (fileInfo.Extension.Equals(".pdf") && MD.File.Length < 1000000 )
+                if (fileInfo.Extension.Equals(".pdf") && MD.File.Length < 100000 )
                 { 
                          using (var stream = new FileStream(fileNameWithPath, FileMode.Create))
                          {
@@ -411,15 +420,22 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
 
             //var Month = DateTime.Now.Month;
-            var Month = 10;
+            
 
-            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2023)
+            MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
+                                         .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
+
+            var Month = GlobalVariables.Month;
+            if (Month > 0 && Month < 4)
+            {
+                /*Year = DateTime.Now.Year - 1;*/
+                splitAcademicYear[0] = (Convert.ToInt32(splitAcademicYear[0]) + 1).ToString();
+            }
+            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == GlobalVariables.Year)
             {
                 MD.IsEnabled = true;
             }
 
-            MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
-                                         .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
             MD.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                     new SelectListItem()
                     {
@@ -535,9 +551,13 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(Year)).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
 
             //var Month = DateTime.Now.Month;
-            var Month = 10;
+            var Month = GlobalVariables.Month;
 
-            if (Month > 9 && mymodel.BudgetApprovedStatus != 1 && Year == 2023)
+            if (Month > 0 && Month < 4)
+            {
+                Year = Year + 1;
+            }
+            if (Month > 9 && mymodel.BudgetApprovedStatus != 1 && Year == GlobalVariables.Year)
             {
                 mymodel.IsEnabled = true;
             }
@@ -776,16 +796,25 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
 
                 //var Month = DateTime.Now.Month;
-                var Month = 10;
-
-                if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2023)
-                {
-                    MD.IsEnabled = true;
-                }
+                
 
 
                 MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == DivisionID)
                                              .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
+
+                var Month = GlobalVariables.Month;
+
+                if (Month > 0 && Month < 4)
+                {
+                    /*Year = DateTime.Now.Year - 1;*/
+                    splitAcademicYear[0] = (Convert.ToInt32(splitAcademicYear[0]) + 1).ToString();
+                }
+
+                if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == GlobalVariables.Year)
+                {
+                    MD.IsEnabled = true;
+                }
+
                 MD.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                         new SelectListItem()
                         {
@@ -927,12 +956,7 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
 
             //var Month = DateTime.Now.Month;
-            var Month = 10;
-
-            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2023)
-            {
-                MD.IsEnabled = true;
-            }
+            
 
             MD.Sectionss = _context.BudgetSections.ToList();
             MD.SectionName = MD.SectionName;
@@ -949,6 +973,20 @@ namespace BudgetPortal.Controllers
                                          .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
             MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == Convert.ToInt32(DivisionID))
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+
+            var Month = GlobalVariables.Month;
+
+            if (Month > 0 && Month < 4)
+            {
+                /*Year = DateTime.Now.Year - 1;*/
+                splitAcademicYear[0] = (Convert.ToInt32(splitAcademicYear[0]) + 1).ToString();
+            }
+
+            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == GlobalVariables.Year)
+            {
+                MD.IsEnabled = true;
+            }
+
             MD.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                     new SelectListItem()
                     {
@@ -1271,18 +1309,27 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
 
             //var Month = DateTime.Now.Month;
-            var Month = 10;
-
-            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2023)
-            {
-                MD.IsEnabled = true;
-            }
+            
             MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == SelectedDivisionID)
                                   .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
             MD.Filess = _context.BudgetFiles.Where(x => x.DivisionID == SelectedDivisionID)
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
             MD.Statuss = _context.BudgetdetailsStatus.Where(x => x.DivisionID == SelectedDivisionID)
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).ToList();
+
+            var Month = GlobalVariables.Month;
+
+            if (Month > 0 && Month < 4)
+            {
+                /*Year = DateTime.Now.Year - 1;*/
+                splitAcademicYear[0] = (Convert.ToInt32(splitAcademicYear[0]) + 1).ToString();
+            }
+
+            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == GlobalVariables.Year)
+            {
+                MD.IsEnabled = true;
+            }
+
             MD.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                     new SelectListItem()
                     {
@@ -1408,9 +1455,15 @@ namespace BudgetPortal.Controllers
             MD.GroupName = MD.GroupName;
             MD.HeaderName = MD.HeaderName;
             //var Month = DateTime.Now.Month;
-            var Month = 10;
+            var Month = GlobalVariables.Month;
 
-            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2023)
+            if (Month > 0 && Month < 4)
+            {
+                /*Year = DateTime.Now.Year - 1;*/
+                splitAcademicYear[0] = (Convert.ToInt32(splitAcademicYear[0]) + 1).ToString();
+            }
+
+            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == GlobalVariables.Year)
             {
                 MD.IsEnabled = true;
             }
@@ -1586,16 +1639,25 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
 
             //var Month = DateTime.Now.Month;
-            var Month = 10;
-
-            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2023)
-            {
-                MD.IsEnabled = true;
-            }
+            
 
 
             MD.Approved = _context.BudgetDetailsApproved.Where(x => x.DivisionID == DivisionID)
                                   .Where(x => x.FinancialYear1 == (Convert.ToInt32(splitAcademicYear[0]) - 1)).ToList();
+
+            var Month = GlobalVariables.Month;
+
+            if (Month > 0 && Month < 4)
+            {
+                /*Year = DateTime.Now.Year - 1;*/
+                splitAcademicYear[0] = (Convert.ToInt32(splitAcademicYear[0]) + 1).ToString();
+            }
+
+            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == GlobalVariables.Year)
+            {
+                MD.IsEnabled = true;
+            }
+
             MD.DivisionNames = _context.Division.AsEnumerable().Select(x =>
                     new SelectListItem()
                     {
@@ -1724,9 +1786,15 @@ namespace BudgetPortal.Controllers
                                 .Where(x => x.FinancialYear1 == Convert.ToInt32(splitAcademicYear[0])).Where(x => x.SectionNumber == Convert.ToInt32(0)).Where(x => x.AdminEditStatus == false).Select(x => x.AdminEditStatus).Count();
 
             //var Month = DateTime.Now.Month;
-            var Month = 10;
+            var Month = GlobalVariables.Month;
 
-            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == 2023)
+            if (Month > 0 && Month < 4)
+            {
+                /*Year = DateTime.Now.Year - 1;*/
+                splitAcademicYear[0] = (Convert.ToInt32(splitAcademicYear[0]) + 1).ToString();
+            }
+
+            if (Month > 9 && MD.BudgetApprovedStatus != 1 && Convert.ToInt32(splitAcademicYear[0]) == GlobalVariables.Year)
             {
                 MD.IsEnabled = true;
             }

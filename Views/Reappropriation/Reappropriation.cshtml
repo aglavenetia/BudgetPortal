@@ -24,9 +24,8 @@
 
     Model.SubGroupNameOrLedgerName = new List<String>();
     Model.RevEstCurrFin = new List<Decimal>();
-   
-    
-    //Model.File = new List<IFormFile>();
+    Model.IncreasedEstimate = new List<Decimal>();
+    Model.FinalEstimate = new List<Decimal>();
 
     //Boolean EditStatus = false ;
     
@@ -183,10 +182,13 @@
                                             <th class="w-5">
                                                 HEAD NAME
                                             </th>
-                                            <th class="CurrentRevisedEstimates w-10" >
+                                            <th class="CurrentRevisedEstimates w-5" >
                                             </th>
-                                            <th>Increase/Decrease Estimate by</th>
-                                            <th>Estimates after ReAppropriation</th>
+                                            <th class="Incestimate w-5">
+                                            </th>
+                                            <th class="FinalEstimate w-5">
+                                            </th>
+
                                         </tr>
                                     </thead>
                                     <tbody> 
@@ -251,8 +253,22 @@
                                                                                                 @Html.ValidationMessageFor(model => model.RevEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                 </td>
-                                                                                <td class="w-5">@Html.TextBox("Incestimate", null, new { @class = "form-control", @readonly = "readonly" })</td>
-                                                                                <td class="w-5">@Html.TextBox("FinalEstimate", null, new { @class = "form-control", @readonly = "readonly" })</td>
+                                                                                    <td class="w-5">
+                                                                                        <div class="form-group">
+                                                                                            @{
+                                                                                                Model.IncreasedEstimate.Insert(LedgerNo, LedPrevYearApp != null ? Convert.ToDecimal(LedPrevYearApp.EstIncreasedBy.ToString("F")) : Convert.ToDecimal(0.0000));
+                                                                                            }
+                                                                                            @Html.TextBoxFor(model => model.IncreasedEstimate[LedgerNo], new { @class = "form-control", @id = @name2 + @Ledgers.LedgerNo, @readonly = "readonly" })
+                                                                                        </div>
+                                                                                    </td>
+                                                                                    <td class="w-5">
+                                                                                        <div class="form-group">
+                                                                                            @{
+                                                                                                Model.FinalEstimate.Insert(LedgerNo, LedPrevYearApp != null ? Convert.ToDecimal(LedPrevYearApp.FinalEstimates.ToString("F")) : Convert.ToDecimal(0.0000));
+                                                                                            }
+                                                                                            @Html.TextBoxFor(model => model.FinalEstimate[LedgerNo], new { @class = "form-control", @id = @name3 + @Ledgers.LedgerNo, @readonly = "readonly" })
+                                                                                        </div>
+                                                                                    </td>
                                                                                 @if(Model.IsEnabled && Ledgerdetails == null || (Model.IsEnabled && Model.EditEnabled==Ledgers.LedgerNo))
                                                                                 {
                                                                                 <td>
@@ -340,16 +356,31 @@
                                                                 </div>
                                                         }
                                                         </td>
-                                                        <td class="w-5">@Html.TextBox(@name2, null, new { @class = "form-control", @readonly = "readonly" })</td>
-                                                        <td class="w-5">@Html.TextBox(@name3, null, new { @class = "form-control", @readonly = "readonly" })</td>
-                                                        @if ((!@Subs.RequireInput && Model.IsEnabled && details == null) || (Model.IsEnabled && Model.EditEnabled==Subs.SubGroupNo))
+                                                        <td class="w-5">
+                                                            <div class="form-group">
+                                                                @{
+                                                                    Model.IncreasedEstimate.Insert(Count, PrevYearApp != null ? Convert.ToDecimal(PrevYearApp.EstIncreasedBy.ToString("F")) : Convert.ToDecimal(0.0000));
+                                                                }
+                                                                @Html.TextBoxFor(model => model.IncreasedEstimate[Count], new { @class = "form-control", @id = @name2, @readonly = "readonly" })
+                                                            </div>
+                                                        </td>
+                                                        <td class="w-5">
+                                                            <div class="form-group">
+                                                                @{
+                                                                    Model.FinalEstimate.Insert(Count, PrevYearApp != null ? Convert.ToDecimal(PrevYearApp.FinalEstimates.ToString("F")) : Convert.ToDecimal(0.0000));
+                                                                }
+                                                                @Html.TextBoxFor(model => model.FinalEstimate[Count], new { @class = "form-control", @id = @name3, @readonly = "readonly" })
+                                                            </div>
+                                                        </td>
+                                                        
+                                                        @if ((!@Subs.RequireInput && Model.IsEnabled && details != null && Model.EditEnabled != Subs.SubGroupNo))
                                                         {
                                                             <td>
                                                                 <button style="border:none;background-color:white" id="@save" class="Submit" formaction="InterimRev" type="submit" value="Save Budget" style="align-self:center">
                                                                 <i class='bx bx-check' style="color:limegreen"></i></button>
                                                             </td>
                                                         }
-                                                        @if ((!@Subs.RequireInput && Model.IsEnabled && details!=null && Model.EditEnabled!=Subs.SubGroupNo)) 
+                                                        @if ((!@Subs.RequireInput && Model.IsEnabled && details == null) || (Model.IsEnabled && Model.EditEnabled == Subs.SubGroupNo))
                                                         {
                                                              <td>
                                                                  <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="Edit" type="submit" value="Edit Budget" style="align-self:center">
@@ -416,10 +447,12 @@
                                             <th class="w-5">
                                                 HEAD NAME
                                             </th>
-                                            <th class="CurrentRevisedEstimates w-10" >
+                                            <th class="CurrentRevisedEstimates w-5" >
                                             </th>
-                                                    <th>Increase/Decrease Estimate by</th>
-                                                    <th>Estimates after ReAppropriation</th>
+                                            <th class="Incestimate w-5">
+                                            </th>
+                                            <th class="FinalEstimate w-5">
+                                            </th>
                                             
                                         </tr>
                                     </thead>
@@ -485,22 +518,38 @@
                                                                                                 @Html.ValidationMessageFor(model => model.RevEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                 </td>
-                                                                                <td class="w-5">@Html.TextBox("Incestimate", null, new { @class = "form-control", @readonly = "readonly" })</td>
-                                                                                <td class="w-5">@Html.TextBox("FinalEstimate", null, new { @class = "form-control", @readonly = "readonly" })</td>
-                                                                                @if(Model.IsEnabled && Ledgerdetails == null || (Model.IsEnabled && Model.EditEnabled==Ledgers.LedgerNo))
-                                                                                {
-                                                                                <td>
-                                                                                   <button style="border:none;background-color:white" id="@save" class="Submit" formaction="InterimRev" type="submit" value="Save Budget" style="align-self:center">
-                                                                                   <i class='bx bx-check' style="color:limegreen"></i></button>
+                                                                                <td class="w-5">
+                                                                                        <div class="form-group">
+                                                                                            @{
+                                                                                                Model.IncreasedEstimate.Insert(LedgerNo, LedPrevYearApp != null ? Convert.ToDecimal(LedPrevYearApp.EstIncreasedBy.ToString("F")) : Convert.ToDecimal(0.0000));
+                                                                                            }
+                                                                                            @Html.TextBoxFor(model => model.IncreasedEstimate[LedgerNo], new { @class = "form-control", @id = @name2 + @Ledgers.LedgerNo, @readonly = "readonly" })
+                                                                                        </div>
                                                                                 </td>
-                                                                                }
-                                                                                @if(Model.IsEnabled && Ledgerdetails != null && Model.EditEnabled!=Ledgers.LedgerNo)
-                                                                                {
-                                                                                <td>
-                                                                                   <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="Edit" type="submit" value="Edit Budget" style="align-self:center">
-                                                                                   <i class='bx bxs-pencil' style="color:blue"></i></button>
-                                                                               </td>
-                                                                                }
+                                                                                <td class="w-5">
+                                                                                        <div class="form-group">
+                                                                                            @{
+                                                                                                Model.FinalEstimate.Insert(LedgerNo, LedPrevYearApp != null ? Convert.ToDecimal(LedPrevYearApp.FinalEstimates.ToString("F")) : Convert.ToDecimal(0.0000));
+                                                                                            }
+                                                                                            @Html.TextBoxFor(model => model.FinalEstimate[LedgerNo], new { @class = "form-control", @id = @name3 + @Ledgers.LedgerNo, @readonly = "readonly" })
+                                                                                        </div>
+                                                                                </td>
+                                                                                    @if ((!@Subs.RequireInput && Model.IsEnabled && details != null && Model.EditEnabled != Subs.SubGroupNo))
+                                                                                    {
+                                                                                        <td>
+                                                                                            <button style="border:none;background-color:white" id="@save" class="Submit" formaction="InterimRev" type="submit" value="Save Budget" style="align-self:center">
+                                                                                                <i class='bx bx-check' style="color:limegreen"></i>
+                                                                                            </button>
+                                                                                        </td>
+                                                                                    }
+                                                                                    @if ((!@Subs.RequireInput && Model.IsEnabled && details == null) || (Model.IsEnabled && Model.EditEnabled == Subs.SubGroupNo))
+                                                                                    {
+                                                                                        <td>
+                                                                                            <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="Edit" type="submit" value="Edit Budget" style="align-self:center">
+                                                                                                <i class='bx bxs-pencil' style="color:blue"></i>
+                                                                                            </button>
+                                                                                        </td>
+                                                                                    }
                                                                                 @if(Model.IsEnabled && Ledgerdetails != null)
                                                                                 {
                                                                                 <td>
@@ -574,21 +623,37 @@
                                                                 </div>
                                                         }
                                                         </td>
-                                                        <td class="w-5">@Html.TextBox(@name2, null, new { @class = "form-control", @readonly = "readonly" })</td>
-                                                        <td class="w-5">@Html.TextBox(@name3, null, new { @class = "form-control", @readonly = "readonly" })</td>
-                                                        @if ((!@Subs.RequireInput && Model.IsEnabled && details == null) || (Model.IsEnabled && Model.EditEnabled==Subs.SubGroupNo))
+                                                        <td class="w-5">
+                                                            <div class="form-group">
+                                                                @{
+                                                                    Model.IncreasedEstimate.Insert(Count, PrevYearApp != null ? Convert.ToDecimal(PrevYearApp.EstIncreasedBy.ToString("F")) : Convert.ToDecimal(0.0000));
+                                                                }
+                                                                @Html.TextBoxFor(model => model.IncreasedEstimate[Count], new { @class = "form-control", @id = @name2, @readonly = "readonly" })
+                                                            </div>
+                                                        </td>
+                                                        <td class="w-5">
+                                                            <div class="form-group">
+                                                                @{
+                                                                    Model.FinalEstimate.Insert(Count, PrevYearApp != null ? Convert.ToDecimal(PrevYearApp.FinalEstimates.ToString("F")) : Convert.ToDecimal(0.0000));
+                                                                }
+                                                                @Html.TextBoxFor(model => model.FinalEstimate[Count], new { @class = "form-control", @id = @name3, @readonly = "readonly" })
+                                                            </div>
+                                                        </td>
+                                                        @if ((!@Subs.RequireInput && Model.IsEnabled && details != null && Model.EditEnabled != Subs.SubGroupNo))
                                                         {
                                                             <td>
                                                                 <button style="border:none;background-color:white" id="@save" class="Submit" formaction="InterimRev" type="submit" value="Save Budget" style="align-self:center">
-                                                                <i class='bx bx-check' style="color:limegreen"></i></button>
+                                                                    <i class='bx bx-check' style="color:limegreen"></i>
+                                                                </button>
                                                             </td>
                                                         }
-                                                        @if ((!@Subs.RequireInput && Model.IsEnabled && details!=null && Model.EditEnabled!=Subs.SubGroupNo)) 
+                                                        @if ((!@Subs.RequireInput && Model.IsEnabled && details == null) || (Model.IsEnabled && Model.EditEnabled == Subs.SubGroupNo))
                                                         {
-                                                             <td>
-                                                                 <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="Edit" type="submit" value="Edit Budget" style="align-self:center">
-                                                                  <i class='bx bxs-pencil' style="color:blue"></i></button>
-                                                             </td>
+                                                            <td>
+                                                                <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="Edit" type="submit" value="Edit Budget" style="align-self:center">
+                                                                    <i class='bx bxs-pencil' style="color:blue"></i>
+                                                                </button>
+                                                            </td>
                                                         }
                                                         @if (!@Subs.RequireInput && Model.IsEnabled && details!=null)
                                                         {
@@ -696,8 +761,10 @@
                                             </th>
                                             <th class="CurrentRevisedEstimates w-10" >
                                             </th>
-                                                    <th>Increase/Decrease Estimate by</th>
-                                                    <th>Estimates after ReAppropriation</th>
+                                            <th class="Incestimate w-5">
+                                            </th>
+                                            <th class="FinalEstimate w-5">
+                                            </th>
                                             
                                         </tr>
                                     </thead>
@@ -765,8 +832,22 @@
                                                                                                 @Html.ValidationMessageFor(model => model.RevEstCurrFin[LedgerNo],null,new {@class = "text-danger", @style="font-size: 0.8em;font-style: italic;"})
                                                                                             </div>
                                                                                 </td>
-                                                                                <td class="w-5">@Html.TextBox("Incestimate", null, new { @class = "form-control", @readonly = "readonly" })</td>
-                                                                                <td class="w-5">@Html.TextBox("FinalEstimate", null, new { @class = "form-control", @readonly = "readonly" })</td>
+                                                                                    <td class="w-5">
+                                                                                        <div class="form-group">
+                                                                                            @{
+                                                                                                Model.IncreasedEstimate.Insert(LedgerNo, LedPrevYearApp != null ? Convert.ToDecimal(LedPrevYearApp.EstIncreasedBy.ToString("F")) : Convert.ToDecimal(0.0000));
+                                                                                            }
+                                                                                            @Html.TextBoxFor(model => model.IncreasedEstimate[LedgerNo], new { @class = "form-control", @id = @name2 + @Ledgers.LedgerNo, @readonly = "readonly" })
+                                                                                        </div>
+                                                                                    </td>
+                                                                                    <td class="w-5">
+                                                                                        <div class="form-group">
+                                                                                            @{
+                                                                                                Model.FinalEstimate.Insert(LedgerNo, LedPrevYearApp != null ? Convert.ToDecimal(LedPrevYearApp.FinalEstimates.ToString("F")) : Convert.ToDecimal(0.0000));
+                                                                                            }
+                                                                                            @Html.TextBoxFor(model => model.FinalEstimate[LedgerNo], new { @class = "form-control", @id = @name3 + @Ledgers.LedgerNo, @readonly = "readonly" })
+                                                                                        </div>
+                                                                                    </td>
                                                                                 @if(Model.IsEnabled && Ledgerdetails == null || (Model.IsEnabled && Model.EditEnabled==Ledgers.LedgerNo))
                                                                                 {
                                                                                 <td>
@@ -854,21 +935,37 @@
                                                                 </div>
                                                         }
                                                         </td>
-                                                        <td class="w-5">@Html.TextBox("Incestimate", null, new { @class = "form-control", @readonly = "readonly" })</td>
-                                                        <td class="w-5">@Html.TextBox("FinalEstimate", null, new { @class = "form-control", @readonly = "readonly" })</td>
-                                                        @if ((!@Subs.RequireInput && Model.IsEnabled && details == null) || (Model.IsEnabled && Model.EditEnabled==Subs.SubGroupNo))
+                                                        <td class="w-5">
+                                                            <div class="form-group">
+                                                                @{
+                                                                    Model.IncreasedEstimate.Insert(Count, PrevYearApp != null ? Convert.ToDecimal(PrevYearApp.EstIncreasedBy.ToString("F")) : Convert.ToDecimal(0.0000));
+                                                                }
+                                                                @Html.TextBoxFor(model => model.IncreasedEstimate[Count], new { @class = "form-control", @id = @name2, @readonly = "readonly" })
+                                                            </div>
+                                                        </td>
+                                                        <td class="w-5">
+                                                            <div class="form-group">
+                                                                @{
+                                                                    Model.FinalEstimate.Insert(Count, PrevYearApp != null ? Convert.ToDecimal(PrevYearApp.FinalEstimates.ToString("F")) : Convert.ToDecimal(0.0000));
+                                                                }
+                                                                @Html.TextBoxFor(model => model.FinalEstimate[Count], new { @class = "form-control", @id = @name3, @readonly = "readonly" })
+                                                            </div>
+                                                        </td>
+                                                        @if ((!@Subs.RequireInput && Model.IsEnabled && details != null && Model.EditEnabled != Subs.SubGroupNo))
                                                         {
                                                             <td>
                                                                 <button style="border:none;background-color:white" id="@save" class="Submit" formaction="InterimRev" type="submit" value="Save Budget" style="align-self:center">
-                                                                <i class='bx bx-check' style="color:limegreen"></i></button>
+                                                                    <i class='bx bx-check' style="color:limegreen"></i>
+                                                                </button>
                                                             </td>
                                                         }
-                                                        @if ((!@Subs.RequireInput && Model.IsEnabled && details!=null && Model.EditEnabled!=Subs.SubGroupNo)) 
+                                                        @if ((!@Subs.RequireInput && Model.IsEnabled && details == null) || (Model.IsEnabled && Model.EditEnabled == Subs.SubGroupNo))
                                                         {
-                                                             <td>
-                                                                 <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="Edit" type="submit" value="Edit Budget" style="align-self:center">
-                                                                  <i class='bx bxs-pencil' style="color:blue"></i></button>
-                                                             </td>
+                                                            <td>
+                                                                <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="Edit" type="submit" value="Edit Budget" style="align-self:center">
+                                                                    <i class='bx bxs-pencil' style="color:blue"></i>
+                                                                </button>
+                                                            </td>
                                                         }
                                                         @if (!@Subs.RequireInput && Model.IsEnabled && details!=null)
                                                         {
@@ -931,8 +1028,10 @@
                                             </th>
                                             <th class="CurrentRevisedEstimates w-10" >
                                             </th>
-                                            <th>Increase/Decrease Estimate by</th>
-                                            <th>Estimates after ReAppropriation</th>
+                                            <th class="Incestimate w-5">
+                                            </th>
+                                            <th class="FinalEstimate w-5">
+                                            </th>
                                             
                                         </tr>
                                     </thead>
@@ -998,9 +1097,23 @@
                                                                                             @Html.ValidationMessageFor(model => model.RevEstCurrFin[LedgerNo], null, new { @class = "text-danger", @style = "font-size: 0.8em;font-style: italic;" })
                                                                                         </div>
                                                                                     </td>
-                                                                                    <td class="w-5">@Html.TextBox("Incestimate", null, new { @class = "form-control", @readonly = "readonly" })</td>
-                                                                                    <td class="w-5">@Html.TextBox("FinalEstimate", null, new { @class = "form-control", @readonly = "readonly" })</td>
-                                                                                    @if (Model.IsEnabled && Ledgerdetails == null || (Model.IsEnabled && Model.EditEnabled == Ledgers.LedgerNo))
+                                                                                    <td class="w-5">
+                                                                                        <div class="form-group">
+                                                                                            @{
+                                                                                                Model.IncreasedEstimate.Insert(LedgerNo, LedPrevYearApp != null ? Convert.ToDecimal(LedPrevYearApp.EstIncreasedBy.ToString("F")) : Convert.ToDecimal(0.0000));
+                                                                                            }
+                                                                                            @Html.TextBoxFor(model => model.IncreasedEstimate[LedgerNo], new { @class = "form-control", @id = @name2 + @Ledgers.LedgerNo, @readonly = "readonly" })
+                                                                                        </div>
+                                                                                    </td>
+                                                                                    <td class="w-5">
+                                                                                        <div class="form-group">
+                                                                                            @{
+                                                                                                Model.FinalEstimate.Insert(LedgerNo, LedPrevYearApp != null ? Convert.ToDecimal(LedPrevYearApp.FinalEstimates.ToString("F")) : Convert.ToDecimal(0.0000));
+                                                                                            }
+                                                                                            @Html.TextBoxFor(model => model.FinalEstimate[LedgerNo], new { @class = "form-control", @id = @name3 + @Ledgers.LedgerNo, @readonly = "readonly" })
+                                                                                        </div>
+                                                                                    </td>
+                                                                                    @if ((!@Subs.RequireInput && Model.IsEnabled && details != null && Model.EditEnabled != Subs.SubGroupNo))
                                                                                     {
                                                                                         <td>
                                                                                             <button style="border:none;background-color:white" id="@save" class="Submit" formaction="InterimRev" type="submit" value="Save Budget" style="align-self:center">
@@ -1008,7 +1121,7 @@
                                                                                             </button>
                                                                                         </td>
                                                                                     }
-                                                                                    @if (Model.IsEnabled && Ledgerdetails != null && Model.EditEnabled != Ledgers.LedgerNo)
+                                                                                    @if ((!@Subs.RequireInput && Model.IsEnabled && details == null) || (Model.IsEnabled && Model.EditEnabled == Subs.SubGroupNo))
                                                                                     {
                                                                                         <td>
                                                                                             <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="Edit" type="submit" value="Edit Budget" style="align-self:center">
@@ -1089,22 +1202,38 @@
                                                                 </div>
                                                             }
                                                         </td>
-                                                        <td class="w-5">@Html.TextBox("Incestimate", null, new { @class = "form-control", @readonly = "readonly" })</td>
-                                                        <td class="w-5">@Html.TextBox("FinalEstimate", null, new { @class = "form-control", @readonly = "readonly" })</td>
-                                                        
-                                                        @if ((!@Subs.RequireInput && Model.IsEnabled && details == null) || (Model.IsEnabled && Model.EditEnabled==Subs.SubGroupNo))
+                                                        <td class="w-5">
+                                                            <div class="form-group">
+                                                                @{
+                                                                    Model.IncreasedEstimate.Insert(Count, PrevYearApp != null ? Convert.ToDecimal(PrevYearApp.EstIncreasedBy.ToString("F")) : Convert.ToDecimal(0.0000));
+                                                                }
+                                                                @Html.TextBoxFor(model => model.IncreasedEstimate[Count], new { @class = "form-control", @id = @name2, @readonly = "readonly" })
+                                                            </div>
+                                                        </td>
+                                                        <td class="w-5">
+                                                            <div class="form-group">
+                                                                @{
+                                                                    Model.FinalEstimate.Insert(Count, PrevYearApp != null ? Convert.ToDecimal(PrevYearApp.FinalEstimates.ToString("F")) : Convert.ToDecimal(0.0000));
+                                                                }
+                                                                @Html.TextBoxFor(model => model.FinalEstimate[Count], new { @class = "form-control", @id = @name3, @readonly = "readonly" })
+                                                            </div>
+                                                        </td>
+
+                                                        @if ((!@Subs.RequireInput && Model.IsEnabled && details != null && Model.EditEnabled != Subs.SubGroupNo))
                                                         {
                                                             <td>
                                                                 <button style="border:none;background-color:white" id="@save" class="Submit" formaction="InterimRev" type="submit" value="Save Budget" style="align-self:center">
-                                                                <i class='bx bx-check' style="color:limegreen"></i></button>
+                                                                    <i class='bx bx-check' style="color:limegreen"></i>
+                                                                </button>
                                                             </td>
                                                         }
-                                                        @if ((!@Subs.RequireInput && Model.IsEnabled && details!=null && Model.EditEnabled!=Subs.SubGroupNo)) 
+                                                        @if ((!@Subs.RequireInput && Model.IsEnabled && details == null) || (Model.IsEnabled && Model.EditEnabled == Subs.SubGroupNo))
                                                         {
-                                                             <td>
-                                                                 <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="Edit" type="submit" value="Edit Budget" style="align-self:center">
-                                                                  <i class='bx bxs-pencil' style="color:blue"></i></button>
-                                                             </td>
+                                                            <td>
+                                                                <button style="border:none;background-color:white" id="@edit" class="Submit" formaction="Edit" type="submit" value="Edit Budget" style="align-self:center">
+                                                                    <i class='bx bxs-pencil' style="color:blue"></i>
+                                                                </button>
+                                                            </td>
                                                         }
                                                         @if (!@Subs.RequireInput && Model.IsEnabled && details!=null)
                                                         {
@@ -1374,7 +1503,7 @@
                  $("#SelectedDivisionName").val($("#Division option:selected").text().trim());
 
                  $(".CurrentRevisedEstimates").text('Revised Estimates ' + $("#SelectedAcademicYear").val());
-                 $(".Incestimate").text('Estimates Increased by ' + $("#SelectedAcademicYear").val());
+                 $(".Incestimate").text('Estimates Increased by ');
                  $(".FinalEstimate").text('Final Estimates' + $("#SelectedAcademicYear").val());
                  
         } 
